@@ -1,0 +1,32 @@
+\contentsline {section}{\numberline {1}Abstract}{2}
+\contentsline {section}{\numberline {2}Introduction}{2}
+\contentsline {section}{\numberline {3}Background}{2}
+\contentsline {subsection}{\numberline {3.1}Aquired vs Modeled 3D Meshes}{2}
+\contentsline {subsection}{\numberline {3.2}Data Representation}{2}
+\contentsline {subsection}{\numberline {3.3}Irregular Non-Manifold Meshes and 2D-Manifolds in 3D-Space}{3}
+\contentsline {subsection}{\numberline {3.4}Data cleaning - Ensuring a Perfect Mesh}{3}
+\contentsline {section}{\numberline {4}Related Work}{4}
+\contentsline {section}{\numberline {5}The Multi-Scale Integral Invariant Filter}{4}
+\contentsline {subsection}{\numberline {5.1}Basic ideas}{4}
+\contentsline {subsection}{\numberline {5.2}Parameter Choice}{5}
+\contentsline {subsection}{\numberline {5.3}Serial Algorithm}{5}
+\contentsline {section}{\numberline {6}Acceleration by CUDA}{5}
+\contentsline {subsection}{\numberline {6.1}Data Partitioning}{5}
+\contentsline {subsection}{\numberline {6.2}Serial vs Multi-threaded vs GPU}{5}
+\contentsline {subsection}{\numberline {6.3}Versions <9, vs >= 9}{5}
+\contentsline {section}{\numberline {7}CUDA}{5}
+\contentsline {section}{\numberline {8}Alternative Approaches}{8}
+\contentsline {section}{\numberline {9}Experiments}{9}
+\contentsline {subsection}{\numberline {9.1}Data Sets}{9}
+\contentsline {subsubsection}{\numberline {9.1.1}Synthetic Examples}{9}
+\contentsline {subsubsection}{\numberline {9.1.2}Real World Examples}{9}
+\contentsline {section}{\numberline {10}Evaluation and Analysis}{9}
+\contentsline {subsection}{\numberline {10.1}Timing}{9}
+\contentsline {subsection}{\numberline {10.2}Speedup, efficiency}{9}
+\contentsline {subsection}{\numberline {10.3}Degree of Parallelism}{9}
+\contentsline {subsection}{\numberline {10.4}Iso-efficiency}{9}
+\contentsline {subsection}{\numberline {10.5}Scalability}{9}
+\contentsline {section}{\numberline {11}Code}{9}
+\contentsline {subsection}{\numberline {11.1}Integration with Legacy Code}{10}
+\contentsline {subsection}{\numberline {11.2}Distribution}{10}
+\contentsline {section}{\numberline {12}Conclusions}{10}
