@@ -1,9 +1,30 @@
 \begin{thebibliography}{1}
 
+\bibitem{Lang17}
+Stefan Lang.
+\newblock High performance parallel computing.
+\newblock Script from Lecture with same name, given during Summer Semester at
+  Heidelberg University, October 2017.
+
 \bibitem{Mara12}
 Hubert Mara.
-\newblock {\em Multi-Scale Integral Invariants for Robust Character Extraction
+\newblock {\em Multi\-Scale Integral Invariants for Robust Character Extraction
   from Irregular Polygon Mesh Data}.
-\newblock PhD thesis, Heidelberg University, Heidelberg, Germany, 10 2012.
+\newblock PhD thesis, Heidelberg University, Heidelberg, Germany, October 2012.
+
+\bibitem{Giga17}
+Hubert Mara, Bryan Wolfford, and Paul Bayer.
+\newblock {\em GigaMesh Short Manual}.
+\newblock FCGL (Forensic Computational Geometry Laboratory), INF 205,
+  Heidelberg, Germany, unknown edition, October 2017.
+\newblock Downloaded from
+  \url{https://www.gigamesh.eu/pages/tutorials/GM\_Workflows\_25.10.2017.pdf}.
+
+\bibitem{CUDA18}
+unknown.
+\newblock {\em CUDA C Programming Guide}.
+\newblock NVIDIA Corporation, unknown, pg\-02829\-001\_v9.2 edition, May 2018.
+\newblock Downloaded from
+  \url{https://docs.nvidia.com/cuda/pdf/CUDA\_C\_Programming\_Guide.pdf}.
 
 \end{thebibliography}

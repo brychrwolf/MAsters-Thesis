@@ -1,14 +1,18 @@
 \documentclass{article}
+\usepackage{amsmath}
 \usepackage{makeidx}
 \makeindex
-\usepackage{amsmath}
 \usepackage[bookmarks,colorlinks]{hyperref}
-\hypersetup{
-     pdfinfo={
-     	Author={Bryan Wolfford},
-        Title={GPU Accelerated Iterative Filtering of Scalar Fields on Discrete Manifolds},
-             }
-           }
+\hypersetup{colorlinks,
+	citecolor=[rgb]{0,0,0.5},
+	filecolor=[rgb]{0,0,0.5},
+	linkcolor=[rgb]{0,0,0.5},
+	urlcolor=[rgb]{0,0,0.5},
+	pdfinfo={
+		Author={Bryan Wolfford},
+		Title={GPU Accelerated Iterative Filtering of Scalar Fields on Discrete Manifolds},
+	}
+}
 \author{Bryan Wolfford}
 \title{GPU Accelerated Iterative Filtering of Scalar Fields on Discrete Manifolds}
 \date{\today}
@@ -23,13 +27,13 @@ Once I have a product, then I can introduce it here.
 \section{Background}
 \subsection{Aquired vs Modeled 3D Meshes}
 We have to mention that a common misunderstanding is that acquired 3D-objects are similar or even identical to modeled 3D-objects – this is not true! Both utilize the same methods for organizing the data, but per-se the concepts of primitives and other simplifications do not exist for acquired 3D-objects. Additionally acquired 3D-objects contain noise, which partially prevents simplification. Furthermore this adds to the complexity as simple objects, which can be modeled with a few primitives, are acquired as pointclouds, which can – and do – have thousands to millions of points. For worst cases even the assumption of a non-manifold mesh3 may not apply due to incorrect registration of multiple 3D-scans [BR07]. As we know from our previous work, there is always at least a minor number of non-manifold points within our data, which has to be taken care of to achieve a robust system [Mar06]. Reducing the resolution for acquisition contradicts with the Shannon theorem, while the rule of thumb from our previous projects is: the resolution for acquisition has to be 5 times the size of the smallest detail to be acquired.~\cite[p.~25]{Mara12}
-\subsection{Data Representation}ii
+\subsection{Data Representation}~\cite[p.~25]{Mara12}
 \subsection{Irregular Non-Manifold Meshes and 2D-Manifolds in 3D-Space}
-Volume and Surface of triangular 2D-Manifolds in 3D-Space iii
-Borders and Edgesiv
-Adjacencies, Singularities and k-ring Neighborhoodsv
-Agglutinated Faces and Faces with Zero Areavi
-Non-Manifold Edgesvii
+Volume and Surface of triangular 2D-Manifolds in 3D-Space~\cite[p.~27]{Mara12}
+Borders and Edges~\cite[p.~28]{Mara12}
+Adjacencies, Singularities and k-ring Neighborhoods~\cite[p.~29]{Mara12}
+Agglutinated Faces and Faces with Zero Area~\cite[p.~32]{Mara12}
+Non-Manifold Edges~\cite[p.~30]{Mara12}
 \subsection{Data cleaning - Ensuring a Perfect Mesh}
 The modular processing pipeline allows for adaption of the workflow for feature extraction depending on the application. As modules like the MSII filter provides several variants to compute integral invariants leads to a large number of combinations. Hard-coding all these combinations is as impracticable as asking an user to implement their own pipeline. The compromise is to provide an user interface including visualization of intermediate results.
 Therefore GigaMesh got a base layer of classes and methods as described previously, which can be used to assemble a tool-chain for command line use on compute servers. To give a visual feedback of final and intermediate results an OpenGL layer was added. On top of this second layer a GUI using Trolltech’s Qt, because it is available on all major platforms under the GNU General Public License (GPL) – an Open Source license.
@@ -50,39 +54,39 @@ Afterwards the eroded mesh becomes a so-called clean mesh. Note that in most of 
 2. Determine a list of boundaries ∂M2 ∶= n ⋃ i=1 ∂Ci of the holes.
 3. Remove boundaries ∂Ci of large connected components with ∣Ci ∣ > tC from the list.
 4. Fill the remaining holes ∂Ci>t within the list.
-The result is a so-called perfect mesh, which provides the best numeric results in respect to the quality of an acquired data-set. Because even a perfect mesh will have boundaries ∂M2 the border treatment of the algorithms to compute integral invariants stays relevant for robust processing. However, when obeying the described order, it is guaranteed that the remaining boundaries are kept as far as possible from the areas of interest. viii
+The result is a so-called perfect mesh, which provides the best numeric results in respect to the quality of an acquired data-set. Because even a perfect mesh will have boundaries ∂M2 the border treatment of the algorithms to compute integral invariants stays relevant for robust processing. However, when obeying the described order, it is guaranteed that the remaining boundaries are kept as far as possible from the areas of interest.~\cite[p.~120]{Mara12}
 \section{Related Work}
 Other Mesh filters which I could have done
 Other approaches to accelerate operations on a mesh
 (graphs) like facebooks work
 \section{The Multi-Scale Integral Invariant Filter}
 \subsection{Basic ideas}
-Curvature Estimationix
-5.4.3 Combined Calculation of the Multi-Scale Integral Invariantsx
+Curvature Estimation~\cite[p.~36]{Mara12}
+5.4.3 Combined Calculation of the Multi-Scale Integral Invariants~\cite[p.~144]{Mara12}
 \subsection{Parameter Choice}
 \subsection{Serial Algorithm}
 \section{Acceleration by CUDA}
-\subsection{Data Partitioning}xi
+\subsection{Data Partitioning}~\cite[p.~357]{Lang17}
 \subsection{Serial vs Multi-threaded vs GPU}
 \subsection{Versions <9, vs >= 9}
 Explain multi-threading model differences
 Motivation for choosing earlier version
 \section{CUDA}
-Graphical Processor Units, GPUs, are highly parallel, multithreaded, manycore processors typically characterized by very high computational power and tremendous memory bandwidth. A GPU is especially well-suited when used to data-parallel computations, in which the same program is executed on many data elements in parallel.xii 
-Mainstream processor chips, both CPU and GPUs, are now parallel systems, and as this parallelism continues to scale with Moore's law, the real challenge is to develop application software that transparently scales its parallelism to leverage the increasing number of processor cores. The CUDA parallel programming model, introduced by NVIDIA in November of 2006, was specifically designed to overcome this challenge.xiii
-In fact, due to its inherent scalable programming model in which problems are decomposed in a way that each block of thread\index{thread} can be scheduled on any of the available multiprocessors within a GPU, in any order, concurrently or sequentially, so that any compiled CUDA program, such as our implementation of the MSII filter, can be executed on any number of multiprocessors, and only the runtime system needs to know the physical multiprocessor count. xiv
+Graphical Processor Units, GPUs, are highly parallel, multithreaded, manycore processors typically characterized by very high computational power and tremendous memory bandwidth. A GPU is especially well-suited when used to data-parallel computations, in which the same program is executed on many data elements in parallel.~\cite[p.~1.1]{CUDA18}
+Mainstream processor chips, both CPU and GPUs, are now parallel systems, and as this parallelism continues to scale with Moore's law, the real challenge is to develop application software that transparently scales its parallelism to leverage the increasing number of processor cores. The CUDA parallel programming model, introduced by NVIDIA in November of 2006, was specifically designed to overcome this challenge.~\cite[p.~1.3]{CUDA18}
+In fact, due to its inherent scalable programming model in which problems are decomposed in a way that each block of thread\index{thread} can be scheduled on any of the available multiprocessors within a GPU, in any order, concurrently or sequentially, so that any compiled CUDA program, such as our implementation of the MSII filter, can be executed on any number of multiprocessors, and only the runtime system needs to know the physical multiprocessor count.~\cite[p.~1.3]{CUDA18}
 ~~~~~~~~~
-CUDA C extends C by allowing the programmer to define C functions, called kernels, that, when called, are executed N times in parallel by N different CUDA thread\index{thread}, as opposed to only once like regular C functions.xv
-thread\index{thread} can be identified using a one-dimensional, two-dimensional, or three-dimensional thread\index{thread} index, forming a one-dimensional, two-dimensional, or three-dimensional block of thread\index{thread}, called a thread\index{thread} block. This provides a natural way to invoke computation across the elements in a domain such as a vector, matrix, or volume. However, a kernel can be executed by multiple equally-shaped thread\index{thread} blocks, so that the total number of thread\index{thread} is equal to the number of thread\index{thread} per block times the number of blocks. thread\index{thread} blocks are required to execute independently: It must be possible to execute them in any order, in parallel or in series. This independence requirement allows thread\index{thread} blocks to be scheduled in any order across any number of cores as illustrated by Figure 5, enabling programmers to write code that scales with the number of cores.xvi
-CUDA threads\index{thread} may access data from multiple memory spaces during their execution as illustrated by Figure 7. Each thread\index{thread} has private local memory. Each thread\index{thread} block has shared memory visible to all thread\index{thread} of the block and with the same lifetime as the block. All thread\index{thread} have access to the same global memory.xvii
-the CUDA programming model assumes that the CUDA thread\index{thread} execute on a physically separate device that operates as a coprocessor to the host running the C program. The CUDA programming model also assumes that both the host and the device maintain their own separate memory spaces in DRAM, referred to as host memory and device memory. Unified Memory provides managed memory to bridge the host and device memory spaces. Managed memory is accessible from all CPUs and GPUs in the system as a single, coherent memory image with a common address space.xviii
-The compute capability of a device is represented by a version number, also sometimes called its "SM version". This version number identifies the features supported by the GPU hardware and is used by applications at runtime to determine which hardware features and/or instructions are available on the present GPU. Devices with the same major revision number are of the same core architecture. The major revision number is 7 for devices based on the Volta architecture, 6 for devices based on the Pascal architecture, 5 for devices based on the Maxwell architecture, 3 for devices based on the Kepler architecture, 2 for devices based on the Fermi architecture, and 1 for devices based on the Tesla architecture. Note: The compute capability version of a particular GPU should not be confused with the CUDA version (e.g., CUDA 7.5, CUDA 8, CUDA 9), which is the version of the CUDA software platform.xix
-Kernels can be written using the CUDA instruction set architecture, called PTX, which is described in the PTX reference manual. It is however usually more effective to use a high-level programming language such as C.xx
-Any PTX code loaded by an application at runtime is compiled further to binary code by the device driver. This is called just-in-time compilation. Just-in-time compilation increases application load time, but allows the application to benefit from any new compiler improvements coming with each new device driver. It is also the only way for applications to run on devices that did not exist at the time the application was compiled, as detailed in Application Compatibility. When the device driver just-in-time compiles some PTX code for some application, it automatically caches a copy of the generated binary code in order to avoid repeating the compilation in subsequent invocations of the application. The cache - referred to as compute cache - is automatically invalidated when the device driver is upgraded, so that applications can benefit from the improvements in the new just-in-time compiler built into the device driver.xxi
-The front end of the compiler processes CUDA source files according to C++ syntax rules. Full C++ is supported for the host code. However, only a subset of C++ is fully supported for the device codexxii
+CUDA C extends C by allowing the programmer to define C functions, called kernels, that, when called, are executed N times in parallel by N different CUDA thread\index{thread}, as opposed to only once like regular C functions.~\cite[p.~2.1]{CUDA18}
+thread\index{thread} can be identified using a one-dimensional, two-dimensional, or three-dimensional thread\index{thread} index, forming a one-dimensional, two-dimensional, or three-dimensional block of thread\index{thread}, called a thread\index{thread} block. This provides a natural way to invoke computation across the elements in a domain such as a vector, matrix, or volume. However, a kernel can be executed by multiple equally-shaped thread\index{thread} blocks, so that the total number of thread\index{thread} is equal to the number of thread\index{thread} per block times the number of blocks. thread\index{thread} blocks are required to execute independently: It must be possible to execute them in any order, in parallel or in series. This independence requirement allows thread\index{thread} blocks to be scheduled in any order across any number of cores as illustrated by Figure 5, enabling programmers to write code that scales with the number of cores.~\cite[p.~2.2]{CUDA18}
+CUDA threads\index{thread} may access data from multiple memory spaces during their execution as illustrated by Figure 7. Each thread\index{thread} has private local memory. Each thread\index{thread} block has shared memory visible to all thread\index{thread} of the block and with the same lifetime as the block. All thread\index{thread} have access to the same global memory.~\cite[p.~2.3]{CUDA18}
+the CUDA programming model assumes that the CUDA thread\index{thread} execute on a physically separate device that operates as a coprocessor to the host running the C program. The CUDA programming model also assumes that both the host and the device maintain their own separate memory spaces in DRAM, referred to as host memory and device memory. Unified Memory provides managed memory to bridge the host and device memory spaces. Managed memory is accessible from all CPUs and GPUs in the system as a single, coherent memory image with a common address space.~\cite[p.~2.4]{CUDA18}
+The compute capability of a device is represented by a version number, also sometimes called its "SM version". This version number identifies the features supported by the GPU hardware and is used by applications at runtime to determine which hardware features and/or instructions are available on the present GPU. Devices with the same major revision number are of the same core architecture. The major revision number is 7 for devices based on the Volta architecture, 6 for devices based on the Pascal architecture, 5 for devices based on the Maxwell architecture, 3 for devices based on the Kepler architecture, 2 for devices based on the Fermi architecture, and 1 for devices based on the Tesla architecture. Note: The compute capability version of a particular GPU should not be confused with the CUDA version (e.g., CUDA 7.5, CUDA 8, CUDA 9), which is the version of the CUDA software platform.~\cite[p.~2.4]{CUDA18}
+Kernels can be written using the CUDA instruction set architecture, called PTX, which is described in the PTX reference manual. It is however usually more effective to use a high-level programming language such as C.~\cite[p.~3.1]{CUDA18}
+Any PTX code loaded by an application at runtime is compiled further to binary code by the device driver. This is called just-in-time compilation. Just-in-time compilation increases application load time, but allows the application to benefit from any new compiler improvements coming with each new device driver. It is also the only way for applications to run on devices that did not exist at the time the application was compiled, as detailed in Application Compatibility. When the device driver just-in-time compiles some PTX code for some application, it automatically caches a copy of the generated binary code in order to avoid repeating the compilation in subsequent invocations of the application. The cache - referred to as compute cache - is automatically invalidated when the device driver is upgraded, so that applications can benefit from the improvements in the new just-in-time compiler built into the device driver.~\cite[p.~3.1.1.2]{CUDA18}
+The front end of the compiler processes CUDA source files according to C++ syntax rules. Full C++ is supported for the host code. However, only a subset of C++ is fully supported for the device code~\cite[p.~3.1.5]{CUDA18}
 3.2. CUDA C Runtime
-There is no explicit initialization function for the runtime; it initializes the first time a runtime function is called. During initialization, the runtime creates a CUDA context for each device in the system (see Context for more details on CUDA contexts). This context is the primary context for this device and it is shared among all the host thread\index{thread} of the application. As part of this context creation, the device code is just-in-time compiled if necessary (see Just-in-Time Compilation) and loaded into device memory. This all happens under the hood and the runtime does not expose the primary context to the application.xxiii
-As mentioned in Heterogeneous Programming, the CUDA programming model assumes a system composed of a host and a device, each with their own separate memory. Kernels operate out of device memory, so the runtime provides functions to allocate, deallocate, and copy device memory, as well as transfer data between host memory and device memory. Device memory can be allocated either as linear memory or as CUDA arrays. CUDA arrays are opaque memory layouts optimized for texture fetching. They are described in Texture and Surface Memory. Linear memory exists on the device in a 40-bit address space, so separately allocated entities can reference one another via pointers, for example, in a binary tree.xxiv
+There is no explicit initialization function for the runtime; it initializes the first time a runtime function is called. During initialization, the runtime creates a CUDA context for each device in the system (see Context for more details on CUDA contexts). This context is the primary context for this device and it is shared among all the host thread\index{thread} of the application. As part of this context creation, the device code is just-in-time compiled if necessary (see Just-in-Time Compilation) and loaded into device memory. This all happens under the hood and the runtime does not expose the primary context to the application.~\cite[p.~3.2.1]{CUDA18}
+As mentioned in Heterogeneous Programming, the CUDA programming model assumes a system composed of a host and a device, each with their own separate memory. Kernels operate out of device memory, so the runtime provides functions to allocate, deallocate, and copy device memory, as well as transfer data between host memory and device memory. Device memory can be allocated either as linear memory or as CUDA arrays. CUDA arrays are opaque memory layouts optimized for texture fetching. They are described in Texture and Surface Memory. Linear memory exists on the device in a 40-bit address space, so separately allocated entities can reference one another via pointers, for example, in a binary tree.~\cite[p.~3.2.2]{CUDA18}
 3.2.5.5.3. Explicit Synchronization
 There are various ways to explicitly synchronize streams with each other.
 cudaDeviceSynchronize() waits until all preceding commands in all streams of all host thread\index{thread} have completed.
@@ -128,10 +132,10 @@ Mayan Tablets
 Dynamic Earth models
 Mars
 Digital Terrain Models (DTMs) Mention in Mara 3.6 Summary “Dali” inspired method
-Processing regular grids like Digital Terrain Models (DTMs) will gain dramatic performance increases using the estimator, while processing irregular grids with high curvatures will strongly benefit from precise computation of the volume integral invariant.xxv
+Processing regular grids like Digital Terrain Models (DTMs) will gain dramatic performance increases using the estimator, while processing irregular grids with high curvatures will strongly benefit from precise computation of the volume integral invariant.~\cite[p.~143]{Mara12}
 Experiment 1
 Experiment 2
-\section{Evaluation and Analysis}xxvi 
+\section{Evaluation and Analysis}~\cite[p.~330]{Lang17}
 Multi-node out of scope?!
 \subsection{Timing}
 %\begin{equation}
@@ -155,7 +159,7 @@ C(N, P) = PTP(N, P)
 	1-q = is the parallelizable part
 \subsection{Iso-efficiency}
 	WK(P) = iso-efficient if it fulfills:
-	TO(WK(P), P) = KWK(P)xxvii
+	TO(WK(P), P) = KWK(P)~\cite[p.~350]{Lang17}
 \subsection{Scalability}
 	A parallel system is called scalable only if in has an iso-efficency function
 \section{Code}
@@ -167,7 +171,7 @@ Linux vs Windows
 \subsection{Integration with Legacy Code}
 In order to use the full functionality of GigaMesh a batch program has to be run for generating feature vectors. These vectors contain additional information per vertex concerning surface and volume of a set of spheres intersecting the mesh. See [MKJB10] for more background information on the Multi Scale Integral Invariant (MSII) filtering technique. This operation is rather time consuming (it takes hours or even days of computing time) and therefore better runs without graphical user interface. Although generating feature vectors is quite robust against solo vertices, singularities, non-manifolds and holes, you should first clean up your mesh data to get a proper result. So switch to the advanced task of polishing your mesh in section 4.1 and return to this section when you have got a cleaned mesh. If you do not want to manipulate your mesh you may continue directly. Open a terminal and type and change to the mesh-folder by typing cd GigaMesh/mesh (note that GigaMesh stands for the GigaMesh installation folder). Then start the program 
 nohup ./meshgeneratorfeaturevectors25d\_threads -f [-r 2] \& 
-and use nohup at the beginning of the command and \& at the end to ensure that the job runs in the background. This is because this step can take several hours and you do not want to block the terminal.xxviii
+and use nohup at the beginning of the command and \& at the end to ensure that the job runs in the background. This is because this step can take several hours and you do not want to block the terminal.~\cite[p.~19]{Giga17}
 \subsection{Distribution}
 \section{Conclusions}
 One I have a product and analyzed it, I can draw some conclusions.
