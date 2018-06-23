@@ -5,27 +5,25 @@
 \contentsline {subsection}{\numberline {2.3}Irregular Non-Manifold Meshes and 2D-Manifolds in 3D-Space}{3}{subsection.2.3}
 \contentsline {subsection}{\numberline {2.4}Data cleaning - Ensuring a Perfect Mesh}{3}{subsection.2.4}
 \contentsline {section}{\numberline {3}Related Work}{4}{section.3}
-\contentsline {section}{\numberline {4}The Multi-Scale Integral Invariant Filter}{4}{section.4}
-\contentsline {subsection}{\numberline {4.1}Basic ideas}{4}{subsection.4.1}
-\contentsline {subsection}{\numberline {4.2}Parameter Choice}{5}{subsection.4.2}
-\contentsline {subsection}{\numberline {4.3}Serial Algorithm}{5}{subsection.4.3}
+\contentsline {section}{\numberline {4}Fast 1-Ring Smoothing}{4}{section.4}
+\contentsline {subsection}{\numberline {4.1}Serial Algorithm}{5}{subsection.4.1}
 \contentsline {section}{\numberline {5}Acceleration by CUDA}{5}{section.5}
 \contentsline {subsection}{\numberline {5.1}Data Partitioning}{5}{subsection.5.1}
-\contentsline {subsection}{\numberline {5.2}Serial vs Multi-threaded vs GPU}{5}{subsection.5.2}
-\contentsline {subsection}{\numberline {5.3}Versions <9, vs >= 9}{5}{subsection.5.3}
-\contentsline {section}{\numberline {6}CUDA}{5}{section.6}
-\contentsline {section}{\numberline {7}Alternative Approaches}{9}{section.7}
-\contentsline {section}{\numberline {8}Experiments}{9}{section.8}
-\contentsline {subsection}{\numberline {8.1}Data Sets}{9}{subsection.8.1}
-\contentsline {subsubsection}{\numberline {8.1.1}Synthetic Examples}{9}{subsubsection.8.1.1}
-\contentsline {subsubsection}{\numberline {8.1.2}Real World Examples}{9}{subsubsection.8.1.2}
-\contentsline {section}{\numberline {9}Evaluation and Analysis}{9}{section.9}
+\contentsline {subsection}{\numberline {5.2}Serial vs Multi-threaded vs GPU}{6}{subsection.5.2}
+\contentsline {subsection}{\numberline {5.3}Versions <9, vs >= 9}{6}{subsection.5.3}
+\contentsline {section}{\numberline {6}CUDA}{6}{section.6}
+\contentsline {section}{\numberline {7}Alternative Approaches}{10}{section.7}
+\contentsline {section}{\numberline {8}Experiments}{10}{section.8}
+\contentsline {subsection}{\numberline {8.1}Data Sets}{10}{subsection.8.1}
+\contentsline {subsubsection}{\numberline {8.1.1}Synthetic Examples}{10}{subsubsection.8.1.1}
+\contentsline {subsubsection}{\numberline {8.1.2}Real World Examples}{10}{subsubsection.8.1.2}
+\contentsline {section}{\numberline {9}Evaluation and Analysis}{10}{section.9}
 \contentsline {subsection}{\numberline {9.1}Timing}{10}{subsection.9.1}
 \contentsline {subsection}{\numberline {9.2}Speedup, efficiency}{10}{subsection.9.2}
-\contentsline {subsection}{\numberline {9.3}Degree of Parallelism}{10}{subsection.9.3}
-\contentsline {subsection}{\numberline {9.4}Iso-efficiency}{10}{subsection.9.4}
-\contentsline {subsection}{\numberline {9.5}Scalability}{10}{subsection.9.5}
-\contentsline {section}{\numberline {10}Code}{10}{section.10}
-\contentsline {subsection}{\numberline {10.1}Integration with Legacy Code}{10}{subsection.10.1}
+\contentsline {subsection}{\numberline {9.3}Degree of Parallelism}{11}{subsection.9.3}
+\contentsline {subsection}{\numberline {9.4}Iso-efficiency}{11}{subsection.9.4}
+\contentsline {subsection}{\numberline {9.5}Scalability}{11}{subsection.9.5}
+\contentsline {section}{\numberline {10}Code}{11}{section.10}
+\contentsline {subsection}{\numberline {10.1}Integration with Legacy Code}{11}{subsection.10.1}
 \contentsline {subsection}{\numberline {10.2}Distribution}{11}{subsection.10.2}
 \contentsline {section}{\numberline {11}Conclusions}{11}{section.11}

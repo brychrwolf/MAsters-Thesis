@@ -59,11 +59,22 @@ The result is a so-called perfect mesh, which provides the best numeric results 
 Other Mesh filters which I could have done
 Other approaches to accelerate operations on a mesh
 (graphs) like facebooks work
-\section{The Multi-Scale Integral Invariant Filter}
-\subsection{Basic ideas}
-Curvature Estimation~\cite[p.~36]{Mara12}
-5.4.3 Combined Calculation of the Multi-Scale Integral Invariants~\cite[p.~144]{Mara12}
-\subsection{Parameter Choice}
+\section{Fast 1-Ring Smoothing}~\cite[p.~5]{Mara17}
+In our high-resolution meshes with dense vertices of several hundred points per mm 2 we see noise propagating within the results of the MSII filter. This noise becomes visible when isolines of the field of function values f (p i ) are rendered, and it becomes visible in jagged outlines for connected components of segmented areas of interest. The design principles for filtering of function values in irregular grids are the same as for those well-known algorithms used for raster images. However, they require adaptation as there is no fixed distance between the points and no fixed number of neighboring points in 1-rings of irregular grids. In the following we proceed solely the 1-ring neighborhood of all points of M considering the center of a 1-ring as p 0 ∈ M. Although the number n of the elements in each 1-ring might differ, it is always indexed by i ∈ {1, . . . , n} in a clockwise direction. The smallest edge length within the 1-ring around the vertex p 0 
+(EQ12)
+is shortly denoted by ∆ min and becomes the radius of the so-called geodesic disc. Figure 4 shows a typical configuration of an 1-ring, its geodesic disc with radius ∆ min and triangles t 0 i used for weighting.
+Figure 4: 1-ring with (a) irregular triangles t i and the geodesic disc with radius ∆ min . Here ∆ min = |p 4 − p 0 |, indicated as the red arrow. (b) Approximation of the disc with an interpolated 1-ring of triangles t 0 i having an area of A 0 i . 
+The function values f i 0 at the respective points p i along this discare interpolated by f i 0 := f 0 + ∆ min f i − f 0 |p i − p 0 | where f 0 is the function value of p 0 . Note that 0 < f i 0
+(EQ13)
+is always a weighted mean of f 0 and f i by such that the new the distance of the respective points. For the weighted mean of the function value f i t /3 at each triangle t 0 i we compute
+(EQ14)
+So far we used the distance to the central point p 0 as weight function, but we also have to consider the distance of the points p i to their neighbors p i+1 in the 1-ring. We do this by computing the relative area of the geodesic disc marked by the three points p 0 , p i and p i+1 . Instead of circle segments we approximate the geodesic disc by triangles t 0 i achieving faster computation. As all those trian-gles are isosceles having two egdes of constant length ∆ min we can compute their weight as the area of the isosceles triangle t 0 i using the Pythagorean theorem
+(EQ15)
+Regarding Figure 4a, the angle α i could as well be used for weight-ing, computing A 0 i = sin(α i )∆ 2min , which is equivalent to Equa-tion 15. But it is computationally expensive due to the sin(·) opera-tion and the numeric error is visible when the result of the mean fil-tering is rendered as color per vertex. Furthermore, computing ∆ minwithin each 1-ring will cause tremendous amounts of redundantcomputing operations. Therefore we define ∆ min := min{∆ min (p 0 ) |p 0 ∈ M} as the shortest edge for all triangles of the mesh. We willuse this ∆ min in all the above computations. This will increase thecomputing speed by a factor of ≈ 10. For a 1-ring we now compute the weighted mean function valuen with the total area 
+(EQ16)
+with a negligible error due to the 1-ring approximation of the geodesic disc. For a 1-ring weighted median filter instead, we can use all equations except 16, which is replaced by a list of pairs ( f i t , A 0 i ) sorted by f i t . The area is again used as a weight such that 1 = ∑ The weighted median now becomes
+(EQ17)
+which should not be ex-cluded but rarely occurs, we compute f  ̃ 0 =tf k t + f k+1.
 \subsection{Serial Algorithm}
 \section{Acceleration by CUDA}
 \subsection{Data Partitioning}~\cite[p.~357]{Lang17}

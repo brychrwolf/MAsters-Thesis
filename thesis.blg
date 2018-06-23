@@ -3,44 +3,44 @@ Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: thesis.aux
 The style file: plain.bst
 Database file #1: thesis.bib
-You've used 4 entries,
+You've used 5 entries,
             2118 wiz_defined-function locations,
-            524 strings with 4721 characters,
-and the built_in function-call counts, 910 in all, are:
-= -- 96
-> -- 39
+            531 strings with 5004 characters,
+and the built_in function-call counts, 1264 in all, are:
+= -- 125
+> -- 66
 < -- 0
-+ -- 16
-- -- 12
-* -- 57
-:= -- 179
-add.period$ -- 14
-call.type$ -- 4
-change.case$ -- 17
++ -- 25
+- -- 20
+* -- 81
+:= -- 243
+add.period$ -- 18
+call.type$ -- 5
+change.case$ -- 22
 chr.to.int$ -- 0
-cite$ -- 4
-duplicate$ -- 33
-empty$ -- 62
-format.name$ -- 12
-if$ -- 177
+cite$ -- 5
+duplicate$ -- 47
+empty$ -- 91
+format.name$ -- 20
+if$ -- 252
 int.to.chr$ -- 0
-int.to.str$ -- 4
-missing$ -- 0
-newline$ -- 25
-num.names$ -- 8
-pop$ -- 9
+int.to.str$ -- 5
+missing$ -- 1
+newline$ -- 30
+num.names$ -- 12
+pop$ -- 17
 preamble$ -- 1
-purify$ -- 14
+purify$ -- 18
 quote$ -- 0
-skip$ -- 21
+skip$ -- 28
 stack$ -- 0
-substring$ -- 20
-swap$ -- 5
+substring$ -- 25
+swap$ -- 7
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 16
+type$ -- 20
 warning$ -- 0
-while$ -- 8
-width$ -- 5
-write$ -- 52
+while$ -- 11
+width$ -- 6
+write$ -- 63
