@@ -1,5 +1,11 @@
 \begin{thebibliography}{1}
 
+\bibitem{Brewer2003}
+Cynthia~A. Brewer, Geoffrey~W. Hatchard, and Mark~A. Harrower.
+\newblock Colorbrewer in print: A catalog of color schemes for maps.
+\newblock {\em Cartography and Geographic Information Science}, 30(1):5--32,
+  2003.
+
 \bibitem{Lang17}
 Stefan Lang.
 \newblock High performance parallel computing.
@@ -19,6 +25,15 @@ Hubert Mara and Susanne Krömker.
 \newblock In Tobias Schreck, Tim Weyrich, Robert Sablatnig, and Benjamin
   Stular, editors, {\em Eurographics Workshop on Graphics and Cultural
   Heritage}. The Eurographics Association, 2017.
+
+\bibitem{Mara10}
+Hubert Mara, Susanne Krömker, Stefan Jakob, and Bernd Breuckmann.
+\newblock Gigamesh and gilgamesh 3d multiscale integral invariant cuneiform
+  character extraction.
+\newblock In Alessandro Artusi, Morwena Joly, Genevieve Lucet, Denis Pitzalis,
+  and Alejandro Ribes, editors, {\em VAST: International Symposium on Virtual
+  Reality, Archaeology and Intelligent Cultural Heritage}. The Eurographics
+  Association, 2010.
 
 \bibitem{Giga17}
 Hubert Mara, Bryan Wolfford, and Paul Bayer.

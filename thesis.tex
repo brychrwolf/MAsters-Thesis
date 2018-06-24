@@ -1,6 +1,8 @@
 \documentclass{article}
 \usepackage{amsmath}
 \usepackage{tikz}
+\usepackage{graphicx}
+\usepackage[lofdepth,lotdepth]{subfig}
 \usepackage{makeidx}
 \makeindex
 \usepackage[bookmarks,colorlinks]{hyperref}
@@ -136,12 +138,24 @@ OpenCL
 \subsection{Data Sets}
 \subsubsection{Synthetic Examples}
 FCGL Logo
-
 Ideal Crater
-
 http://graphics.stanford.edu/data/3Dscanrep/ (Stanford Bunny)
 
-\input{data/h.tikz.tex}
+In Figure \ref{fig:h}, we show a debossed capital letter H.\footnote{The H is as a nod to Heidelberg University and the cuniform script studied by the FCGL.}
+\begin{figure}[ht]
+\centering
+\subfloat[wireframe]{
+  \resizebox{0.48\linewidth}{!}{\input{data/h.tikz.tex}}
+  \label{fig:h.a}}
+\subfloat[colored]{
+  \includegraphics[width=0.48\linewidth]{data/h_colored.png}
+  \label{fig:h.b}}
+\caption[A debossed H, which contains 22 vertices and 36 faces.]{A debossed H, which contains 22 vertices and 36 faces: (a) wireframe (b) colored by the relation to its distance to an underlying plane, in RdGy colorramp~\cite[p.~???]{Brewer2003}~\cite[p.~19]{Giga17}, visualized using the GigaMesh~\cite{Mara10} framework with triangle edges rendered.}\label{fig:h}
+\end{figure}
+
+To evaluate methods available for discrete surfaces, we can increase the number of ver-
+tices of our synthetic wedge using five iterations of the mid-edge subdivision scheme [PR97,
+HW99].~\cite[p.~38]{Mara12}
 \subsubsection{Real World Examples}
 Something in Archaeology
 Cuneiform Tablets
@@ -193,6 +207,7 @@ and use nohup at the beginning of the command and \& at the end to ensure that t
 \section{Conclusions}
 One I have a product and analyzed it, I can draw some conclusions.
 \printindex
+\listoffigures
 \bibliography{thesis}{}
 \bibliographystyle{plain}
 \end{document}
