@@ -16,6 +16,9 @@
 \contentsline {section}{\numberline {8}Experiments}{10}{section.8}
 \contentsline {subsection}{\numberline {8.1}Data Sets}{10}{subsection.8.1}
 \contentsline {subsubsection}{\numberline {8.1.1}Synthetic Examples}{10}{subsubsection.8.1.1}
+\contentsline {paragraph}{An Ideal Crater}{10}{section*.2}
+\contentsline {paragraph}{Stanford Bunny}{10}{section*.3}
+\contentsline {paragraph}{Debossed H}{10}{section*.4}
 \contentsline {subsubsection}{\numberline {8.1.2}Real World Examples}{10}{subsubsection.8.1.2}
 \contentsline {section}{\numberline {9}Evaluation and Analysis}{10}{section.9}
 \contentsline {subsection}{\numberline {9.1}Timing}{10}{subsection.9.1}
