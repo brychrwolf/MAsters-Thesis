@@ -82,10 +82,7 @@ which should not be ex-cluded but rarely occurs, we compute f  ̃ 0 =tf k t + f 
 \section{Acceleration by CUDA}
 \subsection{Data Partitioning}~\cite[p.~357]{Lang17}
 \subsection{Serial vs Multi-threaded vs GPU}
-\subsection{Versions <9, vs >= 9}
-Explain multi-threading model differences
-Motivation for choosing earlier version
-\section{CUDA}
+\subsection{CUDA}
 Graphical Processor Units, GPUs, are highly parallel, multithreaded, manycore processors typically characterized by very high computational power and tremendous memory bandwidth. A GPU is especially well-suited when used to data-parallel computations, in which the same program is executed on many data elements in parallel.~\cite[p.~1.1]{CUDA18}
 Mainstream processor chips, both CPU and GPUs, are now parallel systems, and as this parallelism continues to scale with Moore's law, the real challenge is to develop application software that transparently scales its parallelism to leverage the increasing number of processor cores. The CUDA parallel programming model, introduced by NVIDIA in November of 2006, was specifically designed to overcome this challenge.~\cite[p.~1.3]{CUDA18}
 In fact, due to its inherent scalable programming model in which problems are decomposed in a way that each block of thread\index{thread} can be scheduled on any of the available multiprocessors within a GPU, in any order, concurrently or sequentially, so that any compiled CUDA program, such as our implementation of the MSII filter, can be executed on any number of multiprocessors, and only the runtime system needs to know the physical multiprocessor count.~\cite[p.~1.3]{CUDA18}
@@ -127,6 +124,9 @@ When a multiprocessor is given one or more thread\index{thread} blocks to execut
 A warp executes one common instruction at a time, so full efficiency is realized when all 32 thread\index{thread} of a warp agree on their execution path. If thread\index{thread} of a warp diverge via a data-dependent conditional branch, the warp executes each branch path taken, disabling thread\index{thread} that are not on that path. Branch divergence occurs only within a warp; different warps execute independently regardless of whether they are executing common or disjoint code paths.
 
 The SIMT architecture is akin to SIMD (Single Instruction, Multiple Data) vector organizations in that a single instruction controls multiple processing elements. A key difference is that SIMD vector organizations expose the SIMD width to the software, whereas SIMT instructions specify the execution and branching behavior of a single thread\index{thread}. In contrast with SIMD vector machines, SIMT enables programmers to write thread\index{thread}-level parallel code for independent, scalar thread\index{thread}, as well as data-parallel code for coordinated thread\index{thread}. For the purposes of correctness, the programmer can essentially ignore the SIMT behavior; however, substantial performance improvements can be realized by taking care that the code seldom requires thread\index{thread} in a warp to diverge. In practice, this is analogous to the role of cache lines in traditional code: Cache line size can be safely ignored when designing for correctness but must be considered in the code structure when designing for peak performance. Vector architectures, on the other hand, require the software to coalesce loads into vectors and manage divergence manually.
+\subsection{Versions <9, vs >= 9}
+Explain multi-threading model differences
+Motivation for choosing earlier version
 \section{Alternative Approaches}
 	What they are
 and why I did not.
