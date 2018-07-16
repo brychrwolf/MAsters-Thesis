@@ -131,6 +131,7 @@ A warp executes one common instruction at a time, so full efficiency is realized
 
 The SIMT architecture is akin to SIMD (Single Instruction, Multiple Data) vector organizations in that a single instruction controls multiple processing elements. A key difference is that SIMD vector organizations expose the SIMD width to the software, whereas SIMT instructions specify the execution and branching behavior of a single thread\index{thread}. In contrast with SIMD vector machines, SIMT enables programmers to write thread\index{thread}-level parallel code for independent, scalar thread\index{thread}, as well as data-parallel code for coordinated thread\index{thread}. For the purposes of correctness, the programmer can essentially ignore the SIMT behavior; however, substantial performance improvements can be realized by taking care that the code seldom requires thread\index{thread} in a warp to diverge. In practice, this is analogous to the role of cache lines in traditional code: Cache line size can be safely ignored when designing for correctness but must be considered in the code structure when designing for peak performance. Vector architectures, on the other hand, require the software to coalesce loads into vectors and manage divergence manually.
 \subsection{Versions <9, vs >= 9}
+K.2.1.1. Explicit Allocation Using cudaMallocManaged()~\cite[p.~272]{CUDA18}
 Explain multi-threading model differences
 Motivation for choosing earlier version
 \section{Alternative Approaches}
