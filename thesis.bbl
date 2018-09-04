@@ -43,6 +43,12 @@ Hubert Mara, Bryan Wolfford, and Paul Bayer.
 \newblock Downloaded from
   \url{https://www.gigamesh.eu/pages/tutorials/GM\_Workflows\_25.10.2017.pdf}.
 
+\bibitem{Cuda14}
+Mike~Murphy Tony~Scudiero.
+\newblock {\em Separate Compilation and Linking of CUDA C++ Device Code}.
+\newblock Accessed on Sep.14 2018 at
+  \url{https://devblogs.nvidia.com/separate-compilation-linking-cuda-device-code/}.
+
 \bibitem{CUDA18}
 unknown.
 \newblock {\em CUDA C Programming Guide}.
