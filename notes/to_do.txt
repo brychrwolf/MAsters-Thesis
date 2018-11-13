@@ -1,0 +1,37 @@
+2.1 #research difficulties of aquired meshes vs synthetic 
+2.2 #research different data representations (put in 3.Related work or 6.alternative approaches?)
+2.4 #edit Combine 2.1, 2.3 and 2.4
+3 #research Other Mesh filters
+3 #research Other approaches to accelerate operations on a mesh (graphs) like facebooks work
+4 #edit Fast 1-Ring Smoothing
+
+Chapters:
+1 Introduction
+2 Background
+2.1 Aquired vs Modeled 3D Meshes
+2.2 Data Representation
+2.3 Irregular Non-Manifold Meshes and 2D-Manifolds
+2.4 Data cleaning - Ensuring a Perfect Mesh in 3D-Space
+3 Related Work 4
+4 Fast 1-Ring Smoothing
+4.1 Serial Algorithm
+5 Acceleration by CUDA
+5.1 Data Partitioning
+5.2 Serial vs Multi-threaded vs GPU
+5.3 CUDA
+5.4 Versions <9, vs >= 9
+6 Alternative Approaches
+7 Experiments
+7.1 Data Sets
+7.1.1 Synthetic Examples
+7.1.2 Real World Examples
+8 Evaluation and Analysis
+8.1 Timing
+8.2 Speedup, efficiency
+8.3 Degree of Parallelism
+8.4 Iso-efficiency
+8.5 Scalability
+9 Code
+9.1 Integration with Legacy Code (GigaMesh)
+9.2 Distribution
+10 Conclusions
