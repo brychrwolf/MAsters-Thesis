@@ -1,4 +1,4 @@
-\documentclass{article}
+\documentclass[openany]{book}
 \usepackage{amsmath}
 \usepackage{tikz}
 \usepackage{graphicx}
@@ -13,33 +13,79 @@
 	urlcolor=[rgb]{0,0,0.5},
 	pdfinfo={
 		Author={Bryan Wolfford},
-		Title={GPU Accelerated Iterative Filtering of Scalar Fields on Discrete Manifolds},
+		Title={GPGPU Accelerated Iterative Filtering of Scalar Fields on Discrete Manifolds},
 	}
 }
 \author{Bryan Wolfford}
 \title{GPU Accelerated Iterative Filtering of Scalar Fields on Discrete Manifolds}
-\date{\today}
+\date{\today} %TODO: Fix date upon submission
+
 \begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Front Matter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frontmatter
 \maketitle
-\begin{abstract}
+
+\chapter{Affirmation of Authorship}
+I affirmation authorship.
+
+\chapter{Aknowledgements}
+I aknowledge things.
+
+\chapter{Abstract}
 This is some abstract text.
-\end{abstract}
+
+\chapter{Nomenclature}
+This Nomenclature is something.
+
 \tableofcontents
-\section{Introduction}
-Once I have a product, then I can introduce it here.
-\section{Motivation}
+
+\listoffigures
+\listoftables
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Introduction \& Motivation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\mainmatter
+\chapter{Introduction \& Motivation}
 Serial is slow. Concurrency is fast.
-\section{Background}
-\subsection{Aquired vs Modeled 3D Meshes}
+GPUs are commercially available, so use them.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Background
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Background}
+\section{Synthetic vs Aquired 3D Meshes}
 We have to mention that a common misunderstanding is that acquired 3D-objects are similar or even identical to modeled 3D-objects – this is not true! Both utilize the same methods for organizing the data, but per-se the concepts of primitives and other simplifications do not exist for acquired 3D-objects. Additionally acquired 3D-objects contain noise, which partially prevents simplification. Furthermore this adds to the complexity as simple objects, which can be modeled with a few primitives, are acquired as pointclouds, which can – and do – have thousands to millions of points. For worst cases even the assumption of a non-manifold mesh3 may not apply due to incorrect registration of multiple 3D-scans [BR07]. As we know from our previous work, there is always at least a minor number of non-manifold points within our data, which has to be taken care of to achieve a robust system [Mar06]. Reducing the resolution for acquisition contradicts with the Shannon theorem, while the rule of thumb from our previous projects is: the resolution for acquisition has to be 5 times the size of the smallest detail to be acquired.~\cite[p.~25]{Mara12}
-\subsection{Data Representation}~\cite[p.~25]{Mara12}
-\subsection{Irregular Non-Manifold Meshes and 2D-Manifolds in 3D-Space}
+
+
+
+\section{Data Representation}~\cite[p.~25]{Mara12}
+Data Representation is a thing.
+
+
+
+\section{Irregular Non-Manifold Meshes and 2D-Manifolds in 3D-Space}
 Volume and Surface of triangular 2D-Manifolds in 3D-Space~\cite[p.~27]{Mara12}
 Borders and Edges~\cite[p.~28]{Mara12}
 Adjacencies, Singularities and k-ring Neighborhoods~\cite[p.~29]{Mara12}
 Agglutinated Faces and Faces with Zero Area~\cite[p.~32]{Mara12}
 Non-Manifold Edges~\cite[p.~30]{Mara12}
-\subsection{Data cleaning - Ensuring a Perfect Mesh}
+
+
+
+\section{Data cleaning - Ensuring a Perfect Mesh}
 The modular processing pipeline allows for adaption of the workflow for feature extraction depending on the application. As modules like the MSII filter provides several variants to compute integral invariants leads to a large number of combinations. Hard-coding all these combinations is as impracticable as asking an user to implement their own pipeline. The compromise is to provide an user interface including visualization of intermediate results.
 Therefore GigaMesh got a base layer of classes and methods as described previously, which can be used to assemble a tool-chain for command line use on compute servers. To give a visual feedback of final and intermediate results an OpenGL layer was added. On top of this second layer a GUI using Trolltech’s Qt, because it is available on all major platforms under the GNU General Public License (GPL) – an Open Source license.
 Layer I: Processing Methods
@@ -60,37 +106,27 @@ Afterwards the eroded mesh becomes a so-called clean mesh. Note that in most of 
 3. Remove boundaries ∂Ci of large connected components with ∣Ci ∣ > tC from the list.
 4. Fill the remaining holes ∂Ci>t within the list.
 The result is a so-called perfect mesh, which provides the best numeric results in respect to the quality of an acquired data-set. Because even a perfect mesh will have boundaries ∂M2 the border treatment of the algorithms to compute integral invariants stays relevant for robust processing. However, when obeying the described order, it is guaranteed that the remaining boundaries are kept as far as possible from the areas of interest.~\cite[p.~120]{Mara12}
+
+
+
 \section{Related Work}
 Other Mesh filters which I could have done
 Other approaches to accelerate operations on a mesh
 (graphs) like facebooks work
-\section{Fast 1-Ring Smoothing}~\cite[p.~5]{Mara17}
-In our high-resolution meshes with dense vertices of several hundred points per mm 2 we see noise propagating within the results of the MSII filter. This noise becomes visible when isolines of the field of function values f (p i ) are rendered, and it becomes visible in jagged outlines for connected components of segmented areas of interest. The design principles for filtering of function values in irregular grids are the same as for those well-known algorithms used for raster images. However, they require adaptation as there is no fixed distance between the points and no fixed number of neighboring points in 1-rings of irregular grids. In the following we proceed solely the 1-ring neighborhood of all points of M considering the center of a 1-ring as p 0 ∈ M. Although the number n of the elements in each 1-ring might differ, it is always indexed by i ∈ {1, . . . , n} in a clockwise direction. The smallest edge length within the 1-ring around the vertex p 0 
-(EQ12)
-is shortly denoted by ∆ min and becomes the radius of the so-called geodesic disc. Figure 4 shows a typical configuration of an 1-ring, its geodesic disc with radius ∆ min and triangles t 0 i used for weighting.
-Figure 4: 1-ring with (a) irregular triangles t i and the geodesic disc with radius ∆ min . Here ∆ min = |p 4 − p 0 |, indicated as the red arrow. (b) Approximation of the disc with an interpolated 1-ring of triangles t 0 i having an area of A 0 i . 
-The function values f i 0 at the respective points p i along this discare interpolated by f i 0 := f 0 + ∆ min f i − f 0 |p i − p 0 | where f 0 is the function value of p 0 . Note that 0 < f i 0
-(EQ13)
-is always a weighted mean of f 0 and f i by such that the new the distance of the respective points. For the weighted mean of the function value f i t /3 at each triangle t 0 i we compute
-(EQ14)
-So far we used the distance to the central point p 0 as weight function, but we also have to consider the distance of the points p i to their neighbors p i+1 in the 1-ring. We do this by computing the relative area of the geodesic disc marked by the three points p 0 , p i and p i+1 . Instead of circle segments we approximate the geodesic disc by triangles t 0 i achieving faster computation. As all those trian-gles are isosceles having two egdes of constant length ∆ min we can compute their weight as the area of the isosceles triangle t 0 i using the Pythagorean theorem
-(EQ15)
-Regarding Figure 4a, the angle α i could as well be used for weight-ing, computing A 0 i = sin(α i )∆ 2min , which is equivalent to Equa-tion 15. But it is computationally expensive due to the sin(·) opera-tion and the numeric error is visible when the result of the mean fil-tering is rendered as color per vertex. Furthermore, computing ∆ minwithin each 1-ring will cause tremendous amounts of redundantcomputing operations. Therefore we define ∆ min := min{∆ min (p 0 ) |p 0 ∈ M} as the shortest edge for all triangles of the mesh. We willuse this ∆ min in all the above computations. This will increase thecomputing speed by a factor of ≈ 10. For a 1-ring we now compute the weighted mean function valuen with the total area 
-(EQ16)
-with a negligible error due to the 1-ring approximation of the geodesic disc. For a 1-ring weighted median filter instead, we can use all equations except 16, which is replaced by a list of pairs ( f i t , A 0 i ) sorted by f i t . The area is again used as a weight such that 1 = ∑ The weighted median now becomes
-(EQ17)
-which should not be ex-cluded but rarely occurs, we compute f  ̃ 0 =tf k t + f k+1.
-\subsection{Serial Algorithm}
-\section{Acceleration by CUDA}
-Adjacent vertices are stored in an array of variable-length arrays.
-First idea was determine max "width" of 2nd dimension, then to put the adjacent vertices into a 2D array with constant width.
-The pros were that a single index (i.e. CUDA) would then be able to now read the data. 
-The cons were that there were lots of allocated memory never to be used, if a single vertex had a large number of adjacenet pairs, it would greatly affect the size. Also, another array of counts of pairs per vertex is needed, so that only memory containing pair data was processesed per any given vertex.
-Instead, we can first create a single array of "run lengths," which is for each vertex, the count of how many adjacent pairs it has. Then flatten the array into a single dismension, using the run-length array as the iterator.
-Pros are that only a single other area is required, and the original array does not need to be padded with extra, unsued memory address.
-\subsection{Data Partitioning}~\cite[p.~357]{Lang17}
-\subsection{Serial vs Multi-threaded vs GPU}
-\subsection{CUDA}
+
+
+
+\section{Serial vs Multi-threaded vs GPGPU}
+Serial vs Multi-threaded vs GPU order from slow to fast.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% What is CUDA?
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{What is CUDA?}
 Graphical Processor Units, GPUs, are highly parallel, multithreaded, manycore processors typically characterized by very high computational power and tremendous memory bandwidth. A GPU is especially well-suited when used to data-parallel computations, in which the same program is executed on many data elements in parallel.~\cite[p.~1.1]{CUDA18}
 Mainstream processor chips, both CPU and GPUs, are now parallel systems, and as this parallelism continues to scale with Moore's law, the real challenge is to develop application software that transparently scales its parallelism to leverage the increasing number of processor cores. The CUDA parallel programming model, introduced by NVIDIA in November of 2006, was specifically designed to overcome this challenge.~\cite[p.~1.3]{CUDA18}
 In fact, due to its inherent scalable programming model in which problems are decomposed in a way that each block of thread\index{thread} can be scheduled on any of the available multiprocessors within a GPU, in any order, concurrently or sequentially, so that any compiled CUDA program, such as our implementation of the MSII filter, can be executed on any number of multiprocessors, and only the runtime system needs to know the physical multiprocessor count.~\cite[p.~1.3]{CUDA18}
@@ -132,85 +168,92 @@ When a multiprocessor is given one or more thread\index{thread} blocks to execut
 A warp executes one common instruction at a time, so full efficiency is realized when all 32 thread\index{thread} of a warp agree on their execution path. If thread\index{thread} of a warp diverge via a data-dependent conditional branch, the warp executes each branch path taken, disabling thread\index{thread} that are not on that path. Branch divergence occurs only within a warp; different warps execute independently regardless of whether they are executing common or disjoint code paths.
 
 The SIMT architecture is akin to SIMD (Single Instruction, Multiple Data) vector organizations in that a single instruction controls multiple processing elements. A key difference is that SIMD vector organizations expose the SIMD width to the software, whereas SIMT instructions specify the execution and branching behavior of a single thread\index{thread}. In contrast with SIMD vector machines, SIMT enables programmers to write thread\index{thread}-level parallel code for independent, scalar thread\index{thread}, as well as data-parallel code for coordinated thread\index{thread}. For the purposes of correctness, the programmer can essentially ignore the SIMT behavior; however, substantial performance improvements can be realized by taking care that the code seldom requires thread\index{thread} in a warp to diverge. In practice, this is analogous to the role of cache lines in traditional code: Cache line size can be safely ignored when designing for correctness but must be considered in the code structure when designing for peak performance. Vector architectures, on the other hand, require the software to coalesce loads into vectors and manage divergence manually.
-\subsection{Versions <9, vs >= 9}
+
+\section{Versions <9, vs >= 9} %TODO: Major Differences in versions
 K.2.1.1. Explicit Allocation Using cudaMallocManaged()~\cite[p.~272]{CUDA18}
 Explain multi-threading model differences
 Motivation for choosing earlier version
+Adjacent vertices are stored in an array of variable-length arrays.
+First idea was determine max "width" of 2nd dimension, then to put the adjacent vertices into a 2D array with constant width.
+The pros were that a single index (i.e. CUDA) would then be able to now read the data. 
+The cons were that there were lots of allocated memory never to be used, if a single vertex had a large number of adjacenet pairs, it would greatly affect the size. Also, another array of counts of pairs per vertex is needed, so that only memory containing pair data was processesed per any given vertex.
+Instead, we can first create a single array of "run lengths," which is for each vertex, the count of how many adjacent pairs it has. Then flatten the array into a single dismension, using the run-length array as the iterator.
+Pros are that only a single other area is required, and the original array does not need to be padded with extra, unsued memory address.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% State of the Art, Fast 1-Ring Smoothing
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{State of the Art, Fast 1-Ring Smoothing}~\cite[p.~5]{Mara17}
+\section{Fast 1-Ring Smoothing}
+In our high-resolution meshes with dense vertices of several hundred points per mm 2 we see noise propagating within the results of the MSII filter. This noise becomes visible when isolines of the field of function values f (p i ) are rendered, and it becomes visible in jagged outlines for connected components of segmented areas of interest. The design principles for filtering of function values in irregular grids are the same as for those well-known algorithms used for raster images. However, they require adaptation as there is no fixed distance between the points and no fixed number of neighboring points in 1-rings of irregular grids. In the following we proceed solely the 1-ring neighborhood of all points of M considering the center of a 1-ring as p 0 ∈ M. Although the number n of the elements in each 1-ring might differ, it is always indexed by i ∈ {1, . . . , n} in a clockwise direction. The smallest edge length within the 1-ring around the vertex p 0 
+(EQ12)
+is shortly denoted by ∆ min and becomes the radius of the so-called geodesic disc. Figure 4 shows a typical configuration of an 1-ring, its geodesic disc with radius ∆ min and triangles t 0 i used for weighting.
+Figure 4: 1-ring with (a) irregular triangles t i and the geodesic disc with radius ∆ min . Here ∆ min = |p 4 − p 0 |, indicated as the red arrow. (b) Approximation of the disc with an interpolated 1-ring of triangles t 0 i having an area of A 0 i . 
+The function values f i 0 at the respective points p i along this discare interpolated by f i 0 := f 0 + ∆ min f i − f 0 |p i − p 0 | where f 0 is the function value of p 0 . Note that 0 < f i 0
+(EQ13)
+is always a weighted mean of f 0 and f i by such that the new the distance of the respective points. For the weighted mean of the function value f i t /3 at each triangle t 0 i we compute
+(EQ14)
+So far we used the distance to the central point p 0 as weight function, but we also have to consider the distance of the points p i to their neighbors p i+1 in the 1-ring. We do this by computing the relative area of the geodesic disc marked by the three points p 0 , p i and p i+1 . Instead of circle segments we approximate the geodesic disc by triangles t 0 i achieving faster computation. As all those trian-gles are isosceles having two egdes of constant length ∆ min we can compute their weight as the area of the isosceles triangle t 0 i using the Pythagorean theorem
+(EQ15)
+Regarding Figure 4a, the angle α i could as well be used for weight-ing, computing A 0 i = sin(α i )∆ 2min , which is equivalent to Equa-tion 15. But it is computationally expensive due to the sin(·) opera-tion and the numeric error is visible when the result of the mean fil-tering is rendered as color per vertex. Furthermore, computing ∆ minwithin each 1-ring will cause tremendous amounts of redundantcomputing operations. Therefore we define ∆ min := min{∆ min (p 0 ) |p 0 ∈ M} as the shortest edge for all triangles of the mesh. We willuse this ∆ min in all the above computations. This will increase thecomputing speed by a factor of ≈ 10. For a 1-ring we now compute the weighted mean function valuen with the total area 
+(EQ16)
+with a negligible error due to the 1-ring approximation of the geodesic disc. For a 1-ring weighted median filter instead, we can use all equations except 16, which is replaced by a list of pairs ( f i t , A 0 i ) sorted by f i t . The area is again used as a weight such that 1 = ∑ The weighted median now becomes
+(EQ17)
+which should not be ex-cluded but rarely occurs, we compute f  ̃ 0 =tf k t + f k+1.
+
+\subsection{Serial Algorithm}
+The serial algorihtm is not yet plublished, but was already implemented in Gigamesh.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Acceleration by GPGPU
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter[Acceleration by GPGPU]{Acceleration by GPGPU (General-purpose computing on graphics processing units)}
+\section{Data Partitioning}~\cite[p.~357]{Lang17}
+Data Partitioning is important.
+
+
+\section{Exploiting Concurrency}
+Exploiting Concurrency is important.
+
+
 \section{Alternative Approaches}
-	What they are
-and why I did not.
+What they are and why I did not.
 OpenMP
 PThreads
 (already impl’d in GigaMesh)
 OpenCL
-\section{Experiments}
-\subsection{Data Sets}
-\subsubsection{Synthetic Examples}
-\paragraph{An Ideal Crater}
-Ideal Crater
-\paragraph{Stanford Bunny}
-http://graphics.stanford.edu/data/3Dscanrep/ (Stanford Bunny)
 
-\paragraph{Debossed H}
-In Figure \ref{fig:h}, we show a debossed capital letter H.\footnote{The H is as a nod to Heidelberg University and the cuniform script studied by the FCGL.}
-\begin{figure}[ht]
-\centering
-\subfloat[wireframe]{
-  \resizebox{0.48\linewidth}{!}{\input{example_meshes/h.tikz_labels.tex}}
-  \label{fig:h.a}}
-\subfloat[colored]{
-  \includegraphics[width=0.48\linewidth]{example_meshes/h_colored.png}
-  \label{fig:h.b}}
-\caption[A debossed H, which contains 22 vertices and 36 faces.]{A debossed H, which contains 22 vertices and 36 faces: (a) wireframe (b) colored by the relation to its distance to an underlying plane, in RdGy colorramp~\cite[p.~???]{Brewer2003}~\cite[p.~19]{Giga17}, visualized using the GigaMesh~\cite{Mara10} framework with triangle edges rendered.}\label{fig:h}
-\end{figure}
 
-To evaluate methods available for discrete surfaces, we can increase the number of ver-
-tices of our synthetic wedge using five iterations of the mid-edge subdivision scheme [PR97,
-HW99].~\cite[p.~38]{Mara12}
-\subsubsection{Real World Examples}
-Something in Archaeology
-Cuneiform Tablets
-Mayan Tablets
-Dynamic Earth models
-Mars
-Digital Terrain Models (DTMs) Mention in Mara 3.6 Summary “Dali” inspired method
-Processing regular grids like Digital Terrain Models (DTMs) will gain dramatic performance increases using the estimator, while processing irregular grids with high curvatures will strongly benefit from precise computation of the volume integral invariant.~\cite[p.~143]{Mara12}
-Experiment 1
-Experiment 2
-\section{Evaluation and Analysis}~\cite[p.~330]{Lang17}
-Multi-node out of scope?!
-\subsection{Timing}
-%\begin{equation}
-	N = input size (num. ops)
-	P = processor count
-	Ts(N) = Sequential execution time
-	Tbest(N) = Optimal execution time
-	TP(N, P) = Parallel runtime
-%\end{equation}
-\subsection{Speedup, efficiency}
-	Speedup: 
-S(N, P) = Tbest(N)/TP(N, P)
 
-	Efficiency: 
-E(N, P) = Tbest (N)/PTP(N, P) = S/P
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Distribution
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Distribution}
+Stabdalone vs integration with legacy code.
 
-	Costs: 
-C(N, P) = PTP(N, P)
-\subsection{Degree of Parallelism}
-	0 < q < 1 is the sequential part
-	1-q = is the parallelizable part
-\subsection{Iso-efficiency}
-	WK(P) = iso-efficient if it fulfills:
-	TO(WK(P), P) = KWK(P)~\cite[p.~350]{Lang17}
-\subsection{Scalability}
-	A parallel system is called scalable only if in has an iso-efficency function
-\section{Code}
+\section{Stabdalone Source Code}
+CLI - commandline interface only
 Focus on theoretical work 
 And specifics regarding CUDA considerations regarding its limitations
 MAYBE 1 page
 Dependencies
 Linux vs Windows
-\subsection{Integration with Legacy Code (GigaMesh)}
+
+\section{Standalone Precompiled Binary}
+CLI - commandline interface only
+
+\section{Integration with Legacy Code (GigaMesh)}
+CLI - commandline interface or GUI - graphical user interface are possible
 \begin{enumerate}
 \item Make GigaMesh CUDA aware
 	\begin{enumerate}
@@ -223,11 +266,148 @@ Before CUDA 5.0, if a programmer wanted to call particle::advance() from a CUDA 
 In order to use the full functionality of GigaMesh a batch program has to be run for generating feature vectors. These vectors contain additional information per vertex concerning surface and volume of a set of spheres intersecting the mesh. See [MKJB10] for more background information on the Multi Scale Integral Invariant (MSII) filtering technique. This operation is rather time consuming (it takes hours or even days of computing time) and therefore better runs without graphical user interface. Although generating feature vectors is quite robust against solo vertices, singularities, non-manifolds and holes, you should first clean up your mesh data to get a proper result. So switch to the advanced task of polishing your mesh in section 4.1 and return to this section when you have got a cleaned mesh. If you do not want to manipulate your mesh you may continue directly. Open a terminal and type and change to the mesh-folder by typing cd GigaMesh/mesh (note that GigaMesh stands for the GigaMesh installation folder). Then start the program 
 nohup ./meshgeneratorfeaturevectors25d\_threads -f [-r 2] \& 
 and use nohup at the beginning of the command and \& at the end to ensure that the job runs in the background. This is because this step can take several hours and you do not want to block the terminal.~\cite[p.~19]{Giga17}
-\subsection{Distribution}
-\section{Conclusions}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Experiments
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Experiments}
+\section{Synthetic Data}
+Synthetic Examples are not real examples.
+
+\subsection{An Ideal Crater}
+Ideal Crater like the Mars dataset?
+
+\subsection{A Flat surface with Dirac Delta function}
+\subsubsection{Square grid, two triangles}
+\subsubsection{Square grid, four triangles}
+\subsubsection{Hexagonal grid}
+
+\subsection{Debossed H}
+In Figure \ref{fig:h}, we show a debossed capital letter H.\footnote{The H is as a nod to Heidelberg University and the cuniform script studied by the FCGL.}
+\begin{figure}[ht]
+\centering
+\subfloat[wireframe]{
+  \resizebox{0.48\linewidth}{!}{\input{example_meshes/h.tikz_labels.tex}}
+  \label{fig:h.a}}
+\subfloat[colored]{
+  \includegraphics[width=0.48\linewidth]{example_meshes/h_colored.png}
+  \label{fig:h.b}}
+\caption[A debossed H, which contains 22 vertices and 36 faces.]{A debossed H, which contains 22 vertices and 36 faces: (a) wireframe (b) colored by the relation to its distance to an underlying plane, in RdGy colorramp~\cite[p.~???]{Brewer2003}~\cite[p.~19]{Giga17}, visualized using the GigaMesh~\cite{Mara10} framework with triangle edges rendered.}\label{fig:h}
+\end{figure}
+To evaluate methods available for discrete surfaces, we can increase the number of ver-
+tices of our synthetic wedge using five iterations of the mid-edge subdivision scheme [PR97,
+HW99].~\cite[p.~38]{Mara12}
+	\subsubsection{Real World Examples}
+
+
+
+\section{Acquired Data}
+Acquired Data examples are actually recorded by sensors.
+Something in Archaeology
+Cuneiform Tablets
+Mayan Tablets
+Dynamic Earth models
+
+\subsection{Mars Crater}
+Mars dataset crater as a Digital Terrain Models (DTMs) Mention in Mara 3.6 Summary “Dali” inspired method
+Processing regular grids like Digital Terrain Models (DTMs) will gain dramatic performance increases using the estimator, while processing irregular grids with high curvatures will strongly benefit from precise computation of the volume integral invariant.~\cite[p.~143]{Mara12}
+
+\subsection{A Flat surface}
+Flat surfaces have NOISE!
+
+\subsection{Stanford Bunny}
+http://graphics.stanford.edu/data/3Dscanrep/ (Stanford Bunny)
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Evaluation and Analysis
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Evaluation and Analysis}~\cite[p.~330]{Lang17}
+Multi-node out of scope?!
+
+
+
+\section{Timing}
+%\begin{equation}
+	N = input size (num. ops)
+	P = processor count
+	Ts(N) = Sequential execution time
+	Tbest(N) = Optimal execution time
+	TP(N, P) = Parallel runtime
+%\end{equation}
+
+
+
+\section{Speedup, efficiency}
+	Speedup: 
+S(N, P) = Tbest(N)/TP(N, P)
+
+	Efficiency: 
+E(N, P) = Tbest (N)/PTP(N, P) = S/P
+
+	Costs: 
+C(N, P) = PTP(N, P)
+
+
+
+\section{Degree of Parallelism}
+	0 < q < 1 is the sequential part
+	1-q = is the parallelizable part
+
+
+
+\section{Iso-efficiency}
+	WK(P) = iso-efficient if it fulfills:
+	TO(WK(P), P) = KWK(P)~\cite[p.~350]{Lang17}
+
+
+
+\section{Scalability}
+	A parallel system is called scalable only if in has an iso-efficency function
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Evaluation and Analysis
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Conclusions}
 One I have a product and analyzed it, I can draw some conclusions.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Appendix
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\appendix
+\chapter{Maybe some appendix please?}
+This is an appendix.
+
+
+
+\chapter{Just another appendix.}
+This is an appendix.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Back Matter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\backmatter
 \printindex
-\listoffigures
 \bibliography{thesis}{}
 \bibliographystyle{plain}
 \end{document}
