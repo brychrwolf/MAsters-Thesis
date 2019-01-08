@@ -17,7 +17,7 @@
 	}
 }
 \author{Bryan Wolfford}
-\title{GUGPU Accelerated Iterative Filtering of Scalar Fields on Discrete Manifolds}
+\title{GPGPU Accelerated Iterative Filtering of Scalar Fields on Discrete Manifolds}
 \date{\today} %TODO: Fix date upon submission
 
 \begin{document}
@@ -55,10 +55,55 @@ This Nomenclature is something.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \mainmatter
 \chapter{Introduction \& Motivation}
-Serial is slow.~\cite[p.~00]{SourceNeeded}
-Concurrency is fast.~\cite[p.~00]{SourceNeeded}
-GPUs are commercially available, so use them to exploit concurrency.
-~\cite[p.~00]{SourceNeeded}
+\section{Serial is slow.}
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt eget 
+ipsum eu iaculis. Cras vel sem eu velit eleifend porta vel sit amet massa. Etiam 
+a posuere nunc. Aenean aliquam viverra dapibus. Aliquam ac eros a purus feugiat 
+rhoncus. Donec faucibus ut nibh ut cursus. Aliquam erat volutpat. Proin efficitur 
+nulla sit amet iaculis condimentum. Cras placerat leo vitae venenatis feugiat. In 
+hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis 
+parturient montes, nascetur ridiculus mus. In aliquet sagittis dui eu pulvinar. 
+Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor 
+suscipit, eget imperdiet mauris convallis.~\cite[p.~00]{SourceNeeded}
+
+
+
+\section{Concurrency is fast.}
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt eget 
+ipsum eu iaculis. Cras vel sem eu velit eleifend porta vel sit amet massa. Etiam 
+a posuere nunc. Aenean aliquam viverra dapibus. Aliquam ac eros a purus feugiat 
+rhoncus. Donec faucibus ut nibh ut cursus. Aliquam erat volutpat. Proin efficitur 
+nulla sit amet iaculis condimentum. Cras placerat leo vitae venenatis feugiat. In 
+hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis 
+parturient montes, nascetur ridiculus mus. In aliquet sagittis dui eu pulvinar. 
+Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor 
+suscipit, eget imperdiet mauris convallis.~\cite[p.~00]{SourceNeeded}
+
+
+
+\section{GPUs are commercially available, use to exploit concurrency.}
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt eget 
+ipsum eu iaculis. Cras vel sem eu velit eleifend porta vel sit amet massa. Etiam 
+a posuere nunc. Aenean aliquam viverra dapibus. Aliquam ac eros a purus feugiat 
+rhoncus. Donec faucibus ut nibh ut cursus. Aliquam erat volutpat. Proin efficitur 
+nulla sit amet iaculis condimentum. Cras placerat leo vitae venenatis feugiat. In 
+hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis 
+parturient montes, nascetur ridiculus mus. In aliquet sagittis dui eu pulvinar. 
+Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor 
+suscipit, eget imperdiet mauris convallis.~\cite[p.~00]{SourceNeeded}
+
+
+
+\section{Structure of this paper}
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt eget 
+ipsum eu iaculis. Cras vel sem eu velit eleifend porta vel sit amet massa. Etiam 
+a posuere nunc. Aenean aliquam viverra dapibus. Aliquam ac eros a purus feugiat 
+rhoncus. Donec faucibus ut nibh ut cursus. Aliquam erat volutpat. Proin efficitur 
+nulla sit amet iaculis condimentum. Cras placerat leo vitae venenatis feugiat. In 
+hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis 
+parturient montes, nascetur ridiculus mus. In aliquet sagittis dui eu pulvinar. 
+Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor 
+suscipit, eget imperdiet mauris convallis.
 
 
 
@@ -99,7 +144,7 @@ non-optical methods (e.g. LIDAR). As for our test-case the cuneiform script is
 generally defined by pure geometry and the consideration of a texture-map is
 per-se not necessary.~\cite[p.~25]{Mara12}
 
-\section{Points}
+\subsection{Points}
 The most primitive element of our data is a measuring point p, having three 
 Cartesian coordinates x, y and z. In Computer Graphics and Computer Vision these 
 points are called vertices, while they are called position vectors in R 3 in 
@@ -123,15 +168,14 @@ vectors sampling the surface M 2 in R 3 are identified within homogeneous
 coordinate system [Gra30] having
 w i = 1 as fourth coordinate~\cite[p.~25-26]{Mara12}
 
-\section{Faces}
+\subsection{Faces}
 Counte-Clokwise vs CloCkwise~\cite[p.~00]{SourceNeeded}
 The second important class of primitive elements are the so-called faces, which 
 are triangles t having an orientation provided by the data-structure of the 
 3D-models, e.g. for visualization using virtual illumination. The triangles are 
 addressed using the index j,while each triangle has three implicit edges: e a j 
 , e b j and e c j .t j ∶= {p A j , p B j , p C j } ≡ {A j , B j , C j }p C jyyyy
-yyyye bjp A je cjt = {A, B, C}abbreviated:EE eEE ajEEEEp B j~~~~~~ ~bA(2.4)C _ @
-c@@@@ a@@B
+yyyye bjp A je cjt = {A, B, C}abbreviated:EE eEE ajEEEEp B j~~~~~~ ~bA(2.4)C \_ 
 The faces are stored in the list L f : L f = { t 1 , . . . , t j , . . . , t j 
 max } with j max = ∣L f ∣ and j = Z + ∧ j ≤ j max
 (2.5)
@@ -143,7 +187,7 @@ the following sections and chapters. In case no L f is provided, it is a
 necessity to perform a point set triangulation [BE92, HK09] to compute L f from 
 L v .~\cite[p.~26]{Mara12}
 
-\section{Funtion Values}
+\subsection{Funtion Values}
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt eget 
 ipsum eu iaculis. Cras vel sem eu velit eleifend porta vel sit amet massa. Etiam 
 a posuere nunc. Aenean aliquam viverra dapibus. Aliquam ac eros a purus feugiat 
@@ -280,23 +324,24 @@ Figure 2.8b shows the same faces having a face t w added sharing a non-manifold 
 e k=m and Figure 2.8c shows the special case for a manifold edge connecting the face t w
 having a wrong orientation.(a)(b)(c)
 Figure 2.8: Schematic visualization of M 2 in green with an edge connecting (a) two manifold
-faces (t u , t v ) and (b) the face t w added along the non-manifold edge e k = e m and (c) having a
-face t w embedded with a wrong orientation.~\cite[p.~30-31]{Mara12}
+faces (t u , t v ) and (b) the face t w added along the non-manifold edge e k = e m and 
+(c) having aface t w embedded with a wrong orientation.~\cite[p.~30-31]{Mara12}
 
 \subsection{Agglutinated Faces and Faces with Zero Area}
 Faces literally sticking together having a proper orientation (no e + ) are typical remains
 of outliers from acquisition. They can be removed as they describe parts of objects
 without any volume. This can be shown using Equation 2.10 with two faces sharing
 the same vertices in opposite orientation. Let the first face be t 1 ∶= {p a , p b , p c } and the
-agglutination face be t 2 ∶= {p c , p b , p a }, we can simplify: s = s 1 = s 2 , A(t) = A(t 1 ) = A(t 2 )
-and n̂ 2 = −n̂ 1 and substitute:⎛ s x 1 ⎞⎛ s x 2 ⎞⎛ s x ⎞
+agglutination face be t 2 ∶= {p c , p b , p a }, we can simplify: s = s 1 = s 2 , A(t) = 
+A(t 1 ) = A(t 2 ) and n̂ 2 = −n̂ 1 and substitute:⎛ s x 1 ⎞⎛ s x 2 ⎞⎛ s x ⎞
 V M = A(t 1 ) ⎜ 0 ⎟ n̂ 1 + A(t 2 ) ⎜ 0 ⎟ n̂ 2 = A(t) ⎜ 0 ⎟ (n̂ 1 − n̂ 1 ) = 0⎝ 0 ⎠⎝ 0 ⎠⎝ 0 ⎠(2.23)
 An indicator for an agglutinated face are edges with faces having a wrong orientation as
 shown in Figure 2.8c. In practical examples agglunating faces often appear along non-
 manifold edges. However agglunating faces can be found and removed using the following
 definition, which should be done before removing non-manifold edges and removing faces
 with wrong orientation to minimize the changes to the mesh.
-∃ t i ∨t j ∈ L f with t i ∶= {A i , B i , C i } and t j ∶= {C i , B i , A i }∧{B i , A i , C i }∧{A i , C i , B i } (2.24)
+∃ t i ∨t j ∈ L f with t i ∶= {A i , B i , C i } and t j ∶= {C i , B i , A i }∧
+{B i , A i , C i }∧{A i , C i , B i } (2.24)
 Besides agglutinated faces having enclosing no volume, there also exist degenerated
 faces having no area. This happens, when two or all three vertices of a face have the same
 position vector. For example, when we substitue p A = p B in Equation 2.7 we get:
@@ -388,15 +433,15 @@ far as possible from the areas of interest.~\cite[p.~120]{Mara12}
 
 
 
-\section{Related Work}
-Other Mesh filters which I could have done
-Other approaches to accelerate operations on a mesh
-(graphs) like facebooks work
-
-
-
 \section{Serial vs Multi-threaded vs GPGPU}
-Serial vs Multi-threaded vs GPU order from slow to fast.
+Serial vs Multi-threaded vs GPU order from slow to fast.~\cite[p.~00]{SourceNeeded}
+
+
+
+\section{Related Work}
+2D filters like from Digital Image Processing: i.e. Jaehne~\cite[p.~00]{SourceNeeded}
+Other Mesh filters which I could have done~\cite[p.~00]{SourceNeeded}
+Other approaches to accelerate operations on a mesh~\cite[p.~00]{SourceNeeded}
 
 
 
@@ -418,46 +463,74 @@ The compute capability of a device is represented by a version number, also some
 Kernels can be written using the CUDA instruction set architecture, called PTX, which is described in the PTX reference manual. It is however usually more effective to use a high-level programming language such as C.~\cite[p.~3.1]{CUDA18}
 Any PTX code loaded by an application at runtime is compiled further to binary code by the device driver. This is called just-in-time compilation. Just-in-time compilation increases application load time, but allows the application to benefit from any new compiler improvements coming with each new device driver. It is also the only way for applications to run on devices that did not exist at the time the application was compiled, as detailed in Application Compatibility. When the device driver just-in-time compiles some PTX code for some application, it automatically caches a copy of the generated binary code in order to avoid repeating the compilation in subsequent invocations of the application. The cache - referred to as compute cache - is automatically invalidated when the device driver is upgraded, so that applications can benefit from the improvements in the new just-in-time compiler built into the device driver.~\cite[p.~3.1.1.2]{CUDA18}
 The front end of the compiler processes CUDA source files according to C++ syntax rules. Full C++ is supported for the host code. However, only a subset of C++ is fully supported for the device code~\cite[p.~3.1.5]{CUDA18}
-3.2. CUDA C Runtime
+
+
+
+\section{CUDA C Runtime}%3.2. CUDA C Runtime}
 There is no explicit initialization function for the runtime; it initializes the first time a runtime function is called. During initialization, the runtime creates a CUDA context for each device in the system (see Context for more details on CUDA contexts). This context is the primary context for this device and it is shared among all the host thread\index{thread} of the application. As part of this context creation, the device code is just-in-time compiled if necessary (see Just-in-Time Compilation) and loaded into device memory. This all happens under the hood and the runtime does not expose the primary context to the application.~\cite[p.~3.2.1]{CUDA18}
 As mentioned in Heterogeneous Programming, the CUDA programming model assumes a system composed of a host and a device, each with their own separate memory. Kernels operate out of device memory, so the runtime provides functions to allocate, deallocate, and copy device memory, as well as transfer data between host memory and device memory. Device memory can be allocated either as linear memory or as CUDA arrays. CUDA arrays are opaque memory layouts optimized for texture fetching. They are described in Texture and Surface Memory. Linear memory exists on the device in a 40-bit address space, so separately allocated entities can reference one another via pointers, for example, in a binary tree.~\cite[p.~3.2.2]{CUDA18}
-3.2.5.5.3. Explicit Synchronization
+
+\subsection{Explicit Synchronization}%3.2.5.5.3. Explicit Synchronization}
 There are various ways to explicitly synchronize streams with each other.
 cudaDeviceSynchronize() waits until all preceding commands in all streams of all host thread\index{thread} have completed.
 cudaStreamSynchronize()takes a stream as a parameter and waits until all preceding commands in the given stream have completed. It can be used to synchronize the host with a specific stream, allowing other streams to continue executing on the device.
 cudaStreamWaitEvent()takes a stream and an event as parameters (see Events for a description of events)and makes all the commands added to the given stream after the call to cudaStreamWaitEvent()delay their execution until the given event has completed. The stream can be 0, in which case all the commands added to any stream after the call to cudaStreamWaitEvent()wait on the event.
 cudaStreamQuery()provides applications with a way to know if all preceding commands in a stream have completed. 
 To avoid unnecessary slowdowns, all these synchronization functions are usually best used for timing purposes or to isolate a launch or memory copy that is failing.
-3.3. Versioning and Compatibility
+
+
+
+\section{Versioning and Compatibility}%3.3. Versioning and Compatibility}
 There are two version numbers that developers should care about when developing a CUDA application: The compute capability that describes the general specifications and features of the compute device (see Compute Capability) and the version of the CUDA driver API that describes the features supported by the driver API and runtime.
 The version of the driver API is defined in the driver header file as CUDA\_VERSION. It allows developers to check whether their application requires a newer device driver than the one currently installed. This is important, because the driver API is backward compatible, meaning that applications, plug-ins, and libraries (including the C runtime) compiled against a particular version of the driver API will continue to work on subsequent device driver releases as illustrated in Figure 11. The driver API is not forward compatible, which means that applications, plug-ins, and libraries (including the C runtime) compiled against a particular version of the driver API will not work on previous versions of the device driver.
 It is important to note that there are limitations on the mixing and matching of versions that is supported:
 Since only one version of the CUDA Driver can be installed at a time on a system, the installed driver must be of the same or higher version than the maximum Driver API version against which any application, plug-ins, or libraries that must run on that system were built.
 All plug-ins and libraries used by an application must use the same version of the CUDA Runtime unless they statically link to the Runtime, in which case multiple versions of the runtime can coexist in the same process space. Note that if nvcc is used to link the application, the static version of the CUDA Runtime library will be used by default, and all CUDA Toolkit libraries are statically linked against the CUDA Runtime.
 All plug-ins and libraries used by an application must use the same version of any libraries that use the runtime (such as cuFFT, cuBLAS, ...) unless statically linking to those libraries.
-4. Hardware Implementation
+
+
+
+\section{Hardware Implementation}%4. Hardware Implementation}
 The NVIDIA GPU architecture is built around a scalable array of multithreaded Streaming Multiprocessors (SMs). When a CUDA program on the host CPU invokes a kernel grid, the blocks of the grid are enumerated and distributed to multiprocessors with available execution capacity. The thread\index{thread} of a thread\index{thread} block execute concurrently on one multiprocessor, and multiple thread\index{thread} blocks can execute concurrently on one multiprocessor. As thread\index{thread} blocks terminate, new blocks are launched on the vacated multiprocessors.
-
 A multiprocessor is designed to execute hundreds of thread\index{thread} concurrently. To manage such a large amount of thread\index{thread}, it employs a unique architecture called SIMT (Single-Instruction, Multiple-thread\index{thread}) that is described in SIMT Architecture. The instructions are pipelined to leverage instruction-level parallelism within a single thread\index{thread}, as well as thread\index{thread}-level parallelism extensively through simultaneous hardware multithreading as detailed in Hardware Multithreading. Unlike CPU cores they are issued in order however and there is no branch prediction and no speculative execution.
-4.1. SIMT Architecture
+
+\subsection{SIMT Architecture}%4.1. SIMT Architecture}
 The multiprocessor creates, manages, schedules, and executes thread\index{thread} in groups of 32 parallel thread\index{thread} called warps. Individual thread\index{thread} composing a warp start together at the same program address, but they have their own instruction address counter and register state and are therefore free to branch and execute independently. The term warp originates from weaving, the first parallel thread\index{thread} technology. A half-warp is either the first or second half of a warp. A quarter-warp is either the first, second, third, or fourth quarter of a warp.
-
 When a multiprocessor is given one or more thread\index{thread} blocks to execute, it partitions them into warps and each warp gets scheduled by a warp scheduler for execution. The way a block is partitioned into warps is always the same; each warp contains thread\index{thread} of consecutive, increasing thread\index{thread} IDs with the first warp containing thread\index{thread} 0. thread\index{thread} Hierarchy describes how thread\index{thread} IDs relate to thread\index{thread} indices in the block.
-
 A warp executes one common instruction at a time, so full efficiency is realized when all 32 thread\index{thread} of a warp agree on their execution path. If thread\index{thread} of a warp diverge via a data-dependent conditional branch, the warp executes each branch path taken, disabling thread\index{thread} that are not on that path. Branch divergence occurs only within a warp; different warps execute independently regardless of whether they are executing common or disjoint code paths.
-
 The SIMT architecture is akin to SIMD (Single Instruction, Multiple Data) vector organizations in that a single instruction controls multiple processing elements. A key difference is that SIMD vector organizations expose the SIMD width to the software, whereas SIMT instructions specify the execution and branching behavior of a single thread\index{thread}. In contrast with SIMD vector machines, SIMT enables programmers to write thread\index{thread}-level parallel code for independent, scalar thread\index{thread}, as well as data-parallel code for coordinated thread\index{thread}. For the purposes of correctness, the programmer can essentially ignore the SIMT behavior; however, substantial performance improvements can be realized by taking care that the code seldom requires thread\index{thread} in a warp to diverge. In practice, this is analogous to the role of cache lines in traditional code: Cache line size can be safely ignored when designing for correctness but must be considered in the code structure when designing for peak performance. Vector architectures, on the other hand, require the software to coalesce loads into vectors and manage divergence manually.
 
-\section{Versions <9, vs >= 9} %TODO: Major Differences in versions
-K.2.1.1. Explicit Allocation Using cudaMallocManaged()~\cite[p.~272]{CUDA18}
-Explain multi-threading model differences
-Motivation for choosing earlier version
-Adjacent vertices are stored in an array of variable-length arrays.
-First idea was determine max "width" of 2nd dimension, then to put the adjacent vertices into a 2D array with constant width.
-The pros were that a single index (i.e. CUDA) would then be able to now read the data. 
-The cons were that there were lots of allocated memory never to be used, if a single vertex had a large number of adjacenet pairs, it would greatly affect the size. Also, another array of counts of pairs per vertex is needed, so that only memory containing pair data was processesed per any given vertex.
-Instead, we can first create a single array of "run lengths," which is for each vertex, the count of how many adjacent pairs it has. Then flatten the array into a single dismension, using the run-length array as the iterator.
-Pros are that only a single other area is required, and the original array does not need to be padded with extra, unsued memory address.
+
+
+\section{Host Memory and Device Memory}
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt eget 
+ipsum eu iaculis. Cras vel sem eu velit eleifend porta vel sit amet massa. Etiam 
+a posuere nunc. Aenean aliquam viverra dapibus. Aliquam ac eros a purus feugiat 
+rhoncus. Donec faucibus ut nibh ut cursus. Aliquam erat volutpat. Proin efficitur 
+nulla sit amet iaculis condimentum. Cras placerat leo vitae venenatis feugiat. In 
+hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis 
+parturient montes, nascetur ridiculus mus. In aliquet sagittis dui eu pulvinar. 
+Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor 
+suscipit, eget imperdiet mauris convallis.~\cite[p.~00]{SourceNeeded}
+
+
+
+\section{Versions <9, vs >= 9}
+K.2.1.1. Explicit Allocation Using cudaMallocManaged()~\cite[p.~272]{CUDA18} 
+Explain multi-threading model differences Motivation for choosing earlier 
+version Adjacent vertices are stored in an array of variable-length arrays. 
+First idea was determine max "width" of 2nd dimension, then to put the adjacent 
+vertices into a 2D array with constant width. The pros were that a single index 
+(i.e. CUDA) would then be able to now read the data.  The cons were that there 
+were lots of allocated memory never to be used, if a single vertex had a large 
+number of adjacenet pairs, it would greatly affect the size. Also, another 
+array of counts of pairs per vertex is needed, so that only memory containing 
+pair data was processesed per any given vertex. Instead, we can first create a 
+single array of "run lengths," which is for each vertex, the count of how many 
+adjacent pairs it has. Then flatten the array into a single dismension, using 
+the run-length array as the iterator. Pros are that only a single other area is 
+required, and the original array does not need to be padded with extra, unsued 
+memory address.
 
 
 
@@ -466,23 +539,61 @@ Pros are that only a single other area is required, and the original array does 
 %%%%% State of the Art, Fast 1-Ring Smoothing
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{State of the Art, Fast 1-Ring Smoothing}~\cite[p.~5]{Mara17}
+\chapter{State of the Art}
+
+
+
 \section{Fast 1-Ring Smoothing}
-In our high-resolution meshes with dense vertices of several hundred points per mm 2 we see noise propagating within the results of the MSII filter. This noise becomes visible when isolines of the field of function values f (p i ) are rendered, and it becomes visible in jagged outlines for connected components of segmented areas of interest. The design principles for filtering of function values in irregular grids are the same as for those well-known algorithms used for raster images. However, they require adaptation as there is no fixed distance between the points and no fixed number of neighboring points in 1-rings of irregular grids. In the following we proceed solely the 1-ring neighborhood of all points of M considering the center of a 1-ring as p 0 ∈ M. Although the number n of the elements in each 1-ring might differ, it is always indexed by i ∈ {1, . . . , n} in a clockwise direction. The smallest edge length within the 1-ring around the vertex p 0 
-(EQ12)
-is shortly denoted by ∆ min and becomes the radius of the so-called geodesic disc. Figure 4 shows a typical configuration of an 1-ring, its geodesic disc with radius ∆ min and triangles t 0 i used for weighting.
-Figure 4: 1-ring with (a) irregular triangles t i and the geodesic disc with radius ∆ min . Here ∆ min = |p 4 − p 0 |, indicated as the red arrow. (b) Approximation of the disc with an interpolated 1-ring of triangles t 0 i having an area of A 0 i . 
-The function values f i 0 at the respective points p i along this discare interpolated by f i 0 := f 0 + ∆ min f i − f 0 |p i − p 0 | where f 0 is the function value of p 0 . Note that 0 < f i 0
-(EQ13)
-is always a weighted mean of f 0 and f i by such that the new the distance of the respective points. For the weighted mean of the function value f i t /3 at each triangle t 0 i we compute
-(EQ14)
-So far we used the distance to the central point p 0 as weight function, but we also have to consider the distance of the points p i to their neighbors p i+1 in the 1-ring. We do this by computing the relative area of the geodesic disc marked by the three points p 0 , p i and p i+1 . Instead of circle segments we approximate the geodesic disc by triangles t 0 i achieving faster computation. As all those trian-gles are isosceles having two egdes of constant length ∆ min we can compute their weight as the area of the isosceles triangle t 0 i using the Pythagorean theorem
-(EQ15)
-Regarding Figure 4a, the angle α i could as well be used for weight-ing, computing A 0 i = sin(α i )∆ 2min , which is equivalent to Equa-tion 15. But it is computationally expensive due to the sin(·) opera-tion and the numeric error is visible when the result of the mean fil-tering is rendered as color per vertex. Furthermore, computing ∆ minwithin each 1-ring will cause tremendous amounts of redundantcomputing operations. Therefore we define ∆ min := min{∆ min (p 0 ) |p 0 ∈ M} as the shortest edge for all triangles of the mesh. We willuse this ∆ min in all the above computations. This will increase thecomputing speed by a factor of ≈ 10. For a 1-ring we now compute the weighted mean function valuen with the total area 
-(EQ16)
-with a negligible error due to the 1-ring approximation of the geodesic disc. For a 1-ring weighted median filter instead, we can use all equations except 16, which is replaced by a list of pairs ( f i t , A 0 i ) sorted by f i t . The area is again used as a weight such that 1 = ∑ The weighted median now becomes
-(EQ17)
-which should not be ex-cluded but rarely occurs, we compute f  ̃ 0 =tf k t + f k+1.
+In our high-resolution meshes with dense vertices of several hundred points per 
+mm 2 we see noise propagating within the results of the MSII filter. This noise 
+becomes visible when isolines of the field of function values f (p i ) are 
+rendered, and it becomes visible in jagged outlines for connected components of 
+segmented areas of interest. The design principles for filtering of function 
+values in irregular grids are the same as for those well-known algorithms used 
+for raster images. However, they require adaptation as there is no fixed 
+distance between the points and no fixed number of neighboring points in 
+1-rings of irregular grids. In the following we proceed solely the 1-ring 
+neighborhood of all points of M considering the center of a 1-ring as p 0 ∈ M. 
+Although the number n of the elements in each 1-ring might differ, it is always 
+indexed by i ∈ {1, . . . , n} in a clockwise direction. The smallest edge 
+length within the 1-ring around the vertex p 0 
+(EQ12) is shortly denoted by ∆ min and becomes the radius of the so-called 
+geodesic disc. Figure 4 shows a typical configuration of an 1-ring, its geodesic 
+disc with radius ∆ min and triangles t 0 i used for weighting.
+Figure 4: 1-ring with (a) irregular triangles t i and the geodesic disc with 
+radius ∆ min . Here ∆ min = |p 4 − p 0 |, indicated as the red arrow. (b) 
+Approximation of the disc with an interpolated 1-ring of triangles t 0 i having 
+an area of A 0 i . The function values f i 0 at the respective points p i along 
+this discare interpolated by f i 0 := f 0 + ∆ min f i − f 0 |p i − p 0 | where 
+f 0 is the function value of p 0 . Note that 0 < f i 0
+(EQ13)is always a weighted mean of f 0 and f i by such that the new the distance 
+of the respective points. For the weighted mean of the function value f i t /3 
+at each triangle t 0 i we compute (EQ14)
+So far we used the distance to the central point p 0 as weight function, but we 
+also have to consider the distance of the points p i to their neighbors p i+1 
+in the 1-ring. We do this by computing the relative area of the geodesic disc 
+marked by the three points p 0 , p i and p i+1 . Instead of circle segments we 
+approximate the geodesic disc by triangles t 0 i achieving faster computation. 
+As all those trian-gles are isosceles having two egdes of constant length ∆ min 
+we can compute their weight as the area of the isosceles triangle t 0 i using 
+the Pythagorean theorem
+(EQ15)Regarding Figure 4a, the angle α i could as well be used for weight-ing, 
+computing A 0 i = sin(α i )∆ 2min , which is equivalent to Equa-tion 15. But it 
+is computationally expensive due to the sin(·) opera-tion and the numeric error 
+is visible when the result of the mean fil-tering is rendered as color per 
+vertex. Furthermore, computing ∆ minwithin each 1-ring will cause tremendous 
+amounts of redundant computing operations. Therefore we define ∆ min := min{∆ 
+min (p 0 ) |p 0 ∈ M} as the shortest edge for all triangles of the mesh. We 
+willuse this ∆ min in all the above computations. This will increase the 
+computing speed by a factor of ≈ 10. For a 1-ring we now compute the weighted 
+mean function valuen with the total area
+(EQ16)with a negligible error due to the 1-ring approximation of the geodesic 
+disc. For a 1-ring weighted median filter instead, we can use all equations 
+except 16, which is replaced by a list of pairs ( f i t , A 0 i ) sorted by f 
+i t . The area is again used as a weight such that 1 = ∑ The weighted median 
+now becomes
+(EQ17)which should not be ex-cluded but rarely occurs, we compute f  ̃ 0 =tf k 
+t + f k+1.~\cite[s.~3.2]{Mara17}
 
 \subsection{Serial Algorithm}
 The serial algorihtm is not yet plublished, but was already implemented in Gigamesh.
@@ -509,42 +620,57 @@ OpenMP
 PThreads
 (already impl’d in GigaMesh)
 OpenCL
+Pipelining memory reads/calculations
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%% Distribution
+%%%%% Evaluation and Analysis
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Distribution}
-Stabdalone vs integration with legacy code.
+\chapter{Evaluation and Analysis}~\cite[p.~330]{Lang17}
+Multi-node out of scope?!
 
-\section{Stabdalone Source Code}
-CLI - commandline interface only
-Focus on theoretical work 
-And specifics regarding CUDA considerations regarding its limitations
-MAYBE 1 page
-Dependencies
-Linux vs Windows
 
-\section{Standalone Precompiled Binary}
-CLI - commandline interface only
 
-\section{Integration with Legacy Code (GigaMesh)}
-CLI - commandline interface or GUI - graphical user interface are possible
-\begin{enumerate}
-\item Make GigaMesh CUDA aware
-	\begin{enumerate}
-	\item Update Makefile to include nvcc compiler and new source files
-	\item second item
-	\end{enumerate}
-\item second item
-\end{enumerate}
-Before CUDA 5.0, if a programmer wanted to call particle::advance() from a CUDA kernel launched in main.cpp, the compiler required the main.cpp compilation unit to include the implementation of particle::advance() as well any subroutines it calls (v3::normalize() and v3::scramble() in this case). In complex C++ applications, the call chain may go deeper than the two-levels that our example illustrates. Without device object linking, the developer may need to deviate from the conventional application structure to accommodate this compiler requirement. Such changes are difficult for existing applications in which changing the structure is invasive and/or undesirable.~\cite{Cuda14}
-In order to use the full functionality of GigaMesh a batch program has to be run for generating feature vectors. These vectors contain additional information per vertex concerning surface and volume of a set of spheres intersecting the mesh. See [MKJB10] for more background information on the Multi Scale Integral Invariant (MSII) filtering technique. This operation is rather time consuming (it takes hours or even days of computing time) and therefore better runs without graphical user interface. Although generating feature vectors is quite robust against solo vertices, singularities, non-manifolds and holes, you should first clean up your mesh data to get a proper result. So switch to the advanced task of polishing your mesh in section 4.1 and return to this section when you have got a cleaned mesh. If you do not want to manipulate your mesh you may continue directly. Open a terminal and type and change to the mesh-folder by typing cd GigaMesh/mesh (note that GigaMesh stands for the GigaMesh installation folder). Then start the program 
-nohup ./meshgeneratorfeaturevectors25d\_threads -f [-r 2] \& 
-and use nohup at the beginning of the command and \& at the end to ensure that the job runs in the background. This is because this step can take several hours and you do not want to block the terminal.~\cite[p.~19]{Giga17}
+\section{Timing}
+%\begin{equation}
+	N = input size (num. ops)
+	P = processor count
+	Ts(N) = Sequential execution time
+	Tbest(N) = Optimal execution time
+	TP(N, P) = Parallel runtime
+%\end{equation}
+
+
+
+\section{Speedup, efficiency}
+	Speedup: 
+S(N, P) = Tbest(N)/TP(N, P)
+
+	Efficiency: 
+E(N, P) = Tbest (N)/PTP(N, P) = S/P
+
+	Costs: 
+C(N, P) = PTP(N, P)
+
+
+
+\section{Degree of Parallelism}
+	0 < q < 1 is the sequential part
+	1-q = is the parallelizable part
+
+
+
+\section{Iso-efficiency}
+	WK(P) = iso-efficient if it fulfills:
+	TO(WK(P), P) = KWK(P)~\cite[p.~350]{Lang17}
+
+
+
+\section{Scalability}
+	A parallel system is called scalable only if in has an iso-efficency function
 
 
 
@@ -607,61 +733,77 @@ http://graphics.stanford.edu/data/3Dscanrep/ (Stanford Bunny)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%% Evaluation and Analysis
+%%%%% Distribution
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Evaluation and Analysis}~\cite[p.~330]{Lang17}
-Multi-node out of scope?!
+\chapter{Distribution}
+\section{Stabdalone Source Code}
+CLI - commandline interface only
+Focus on theoretical work 
+And specifics regarding CUDA considerations regarding its limitations
+MAYBE 1 page
+Dependencies
+Linux vs Windows
 
 
 
-\section{Timing}
-%\begin{equation}
-	N = input size (num. ops)
-	P = processor count
-	Ts(N) = Sequential execution time
-	Tbest(N) = Optimal execution time
-	TP(N, P) = Parallel runtime
-%\end{equation}
+\section{Standalone Precompiled Binary}
+CLI - commandline interface only
 
 
 
-\section{Speedup, efficiency}
-	Speedup: 
-S(N, P) = Tbest(N)/TP(N, P)
-
-	Efficiency: 
-E(N, P) = Tbest (N)/PTP(N, P) = S/P
-
-	Costs: 
-C(N, P) = PTP(N, P)
-
-
-
-\section{Degree of Parallelism}
-	0 < q < 1 is the sequential part
-	1-q = is the parallelizable part
-
-
-
-\section{Iso-efficiency}
-	WK(P) = iso-efficient if it fulfills:
-	TO(WK(P), P) = KWK(P)~\cite[p.~350]{Lang17}
-
-
-
-\section{Scalability}
-	A parallel system is called scalable only if in has an iso-efficency function
+\section{Integration with Legacy Code (GigaMesh)}
+CLI - commandline interface or GUI - graphical user interface are possible
+\begin{enumerate}
+\item Make GigaMesh CUDA aware
+	\begin{enumerate}
+	\item Update Makefile to include nvcc compiler and new source files
+	\item second item
+	\end{enumerate}
+\item second item
+\end{enumerate}
+Before CUDA 5.0, if a programmer wanted to call particle::advance() from a CUDA kernel launched in main.cpp, the compiler required the main.cpp compilation unit to include the implementation of particle::advance() as well any subroutines it calls (v3::normalize() and v3::scramble() in this case). In complex C++ applications, the call chain may go deeper than the two-levels that our example illustrates. Without device object linking, the developer may need to deviate from the conventional application structure to accommodate this compiler requirement. Such changes are difficult for existing applications in which changing the structure is invasive and/or undesirable.~\cite{Cuda14}
+In order to use the full functionality of GigaMesh a batch program has to be run for generating feature vectors. These vectors contain additional information per vertex concerning surface and volume of a set of spheres intersecting the mesh. See [MKJB10] for more background information on the Multi Scale Integral Invariant (MSII) filtering technique. This operation is rather time consuming (it takes hours or even days of computing time) and therefore better runs without graphical user interface. Although generating feature vectors is quite robust against solo vertices, singularities, non-manifolds and holes, you should first clean up your mesh data to get a proper result. So switch to the advanced task of polishing your mesh in section 4.1 and return to this section when you have got a cleaned mesh. If you do not want to manipulate your mesh you may continue directly. Open a terminal and type and change to the mesh-folder by typing cd GigaMesh/mesh (note that GigaMesh stands for the GigaMesh installation folder). Then start the program 
+nohup ./meshgeneratorfeaturevectors25d\_threads -f [-r 2] \& 
+and use nohup at the beginning of the command and \& at the end to ensure that the job runs in the background. This is because this step can take several hours and you do not want to block the terminal.~\cite[p.~19]{Giga17}
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%% Evaluation and Analysis
+%%%%% Conclusions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Conclusions}
-One I have a product and analyzed it, I can draw some conclusions.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt eget 
+ipsum eu iaculis. Cras vel sem eu velit eleifend porta vel sit amet massa. Etiam 
+a posuere nunc. Aenean aliquam viverra dapibus. Aliquam ac eros a purus feugiat 
+rhoncus. Donec faucibus ut nibh ut cursus. Aliquam erat volutpat. Proin efficitur 
+nulla sit amet iaculis condimentum. Cras placerat leo vitae venenatis feugiat. In 
+hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis 
+parturient montes, nascetur ridiculus mus. In aliquet sagittis dui eu pulvinar. 
+Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor 
+suscipit, eget imperdiet mauris convallis.
+
+Aliquam in justo ut est eleifend facilisis vitae nec mi. Suspendisse pellentesque, 
+ligula ut mattis volutpat, ex risus scelerisque ligula, at ornare arcu augue ut r
+isus. Integer non pellentesque quam, quis laoreet nisi. Donec aliquam leo mi, vel 
+consectetur magna vestibulum eu. Ut quis efficitur metus. Donec consequat mi nec 
+pellentesque rhoncus. Phasellus sit amet laoreet quam. Quisque dictum ex non elit 
+aliquet lobortis. Quisque molestie egestas dolor vel interdum. In fermentum sit 
+amet mi non venenatis. In ut tempus arcu.
+
+Donec arcu eros, vestibulum maximus volutpat nec, euismod a purus. Nullam bibendum 
+eros posuere sem sollicitudin, vitae porttitor ex scelerisque. Sed nisi felis, 
+consectetur sed lacinia vitae, egestas non nibh. Curabitur a ex sed neque lacinia 
+tempor sit amet consectetur ipsum. Sed et eros dictum, dictum magna lacinia, 
+elementum lacus. Praesent enim tortor, semper ut egestas at, faucibus quis metus. 
+Aliquam mattis, lorem et ultrices mattis, erat neque bibendum est, nec condimentum 
+ex tellus sit amet diam. In sollicitudin placerat diam, lobortis efficitur leo. 
+Integer id erat tellus. Ut quis odio velit. Nulla facilisi. Donec mollis 
+scelerisque lobortis. Nam eu felis sed purus feugiat semper ac ac ante. Maecenas 
+faucibus odio diam, id tristique orci placerat sed. Ut vel ex metus. Maecenas 
+tempus velit gravida nulla viverra, in suscipit enim mattis.
 
 
 
@@ -672,12 +814,68 @@ One I have a product and analyzed it, I can draw some conclusions.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \appendix
 \chapter{Maybe some appendix please?}
-This is an appendix.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt eget 
+ipsum eu iaculis. Cras vel sem eu velit eleifend porta vel sit amet massa. Etiam 
+a posuere nunc. Aenean aliquam viverra dapibus. Aliquam ac eros a purus feugiat 
+rhoncus. Donec faucibus ut nibh ut cursus. Aliquam erat volutpat. Proin efficitur 
+nulla sit amet iaculis condimentum. Cras placerat leo vitae venenatis feugiat. In 
+hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis 
+parturient montes, nascetur ridiculus mus. In aliquet sagittis dui eu pulvinar. 
+Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor 
+suscipit, eget imperdiet mauris convallis.
+
+Aliquam in justo ut est eleifend facilisis vitae nec mi. Suspendisse pellentesque, 
+ligula ut mattis volutpat, ex risus scelerisque ligula, at ornare arcu augue ut r
+isus. Integer non pellentesque quam, quis laoreet nisi. Donec aliquam leo mi, vel 
+consectetur magna vestibulum eu. Ut quis efficitur metus. Donec consequat mi nec 
+pellentesque rhoncus. Phasellus sit amet laoreet quam. Quisque dictum ex non elit 
+aliquet lobortis. Quisque molestie egestas dolor vel interdum. In fermentum sit 
+amet mi non venenatis. In ut tempus arcu.
+
+Donec arcu eros, vestibulum maximus volutpat nec, euismod a purus. Nullam bibendum 
+eros posuere sem sollicitudin, vitae porttitor ex scelerisque. Sed nisi felis, 
+consectetur sed lacinia vitae, egestas non nibh. Curabitur a ex sed neque lacinia 
+tempor sit amet consectetur ipsum. Sed et eros dictum, dictum magna lacinia, 
+elementum lacus. Praesent enim tortor, semper ut egestas at, faucibus quis metus. 
+Aliquam mattis, lorem et ultrices mattis, erat neque bibendum est, nec condimentum 
+ex tellus sit amet diam. In sollicitudin placerat diam, lobortis efficitur leo. 
+Integer id erat tellus. Ut quis odio velit. Nulla facilisi. Donec mollis 
+scelerisque lobortis. Nam eu felis sed purus feugiat semper ac ac ante. Maecenas 
+faucibus odio diam, id tristique orci placerat sed. Ut vel ex metus. Maecenas 
+tempus velit gravida nulla viverra, in suscipit enim mattis.
 
 
 
 \chapter{Just another appendix.}
-This is an appendix.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt eget 
+ipsum eu iaculis. Cras vel sem eu velit eleifend porta vel sit amet massa. Etiam 
+a posuere nunc. Aenean aliquam viverra dapibus. Aliquam ac eros a purus feugiat 
+rhoncus. Donec faucibus ut nibh ut cursus. Aliquam erat volutpat. Proin efficitur 
+nulla sit amet iaculis condimentum. Cras placerat leo vitae venenatis feugiat. In 
+hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis 
+parturient montes, nascetur ridiculus mus. In aliquet sagittis dui eu pulvinar. 
+Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor 
+suscipit, eget imperdiet mauris convallis.
+
+Aliquam in justo ut est eleifend facilisis vitae nec mi. Suspendisse pellentesque, 
+ligula ut mattis volutpat, ex risus scelerisque ligula, at ornare arcu augue ut r
+isus. Integer non pellentesque quam, quis laoreet nisi. Donec aliquam leo mi, vel 
+consectetur magna vestibulum eu. Ut quis efficitur metus. Donec consequat mi nec 
+pellentesque rhoncus. Phasellus sit amet laoreet quam. Quisque dictum ex non elit 
+aliquet lobortis. Quisque molestie egestas dolor vel interdum. In fermentum sit 
+amet mi non venenatis. In ut tempus arcu.
+
+Donec arcu eros, vestibulum maximus volutpat nec, euismod a purus. Nullam bibendum 
+eros posuere sem sollicitudin, vitae porttitor ex scelerisque. Sed nisi felis, 
+consectetur sed lacinia vitae, egestas non nibh. Curabitur a ex sed neque lacinia 
+tempor sit amet consectetur ipsum. Sed et eros dictum, dictum magna lacinia, 
+elementum lacus. Praesent enim tortor, semper ut egestas at, faucibus quis metus. 
+Aliquam mattis, lorem et ultrices mattis, erat neque bibendum est, nec condimentum 
+ex tellus sit amet diam. In sollicitudin placerat diam, lobortis efficitur leo. 
+Integer id erat tellus. Ut quis odio velit. Nulla facilisi. Donec mollis 
+scelerisque lobortis. Nam eu felis sed purus feugiat semper ac ac ante. Maecenas 
+faucibus odio diam, id tristique orci placerat sed. Ut vel ex metus. Maecenas 
+tempus velit gravida nulla viverra, in suscipit enim mattis.
 
 
 
