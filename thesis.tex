@@ -242,55 +242,60 @@ is the contrary of an ideal M 2 having L v s = Ø as a necessary
 criteria.~\cite[p.~28]{Mara12}
 
 \subsection{Adjacencies, Singularities and k-ring Neighborhoods}
-Knowing the neighbors of a measuring point is the key to analyze our data. For regular
-data structures, e.g. 2D-images a pixel has four neighbors in orthogonal direction with a
-(relative) geometric distance of 1 and four further neighbors with a geometric distance of
-√2. Neglecting the geometric distance we can apply the same for vertices and faces and
-determine their neighbors using the orientation of the triangles:
-• A face t j is adjacent to a face t i , when t j has an edge e m = {A m , B m } and t i has an
-edge e k = {B m , A m }.
+Knowing the neighbors of a measuring point is the key to analyze our data. 
+For regular data structures, e.g. 2D-images a pixel has four neighbors in 
+orthogonal direction with a (relative) geometric distance of 1 and four further 
+neighbors with a geometric distance of √2. Neglecting the geometric distance we 
+can apply the same for vertices and faces and determine their neighbors using 
+the orientation of the triangles:
+• A face t j is adjacent to a face t i , when t j has an edge e m = {A m , B m } 
+and t i has an edge e k = {B m , A m }.
 • The vertices adjacent to a vertex p i are those p̊ i , belonging to the
 faces t̊ i ∶= {A i , B ≠i , C ≠i } ∨ {A ≠i , B i , C ≠i } ∨ {A ≠i , B ≠i , C i }.
-Faces t̊ i and vertices p̊ i belong to the so-called 1-ring as they have distance of 1 within
-the graph of the mesh. The 1-ring can be extended to a 2-ring by using the vertices
-p̊ i as p i , which adds vertices and faces having a distance of 2 within the graph. This
-iterative concept can be repeated k times and the neighborhood is than refered to as k-
-ring. The distance within the graph can not be assumed equal to the geometric distance
-nor geodesic distance. However it is used throughout literature as experiments are often
-done on synthetic data – especially in the field of Computer Graphics. Figure 2.6 shows
-the scheme of the 1-ring and an example for a 5-ring on a synthetic sphere in contrast to
-5-rings on an acquired mesh. Even the triangles of the sphere are almost equal, we see
-that the outlines of the k-rings have a hexagonal shape, while geodesic ring would have
-the shape of a circle. Already the 1-rings of the acquired mesh have completely arbitrary
-shapes and sizes.
+Faces t̊ i and vertices p̊ i belong to the so-called 1-ring as they have 
+distance of 1 within the graph of the mesh. The 1-ring can be extended to a 
+2-ring by using the verticesp̊ i as p i , which adds vertices and faces having 
+a distance of 2 within the graph. This iterative concept can be repeated k times 
+and the neighborhood is than refered to as k-ring. The distance within the graph 
+can not be assumed equal to the geometric distance nor geodesic distance. 
+However it is used throughout literature as experiments are often done on 
+synthetic data – especially in the field of Computer Graphics. Figure 2.6 shows 
+the scheme of the 1-ring and an example for a 5-ring on a synthetic sphere in 
+contrast to 5-rings on an acquired mesh. Even the triangles of the sphere are 
+almost equal, we see that the outlines of the k-rings have a hexagonal shape, 
+while geodesic ring would have the shape of a circle. Already the 1-rings of 
+the acquired mesh have completely arbitrary shapes and sizes.
 (a)(b)(c)(d)
-Figure 2.6: k-ring neighborhood: (a) Scheme of a 1-ring neighborhood and 1 to 5-ring neigh-
-borhood for (b) a synthetic sphere and (c) for a wedge acquired using a 3D-scanner.
-The 1-ring shown in Figure 2.6a is closely related to the so-called triangle-fan used
-by Open Graphics Language (OpenGL). While the Figure represents the most common
-case of an 1-ring equal to a triangle-fan as most parts of M 2 are organized like this. The
-second common case looks the same, with one or more adjacent faces missing – this is
-the case, when p̊ i is on the border of the mesh. However the data structure allows that
-non-adjacent faces are missing leading to singular vertices – not to be confused with
-solo vertices.
-29We can identify singular vertices connecting different parts of M 2 by determining one
-triangle-fan per vertex and compare them to the 1-ring neighborhood. The faces of the
-1-ring are determined just by the presence of a shared central vertex [MB05] as shown
-before. Having the 1-ring we need to test if we can walk around the shared vertex using
-the faces and their neighbors. This is shown in Figure 2.7a, where we can start at any
-of the vertices {B, . . . , G} following the directional edges between them. We than will
-arrive at vertex p G . If we have not started at p B , we will have to backtrack the edges in
-opposite direction as p A is a vertex on the border ∂M 2 . In the end we will have visited
-all vertices of the triangle fan {B, . . . , G}.
-When p A is not on the border, because a triangle {A, G, B} exists, we can visit all
-vertices without backtracking. Figure 2.7b shows the scheme for a border vertex, which is
-singular, because we can visit either the {B, C, D, E} or {F, G, H} of these two triangle-
-fans. Figure 2.7c shows an example from a 3D-model, where a non-border, singular vertex
-p A connects different parts of the mesh.
+Figure 2.6: k-ring neighborhood: (a) Scheme of a 1-ring neighborhood and 1 to 
+5-ring neighborhood for (b) a synthetic sphere and (c) for a wedge acquired 
+using a 3D-scanner. The 1-ring shown in Figure 2.6a is closely related to the 
+so-called triangle-fan used by Open Graphics Language (OpenGL). While the 
+Figure represents the most common case of an 1-ring equal to a triangle-fan as 
+most parts of M 2 are organized like this. The second common case looks the 
+same, with one or more adjacent faces missing – this is the case, when p̊ i is 
+on the border of the mesh. However the data structure allows that non-adjacent 
+faces are missing leading to singular vertices – not to be confused with solo 
+vertices. 29 We can identify singular vertices connecting different parts of M 
+2 by determining one triangle-fan per vertex and compare them to the 1-ring 
+neighborhood. The faces of the 1-ring are determined just by the presence of a 
+shared central vertex [MB05] as shown before. Having the 1-ring we need to test 
+if we can walk around the shared vertex using the faces and their neighbors. 
+This is shown in Figure 2.7a, where we can start at any of the vertices 
+{B, . . . , G} following the directional edges between them. We than will 
+arrive at vertex p G . If we have not started at p B , we will have to 
+backtrack the edges in opposite direction as p A is a vertex on the border 
+∂M 2 . In the end we will have visited all vertices of the triangle fan 
+{B, . . . , G}. When p A is not on the border, because a triangle {A, G, B} 
+exists, we can visit all vertices without backtracking. Figure 2.7b shows the 
+scheme for a border vertex, which is singular, because we can visit either the 
+{B, C, D, E} or {F, G, H} of these two triangle-fans. Figure 2.7c shows an 
+example from a 3D-model, where a non-border, singular vertex p A connects 
+different parts of the mesh.
 (a)(b)(C)
-Figure 2.7: Schematic visualization of (a) a non-singular vertex p A with its triangle fan equal-
-ing its 1-ring neighborhood. When there is a triangle {A, G, B} the fan is closed – if not p A , p B
-and p G are vertices on the border of M 2 . (b) Singular vertex p A connecting two triangle fans.
+Figure 2.7: Schematic visualization of (a) a non-singular vertex p A with its 
+triangle fan equaling its 1-ring neighborhood. When there is a triangle 
+{A, G, B} the fan is closed – if not p A , p B and p G are vertices on the 
+border of M 2 . (b) Singular vertex p A connecting two triangle fans.
 (c) Real world example for a singular vertex p A .~\cite[p.~29]{Mara12}
 
 \subsection{Non-Manifold Edges}
@@ -451,54 +456,246 @@ Other approaches to accelerate operations on a mesh~\cite[p.~00]{SourceNeeded}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{What is CUDA?}
-Graphical Processor Units, GPUs, are highly parallel, multithreaded, manycore processors typically characterized by very high computational power and tremendous memory bandwidth. A GPU is especially well-suited when used to data-parallel computations, in which the same program is executed on many data elements in parallel.~\cite[p.~1.1]{CUDA18}
-Mainstream processor chips, both CPU and GPUs, are now parallel systems, and as this parallelism continues to scale with Moore's law, the real challenge is to develop application software that transparently scales its parallelism to leverage the increasing number of processor cores. The CUDA parallel programming model, introduced by NVIDIA in November of 2006, was specifically designed to overcome this challenge.~\cite[p.~1.3]{CUDA18}
-In fact, due to its inherent scalable programming model in which problems are decomposed in a way that each block of thread\index{thread} can be scheduled on any of the available multiprocessors within a GPU, in any order, concurrently or sequentially, so that any compiled CUDA program, such as our implementation of the MSII filter, can be executed on any number of multiprocessors, and only the runtime system needs to know the physical multiprocessor count.~\cite[p.~1.3]{CUDA18}
+Graphical Processor Units, GPUs, are highly parallel, multithreaded, manycore 
+processors typically characterized by very high computational power and 
+tremendous memory bandwidth. A GPU is especially well-suited when used to 
+data-parallel computations, in which the same program is executed on many data 
+elements in parallel.~\cite[p.~1.1]{CUDA18}
+
+Mainstream processor chips, both CPU and GPUs, are now parallel systems, and as 
+this parallelism continues to scale with Moore's law, the real challenge is to 
+develop application software that transparently scales its parallelism to 
+leverage the increasing number of processor cores. The CUDA parallel 
+programming model, introduced by NVIDIA in November of 2006, was specifically 
+designed to overcome this challenge.~\cite[p.~1.3]{CUDA18}
+
+In fact, due to its inherent scalable programming model in which problems are 
+decomposed in a way that each block of thread\index{thread} can be scheduled on 
+any of the available multiprocessors within a GPU, in any order, concurrently 
+or sequentially, so that any compiled CUDA program, such as our implementation 
+of the MSII filter, can be executed on any number of multiprocessors, and only 
+the runtime system needs to know the physical multiprocessor 
+count.~\cite[p.~1.3]{CUDA18}
+
 ~~~~~~~~~
-CUDA C extends C by allowing the programmer to define C functions, called kernels, that, when called, are executed N times in parallel by N different CUDA thread\index{thread}, as opposed to only once like regular C functions.~\cite[p.~2.1]{CUDA18}
-thread\index{thread} can be identified using a one-dimensional, two-dimensional, or three-dimensional thread\index{thread} index, forming a one-dimensional, two-dimensional, or three-dimensional block of thread\index{thread}, called a thread\index{thread} block. This provides a natural way to invoke computation across the elements in a domain such as a vector, matrix, or volume. However, a kernel can be executed by multiple equally-shaped thread\index{thread} blocks, so that the total number of thread\index{thread} is equal to the number of thread\index{thread} per block times the number of blocks. thread\index{thread} blocks are required to execute independently: It must be possible to execute them in any order, in parallel or in series. This independence requirement allows thread\index{thread} blocks to be scheduled in any order across any number of cores as illustrated by Figure 5, enabling programmers to write code that scales with the number of cores.~\cite[p.~2.2]{CUDA18}
-CUDA threads\index{thread} may access data from multiple memory spaces during their execution as illustrated by Figure 7. Each thread\index{thread} has private local memory. Each thread\index{thread} block has shared memory visible to all thread\index{thread} of the block and with the same lifetime as the block. All thread\index{thread} have access to the same global memory.~\cite[p.~2.3]{CUDA18}
-the CUDA programming model assumes that the CUDA thread\index{thread} execute on a physically separate device that operates as a coprocessor to the host running the C program. The CUDA programming model also assumes that both the host and the device maintain their own separate memory spaces in DRAM, referred to as host memory and device memory. Unified Memory provides managed memory to bridge the host and device memory spaces. Managed memory is accessible from all CPUs and GPUs in the system as a single, coherent memory image with a common address space.~\cite[p.~2.4]{CUDA18}
-The compute capability of a device is represented by a version number, also sometimes called its "SM version". This version number identifies the features supported by the GPU hardware and is used by applications at runtime to determine which hardware features and/or instructions are available on the present GPU. Devices with the same major revision number are of the same core architecture. The major revision number is 7 for devices based on the Volta architecture, 6 for devices based on the Pascal architecture, 5 for devices based on the Maxwell architecture, 3 for devices based on the Kepler architecture, 2 for devices based on the Fermi architecture, and 1 for devices based on the Tesla architecture. Note: The compute capability version of a particular GPU should not be confused with the CUDA version (e.g., CUDA 7.5, CUDA 8, CUDA 9), which is the version of the CUDA software platform.~\cite[p.~2.4]{CUDA18}
-Kernels can be written using the CUDA instruction set architecture, called PTX, which is described in the PTX reference manual. It is however usually more effective to use a high-level programming language such as C.~\cite[p.~3.1]{CUDA18}
-Any PTX code loaded by an application at runtime is compiled further to binary code by the device driver. This is called just-in-time compilation. Just-in-time compilation increases application load time, but allows the application to benefit from any new compiler improvements coming with each new device driver. It is also the only way for applications to run on devices that did not exist at the time the application was compiled, as detailed in Application Compatibility. When the device driver just-in-time compiles some PTX code for some application, it automatically caches a copy of the generated binary code in order to avoid repeating the compilation in subsequent invocations of the application. The cache - referred to as compute cache - is automatically invalidated when the device driver is upgraded, so that applications can benefit from the improvements in the new just-in-time compiler built into the device driver.~\cite[p.~3.1.1.2]{CUDA18}
-The front end of the compiler processes CUDA source files according to C++ syntax rules. Full C++ is supported for the host code. However, only a subset of C++ is fully supported for the device code~\cite[p.~3.1.5]{CUDA18}
+
+CUDA C extends C by allowing the programmer to define C functions, called 
+kernels, that, when called, are executed N times in parallel by N different 
+CUDA thread\index{thread}, as opposed to only once like regular C 
+functions.~\cite[p.~2.1]{CUDA18}
+
+thread\index{thread} can be identified using a one-dimensional, 
+two-dimensional, or three-dimensional thread\index{thread} index, forming a 
+one-dimensional, two-dimensional, or three-dimensional block of 
+thread\index{thread}, called a thread\index{thread} block. This provides a 
+natural way to invoke computation across the elements in a domain such as a 
+vector, matrix, or volume. However, a kernel can be executed by multiple 
+equally-shaped thread\index{thread} blocks, so that the total number of 
+thread\index{thread} is equal to the number of thread\index{thread} per block 
+times the number of blocks. thread\index{thread} blocks are required to execute 
+independently: It must be possible to execute them in any order, in parallel or 
+in series. This independence requirement allows thread\index{thread} blocks to 
+be scheduled in any order across any number of cores as illustrated by Figure 5, 
+enabling programmers to write code that scales with the number of 
+cores.~\cite[p.~2.2]{CUDA18}
+
+CUDA threads\index{thread} may access data from multiple memory spaces during 
+their execution as illustrated by Figure 7. Each thread\index{thread} has 
+private local memory. Each thread\index{thread} block has shared memory visible 
+to all thread\index{thread} of the block and with the same lifetime as the 
+block. All thread\index{thread} have access to the same global 
+memory.~\cite[p.~2.3]{CUDA18}
+
+the CUDA programming model assumes that the CUDA thread\index{thread} execute 
+on a physically separate device that operates as a coprocessor to the host 
+running the C program. The CUDA programming model also assumes that both the 
+host and the device maintain their own separate memory spaces in DRAM, 
+referred to as host memory and device memory. Unified Memory provides managed 
+memory to bridge the host and device memory spaces. Managed memory is 
+accessible from all CPUs and GPUs in the system as a single, coherent memory 
+image with a common address space.~\cite[p.~2.4]{CUDA18}
+
+The compute capability of a device is represented by a version number, also 
+sometimes called its "SM version". This version number identifies the features 
+supported by the GPU hardware and is used by applications at runtime to 
+determine which hardware features and/or instructions are available on the 
+present GPU. Devices with the same major revision number are of the same core 
+architecture. The major revision number is 7 for devices based on the Volta 
+architecture, 6 for devices based on the Pascal architecture, 5 for devices 
+based on the Maxwell architecture, 3 for devices based on the Kepler 
+architecture, 2 for devices based on the Fermi architecture, and 1 for devices 
+based on the Tesla architecture. Note: The compute capability version of a 
+particular GPU should not be confused with the CUDA version (e.g., CUDA 7.5, 
+CUDA 8, CUDA 9), which is the version of the CUDA software 
+platform.~\cite[p.~2.4]{CUDA18}
+
+Kernels can be written using the CUDA instruction set architecture, called PTX, 
+which is described in the PTX reference manual. It is however usually more 
+effective to use a high-level programming language such as 
+C.~\cite[p.~3.1]{CUDA18}
+
+Any PTX code loaded by an application at runtime is compiled further to binary 
+code by the device driver. This is called just-in-time compilation. 
+Just-in-time compilation increases application load time, but allows the 
+application to benefit from any new compiler improvements coming with each new 
+device driver. It is also the only way for applications to run on devices that 
+did not exist at the time the application was compiled, as detailed in 
+Application Compatibility. When the device driver just-in-time compiles some 
+PTX code for some application, it automatically caches a copy of the generated 
+binary code in order to avoid repeating the compilation in subsequent 
+invocations of the application. The cache - referred to as compute cache - is 
+automatically invalidated when the device driver is upgraded, so that 
+applications can benefit from the improvements in the new just-in-time compiler 
+built into the device driver.~\cite[p.~3.1.1.2]{CUDA18}
+
+The front end of the compiler processes CUDA source files according to C++ 
+syntax rules. Full C++ is supported for the host code. However, only a subset 
+of C++ is fully supported for the device code~\cite[p.~3.1.5]{CUDA18}
 
 
 
 \section{CUDA C Runtime}%3.2. CUDA C Runtime}
-There is no explicit initialization function for the runtime; it initializes the first time a runtime function is called. During initialization, the runtime creates a CUDA context for each device in the system (see Context for more details on CUDA contexts). This context is the primary context for this device and it is shared among all the host thread\index{thread} of the application. As part of this context creation, the device code is just-in-time compiled if necessary (see Just-in-Time Compilation) and loaded into device memory. This all happens under the hood and the runtime does not expose the primary context to the application.~\cite[p.~3.2.1]{CUDA18}
-As mentioned in Heterogeneous Programming, the CUDA programming model assumes a system composed of a host and a device, each with their own separate memory. Kernels operate out of device memory, so the runtime provides functions to allocate, deallocate, and copy device memory, as well as transfer data between host memory and device memory. Device memory can be allocated either as linear memory or as CUDA arrays. CUDA arrays are opaque memory layouts optimized for texture fetching. They are described in Texture and Surface Memory. Linear memory exists on the device in a 40-bit address space, so separately allocated entities can reference one another via pointers, for example, in a binary tree.~\cite[p.~3.2.2]{CUDA18}
+There is no explicit initialization function for the runtime; it initializes 
+the first time a runtime function is called. During initialization, the runtime 
+creates a CUDA context for each device in the system (see Context for more 
+details on CUDA contexts). This context is the primary context for this device 
+and it is shared among all the host thread\index{thread} of the application. As 
+part of this context creation, the device code is just-in-time compiled if 
+necessary (see Just-in-Time Compilation) and loaded into device memory. This 
+all happens under the hood and the runtime does not expose the primary context 
+to the application.~\cite[p.~3.2.1]{CUDA18}
+
+As mentioned in Heterogeneous Programming, the CUDA programming model assumes a 
+system composed of a host and a device, each with their own separate memory. 
+Kernels operate out of device memory, so the runtime provides functions to 
+allocate, deallocate, and copy device memory, as well as transfer data between 
+host memory and device memory. Device memory can be allocated either as linear 
+memory or as CUDA arrays. CUDA arrays are opaque memory layouts optimized for 
+texture fetching. They are described in Texture and Surface Memory. Linear 
+memory exists on the device in a 40-bit address space, so separately allocated 
+entities can reference one another via pointers, for example, in a binary 
+tree.~\cite[p.~3.2.2]{CUDA18}
 
 \subsection{Explicit Synchronization}%3.2.5.5.3. Explicit Synchronization}
 There are various ways to explicitly synchronize streams with each other.
-cudaDeviceSynchronize() waits until all preceding commands in all streams of all host thread\index{thread} have completed.
-cudaStreamSynchronize()takes a stream as a parameter and waits until all preceding commands in the given stream have completed. It can be used to synchronize the host with a specific stream, allowing other streams to continue executing on the device.
-cudaStreamWaitEvent()takes a stream and an event as parameters (see Events for a description of events)and makes all the commands added to the given stream after the call to cudaStreamWaitEvent()delay their execution until the given event has completed. The stream can be 0, in which case all the commands added to any stream after the call to cudaStreamWaitEvent()wait on the event.
-cudaStreamQuery()provides applications with a way to know if all preceding commands in a stream have completed. 
-To avoid unnecessary slowdowns, all these synchronization functions are usually best used for timing purposes or to isolate a launch or memory copy that is failing.
+cudaDeviceSynchronize() waits until all preceding commands in all streams of 
+all host thread\index{thread} have completed.
+
+cudaStreamSynchronize()takes a stream as a parameter and waits until all 
+preceding commands in the given stream have completed. It can be used to 
+synchronize the host with a specific stream, allowing other streams to 
+continue executing on the device.
+
+cudaStreamWaitEvent()takes a stream and an event as parameters (see Events 
+for a description of events)and makes all the commands added to the given 
+stream after the call to cudaStreamWaitEvent()delay their execution until the 
+given event has completed. The stream can be 0, in which case all the commands 
+added to any stream after the call to cudaStreamWaitEvent()wait on the event.
+
+cudaStreamQuery()provides applications with a way to know if all preceding 
+commands in a stream have completed. To avoid unnecessary slowdowns, all these 
+synchronization functions are usually best used for timing purposes or to 
+isolate a launch or memory copy that is failing.
 
 
 
 \section{Versioning and Compatibility}%3.3. Versioning and Compatibility}
-There are two version numbers that developers should care about when developing a CUDA application: The compute capability that describes the general specifications and features of the compute device (see Compute Capability) and the version of the CUDA driver API that describes the features supported by the driver API and runtime.
-The version of the driver API is defined in the driver header file as CUDA\_VERSION. It allows developers to check whether their application requires a newer device driver than the one currently installed. This is important, because the driver API is backward compatible, meaning that applications, plug-ins, and libraries (including the C runtime) compiled against a particular version of the driver API will continue to work on subsequent device driver releases as illustrated in Figure 11. The driver API is not forward compatible, which means that applications, plug-ins, and libraries (including the C runtime) compiled against a particular version of the driver API will not work on previous versions of the device driver.
-It is important to note that there are limitations on the mixing and matching of versions that is supported:
-Since only one version of the CUDA Driver can be installed at a time on a system, the installed driver must be of the same or higher version than the maximum Driver API version against which any application, plug-ins, or libraries that must run on that system were built.
-All plug-ins and libraries used by an application must use the same version of the CUDA Runtime unless they statically link to the Runtime, in which case multiple versions of the runtime can coexist in the same process space. Note that if nvcc is used to link the application, the static version of the CUDA Runtime library will be used by default, and all CUDA Toolkit libraries are statically linked against the CUDA Runtime.
-All plug-ins and libraries used by an application must use the same version of any libraries that use the runtime (such as cuFFT, cuBLAS, ...) unless statically linking to those libraries.
+There are two version numbers that developers should care about when developing 
+a CUDA application: The compute capability that describes the general 
+specifications and features of the compute device (see Compute Capability) and 
+the version of the CUDA driver API that describes the features supported by the 
+driver API and runtime.
+
+The version of the driver API is defined in the driver header file as 
+CUDA\_VERSION. It allows developers to check whether their application requires 
+a newer device driver than the one currently installed. This is important, 
+because the driver API is backward compatible, meaning that applications, 
+plug-ins, and libraries (including the C runtime) compiled against a particular 
+version of the driver API will continue to work on subsequent device driver 
+releases as illustrated in Figure 11. The driver API is not forward compatible, 
+which means that applications, plug-ins, and libraries (including the C runtime) 
+compiled against a particular version of the driver API will not work on 
+previous versions of the device driver.
+
+It is important to note that there are limitations on the mixing and matching of 
+versions that is supported:
+Since only one version of the CUDA Driver can be installed at a time on a 
+system, the installed driver must be of the same or higher version than the 
+maximum Driver API version against which any application, plug-ins, or libraries 
+that must run on that system were built.
+
+All plug-ins and libraries used by an application must use the same version of 
+the CUDA Runtime unless they statically link to the Runtime, in which case 
+multiple versions of the runtime can coexist in the same process space. Note 
+that if nvcc is used to link the application, the static version of the CUDA 
+Runtime library will be used by default, and all CUDA Toolkit libraries are 
+statically linked against the CUDA Runtime.
+
+All plug-ins and libraries used by an application must use the same version of 
+any libraries that use the runtime (such as cuFFT, cuBLAS, ...) unless 
+statically linking to those libraries.
 
 
 
 \section{Hardware Implementation}%4. Hardware Implementation}
-The NVIDIA GPU architecture is built around a scalable array of multithreaded Streaming Multiprocessors (SMs). When a CUDA program on the host CPU invokes a kernel grid, the blocks of the grid are enumerated and distributed to multiprocessors with available execution capacity. The thread\index{thread} of a thread\index{thread} block execute concurrently on one multiprocessor, and multiple thread\index{thread} blocks can execute concurrently on one multiprocessor. As thread\index{thread} blocks terminate, new blocks are launched on the vacated multiprocessors.
-A multiprocessor is designed to execute hundreds of thread\index{thread} concurrently. To manage such a large amount of thread\index{thread}, it employs a unique architecture called SIMT (Single-Instruction, Multiple-thread\index{thread}) that is described in SIMT Architecture. The instructions are pipelined to leverage instruction-level parallelism within a single thread\index{thread}, as well as thread\index{thread}-level parallelism extensively through simultaneous hardware multithreading as detailed in Hardware Multithreading. Unlike CPU cores they are issued in order however and there is no branch prediction and no speculative execution.
+The NVIDIA GPU architecture is built around a scalable array of multithreaded 
+Streaming Multiprocessors (SMs). When a CUDA program on the host CPU invokes a 
+kernel grid, the blocks of the grid are enumerated and distributed to 
+multiprocessors with available execution capacity. The thread\index{thread} of 
+a thread\index{thread} block execute concurrently on one multiprocessor, and 
+multiple thread\index{thread} blocks can execute concurrently on one 
+multiprocessor. As thread\index{thread} blocks terminate, new blocks are 
+launched on the vacated multiprocessors.
+
+A multiprocessor is designed to execute hundreds of thread\index{thread} 
+concurrently. To manage such a large amount of thread\index{thread}, it employs 
+a unique architecture called SIMT (Single-Instruction, 
+Multiple-thread\index{thread}) that is described in SIMT Architecture. The 
+instructions are pipelined to leverage instruction-level parallelism within a 
+single thread\index{thread}, as well as thread\index{thread}-level parallelism 
+extensively through simultaneous hardware multithreading as detailed in 
+Hardware Multithreading. Unlike CPU cores they are issued in order however and 
+there is no branch prediction and no speculative execution.
 
 \subsection{SIMT Architecture}%4.1. SIMT Architecture}
-The multiprocessor creates, manages, schedules, and executes thread\index{thread} in groups of 32 parallel thread\index{thread} called warps. Individual thread\index{thread} composing a warp start together at the same program address, but they have their own instruction address counter and register state and are therefore free to branch and execute independently. The term warp originates from weaving, the first parallel thread\index{thread} technology. A half-warp is either the first or second half of a warp. A quarter-warp is either the first, second, third, or fourth quarter of a warp.
-When a multiprocessor is given one or more thread\index{thread} blocks to execute, it partitions them into warps and each warp gets scheduled by a warp scheduler for execution. The way a block is partitioned into warps is always the same; each warp contains thread\index{thread} of consecutive, increasing thread\index{thread} IDs with the first warp containing thread\index{thread} 0. thread\index{thread} Hierarchy describes how thread\index{thread} IDs relate to thread\index{thread} indices in the block.
-A warp executes one common instruction at a time, so full efficiency is realized when all 32 thread\index{thread} of a warp agree on their execution path. If thread\index{thread} of a warp diverge via a data-dependent conditional branch, the warp executes each branch path taken, disabling thread\index{thread} that are not on that path. Branch divergence occurs only within a warp; different warps execute independently regardless of whether they are executing common or disjoint code paths.
-The SIMT architecture is akin to SIMD (Single Instruction, Multiple Data) vector organizations in that a single instruction controls multiple processing elements. A key difference is that SIMD vector organizations expose the SIMD width to the software, whereas SIMT instructions specify the execution and branching behavior of a single thread\index{thread}. In contrast with SIMD vector machines, SIMT enables programmers to write thread\index{thread}-level parallel code for independent, scalar thread\index{thread}, as well as data-parallel code for coordinated thread\index{thread}. For the purposes of correctness, the programmer can essentially ignore the SIMT behavior; however, substantial performance improvements can be realized by taking care that the code seldom requires thread\index{thread} in a warp to diverge. In practice, this is analogous to the role of cache lines in traditional code: Cache line size can be safely ignored when designing for correctness but must be considered in the code structure when designing for peak performance. Vector architectures, on the other hand, require the software to coalesce loads into vectors and manage divergence manually.
+The multiprocessor creates, manages, schedules, and executes 
+thread\index{thread} in groups of 32 parallel thread\index{thread} called 
+warps. Individual thread\index{thread} composing a warp start together at the 
+same program address, but they have their own instruction address counter and 
+register state and are therefore free to branch and execute independently. The 
+term warp originates from weaving, the first parallel thread\index{thread} 
+technology. A half-warp is either the first or second half of a warp. A 
+quarter-warp is either the first, second, third, or fourth quarter of a warp.
+When a multiprocessor is given one or more thread\index{thread} blocks to 
+execute, it partitions them into warps and each warp gets scheduled by a warp 
+scheduler for execution. The way a block is partitioned into warps is always 
+the same; each warp contains thread\index{thread} of consecutive, increasing 
+thread\index{thread} IDs with the first warp containing thread\index{thread} 
+0. thread\index{thread} Hierarchy describes how thread\index{thread} IDs 
+relate to thread\index{thread} indices in the block.
+A warp executes one common instruction at a time, so full efficiency is 
+realized when all 32 thread\index{thread} of a warp agree on their execution 
+path. If thread\index{thread} of a warp diverge via a data-dependent 
+conditional branch, the warp executes each branch path taken, disabling 
+thread\index{thread} that are not on that path. Branch divergence occurs only 
+within a warp; different warps execute independently regardless of whether 
+they are executing common or disjoint code paths.
+The SIMT architecture is akin to SIMD (Single Instruction, Multiple Data) 
+vector organizations in that a single instruction controls multiple processing 
+elements. A key difference is that SIMD vector organizations expose the SIMD 
+width to the software, whereas SIMT instructions specify the execution and 
+branching behavior of a single thread\index{thread}. In contrast with SIMD 
+vector machines, SIMT enables programmers to write thread\index{thread}-level 
+parallel code for independent, scalar thread\index{thread}, as well as 
+data-parallel code for coordinated thread\index{thread}. For the purposes of 
+correctness, the programmer can essentially ignore the SIMT behavior; however, 
+substantial performance improvements can be realized by taking care that the 
+code seldom requires thread\index{thread} in a warp to diverge. In practice, 
+this is analogous to the role of cache lines in traditional code: Cache line 
+size can be safely ignored when designing for correctness but must be 
+considered in the code structure when designing for peak performance. Vector 
+architectures, on the other hand, require the software to coalesce loads 
+into vectors and manage divergence manually.
 
 
 
@@ -605,7 +802,8 @@ The serial algorihtm is not yet plublished, but was already implemented in Gigam
 %%%%% Acceleration by GPGPU
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter[Acceleration by GPGPU]{Acceleration by GPGPU (General-purpose computing on graphics processing units)}
+\chapter[Acceleration by GPGPU]{Acceleration by GPGPU (General-purpose 
+computing on graphics processing units)}
 \section{Data Partitioning}~\cite[p.~357]{Lang17}
 Data Partitioning is important.
 
@@ -691,7 +889,8 @@ Synthetic Examples are not real examples.
 \subsubsection{Random vertices within a circle}
 
 \subsection{Debossed H}
-In Figure \ref{fig:h}, we show a debossed capital letter H.\footnote{The H is as a nod to Heidelberg University and the cuniform script studied by the FCGL.}
+In Figure \ref{fig:h}, we show a debossed capital letter H.\footnote{The H is 
+as a nod to Heidelberg University and the cuniform script studied by the FCGL.}
 \begin{figure}[ht]
 \centering
 \subfloat[wireframe]{
@@ -700,10 +899,15 @@ In Figure \ref{fig:h}, we show a debossed capital letter H.\footnote{The H is as
 \subfloat[colored]{
   \includegraphics[width=0.48\linewidth]{example_meshes/h_colored.png}
   \label{fig:h.b}}
-\caption[A debossed H, which contains 22 vertices and 36 faces.]{A debossed H, which contains 22 vertices and 36 faces: (a) wireframe (b) colored by the relation to its distance to an underlying plane, in RdGy colorramp~\cite[p.~???]{Brewer2003}~\cite[p.~19]{Giga17}, visualized using the GigaMesh~\cite{Mara10} framework with triangle edges rendered.}\label{fig:h}
+\caption[A debossed H, which contains 22 vertices and 36 faces.]{A debossed H, 
+which contains 22 vertices and 36 faces: (a) wireframe (b) colored by the 
+relation to its distance to an underlying plane, in RdGy 
+colorramp~\cite[p.~???]{Brewer2003}~\cite[p.~19]{Giga17}, visualized using the 
+GigaMesh~\cite{Mara10} framework with triangle edges rendered.}\label{fig:h}
 \end{figure}
-To evaluate methods available for discrete surfaces, we can increase the number of ver-
-tices of our synthetic wedge using five iterations of the mid-edge subdivision scheme [PR97,
+To evaluate methods available for discrete surfaces, we can increase the number 
+of vertices of our synthetic wedge using five iterations of the mid-edge 
+subdivision scheme [PR97,
 HW99].~\cite[p.~38]{Mara12}
 	\subsubsection{Real World Examples}
 
@@ -720,8 +924,11 @@ Dynamic Earth models
 Unisiegel\_UAH\_Ebay-Siegel\_Uniarchiv\_HE2066-60\_010614\_partial\_ASCII.ply
 
 \subsection{Mars Crater}
-Mars dataset crater as a Digital Terrain Models (DTMs) Mention in Mara 3.6 Summary “Dali” inspired method
-Processing regular grids like Digital Terrain Models (DTMs) will gain dramatic performance increases using the estimator, while processing irregular grids with high curvatures will strongly benefit from precise computation of the volume integral invariant.~\cite[p.~143]{Mara12}
+Mars dataset crater as a Digital Terrain Models (DTMs) Mention in Mara 3.6 
+Summary “Dali” inspired methodProcessing regular grids like Digital Terrain 
+Models (DTMs) will gain dramatic performance increases using the estimator, 
+while processing irregular grids with high curvatures will strongly benefit 
+from precise computation of the volume integral invariant.~\cite[p.~143]{Mara12}
 
 \subsection{A Flat surface}
 Flat surfaces have NOISE!
@@ -762,10 +969,32 @@ CLI - commandline interface or GUI - graphical user interface are possible
 	\end{enumerate}
 \item second item
 \end{enumerate}
-Before CUDA 5.0, if a programmer wanted to call particle::advance() from a CUDA kernel launched in main.cpp, the compiler required the main.cpp compilation unit to include the implementation of particle::advance() as well any subroutines it calls (v3::normalize() and v3::scramble() in this case). In complex C++ applications, the call chain may go deeper than the two-levels that our example illustrates. Without device object linking, the developer may need to deviate from the conventional application structure to accommodate this compiler requirement. Such changes are difficult for existing applications in which changing the structure is invasive and/or undesirable.~\cite{Cuda14}
-In order to use the full functionality of GigaMesh a batch program has to be run for generating feature vectors. These vectors contain additional information per vertex concerning surface and volume of a set of spheres intersecting the mesh. See [MKJB10] for more background information on the Multi Scale Integral Invariant (MSII) filtering technique. This operation is rather time consuming (it takes hours or even days of computing time) and therefore better runs without graphical user interface. Although generating feature vectors is quite robust against solo vertices, singularities, non-manifolds and holes, you should first clean up your mesh data to get a proper result. So switch to the advanced task of polishing your mesh in section 4.1 and return to this section when you have got a cleaned mesh. If you do not want to manipulate your mesh you may continue directly. Open a terminal and type and change to the mesh-folder by typing cd GigaMesh/mesh (note that GigaMesh stands for the GigaMesh installation folder). Then start the program 
-nohup ./meshgeneratorfeaturevectors25d\_threads -f [-r 2] \& 
-and use nohup at the beginning of the command and \& at the end to ensure that the job runs in the background. This is because this step can take several hours and you do not want to block the terminal.~\cite[p.~19]{Giga17}
+Before CUDA 5.0, if a programmer wanted to call particle::advance() from a CUDA 
+kernel launched in main.cpp, the compiler required the main.cpp compilation unit 
+to include the implementation of particle::advance() as well any subroutines it 
+calls (v3::normalize() and v3::scramble() in this case). In complex C++ 
+applications, the call chain may go deeper than the two-levels that our example 
+illustrates. Without device object linking, the developer may need to deviate 
+from the conventional application structure to accommodate this compiler 
+requirement. Such changes are difficult for existing applications in which 
+changing the structure is invasive and/or undesirable.~\cite{Cuda14}
+In order to use the full functionality of GigaMesh a batch program has to be run 
+for generating feature vectors. These vectors contain additional information per 
+vertex concerning surface and volume of a set of spheres intersecting the mesh. 
+See [MKJB10] for more background information on the Multi Scale Integral 
+Invariant (MSII) filtering technique. This operation is rather time consuming 
+(it takes hours or even days of computing time) and therefore better runs 
+without graphical user interface. Although generating feature vectors is quite 
+robust against solo vertices, singularities, non-manifolds and holes, you should 
+first clean up your mesh data to get a proper result. So switch to the advanced 
+task of polishing your mesh in section 4.1 and return to this section when you 
+have got a cleaned mesh. If you do not want to manipulate your mesh you may 
+continue directly. Open a terminal and type and change to the mesh-folder by 
+typing cd GigaMesh/mesh (note that GigaMesh stands for the GigaMesh installation 
+folder). Then start the program nohup ./meshgeneratorfeaturevectors25d\_threads 
+-f [-r 2] \& and use nohup at the beginning of the command and \& at the end to 
+ensure that the job runs in the background. This is because this step can take 
+several hours and you do not want to block the terminal.~\cite[p.~19]{Giga17}
 
 
 
