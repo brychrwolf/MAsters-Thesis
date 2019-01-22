@@ -1,6 +1,6 @@
 reset
 set datafile separator ","
-data = "../experiments/computeTimes.csv"
+data = "../data/computeTimes.csv"
 set terminal pngcairo size 1280, 1024 #enhanced font "Times New Roman, 10"
 set output "computeTimes.png"
 
