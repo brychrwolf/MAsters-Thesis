@@ -12,3 +12,4 @@ thesis.out
 thesis.pdf
 thesis.toc
 
+plots/*.png
