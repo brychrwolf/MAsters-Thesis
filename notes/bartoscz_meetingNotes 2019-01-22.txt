@@ -1,0 +1,36 @@
+2.5 archetures of cuncurrency
+2.1.-2.4 squash into meshes
+move related work to own chapter
+6 subsections definitions into background (motivation then theory, then work)
+avoid all forward references
+add summamry subsections per chapter
+Move what is cuda to background
+compare a diffusion process
+
+just use log log for compute times
+color by mesh sizes
+scatter plot, size of point is mesh size or computation time
+
+experiments = setup
+
+Related work own chaper, state of the art inside at end# 
+the meat shoudl tell a story
+
+introduction & motivation
+background
+	<theory related to measuring speedup>
+related work
+* Fast 1-ring Smoothing
+* (profiling and targeting parallel section / Exploiting Concurrency)
+* (Data Partioning)
+Experiments & Evaluation
+distribution
+Conclusions
+	Summary
+	Future Work
+	
+	
+modes of reading
+	jstu titles
+	summaries & conclusions
+	illustrations	
