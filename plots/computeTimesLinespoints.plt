@@ -20,6 +20,6 @@ set logscale xy
 set ylabel "Compute Time (seconds) - Log Scale"
 set xlabel "One-Ring Filter Iterations - Log Scale"
 
-plot for [i=3:12] data every ::1::8  using 2:i with linespoints title "TG.".columnhead(i) ls ceil((i-1)*8/10), \
-	 for [i=3:12] data every ::9::16 using 2:i with linespoints title "MG.".columnhead(i) ls ceil((i-1)*8/10)
+plot for [i=3:12] data every ::1::8  using 2:i with linespoints title "TG.".columnhead(i) ls ceil(9-(i-1)*8/10), \
+	 for [i=3:12] data every ::9::16 using 2:i with linespoints title "MG.".columnhead(i) ls ceil(9-(i-1)*8/10)
 
