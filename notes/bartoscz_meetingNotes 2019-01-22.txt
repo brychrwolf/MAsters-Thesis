@@ -9,9 +9,9 @@ x	state of the art inside Related Work at end
 ✓	compare a diffusion process
 
 Plots:
-just use log log for compute times
-color by mesh sizes
-scatter plot, size of point is mesh size or computation time
+✓	just use log log for compute times
+✓	color by mesh sizes
+✓	scatter plot, size of point is mesh size or computation time
 
 
 Framework:
