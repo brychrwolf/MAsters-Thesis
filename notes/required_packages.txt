@@ -1,0 +1,7 @@
+git
+make
+texlive
+
+gcc
+qt5
+cuda
