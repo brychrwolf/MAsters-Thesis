@@ -5,7 +5,7 @@ load "configs/grid.cfg"
 
 set datafile separator ","
 data = "../data/computeTimesScatter.csv"
-set terminal pngcairo size 900, 640 #enhanced font "Times New Roman, 10"
+set terminal pngcairo size 1000, 680 #enhanced font "Times New Roman, 10"
 set output "computeTimesScatter.png"
 
 set title font ",16" offset 0 \
@@ -17,7 +17,7 @@ set key title "Machine /\nProcessor"
 
 set logscale xy
 set xrange [3:1e8]
-set yrange [0.3:2.5e4]
+set yrange [0.3:3e4]
 set xlabel "Mesh Size (Vertex Count) - Log Scale"
 set ylabel "One-Ring Filter Iterations - Log Scale"
 

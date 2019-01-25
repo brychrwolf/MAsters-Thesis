@@ -2,7 +2,7 @@ reset
 set datafile separator ","
 data = "../data/computeTimesLinespoints.csv"
 set terminal pngcairo size 1280, 1024 #enhanced font "Times New Roman, 10"
-set output "computeTimes4x4.png"
+set output "computeTimesLinespoints4x4.png"
 
 
 
@@ -25,8 +25,8 @@ set rmargin mMd
 unset log
 set ylabel "Compute Time (seconds)\nLinear Scale"
 unset xlabel #set xlabel "One-Ring Filter Iterations\nLinear Scale"
-plot for [i=3:12] data every ::0::7  using 2:i with linespoints title "TG.".columnhead(i), \
-	 for [i=3:12] data every ::8::15 using 2:i with linespoints title "MG.".columnhead(i)
+plot for [i=3:12] data every ::1::8  using 2:i with linespoints title "TG.".columnhead(i), \
+	 for [i=3:12] data every ::9::16 using 2:i with linespoints title "MG.".columnhead(i)
 
 
 
@@ -37,8 +37,8 @@ unset log
 set logscale x
 unset ylabel #set ylabel "Compute Time (seconds)\nLinear Scale"
 unset xlabel #set xlabel "One-Ring Filter Iterations\nLog Scale"
-plot for [i=3:12] data every ::0::7  using 2:i with linespoints title "TG.".columnhead(i), \
-	 for [i=3:12] data every ::8::15 using 2:i with linespoints title "MG.".columnhead(i)
+plot for [i=3:12] data every ::1::8  using 2:i with linespoints title "TG.".columnhead(i), \
+	 for [i=3:12] data every ::9::16 using 2:i with linespoints title "MG.".columnhead(i)
 
 
 
@@ -49,8 +49,8 @@ unset log
 set logscale y
 set ylabel "Compute Time (seconds)\nLog Scale"
 set xlabel "One-Ring Filter Iterations\nLinear Scale"
-plot for [i=3:12] data every ::0::7  using 2:i with linespoints title "TG.".columnhead(i), \
-	 for [i=3:12] data every ::8::15 using 2:i with linespoints title "MG.".columnhead(i)
+plot for [i=3:12] data every ::1::8  using 2:i with linespoints title "TG.".columnhead(i), \
+	 for [i=3:12] data every ::9::16 using 2:i with linespoints title "MG.".columnhead(i)
 
 
 
@@ -60,8 +60,8 @@ set rmargin mLg
 set logscale xy
 unset ylabel #set ylabel "Compute Time (seconds)\nLog Scale"
 set xlabel "One-Ring Filter Iterations\nLog Scale"
-plot for [i=3:12] data every ::0::7  using 2:i with linespoints title "TG.".columnhead(i), \
-	 for [i=3:12] data every ::8::15 using 2:i with linespoints title "MG.".columnhead(i)
+plot for [i=3:12] data every ::1::8  using 2:i with linespoints title "TG.".columnhead(i), \
+	 for [i=3:12] data every ::9::16 using 2:i with linespoints title "MG.".columnhead(i)
 	
 
 
