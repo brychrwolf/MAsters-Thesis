@@ -41,8 +41,8 @@ I aknowledge things.
 \chapter{Abstract}
 This is some abstract text.
 
-\chapter{Nomenclature}
-This Nomenclature is something.
+%\chapter{Nomenclature}
+%This Nomenclature is something.
 
 \tableofcontents
 
@@ -53,11 +53,23 @@ This Nomenclature is something.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%% Introduction \& Motivation
+%%%%% 1. Introduction \& Motivation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \mainmatter
 \chapter{Introduction \& Motivation}
+\section{3D Data is important (and big).}
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt eget 
+ipsum eu iaculis. Cras vel sem eu velit eleifend porta vel sit amet massa. Etiam 
+a posuere nunc. Aenean aliquam viverra dapibus. Aliquam ac eros a purus feugiat 
+rhoncus. Donec faucibus ut nibh ut cursus. Aliquam erat volutpat. Proin efficitur 
+nulla sit amet iaculis condimentum. Cras placerat leo vitae venenatis feugiat. In 
+hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis 
+parturient montes, nascetur ridiculus mus. In aliquet sagittis dui eu pulvinar. 
+Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor 
+suscipit, eget imperdiet mauris convallis.~\cite[p.~00]{SourceNeeded}
+
+
 \section{Serial is slow.}
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt eget 
 ipsum eu iaculis. Cras vel sem eu velit eleifend porta vel sit amet massa. Etiam 
@@ -112,11 +124,12 @@ suscipit, eget imperdiet mauris convallis.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%% Background
+%%%%% 2. Background
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Background}
-\section{Synthetic vs Aquired 3D Meshes}
+\section{3DData}
+\subsection{Synthetic vs Aquired 3D Meshes}
 We have to mention that a common misunderstanding is that acquired 3D-objects
 are similar or even identical to modeled 3D-objects – this is not true! 
 Both utilize the same methods for organizing the data, but per-se the concepts 
@@ -133,9 +146,6 @@ acquisition contradicts with the Shannon theorem, while the rule of thumb from
 our previous projects is: the resolution for acquisition has to be 5 times the 
 size of the smallest detail to be acquired.~\cite[p.~25]{Mara12}
 
-
-
-\section{Data Representation}
 \subsection{3DData}
 Virtually all the software packages accompanying 3D-scanners export
 a 2D-non-planar, manifold and non-regular surface mesh consisting of vertices 
@@ -202,8 +212,9 @@ Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor
 suscipit, eget imperdiet mauris convallis.~\cite[p.~00]{SourceNeeded}
 
 
-\section{Irregular Non-Manifold Meshes and 2D-Manifolds in 3D-Space}
-\subsection{Borders and Edges}
+%\section{Irregular Non-Manifold Meshes and 2D-Manifolds in 3D-Space}
+\subsection{Treatment of Unclean Data}
+%\subsection{Borders and Edges}
 Proper detection and treatment of borders of M 2 is important even for watertight
 3D-models as we will encounter borders for subsets M 2 in Chapter 4. These 
 subsets are typically connected components also called labeled regions – see 
@@ -244,7 +255,7 @@ When L f = Ø than L v s = L v , which is the definition of a point cloud. This
 is the contrary of an ideal M 2 having L v s = Ø as a necessary 
 criteria.~\cite[p.~28]{Mara12}
 
-\subsection{Adjacencies, Singularities and k-ring Neighborhoods}
+%\subsection{Adjacencies, Singularities and k-ring Neighborhoods}
 Knowing the neighbors of a measuring point is the key to analyze our data. 
 For regular data structures, e.g. 2D-images a pixel has four neighbors in 
 orthogonal direction with a (relative) geometric distance of 1 and four further 
@@ -301,7 +312,7 @@ triangle fan equaling its 1-ring neighborhood. When there is a triangle
 border of M 2 . (b) Singular vertex p A connecting two triangle fans.
 (c) Real world example for a singular vertex p A .~\cite[p.~29]{Mara12}
 
-\subsection{Non-Manifold Edges}
+%\subsection{Non-Manifold Edges}
 Previous Sections have shown that 3D-models from optical 3D-scanners consist of a dis-
 crete surface representation and are generally not regular having singular vertices due to
 the missing constraints from file formats organized by L v and L f . The lack of these con-
@@ -335,7 +346,7 @@ Figure 2.8: Schematic visualization of M 2 in green with an edge connecting (a) 
 faces (t u , t v ) and (b) the face t w added along the non-manifold edge e k = e m and 
 (c) having aface t w embedded with a wrong orientation.~\cite[p.~30-31]{Mara12}
 
-\subsection{Agglutinated Faces and Faces with Zero Area}
+%\subsection{Agglutinated Faces and Faces with Zero Area}
 Faces literally sticking together having a proper orientation (no e + ) are typical remains
 of outliers from acquisition. They can be removed as they describe parts of objects
 without any volume. This can be shown using Equation 2.10 with two faces sharing
@@ -362,10 +373,9 @@ of self-intersecting surfaces as known from synthetic data and their treatment [
 not necessary, as it does not change or influence the critical surfaces properties in respect
 to the methods presented within this thesis.~\cite[p.~32]{Mara12}
 
-
-
-\section{Data cleaning - Ensuring a Perfect Mesh} 
-IS THIS STILL NECCESSARY? Since, Filtering can handle edges
+%\section{Data cleaning - Ensuring a Perfect Mesh} 
+%IS THIS STILL NECCESSARY? Since, Filtering can handle edges
+How does the filter handle edges and unclean meshes?
 
 The modular processing pipeline allows for adaption of the workflow for feature 
 extraction depending on the application. As modules like the MSII filter 
@@ -441,24 +451,12 @@ far as possible from the areas of interest.~\cite[p.~120]{Mara12}
 
 
 
-\section{Serial vs Multi-threaded vs GPGPU}
+\section{Achitectures of Concurrency}
 Serial vs Multi-threaded vs GPU order from slow to fast.~\cite[p.~00]{SourceNeeded}
 
 
 
-\section{Related Work}
-2D filters like from Digital Image Processing: i.e. Jaehne~\cite[p.~00]{SourceNeeded}
-Other Mesh filters which I could have done~\cite[p.~00]{SourceNeeded}
-Other approaches to accelerate operations on a mesh~\cite[p.~00]{SourceNeeded}
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%% What is CUDA?
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{What is CUDA?}
+\section{What is CUDA?}
 Graphical Processor Units, GPUs, are highly parallel, multithreaded, manycore 
 processors typically characterized by very high computational power and 
 tremendous memory bandwidth. A GPU is especially well-suited when used to 
@@ -557,7 +555,7 @@ of C++ is fully supported for the device code~\cite[p.~3.1.5]{CUDA18}
 
 
 
-\section{CUDA C Runtime}%3.2. CUDA C Runtime}
+\subsection{CUDA C Runtime}%3.2. CUDA C Runtime}
 There is no explicit initialization function for the runtime; it initializes 
 the first time a runtime function is called. During initialization, the runtime 
 creates a CUDA context for each device in the system (see Context for more 
@@ -579,7 +577,7 @@ memory exists on the device in a 40-bit address space, so separately allocated
 entities can reference one another via pointers, for example, in a binary 
 tree.~\cite[p.~3.2.2]{CUDA18}
 
-\subsection{Explicit Synchronization}%3.2.5.5.3. Explicit Synchronization}
+\subsubsection{Explicit Synchronization}%3.2.5.5.3. Explicit Synchronization}
 There are various ways to explicitly synchronize streams with each other.
 cudaDeviceSynchronize() waits until all preceding commands in all streams of 
 all host thread\index{thread} have completed.
@@ -602,7 +600,7 @@ isolate a launch or memory copy that is failing.
 
 
 
-\section{Versioning and Compatibility}%3.3. Versioning and Compatibility}
+\subsection{Versioning and Compatibility}%3.3. Versioning and Compatibility}
 There are two version numbers that developers should care about when developing 
 a CUDA application: The compute capability that describes the general 
 specifications and features of the compute device (see Compute Capability) and 
@@ -640,7 +638,7 @@ statically linking to those libraries.
 
 
 
-\section{Hardware Implementation}%4. Hardware Implementation}
+\subsection{Hardware Implementation}%4. Hardware Implementation}
 The NVIDIA GPU architecture is built around a scalable array of multithreaded 
 Streaming Multiprocessors (SMs). When a CUDA program on the host CPU invokes a 
 kernel grid, the blocks of the grid are enumerated and distributed to 
@@ -660,7 +658,7 @@ extensively through simultaneous hardware multithreading as detailed in
 Hardware Multithreading. Unlike CPU cores they are issued in order however and 
 there is no branch prediction and no speculative execution.
 
-\subsection{SIMT Architecture}%4.1. SIMT Architecture}
+\subsubsection{SIMT Architecture}%4.1. SIMT Architecture}
 The multiprocessor creates, manages, schedules, and executes 
 thread\index{thread} in groups of 32 parallel thread\index{thread} called 
 warps. Individual thread\index{thread} composing a warp start together at the 
@@ -702,7 +700,7 @@ into vectors and manage divergence manually.
 
 
 
-\section{Host Memory and Device Memory}
+\subsection{Host Memory and Device Memory}
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt eget 
 ipsum eu iaculis. Cras vel sem eu velit eleifend porta vel sit amet massa. Etiam 
 a posuere nunc. Aenean aliquam viverra dapibus. Aliquam ac eros a purus feugiat 
@@ -715,7 +713,7 @@ suscipit, eget imperdiet mauris convallis.~\cite[p.~00]{SourceNeeded}
 
 
 
-\section{Versions <9, vs >= 9}
+\subsection{Versions <9, vs >= 9}
 K.2.1.1. Explicit Allocation Using cudaMallocManaged()~\cite[p.~272]{CUDA18} 
 Explain multi-threading model differences Motivation for choosing earlier 
 version Adjacent vertices are stored in an array of variable-length arrays. 
@@ -733,17 +731,98 @@ required, and the original array does not need to be padded with extra, unsued
 memory address.
 
 
+\section{Evaluation and Analysis of Concurrent Algorithms}~\cite[p.~330]{Lang17}
+Multi-node out of scope?!
+
+\subsection{Timing}
+%\begin{equation}
+	N = input size (num. ops)
+	P = processor count
+	Ts(N) = Sequential execution time
+	Tbest(N) = Optimal execution time
+	TP(N, P) = Parallel runtime
+%\end{equation}
+
+\subsection{Speedup, efficiency}
+	Speedup: 
+S(N, P) = Tbest(N)/TP(N, P)
+
+	Efficiency: 
+E(N, P) = Tbest (N)/PTP(N, P) = S/P
+
+	Costs: 
+C(N, P) = PTP(N, P)
+
+\subsection{Degree of Parallelism}
+	0 < q < 1 is the sequential part
+	1-q = is the parallelizable part
+
+\subsection{Iso-efficiency}
+	WK(P) = iso-efficient if it fulfills:
+	TO(WK(P), P) = KWK(P)~\cite[p.~350]{Lang17}
+
+\subsection{Scalability}
+	A parallel system is called scalable only if in has an iso-efficency function
+
+
+\section{Summary}
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt eget 
+ipsum eu iaculis. Cras vel sem eu velit eleifend porta vel sit amet massa. Etiam 
+a posuere nunc. Aenean aliquam viverra dapibus. Aliquam ac eros a purus feugiat 
+rhoncus. Donec faucibus ut nibh ut cursus. Aliquam erat volutpat. Proin efficitur 
+nulla sit amet iaculis condimentum. Cras placerat leo vitae venenatis feugiat. In 
+hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis 
+parturient montes, nascetur ridiculus mus. In aliquet sagittis dui eu pulvinar. 
+Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor 
+suscipit, eget imperdiet mauris convallis.
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%% State of the Art, Fast 1-Ring Smoothing
+%%%%% 3. Related Work
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{State of the Art}
+\chapter{Related Work}
+\section{2D filters}
+	like from Digital Image Processing: i.e. Jaehne~\cite[p.~00]{SourceNeeded}
 
 
 
-\section{Fast 1-Ring Smoothing}
+\section{Work with Diffusion Processes}
+	like from Digital Image Processing: i.e. Jaehne~\cite[p.~00]{SourceNeeded}
+
+
+
+\section{Other Mesh filters}
+	which I could have done~\cite[p.~00]{SourceNeeded}
+
+
+
+\section{Other approaches to accelerate}
+	operations on a mesh~\cite[p.~00]{SourceNeeded}
+
+
+
+\section{Summary}
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt eget 
+ipsum eu iaculis. Cras vel sem eu velit eleifend porta vel sit amet massa. Etiam 
+a posuere nunc. Aenean aliquam viverra dapibus. Aliquam ac eros a purus feugiat 
+rhoncus. Donec faucibus ut nibh ut cursus. Aliquam erat volutpat. Proin efficitur 
+nulla sit amet iaculis condimentum. Cras placerat leo vitae venenatis feugiat. In 
+hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis 
+parturient montes, nascetur ridiculus mus. In aliquet sagittis dui eu pulvinar. 
+Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor 
+suscipit, eget imperdiet mauris convallis.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% 4. State of the Art Fast One-Ring Filtering
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{State of the Art Fast One-Ring Filtering}
 In our high-resolution meshes with dense vertices of several hundred points per 
 mm 2 we see noise propagating within the results of the MSII filter. This noise 
 becomes visible when isolines of the field of function values f (p i ) are 
@@ -795,93 +874,80 @@ now becomes
 (EQ17)which should not be ex-cluded but rarely occurs, we compute f  ̃ 0 =tf k 
 t + f k+1.~\cite[s.~3.2]{Mara17}
 
-\subsection{Serial Algorithm}
+\subsection{Serial Iterative Filtering}
+The serial algorihtm is not yet plublished, but was already implemented in Gigamesh.
+
+\subsection{GigaMesh}
 The serial algorihtm is not yet plublished, but was already implemented in Gigamesh.
 
 
 
+\section{Summary}
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt eget 
+ipsum eu iaculis. Cras vel sem eu velit eleifend porta vel sit amet massa. Etiam 
+a posuere nunc. Aenean aliquam viverra dapibus. Aliquam ac eros a purus feugiat 
+rhoncus. Donec faucibus ut nibh ut cursus. Aliquam erat volutpat. Proin efficitur 
+nulla sit amet iaculis condimentum. Cras placerat leo vitae venenatis feugiat. In 
+hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis 
+parturient montes, nascetur ridiculus mus. In aliquet sagittis dui eu pulvinar. 
+Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor 
+suscipit, eget imperdiet mauris convallis.
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%% Acceleration by GPGPU
+%%%%% 5. Profiling \& Exploiting Concurrency
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter[Acceleration by GPGPU]{Acceleration by GPGPU (General-purpose 
-computing on graphics processing units)}
+\chapter{Profiling \& Exploiting Concurrency}
 \section{Data Partitioning}~\cite[p.~357]{Lang17}
 Data Partitioning is important.
 
 
-\section{Exploiting Concurrency}
-Exploiting Concurrency is important.
+
+\section[Acceleration by GPGPU]{Acceleration by GPGPU (General-purpose 
+computing on graphics processing units)}
 
 
-\section{Alternative Approaches}
-What they are and why I did not.
-OpenMP
-PThreads
-(already impl’d in GigaMesh)
-OpenCL
-Pipelining memory reads/calculations
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%% Evaluation and Analysis
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Evaluation and Analysis}~\cite[p.~330]{Lang17}
-Multi-node out of scope?!
-
-
-
-\section{Timing}
-%\begin{equation}
-	N = input size (num. ops)
-	P = processor count
-	Ts(N) = Sequential execution time
-	Tbest(N) = Optimal execution time
-	TP(N, P) = Parallel runtime
-%\end{equation}
-
-
-
-\section{Speedup, efficiency}
-	Speedup: 
-S(N, P) = Tbest(N)/TP(N, P)
-
-	Efficiency: 
-E(N, P) = Tbest (N)/PTP(N, P) = S/P
-
-	Costs: 
-C(N, P) = PTP(N, P)
-
-
-
-\section{Degree of Parallelism}
-	0 < q < 1 is the sequential part
-	1-q = is the parallelizable part
-
-
-
-\section{Iso-efficiency}
-	WK(P) = iso-efficient if it fulfills:
-	TO(WK(P), P) = KWK(P)~\cite[p.~350]{Lang17}
-
-
-
-\section{Scalability}
-	A parallel system is called scalable only if in has an iso-efficency function
-
+\section{Summary}
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt eget 
+ipsum eu iaculis. Cras vel sem eu velit eleifend porta vel sit amet massa. Etiam 
+a posuere nunc. Aenean aliquam viverra dapibus. Aliquam ac eros a purus feugiat 
+rhoncus. Donec faucibus ut nibh ut cursus. Aliquam erat volutpat. Proin efficitur 
+nulla sit amet iaculis condimentum. Cras placerat leo vitae venenatis feugiat. In 
+hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis 
+parturient montes, nascetur ridiculus mus. In aliquet sagittis dui eu pulvinar. 
+Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor 
+suscipit, eget imperdiet mauris convallis.
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%% Experiments
+%%%%% 6. Meat 3
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Experiments}
+\chapter{Meat 3}
+\section{Summary}
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt eget 
+ipsum eu iaculis. Cras vel sem eu velit eleifend porta vel sit amet massa. Etiam 
+a posuere nunc. Aenean aliquam viverra dapibus. Aliquam ac eros a purus feugiat 
+rhoncus. Donec faucibus ut nibh ut cursus. Aliquam erat volutpat. Proin efficitur 
+nulla sit amet iaculis condimentum. Cras placerat leo vitae venenatis feugiat. In 
+hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis 
+parturient montes, nascetur ridiculus mus. In aliquet sagittis dui eu pulvinar. 
+Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor 
+suscipit, eget imperdiet mauris convallis.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% 7. Experiments and Evaluation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Experiments \& Evaluation}
 \section{Synthetic Data}
 Synthetic Examples are generated with ideal vertices, unlike acquired examples.
 
@@ -983,13 +1049,57 @@ http://graphics.stanford.edu/data/3Dscanrep/ (Stanford Bunny)
 
 
 
+\section{Evaluation}
+\subsection{Compute Times}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=1.0\linewidth]{plots/computeTimesLinespoints.png}
+	\RawCaption{\caption[Compute Times - Linespoints]{Compute Times of Applying
+		the	One-Ring Filter for Selected Numbers of Iterations onto Acquired and 
+		Synthetic 3D Meshes of Varying Sizes}
+		\label{fig:computeTimesLP}}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=1.0\linewidth]{plots/computeTimesScatter.png}
+	\RawCaption{\caption[Compute Times - Scatter]{Compute Times for Different
+		Hardware Configurations by increaseing Mesh Size and Filter Iterations}
+		\label{fig:computeTimesS}}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=1.0\linewidth]{plots/numFacesByVerticesGoTo2.png}
+	\RawCaption{\caption[Ratio of Faces / Vertices]{Ratio of Faces to Vertices by
+		Increasing Vertex Count}
+		\label{fig:ratioFacesVertices}}
+\end{figure}
+
+
+
+
+
+\section{Summary}
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt eget 
+ipsum eu iaculis. Cras vel sem eu velit eleifend porta vel sit amet massa. Etiam 
+a posuere nunc. Aenean aliquam viverra dapibus. Aliquam ac eros a purus feugiat 
+rhoncus. Donec faucibus ut nibh ut cursus. Aliquam erat volutpat. Proin efficitur 
+nulla sit amet iaculis condimentum. Cras placerat leo vitae venenatis feugiat. In 
+hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis 
+parturient montes, nascetur ridiculus mus. In aliquet sagittis dui eu pulvinar. 
+Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor 
+suscipit, eget imperdiet mauris convallis.
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%% Distribution
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Distribution}
-\section{Stabdalone Source Code}
 CLI - commandline interface only
 Focus on theoretical work 
 And specifics regarding CUDA considerations regarding its limitations
@@ -1043,12 +1153,26 @@ several hours and you do not want to block the terminal.~\cite[p.~19]{Giga17}
 
 
 
+\section{Summary}
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt eget 
+ipsum eu iaculis. Cras vel sem eu velit eleifend porta vel sit amet massa. Etiam 
+a posuere nunc. Aenean aliquam viverra dapibus. Aliquam ac eros a purus feugiat 
+rhoncus. Donec faucibus ut nibh ut cursus. Aliquam erat volutpat. Proin efficitur 
+nulla sit amet iaculis condimentum. Cras placerat leo vitae venenatis feugiat. In 
+hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis 
+parturient montes, nascetur ridiculus mus. In aliquet sagittis dui eu pulvinar. 
+Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor 
+suscipit, eget imperdiet mauris convallis.
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%% Conclusions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Conclusions}
+\section{Summary}
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt eget 
 ipsum eu iaculis. Cras vel sem eu velit eleifend porta vel sit amet massa. Etiam 
 a posuere nunc. Aenean aliquam viverra dapibus. Aliquam ac eros a purus feugiat 
@@ -1078,6 +1202,16 @@ Integer id erat tellus. Ut quis odio velit. Nulla facilisi. Donec mollis
 scelerisque lobortis. Nam eu felis sed purus feugiat semper ac ac ante. Maecenas 
 faucibus odio diam, id tristique orci placerat sed. Ut vel ex metus. Maecenas 
 tempus velit gravida nulla viverra, in suscipit enim mattis.
+
+
+\section{Future Work}
+What they are and why I did not.
+OpenMP
+PThreads
+(already impl’d in GigaMesh)
+OpenCL
+Pipelining memory reads/calculations
+
 
 
 
