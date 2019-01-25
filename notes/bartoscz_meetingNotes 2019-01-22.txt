@@ -1,36 +1,38 @@
-2.5 archetures of cuncurrency
-2.1.-2.4 squash into meshes
-move related work to own chapter
-6 subsections definitions into background (motivation then theory, then work)
-avoid all forward references
-add summamry subsections per chapter
-Move what is cuda to background
-compare a diffusion process
+✓	2.5 archetures of cuncurrency
+✓	2.1.-2.4 squash into meshes
+✓	move related work to own chapter
+✓	6 subsections definitions into background (motivation then theory, then work)
+✓	add summamry subsections per chapter
+✓	Move what is cuda to background
+✓	Related work own chaper
+x	state of the art inside Related Work at end
+✓	compare a diffusion process
 
+Plots:
 just use log log for compute times
 color by mesh sizes
 scatter plot, size of point is mesh size or computation time
 
-experiments = setup
 
-Related work own chaper, state of the art inside at end# 
-the meat shoudl tell a story
-
-introduction & motivation
-background
+Framework:
+1. introduction & motivation
+2. background
 	<theory related to measuring speedup>
-related work
-* Fast 1-ring Smoothing
-* (profiling and targeting parallel section / Exploiting Concurrency)
-* (Data Partioning)
-Experiments & Evaluation
-distribution
-Conclusions
+3. related work
+4. meat1 state of the art Fast 1-ring Smoothing
+5. meat2 (profiling and targeting parallel section / Exploiting Concurrency)
+6. meat3 ???
+7. Experiments & Evaluation
+8. distribution
+9. Conclusions
 	Summary
 	Future Work
-	
-	
-modes of reading
-	jstu titles
+
+NOTE: avoid all forward references
+NOTE: chapter on experiments is onnly about the set-up setup
+NOTE: the meat shoudl tell a story	
+NOTE: modes of reading
+	just titles
 	summaries & conclusions
-	illustrations	
+	illustrations
+	bibliography
