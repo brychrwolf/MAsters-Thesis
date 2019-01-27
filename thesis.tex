@@ -6,7 +6,8 @@
 \usepackage{makeidx}
 \usepackage{caption}
 \usepackage{subcaption}
-\usepackage{floatrow} 
+\usepackage{floatrow}
+\usepackage{parskip}
 \makeindex
 \usepackage[bookmarks,colorlinks]{hyperref}
 \hypersetup{colorlinks,
@@ -824,55 +825,103 @@ suscipit, eget imperdiet mauris convallis.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{State of the Art Fast One-Ring Filtering}
 In our high-resolution meshes with dense vertices of several hundred points per 
-mm 2 we see noise propagating within the results of the MSII filter. This noise 
-becomes visible when isolines of the field of function values f (p i ) are 
+mm$^2$ we see noise propagating within the results of the MSII filter. This noise 
+becomes visible when isolines of the field of function values $f ( \mathbf{p}_i ) $ are 
 rendered, and it becomes visible in jagged outlines for connected components of 
-segmented areas of interest. The design principles for filtering of function 
+segmented areas of interest.
+
+The design principles for filtering of function 
 values in irregular grids are the same as for those well-known algorithms used 
 for raster images. However, they require adaptation as there is no fixed 
 distance between the points and no fixed number of neighboring points in 
-1-rings of irregular grids. In the following we proceed solely the 1-ring 
-neighborhood of all points of M considering the center of a 1-ring as p 0 ∈ M. 
-Although the number n of the elements in each 1-ring might differ, it is always 
-indexed by i ∈ {1, . . . , n} in a clockwise direction. The smallest edge 
-length within the 1-ring around the vertex p 0 
-(EQ12) is shortly denoted by ∆ min and becomes the radius of the so-called 
-geodesic disc. Figure 4 shows a typical configuration of an 1-ring, its geodesic 
-disc with radius ∆ min and triangles t 0 i used for weighting.
-Figure 4: 1-ring with (a) irregular triangles t i and the geodesic disc with 
-radius ∆ min . Here ∆ min = |p 4 − p 0 |, indicated as the red arrow. (b) 
-Approximation of the disc with an interpolated 1-ring of triangles t 0 i having 
-an area of A 0 i . The function values f i 0 at the respective points p i along 
-this discare interpolated by f i 0 := f 0 + ∆ min f i − f 0 |p i − p 0 | where 
-f 0 is the function value of p 0 . Note that 0 < f i 0
-(EQ13)is always a weighted mean of f 0 and f i by such that the new the distance 
-of the respective points. For the weighted mean of the function value f i t /3 
-at each triangle t 0 i we compute (EQ14)
-So far we used the distance to the central point p 0 as weight function, but we 
-also have to consider the distance of the points p i to their neighbors p i+1 
-in the 1-ring. We do this by computing the relative area of the geodesic disc 
-marked by the three points p 0 , p i and p i+1 . Instead of circle segments we 
-approximate the geodesic disc by triangles t 0 i achieving faster computation. 
-As all those trian-gles are isosceles having two egdes of constant length ∆ min 
-we can compute their weight as the area of the isosceles triangle t 0 i using 
-the Pythagorean theorem
-(EQ15)Regarding Figure 4a, the angle α i could as well be used for weight-ing, 
-computing A 0 i = sin(α i )∆ 2min , which is equivalent to Equa-tion 15. But it 
-is computationally expensive due to the sin(·) opera-tion and the numeric error 
-is visible when the result of the mean fil-tering is rendered as color per 
-vertex. Furthermore, computing ∆ minwithin each 1-ring will cause tremendous 
-amounts of redundant computing operations. Therefore we define ∆ min := min{∆ 
-min (p 0 ) |p 0 ∈ M} as the shortest edge for all triangles of the mesh. We 
-willuse this ∆ min in all the above computations. This will increase the 
-computing speed by a factor of ≈ 10. For a 1-ring we now compute the weighted 
-mean function valuen with the total area
-(EQ16)with a negligible error due to the 1-ring approximation of the geodesic 
-disc. For a 1-ring weighted median filter instead, we can use all equations 
-except 16, which is replaced by a list of pairs ( f i t , A 0 i ) sorted by f 
-i t . The area is again used as a weight such that 1 = ∑ The weighted median 
-now becomes
-(EQ17)which should not be ex-cluded but rarely occurs, we compute f  ̃ 0 =tf k 
-t + f k+1.~\cite[s.~3.2]{Mara17}
+1-rings of irregular grids.
+
+In the following we proceed solely the 1-ring neighborhood of all points of 
+$\mathcal{M}$ considering the center of a 1-ring as $\mathbf{p}_0 \in 
+\mathcal{M}$. Although the number n of the elements in each 1-ring might 
+differ, it is always indexed by $i \in {1, \ldots, n}$ in a clockwise
+direction. %TODO: Doesn't GigaMesh assume a counterclockwise direction? 
+
+The smallest edge length within the 1-ring around the vertex $\mathbf{p}_0$ 
+\begin{equation}
+	\Delta_\text{min}\mathbf{p}_0 := \text{min}^n_{i=1} (|\mathbf{p}_i - \mathbf{p}_0|)
+	\label{eq:globalMinimumEdgeLength}
+\end{equation}
+is shortly denoted by $\Delta_\text{min}$ and becomes the radius of the
+so-called geodesic disc. Figure~\ref{eq:globalMinimumEdgeLength} shows 
+a typical configuration of an 1-ring, its geodesic disc with radius 
+$\Delta_\text{min}$ and triangles $\mathbf{t}'_i$ used for weighting.
+\begin{figure}
+	%\centering
+	\includegraphics[width=1.0\linewidth]{temp/mara17figure4.png}	
+	\RawCaption{\caption[1-ring and geodesic disc]{1-ring with (a) irregular 
+	triangles $\mathbf{t}_i$ and the geodesic disc with radius 
+	$\Delta_\text{min}$. Here $\Delta_\text{min} = |\mathbf{p}_4 - \mathbf{p}_0|$, 
+	indicated as the red arrow. (b) Approximation of the disc with an 
+	interpolated 1-ring of triangles $\mathbf{t}'_i$ having an area of $A'_i$ .}
+	\label{fig:mara17figure4}}
+\end{figure}
+The function values $f'_0$ at the respective points $\mathbf{p}_i$ along 
+this disc are interpolated by 
+\begin{equation}
+	f'_0 := f_0 + \Delta_\text{min}\frac{f_i - f_0}{|\mathbf{p}_i - \mathbf{p}_0|} 
+\end{equation}
+where $f_0$ is the function value of $\mathbf{p}_0$. Note that $0 < \frac{
+\Delta_\text{min}}{|\mathbf{p}_i - \mathbf{p}_0|} \leq 1$ such that the new 
+$f'_i$ is always the weighted mean of $f_0$ and $f_i$ by the distance of the
+respective points. For the weighted mean of the function value $\frac{f_i^t}{3}$ at 
+each triangle $f^{\mathbf{t}'}_i$ we compute
+\begin{align}
+	f^{\mathbf{t}}_i & := f_0 + f'_i + f'_{i+1} \\
+	& \: = 3f_0 + \Delta_\text{min}\left\lgroup\frac{f_i - f_0}{|\mathbf{p}_i - \mathbf{p}_0|} + 
+	\frac{f_{i+1} - f_0}{|\mathbf{p}_{i+1} - \mathbf{p}_0|}\right\rgroup
+\end{align}
+So far we used the distance to the central point $\mathbf{p}_0$ as weight 
+function, but we also have to consider the distance of the points 
+$\mathbf{p}_i$ to their neighbors $\mathbf{p}_{i+1}$ in the 1-ring. We do this 
+by computing the relative area of the geodesic disc marked by the three points 
+$\mathbf{p}_0$, $\mathbf{p}_i$, and $\mathbf{p}_{i+1}$. Instead of circle 
+segments we approximate the geodesic disc by triangles $\mathbf{t}'_i$ achieving 
+faster computation. As all those triangles are isosceles having two egdes of 
+constant length $\Delta_\text{min}$ we can compute their weight as the area of the 
+isosceles triangle $\mathbf{t}'_i$ using the Pythagorean theorem
+\begin{equation}
+	A'_i := |\mathbf{t}'_i| = \frac{|\mathbf{p}_{i+1} - \mathbf{p}_i|}{4}
+	\sqrt{4\Delta_\text{min}^2 - |\mathbf{p}_{i+1} - \mathbf{p}_i|^2}
+	\label{eq:areaFromPythagoreanTheorem}
+\end{equation}
+Regarding Figure~\ref{fig:mara17figure4}a, the angle $\alpha_i$ could as well be 
+used for weighting, computing $A'_i = \sin(\alpha_i)\Delta_text{min}^2$, which is 
+equivalent to Equation~\ref{fig:areaFromPythagoreanTheorem}, but it 
+is computationally expensive due to the $\sin(\cdot)$ operation and the numeric error 
+is visible when the result of the mean filtering is rendered as color per 
+vertex. Furthermore, computing $\Delta_\text{min}$ within each 1-ring will cause 
+tremendous amounts of redundant computing operations. Therefore we define 
+\begin{equation}
+	\overline{\Delta_\text{min}} := \min\{\Delta_\text{min}(\mathbf{p}_0) | 
+	\mathbf{p}_0 \in \mathcal{M}\}
+\end{equation} 
+as the shortest edge for all triangles of the mesh. We will use this 
+$\overline{\Delta_\text{min}}$ in all the above computations. This will increase the 
+computing speed by a factor of $\approx 10$. 
+
+For a 1-ring we now compute the weighted mean function valuen with the total area
+$A = \displaystyle\sum_{i=1}^nA'_i$ as
+\begin{equation}
+	\bar{f}_0 := \frac{\sum A'_if_i^\mathbf{t}}{3A} \quad \forall i \in \{1,\ldots,n\}
+	\label{eq:weightedMean}
+\end{equation}
+with a negligible error due to the 1-ring approximation of the geodesic 
+disc.
+
+For a 1-ring weighted median filter instead, we can use all equations 
+except~\ref{eq:weightedMean}, which is replaced by a list of pairs $(f_i^\mathbf{t}, 
+A'_i)$ sorted by $f_i^\mathbf{t}$. The area is again used as a weight such that 
+$1 = \displaystyle\sum_{j=1}^n\frac{A'_i}{A}$. The weighted median now becomes
+\begin{equation}
+\end{equation}
+For the special case that $-$, which should not be excluded but rarely occurs, 
+we compute $f  ̃ 0 =tf k t + f k+1$.~\cite[s.~3.2]{Mara17}
 
 \subsection{Serial Iterative Filtering}
 The serial algorihtm is not yet plublished, but was already implemented in Gigamesh.
