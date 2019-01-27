@@ -828,8 +828,8 @@ suscipit, eget imperdiet mauris convallis.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{State of the Art Fast One-Ring Filtering}
 In dense, high-resolution meshes, which can feature several hundred points per
-mm$^2$~\cite[p.~00]{SourceNeeded}, one can see noise propagating within the 
-results of the MSII filter. This noise becomes more visible when either the 
+mm$^2$~\cite[p.~00]{SourceNeeded}, one can see noise propagating within the
+results of the MSII filter. This noise becomes more visible when either the
 isolines of the field of function values $f(\bp_i)$ are rendered, or as
 in jagged outlines for connected components of segmented areas of interest.
 ~\cite[s.~3.2]{Mara17}
@@ -1007,6 +1007,8 @@ suscipit, eget imperdiet mauris convallis.
 \section{Synthetic Data}
 Synthetic Examples are generated with ideal vertices, unlike acquired examples.
 
+\subsection{Random Noise Function}%TODO
+
 \subsection{A Flat surface with Dirac Delta function}
 \subsubsection{Square Tesselation, two triangles}
 \begin{figure}
@@ -1048,31 +1050,28 @@ Synthetic Examples are generated with ideal vertices, unlike acquired examples.
 \subsubsection{Square grid, four triangles}
 \subsubsection{Hexagonal grid}
 \subsubsection{Random vertices within a circle}
-
-
-
-\subsection{Debossed H}
-In Figure \ref{fig:h}, we show a debossed capital letter H.\footnote{The H is 
-as a nod to Heidelberg University and the cuniform script studied by the FCGL.}
-\begin{figure}[ht]
-\centering
-	\begin{subfigure}{.48\linewidth}
-		\centering
-		\resizebox{0.48\linewidth}{!}{\input{data/synthetic_meshes/h.tikz_labels.tex}}
-		\caption{HWireframe}\label{fig:h.a}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}{.48\linewidth}
-		\centering
-		\includegraphics[width=0.48\linewidth]{data/synthetic_meshes/h_colored.png}
-		\caption{HColored}\label{fig:h.b}
-	\end{subfigure}
-	\caption[A debossed H, which contains 22 vertices and 36 faces.]{A debossed H, 
-	which contains 22 vertices and 36 faces: (a) wireframe (b) colored by the 
-	relation to its distance to an underlying plane, in RdGy 
-	colorramp~\cite[p.~???]{Brewer2003}~\cite[p.~19]{Giga17}, visualized using the 
-	GigaMesh~\cite{Mara10} framework with triangle edges rendered.}\label{fig:h}
-\end{figure}
+%\subsection{Debossed H}
+%In Figure \ref{fig:h}, we show a debossed capital letter H.\footnote{The H is 
+%as a nod to Heidelberg University and the cuniform script studied by the FCGL.}
+%\begin{figure}[ht]
+%\centering
+%	\begin{subfigure}{.48\linewidth}
+%		\centering
+%		\resizebox{0.48\linewidth}{!}{\input{data/synthetic_meshes/h.tikz_labels.tex}}
+%		\caption{HWireframe}\label{fig:h.a}
+%	\end{subfigure}
+%	\hfill
+%	\begin{subfigure}{.48\linewidth}
+%		\centering
+%		\includegraphics[width=0.48\linewidth]{data/synthetic_meshes/h_colored.png}
+%		\caption{HColored}\label{fig:h.b}
+%	\end{subfigure}
+%	\caption[A debossed H, which contains 22 vertices and 36 faces.]{A debossed H, 
+%	which contains 22 vertices and 36 faces: (a) wireframe (b) colored by the 
+%	relation to its distance to an underlying plane, in RdGy 
+%	colorramp~\cite[p.~???]{Brewer2003}~\cite[p.~19]{Giga17}, visualized using the 
+%	GigaMesh~\cite{Mara10} framework with triangle edges rendered.}\label{fig:h}
+%\end{figure}
 To evaluate methods available for discrete surfaces, we can increase the number 
 of vertices of our synthetic wedge using five iterations of the mid-edge 
 subdivision scheme [PR97,
@@ -1108,7 +1107,7 @@ http://graphics.stanford.edu/data/3Dscanrep/ (Stanford Bunny)
 \section{Evaluation}
 \subsection{Compute Times}
 
-\begin{figure}
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=1.0\linewidth]{plots/computeTimesLinespoints.png}
 	\RawCaption{\caption[Compute Times - Linespoints]{Compute Times of Applying
