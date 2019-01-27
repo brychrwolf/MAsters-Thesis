@@ -1,9 +1,19 @@
-plots:
-	#gnuplot "computeTimesLinespoints4x4.plt"
-	gnuplot "computeTimesLinespoints.plt"
-	gnuplot "computeTimesScatter.plt"
-	gnuplot "numFacesByVerticesGoTo2.plt"
-	gnuplot "outputSerialVsGPGPU.plt"
+PLOTS =  computeTimesLinespoints4x4.png \
+		computeTimesLinespoints.png \
+		computeTimesScatter.png \
+		numFacesByVerticesGoTo2.png \
+		outputSerialVsGPGPU.png
 
-clean:
-	rm -f *.png
+
+
+all: $(PLOTS)
+
+%.png: %.plt
+	gnuplot $<
+
+
+
+clean: cleanPlots
+
+cleanPlots:
+	rm -f $(PLOTS)
