@@ -3,7 +3,7 @@
 \usepackage{tikz}
 \usepackage{graphicx}
 %\usepackage[lofdepth,lotdepth]{subfig}
-\usepackage{todonotes}
+\usepackage[colorinlistoftodos]{todonotes}
 \usepackage{makeidx}
 \usepackage{caption}
 \usepackage{subcaption}
@@ -27,6 +27,10 @@
 \date{\today}
 
 \newcommand{\bp}{\mathbf{p}}
+\newcommand{\todoFigure}[1]{\todo[color=blue!40]{#1}}
+\newcommand{\todoResearch}[1]{\todo[color=teal!40]{#1}}
+\newcommand{\todoElaborate}[1]{\todo[color=cyan!40]{#1}}
+\newcommand{\todoRemove}[1]{\todo[color=violet!40]{#1}}
 
 \makeindex
 \begin{document}
@@ -36,8 +40,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \frontmatter
-\todo{update date in final draft}
 \maketitle
+\todoRemove{update date in final draft}
 
 \chapter{Affirmation of Authorship}
 I affirmation authorship.
@@ -55,7 +59,7 @@ This is some abstract text.
 
 \listoffigures
 \listoftables
-\listoftodos\todo{Remove listoftodos in final draft}
+\listoftodos\todoRemove{Remove listoftodos in final draft}
 
 
 
@@ -75,7 +79,7 @@ nulla sit amet iaculis condimentum. Cras placerat leo vitae venenatis feugiat. I
 hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis 
 parturient montes, nascetur ridiculus mus. In aliquet sagittis dui eu pulvinar. 
 Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor 
-suscipit, eget imperdiet mauris convallis.~\cite[p.~00]{SourceNeeded}
+suscipit, eget imperdiet mauris convallis.~\cite[p.~00]{todoResearch}\todoResearch{citation needed}
 
 
 \section{Serial is slow.}
@@ -87,7 +91,7 @@ nulla sit amet iaculis condimentum. Cras placerat leo vitae venenatis feugiat. I
 hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis 
 parturient montes, nascetur ridiculus mus. In aliquet sagittis dui eu pulvinar. 
 Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor 
-suscipit, eget imperdiet mauris convallis.~\cite[p.~00]{SourceNeeded}
+suscipit, eget imperdiet mauris convallis.~\cite[p.~00]{todoResearch}\todoResearch{citation needed}
 
 
 
@@ -100,7 +104,7 @@ nulla sit amet iaculis condimentum. Cras placerat leo vitae venenatis feugiat. I
 hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis 
 parturient montes, nascetur ridiculus mus. In aliquet sagittis dui eu pulvinar. 
 Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor 
-suscipit, eget imperdiet mauris convallis.~\cite[p.~00]{SourceNeeded}
+suscipit, eget imperdiet mauris convallis.~\cite[p.~00]{todoResearch}\todoResearch{citation needed}
 
 
 
@@ -113,7 +117,7 @@ nulla sit amet iaculis condimentum. Cras placerat leo vitae venenatis feugiat. I
 hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis 
 parturient montes, nascetur ridiculus mus. In aliquet sagittis dui eu pulvinar. 
 Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor 
-suscipit, eget imperdiet mauris convallis.~\cite[p.~00]{SourceNeeded}
+suscipit, eget imperdiet mauris convallis.~\cite[p.~00]{todoResearch}\todoResearch{citation needed}
 
 
 
@@ -190,7 +194,7 @@ coordinate system [Gra30] having
 w i = 1 as fourth coordinate~\cite[p.~25-26]{Mara12}
 
 \subsection{Faces}
-Counte-Clokwise vs CloCkwise~\cite[p.~00]{SourceNeeded}
+Counte-Clokwise vs CloCkwise~\cite[p.~00]{todoResearch}\todoResearch{citation needed}
 The second important class of primitive elements are the so-called faces, which 
 are triangles t having an orientation provided by the data-structure of the 
 3D-models, e.g. for visualization using virtual illumination. The triangles are 
@@ -217,7 +221,7 @@ nulla sit amet iaculis condimentum. Cras placerat leo vitae venenatis feugiat. I
 hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis 
 parturient montes, nascetur ridiculus mus. In aliquet sagittis dui eu pulvinar. 
 Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor 
-suscipit, eget imperdiet mauris convallis.~\cite[p.~00]{SourceNeeded}
+suscipit, eget imperdiet mauris convallis.~\cite[p.~00]{todoResearch}\todoResearch{citation needed}
 
 
 %\section{Irregular Non-Manifold Meshes and 2D-Manifolds in 3D-Space}
@@ -460,7 +464,7 @@ far as possible from the areas of interest.~\cite[p.~120]{Mara12}
 
 
 \section{Achitectures of Concurrency}
-Serial vs Multi-threaded vs GPU order from slow to fast.~\cite[p.~00]{SourceNeeded}
+Serial vs Multi-threaded vs GPU order from slow to fast.~\cite[p.~00]{todoResearch}\todoResearch{citation needed}
 
 
 
@@ -615,23 +619,9 @@ specifications and features of the compute device (see Compute Capability) and
 the version of the CUDA driver API that describes the features supported by the 
 driver API and runtime.
 
-The version of the driver API is defined in the driver header file as 
-CUDA\_VERSION. It allows developers to check whether their application requires 
-a newer device driver than the one currently installed. This is important, 
-because the driver API is backward compatible, meaning that applications, 
-plug-ins, and libraries (including the C runtime) compiled against a particular 
-version of the driver API will continue to work on subsequent device driver 
-releases as illustrated in Figure 11. The driver API is not forward compatible, 
-which means that applications, plug-ins, and libraries (including the C runtime) 
-compiled against a particular version of the driver API will not work on 
-previous versions of the device driver.
+In the driver header file, the version of the driver API is defined by variable CUDA\_VERSION. It allows developers to check whether their application requires a newer device driver than the one currently installed. This is important, because the driver API is backward compatible, meaning that applications, plug-ins, and libraries (including the C runtime) compiled against a particular version of the driver API will continue to work on subsequent device driver releases as illustrated in Figure 11. The driver API is not forward compatible, which means that applications, plug-ins, and libraries (including the C runtime) compiled against a particular version of the driver API will not work on previous versions of the device driver.
 
-It is important to note that there are limitations on the mixing and matching of 
-versions that is supported:
-Since only one version of the CUDA Driver can be installed at a time on a 
-system, the installed driver must be of the same or higher version than the 
-maximum Driver API version against which any application, plug-ins, or libraries 
-that must run on that system were built.
+It is important to note that there are limitations on the mixing and matching of versions that is supported: Since only one version of the CUDA Driver can be installed at a time on a system, the installed driver must be of the same or higher version than the maximum Driver API version against which any application, plug-ins, or libraries that must run on that system were built.
 
 All plug-ins and libraries used by an application must use the same version of 
 the CUDA Runtime unless they statically link to the Runtime, in which case 
@@ -717,7 +707,7 @@ nulla sit amet iaculis condimentum. Cras placerat leo vitae venenatis feugiat. I
 hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis 
 parturient montes, nascetur ridiculus mus. In aliquet sagittis dui eu pulvinar. 
 Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor 
-suscipit, eget imperdiet mauris convallis.~\cite[p.~00]{SourceNeeded}
+suscipit, eget imperdiet mauris convallis.~\cite[p.~00]{todoResearch}\todoResearch{citation needed}
 
 
 
@@ -793,22 +783,22 @@ suscipit, eget imperdiet mauris convallis.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Related Work}
 \section{2D filters}
-	like from Digital Image Processing: i.e. Jaehne~\cite[p.~00]{SourceNeeded}
+	like from Digital Image Processing: i.e. Jaehne~\cite[p.~00]{todoResearch}\todoResearch{citation needed}
 
 
 
 \section{Work with Diffusion Processes}
-	like from Digital Image Processing: i.e. Jaehne~\cite[p.~00]{SourceNeeded}
+	like from Digital Image Processing: i.e. Jaehne~\cite[p.~00]{todoResearch}\todoResearch{citation needed}
 
 
 
 \section{Other Mesh filters}
-	which I could have done~\cite[p.~00]{SourceNeeded}
+	which I could have done~\cite[p.~00]{todoResearch}\todoResearch{citation needed}
 
 
 
 \section{Other approaches to accelerate}
-	operations on a mesh~\cite[p.~00]{SourceNeeded}
+	operations on a mesh~\cite[p.~00]{todoResearch}\todoResearch{citation needed}
 
 
 
@@ -833,7 +823,7 @@ suscipit, eget imperdiet mauris convallis.
 \chapter{State of the Art Fast One-Ring Filtering}
 When the field of function values $f(\bp_i)$ are rendered as isolines, or when one visualizes connected components of segmented areas of interest.
 
-In dense, high-resolution meshes, which can feature several hundred points per mm$^2$~\cite[p.~00]{SourceNeeded}, one can see noise propagating within the results of the MSII filter as jagged outlines.~\cite[s.~3.2]{Mara17}
+In dense, high-resolution meshes, which can feature several hundred points per mm$^2$~\cite[p.~00]{todoResearch}\todoResearch{citation needed}, one can see noise propagating within the results of the MSII filter as jagged outlines.~\cite[s.~3.2]{Mara17}
 
 
 
@@ -849,7 +839,7 @@ In the following we proceed solely the 1-ring neighborhood of all points of
 $\mathcal{M}$ considering the center of a 1-ring as $\bp_0 \in 
 \mathcal{M}$. Although the number n of the elements in each 1-ring might 
 differ, it is always indexed by $i \in {1, \ldots, n}$ in a clockwise
-direction. \todo{verify and edit if GigaMesh assumes a counterclockwise direction}
+direction. \todoResearch{verify and edit if GigaMesh assumes a counterclockwise direction}
 
 The smallest edge length within the 1-ring around the vertex $\bp_0$ 
 \begin{equation}
@@ -860,7 +850,7 @@ is shortly denoted by $\Delta_\text{min}$ and becomes the radius of the
 so-called geodesic disc. Figure~\ref{eq:globalMinimumEdgeLength} shows 
 a typical configuration of an 1-ring, its geodesic disc with radius 
 $\Delta_\text{min}$ and triangles $\mathbf{t}'_i$ used for weighting.
-\begin{figure}
+\begin{figure}[ht]
 	%\centering
 	%\includegraphics[width=1.0\linewidth]{example-image-16x9.png}
 	\missingfigure{illustrate new geodesic disc algorithm idea}
@@ -869,8 +859,9 @@ $\Delta_\text{min}$ and triangles $\mathbf{t}'_i$ used for weighting.
 	$\Delta_\text{min}$. Here $\Delta_\text{min} = |\bp_4 - \bp_0|$, 
 	indicated as the red arrow. (b) Approximation of the disc with an 
 	interpolated 1-ring of triangles $\mathbf{t}'_i$ having an area of $A'_i$ .}
-	\label{fig:geodesicDisc}} %TODO: needs real figure
+	\label{fig:geodesicDisc}}
 \end{figure}
+\todoFigure{geodesicDisc}
 The function values $f'_0$ at the respective points $\bp_i$ along 
 this disc are interpolated by 
 \begin{equation}
@@ -1009,45 +1000,33 @@ suscipit, eget imperdiet mauris convallis.
 \section{Synthetic Data}
 Synthetic Examples are generated with ideal vertices, unlike acquired examples.
 
-\subsection{Random Noise Function}%TODO
+\subsection{Random Noise Function}\todoResearch{Currently, no meshes exist for research}
 
 \subsection{A Flat surface with Dirac Delta function}
 \subsubsection{Square Tesselation, two triangles}
-\begin{figure}
-	\centering
-	\begin{subfigure}{.48\linewidth}
-		\centering
-		\includegraphics[width=0.48\linewidth]{data/synthetic_meshes/square_tesselation_2tri_Dirac_delta_1_v9_f8_wireframe.png}
-		\caption{Sq21Wireframe}\label{fig:sq2.a}
+\begin{figure}[ht]
+	\begin{subfigure}[b]{0.48\linewidth}
+		\includegraphics[width=1.0\linewidth]{data/synthetic_meshes/square_tesselation_2tri_Dirac_delta_1_v9_f8_funcvals_0iter_crop.png}
+		\caption{Sq2 1 Colored, 0 iter}\label{fig:sq2.a}
 	\end{subfigure}
-	\begin{subfigure}{.48\linewidth}
-		\centering
-		\includegraphics[width=0.48\linewidth]{data/synthetic_meshes/square_tesselation_2tri_Dirac_delta_1_v9_f8_funcvals.png}
-		\caption{Sq21Colored, 0 iter}\label{fig:sq2.b}
+	\begin{subfigure}[b]{0.48\linewidth}
+		\includegraphics[width=1.0\linewidth]{data/synthetic_meshes/square_tesselation_2tri_Dirac_delta_1_v9_f8_funcvals_1iter_crop.png}
+		\caption{Sq2 1 Colored, 1 iter}\label{fig:sq2.b}
 	\end{subfigure}
 
 	\bigskip
-	\begin{subfigure}{.3\linewidth}
-		\centering
-		\includegraphics[width=0.30\linewidth]{data/synthetic_meshes/square_tesselation_2tri_Dirac_delta_100_v40401_f80000_wireframe.png}
-		\caption{Sq21000Wireframe}\label{fig:sq2.c}
+	\begin{subfigure}[b]{0.48\linewidth}
+		\includegraphics[width=1.0\linewidth]{data/synthetic_meshes/square_tesselation_2tri_Dirac_delta_100_v40401_f80000_funcvals_0iter_crop.png}
+		\caption{Sq2 1000 Colored, 0 iter}\label{fig:sq2.c}
 	\end{subfigure}
-%	\hfill
-	\begin{subfigure}{.3\linewidth}
-		\centering
-		\includegraphics[width=0.30\linewidth]{data/synthetic_meshes/square_tesselation_2tri_Dirac_delta_100_v40401_f80000_funcvals_0iter.png}
-		\caption{Sq21000Colored, 0 iter}\label{fig:sq2.d}
-	\end{subfigure}
-%	\hfill
-	\begin{subfigure}{.3\linewidth}
-		\centering
-		\includegraphics[width=0.30\linewidth]{data/synthetic_meshes/square_tesselation_2tri_Dirac_delta_100_v40401_f80000_funcvals_1000iter.png}
-		\caption{Sq21000Colored, 1000 iter}\label{fig:sq2.e}
+	\begin{subfigure}[b]{0.48\linewidth}
+		\includegraphics[width=1.0\linewidth]{data/synthetic_meshes/square_tesselation_2tri_Dirac_delta_100_v40401_f80000_funcvals_1000iter_crop.png}
+		\caption{Sq2 1000 Colored, 1000 iter}\label{fig:sq2.d}
 	\end{subfigure}
 	\RawCaption{\caption[Synthetic Square, 2 triangles, Dirac delta function]{A synthetic square, subdivided by triangles, with a Dirac delta function applied: (a) wireframe (b) colored by function value before filter (c) colored by function value after 1000 iterations 
 	colorramp~\cite[p.~???]{Brewer2003}~\cite[p.~19]{Giga17}, visualized using the 
-	GigaMesh~\cite{Mara10} framework with triangle edges rendered.}\label{fig:sq2}}
-\end{figure}
+	GigaMesh~\cite{Mara10} with function values colored with the Improved Hot colorramp, exported as png after disabling the background grid [f7], and screenshot cropping, as well as rejecting tiled rendering, finally cropping to content in GIMP.}\label{fig:sq2}}
+\end{figure}\todoResearch{add GIMP citations}
 
 \subsubsection{Square grid, four triangles}
 \subsubsection{Hexagonal grid}
@@ -1089,7 +1068,7 @@ Mayan Tablets
 Dynamic Earth models
 
 \subsection{University Seal}
-Unisiegel\_UAH\_Ebay-Siegel\_Uniarchiv\_HE2066-60\_010614\_partial\_ASCII.ply
+Unisiegel\_\- UAH\_\- Ebay-Siegel\_\- Uniarchiv\_\- HE2066-60\_\- 010614\_\- partial\_\- ASCII.ply
 
 \subsection{Mars Crater}
 Mars dataset crater as a Digital Terrain Models (DTMs) Mention in Mara 3.6 
@@ -1109,7 +1088,7 @@ http://graphics.stanford.edu/data/3Dscanrep/ (Stanford Bunny)
 \section{Evaluation}
 \subsection{Compute Times}
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=1.0\linewidth]{plots/computeTimesLinespoints.png}
 	\RawCaption{\caption[Compute Times - Linespoints]{Compute Times of Applying
@@ -1118,7 +1097,7 @@ http://graphics.stanford.edu/data/3Dscanrep/ (Stanford Bunny)
 		\label{fig:computeTimesLP}}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=1.0\linewidth]{plots/computeTimesScatter.png}
 	\RawCaption{\caption[Compute Times - Scatter]{Compute Times for Different
@@ -1126,7 +1105,7 @@ http://graphics.stanford.edu/data/3Dscanrep/ (Stanford Bunny)
 		\label{fig:computeTimesS}}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=1.0\linewidth]{plots/numFacesByVerticesGoTo2.png}
 	\RawCaption{\caption[Ratio of Faces / Vertices]{Ratio of Faces to Vertices by
