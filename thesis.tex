@@ -3,11 +3,13 @@
 \usepackage{tikz}
 \usepackage{graphicx}
 %\usepackage[lofdepth,lotdepth]{subfig}
+\usepackage{todonotes}
 \usepackage{makeidx}
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{floatrow}
 \usepackage{parskip}
+
 \usepackage[bookmarks,colorlinks]{hyperref}
 
 \hypersetup{colorlinks,
@@ -22,7 +24,7 @@
 }
 \author{Bryan Wolfford}
 \title{GPGPU Accelerated Iterative Filtering of Scalar Fields on Discrete Manifolds}
-\date{\today} %TODO: Fix date upon submission
+\date{\today}
 
 \newcommand{\bp}{\mathbf{p}}
 
@@ -34,6 +36,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \frontmatter
+\todo{update date in final draft}
 \maketitle
 
 \chapter{Affirmation of Authorship}
@@ -52,6 +55,7 @@ This is some abstract text.
 
 \listoffigures
 \listoftables
+\listoftodos\todo{Remove listoftodos in final draft}
 
 
 
@@ -827,12 +831,9 @@ suscipit, eget imperdiet mauris convallis.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{State of the Art Fast One-Ring Filtering}
-In dense, high-resolution meshes, which can feature several hundred points per
-mm$^2$~\cite[p.~00]{SourceNeeded}, one can see noise propagating within the
-results of the MSII filter. This noise becomes more visible when either the
-isolines of the field of function values $f(\bp_i)$ are rendered, or as
-in jagged outlines for connected components of segmented areas of interest.
-~\cite[s.~3.2]{Mara17}
+When the field of function values $f(\bp_i)$ are rendered as isolines, or when one visualizes connected components of segmented areas of interest.
+
+In dense, high-resolution meshes, which can feature several hundred points per mm$^2$~\cite[p.~00]{SourceNeeded}, one can see noise propagating within the results of the MSII filter as jagged outlines.~\cite[s.~3.2]{Mara17}
 
 
 
@@ -848,7 +849,7 @@ In the following we proceed solely the 1-ring neighborhood of all points of
 $\mathcal{M}$ considering the center of a 1-ring as $\bp_0 \in 
 \mathcal{M}$. Although the number n of the elements in each 1-ring might 
 differ, it is always indexed by $i \in {1, \ldots, n}$ in a clockwise
-direction. %TODO: Doesn't GigaMesh assume a counterclockwise direction? 
+direction. \todo{verify and edit if GigaMesh assumes a counterclockwise direction}
 
 The smallest edge length within the 1-ring around the vertex $\bp_0$ 
 \begin{equation}
@@ -861,7 +862,8 @@ a typical configuration of an 1-ring, its geodesic disc with radius
 $\Delta_\text{min}$ and triangles $\mathbf{t}'_i$ used for weighting.
 \begin{figure}
 	%\centering
-	\includegraphics[width=1.0\linewidth]{example-image-16x9.png}
+	%\includegraphics[width=1.0\linewidth]{example-image-16x9.png}
+	\missingfigure{illustrate new geodesic disc algorithm idea}
 	\RawCaption{\caption[1-ring and geodesic disc]{1-ring with (a) irregular 
 	triangles $\mathbf{t}_i$ and the geodesic disc with radius 
 	$\Delta_\text{min}$. Here $\Delta_\text{min} = |\bp_4 - \bp_0|$, 

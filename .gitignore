@@ -11,5 +11,6 @@ thesis.lot
 thesis.out
 thesis.pdf
 thesis.toc
+thesis.tdo
 
 plots/*.png
