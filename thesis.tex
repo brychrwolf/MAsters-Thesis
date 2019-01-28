@@ -1030,31 +1030,110 @@ Synthetic Examples are generated with ideal vertices, unlike acquired examples.
 \subsubsection{Square Tesselation, two triangles}
 \begin{figure}[ht]
 	\begin{subfigure}[b]{0.48\linewidth}
-		\includegraphics[width=1.0\linewidth]{data/synthetic_meshes/square_tesselation_2tri_Dirac_delta_1_v9_f8_funcvals_0iter_crop.png}
-		\caption{Sq2 1 Colored, 0 iter}\label{fig:sq2.a}
+		\includegraphics[width=1.0\linewidth]{data/synthetic_meshes/square_tesselation_2tri_Dirac_delta_1_v9_f8_wireframe.png}
+		\caption{Sq2 v9\_f8 wireframe}\label{fig:sq2.a}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.48\linewidth}
-		\includegraphics[width=1.0\linewidth]{data/synthetic_meshes/square_tesselation_2tri_Dirac_delta_1_v9_f8_funcvals_1iter_crop.png}
-		\caption{Sq2 1 Colored, 1 iter}\label{fig:sq2.b}
+		\includegraphics[width=1.0\linewidth]{data/synthetic_meshes/square_tesselation_2tri_Dirac_delta_10_v441_f800_wireframe.png}
+		\caption{Sq2 v441\_f800 wireframe}\label{fig:sq2.b}
 	\end{subfigure}
 
 	\bigskip
 	\begin{subfigure}[b]{0.48\linewidth}
-		\includegraphics[width=1.0\linewidth]{data/synthetic_meshes/square_tesselation_2tri_Dirac_delta_100_v40401_f80000_funcvals_0iter_crop.png}
-		\caption{Sq2 1000 Colored, 0 iter}\label{fig:sq2.c}
+		\includegraphics[width=1.0\linewidth]{data/synthetic_meshes/square_tesselation_2tri_Dirac_delta_1_v9_f8_funcvals_0iter_crop.png}
+		\caption{Sq2 v9\_f8 iter 0}\label{fig:sq2.c}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.48\linewidth}
-		\includegraphics[width=1.0\linewidth]{data/synthetic_meshes/square_tesselation_2tri_Dirac_delta_100_v40401_f80000_funcvals_1000iter_crop.png}
-		\caption{Sq2 1000 Colored, 1000 iter}\label{fig:sq2.d}
+		\includegraphics[width=1.0\linewidth]{data/synthetic_meshes/square_tessellation_2tri_Dirac_delta_10_v441_f800_funcvals_0iter.png}
+		\caption{Sq2 v441\_f800 iter 0}\label{fig:sq2.d}
 	\end{subfigure}
-	\RawCaption{\caption[Synthetic Square, 2 triangles, Dirac delta function]{A synthetic square, subdivided by triangles, with a Dirac delta function applied: (a) wireframe (b) colored by function value before filter (c) colored by function value after 1000 iterations 
-	colorramp~\cite[p.~???]{Brewer2003}~\cite[p.~19]{Giga17}, visualized using the 
-	GigaMesh~\cite{Mara10} with function values colored with the Improved Hot colorramp, exported as png after disabling the background grid [f7], and screenshot cropping, as well as rejecting tiled rendering, finally cropping to content in GIMP.}\label{fig:sq2}}
+
+	\bigskip
+	\begin{subfigure}[b]{0.48\linewidth}
+		\includegraphics[width=1.0\linewidth]{data/synthetic_meshes/square_tesselation_2tri_Dirac_delta_1_v9_f8_funcvals_1iter_crop.png}
+		\caption{Sq2 v9\_f8 iter 1}\label{fig:sq2.e}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.48\linewidth}
+		\includegraphics[width=1.0\linewidth]{data/synthetic_meshes/square_tessellation_2tri_Dirac_delta_10_v441_f800_funcvals_100iter.png}
+		\caption{Sq2 v441\_f800 iter 100}\label{fig:sq2.f}
+	\end{subfigure}
+	\RawCaption{\caption[Synthetic Square, 2 triangles, Dirac delta function]{A synthetic square, subdivided by triangles, with a Dirac delta function applied: (a) wireframe (b) colored by function value before filter (c) colored by function value after 1000 iterations
+%GigaMesh~\cite{Mara10} with function values colored with the Improved Hot colorramp, exported as png after disabling the background grid [f7], maximizing the window, disabling screenshot cropping, as well as rejecting tiled rendering, finally cropping to content in GIMP.
+}\label{fig:sq2}}
 \end{figure}\todoCitation
+\todoResearch{Why does sq2 10 need 100 iters to match sq 1 at 1 iters?}
 
 \subsubsection{Square grid, four triangles}
 \subsubsection{Hexagonal grid}
+\begin{figure}[ht]
+	\begin{subfigure}[b]{0.48\linewidth}
+		\includegraphics[width=1.0\linewidth,height=0.3\textheight,keepaspectratio]{data/synthetic_meshes/hexagonal_tessellation_Dirac_delta_1_v31_f42_wireframe.png}
+		\caption{Hex v31\_f42 wireframe}\label{fig:hex.a}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.48\linewidth}
+		\includegraphics[width=1.0\linewidth,height=0.3\textheight,keepaspectratio]{data/synthetic_meshes/hexagonal_tessellation_Dirac_delta_10_v1057_f1986_wireframe.png}
+		\caption{Hex v1057\_f1986 wireframe}\label{fig:hex.b}
+	\end{subfigure}
+
+	\bigskip
+	\begin{subfigure}[b]{0.48\linewidth}
+		\includegraphics[width=1.0\linewidth,height=0.3\textheight,keepaspectratio]{data/synthetic_meshes/hexagonal_tessellation_Dirac_delta_1_v31_f42_funcvals_0iter_crop.png}
+		\caption{Hex v31\_f42 iter 0}\label{fig:hex.c}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.48\linewidth}
+		\includegraphics[width=1.0\linewidth,height=0.3\textheight,keepaspectratio]{data/synthetic_meshes/hexagonal_tessellation_Dirac_delta_10_v1057_f1986_funcvals_0iter_crop.png}
+		\caption{Hex v1057\_f1986 iter 0}\label{fig:hex.d}
+	\end{subfigure}
+
+	\bigskip
+	\begin{subfigure}[b]{0.48\linewidth}
+		\includegraphics[width=1.0\linewidth,height=0.3\textheight,keepaspectratio]{data/synthetic_meshes/hexagonal_tessellation_Dirac_delta_1_v31_f42_funcvals_2iter_crop.png}
+		\caption{Hex v31\_f42 iter 2}\label{fig:hex.e}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.48\linewidth}
+		\includegraphics[width=1.0\linewidth,height=0.3\textheight,keepaspectratio]{data/synthetic_meshes/hexagonal_tessellation_Dirac_delta_10_v1057_f1986_funcvals_200iter_crop.png}
+		\caption{Hex v1057\_f1986 iter 200}\label{fig:hex.f}
+	\end{subfigure}
+	\RawCaption{\caption[Synthetic Hexagonal Tessellations, Dirac delta function]{A synthetic hexagonal tessellation, subdivided by triangles, with a Dirac delta function applied: (a) v31 f42 wireframe (b) v1057 f1986 wireframe (c) v31 f42 colored by function value before filter (d) v1057 f1986 colored by function value before filter (e) v31 f42 colored by function value after 2 iterations (e) v1057 f1986 colored by function value after 200 iterations. 
+% All using the colorramp "Hot (improved)"~\cite[p.~???]{Brewer2003}~\cite[p.~19]{Giga17}, visualized using GigaMesh~\cite{Mara10}, exported as png after disabling the background grid [f7], maximizing the window, disabling screenshot cropping, as well as rejecting tiled rendering, finally cropping to content in GIMP.
+}\label{fig:hex}}
+\end{figure}\todoCitation
+
 \subsubsection{Random vertices within a circle}
+\begin{figure}[ht]
+	\begin{subfigure}[b]{0.48\linewidth}
+		\includegraphics[width=1.0\linewidth,height=0.3\textheight,keepaspectratio]{data/synthetic_meshes/random_circle_tessellation_Dirac_delta_1_v11_f12_wireframe.png}
+		\caption{R.Circ v11\_f12 wireframe}\label{fig:rcirc.a}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.48\linewidth}
+		\includegraphics[width=1.0\linewidth,height=0.3\textheight,keepaspectratio]{data/synthetic_meshes/random_circle_tessellation_Dirac_delta_10_v641_f1252_wireframe.png}
+		\caption{R.Circ v641\_f1252 wireframe}\label{fig:rcirc.b}
+	\end{subfigure}
+
+	\bigskip
+	\begin{subfigure}[b]{0.48\linewidth}
+		\includegraphics[width=1.0\linewidth,height=0.3\textheight,keepaspectratio]{data/synthetic_meshes/random_circle_tessellation_Dirac_delta_1_v11_f12_funcvals_0iter.png}
+		\caption{R.Circ v11\_f12 iter 0}\label{fig:rcirc.c}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.48\linewidth}
+		\includegraphics[width=1.0\linewidth,height=0.3\textheight,keepaspectratio]{data/synthetic_meshes/random_circle_tessellation_Dirac_delta_10_v641_f1252_funcvals_0iter.png}
+		\caption{R.Circ v641\_f1252 iter 0}\label{fig:rcirc.d}
+	\end{subfigure}
+
+	\bigskip
+	\begin{subfigure}[b]{0.48\linewidth}
+		\includegraphics[width=1.0\linewidth,height=0.3\textheight,keepaspectratio]{data/synthetic_meshes/random_circle_tessellation_Dirac_delta_1_v11_f12_funcvals_0iter.png}
+		\caption{R.Circ v11\_f12 iter 2}\label{fig:rcirc.e}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.48\linewidth}
+		\includegraphics[width=1.0\linewidth,height=0.3\textheight,keepaspectratio]{data/synthetic_meshes/random_circle_tessellation_Dirac_delta_10_v641_f1252_funcvals_10000iter.png}
+		\caption{R.Circ v641\_f1252 iter 10,000}\label{fig:rcirc.f}
+	\end{subfigure}
+	\RawCaption{\caption[Synthetic random vertices equally distributed per radius, Dirac delta function]{A synthetic circle filled with random vertices equaly distributed per radius, triangulated by Delauney method~\cite[p.~??]{todoCitation}, with a Dirac delta function applied: (a) v11\_f12 wireframe (b) v641\_f1252 wireframe (c) v11\_f12 colored by function value before filter (d) v641\_f1252 colored by function value before filter (e) v11\_f12 colored by function value after 2 iterations (f) v641\_f1252 colored by function value after 10,000 iterations. 
+%All using the colorramp "Hot (improved)"~\cite[p.~???]{Brewer2003}~\cite[p.~19]{Giga17}, visualized using GigaMesh~\cite{Mara10}, exported as png after disabling the background grid [f7], maximizing the window, disabling screenshot cropping, as well as rejecting tiled rendering, finally cropping to content in GIMP.
+}\label{fig:rcirc}}\todoResearch{Why and who equally distributed}
+\end{figure}\todoCitation
+
 %\subsection{Debossed H}
 %In Figure \ref{fig:h}, we show a debossed capital letter H.\footnote{The H is 
 %as a nod to Heidelberg University and the cuniform script studied by the FCGL.}
