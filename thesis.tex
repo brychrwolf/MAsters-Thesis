@@ -1,4 +1,8 @@
 \documentclass[openany]{book}
+\author{Bryan Wolfford}
+\title{GPGPU Accelerated Iterative Filtering of Scalar Fields on Discrete Manifolds}
+\date{\today}
+
 \usepackage{amsmath}
 \usepackage{tikz}
 \usepackage{graphicx}
@@ -9,9 +13,7 @@
 \usepackage{subcaption}
 \usepackage{floatrow}
 \usepackage{parskip}
-
 \usepackage[bookmarks,colorlinks]{hyperref}
-
 \hypersetup{colorlinks,
 	citecolor=[rgb]{0,0,0.5},
 	filecolor=[rgb]{0,0,0.5},
@@ -22,15 +24,30 @@
 		Title={GPGPU Accelerated Iterative Filtering of Scalar Fields on Discrete Manifolds},
 	}
 }
-\author{Bryan Wolfford}
-\title{GPGPU Accelerated Iterative Filtering of Scalar Fields on Discrete Manifolds}
-\date{\today}
 
 \newcommand{\bp}{\mathbf{p}}
-\newcommand{\todoFigure}[1]{\todo[color=blue!40]{#1}}
-\newcommand{\todoResearch}[1]{\todo[color=teal!40]{#1}}
-\newcommand{\todoElaborate}[1]{\todo[color=cyan!40]{#1}}
-\newcommand{\todoRemove}[1]{\todo[color=violet!40]{#1}}
+
+\newcommand{\todoRemove}[1]{\todo[color=red!40]{#1}}
+\newcommand{\todoCitation}[1]{\todo[color=teal!40]{citation required}}
+\newcommand{\todoResearch}[1]{\todo[color=cyan!40]{#1}}
+\newcommand{\todoElaborate}[1]{\todo[color=violet!40]{#1}}
+\newcommand{\todoReword}[1]{\todo[color=magenta!40]{#1}}
+%xcolor base colors:
+%	black
+%	blue
+%	brown
+%%%	cyan
+%	lime
+%%%	magenta
+%	olive
+%	orange
+%	pink
+%	purple
+%%%	red
+%%%	teal
+%%%	violet
+%	white
+%	yellow
 
 \makeindex
 \begin{document}
@@ -79,7 +96,7 @@ nulla sit amet iaculis condimentum. Cras placerat leo vitae venenatis feugiat. I
 hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis 
 parturient montes, nascetur ridiculus mus. In aliquet sagittis dui eu pulvinar. 
 Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor 
-suscipit, eget imperdiet mauris convallis.~\cite[p.~00]{todoResearch}\todoResearch{citation needed}
+suscipit, eget imperdiet mauris convallis.~\cite[p.~00]{todoCitation}\todoCitation
 
 
 \section{Serial is slow.}
@@ -91,7 +108,7 @@ nulla sit amet iaculis condimentum. Cras placerat leo vitae venenatis feugiat. I
 hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis 
 parturient montes, nascetur ridiculus mus. In aliquet sagittis dui eu pulvinar. 
 Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor 
-suscipit, eget imperdiet mauris convallis.~\cite[p.~00]{todoResearch}\todoResearch{citation needed}
+suscipit, eget imperdiet mauris convallis.~\cite[p.~00]{todoCitation}\todoCitation
 
 
 
@@ -104,7 +121,7 @@ nulla sit amet iaculis condimentum. Cras placerat leo vitae venenatis feugiat. I
 hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis 
 parturient montes, nascetur ridiculus mus. In aliquet sagittis dui eu pulvinar. 
 Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor 
-suscipit, eget imperdiet mauris convallis.~\cite[p.~00]{todoResearch}\todoResearch{citation needed}
+suscipit, eget imperdiet mauris convallis.~\cite[p.~00]{todoCitation}\todoCitation
 
 
 
@@ -117,7 +134,20 @@ nulla sit amet iaculis condimentum. Cras placerat leo vitae venenatis feugiat. I
 hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis 
 parturient montes, nascetur ridiculus mus. In aliquet sagittis dui eu pulvinar. 
 Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor 
-suscipit, eget imperdiet mauris convallis.~\cite[p.~00]{todoResearch}\todoResearch{citation needed}
+suscipit, eget imperdiet mauris convallis.~\cite[p.~00]{todoCitation}\todoCitation
+
+
+
+\section{Noise propagates when processing dense meshes}
+When the field of function values $f(\bp_i)$ are rendered as isolines, or when one visualizes connected components of segmented areas of interest.
+
+In dense, high-resolution meshes, which can feature several hundred points per mm$^2$~\cite[p.~00]{todoCitation}\todoCitation, one can see noise propagating within the results of the MSII filter as jagged outlines.~\cite[s.~3.2]{Mara17}
+
+The design principles for filtering of function 
+values in irregular grids are the same as for those well-known algorithms used 
+for raster images. However, they require adaptation as there is no fixed 
+distance between the points and no fixed number of neighboring points in 
+1-rings of irregular grids.~\cite[s.~3.2]{Mara17}
 
 
 
@@ -194,7 +224,7 @@ coordinate system [Gra30] having
 w i = 1 as fourth coordinate~\cite[p.~25-26]{Mara12}
 
 \subsection{Faces}
-Counte-Clokwise vs CloCkwise~\cite[p.~00]{todoResearch}\todoResearch{citation needed}
+Counte-Clokwise vs CloCkwise~\cite[p.~00]{todoCitation}\todoCitation
 The second important class of primitive elements are the so-called faces, which 
 are triangles t having an orientation provided by the data-structure of the 
 3D-models, e.g. for visualization using virtual illumination. The triangles are 
@@ -221,7 +251,7 @@ nulla sit amet iaculis condimentum. Cras placerat leo vitae venenatis feugiat. I
 hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis 
 parturient montes, nascetur ridiculus mus. In aliquet sagittis dui eu pulvinar. 
 Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor 
-suscipit, eget imperdiet mauris convallis.~\cite[p.~00]{todoResearch}\todoResearch{citation needed}
+suscipit, eget imperdiet mauris convallis.~\cite[p.~00]{todoCitation}\todoCitation
 
 
 %\section{Irregular Non-Manifold Meshes and 2D-Manifolds in 3D-Space}
@@ -464,7 +494,7 @@ far as possible from the areas of interest.~\cite[p.~120]{Mara12}
 
 
 \section{Achitectures of Concurrency}
-Serial vs Multi-threaded vs GPU order from slow to fast.~\cite[p.~00]{todoResearch}\todoResearch{citation needed}
+Serial vs Multi-threaded vs GPU order from slow to fast.~\cite[p.~00]{todoCitation}\todoCitation
 
 
 
@@ -707,7 +737,7 @@ nulla sit amet iaculis condimentum. Cras placerat leo vitae venenatis feugiat. I
 hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis 
 parturient montes, nascetur ridiculus mus. In aliquet sagittis dui eu pulvinar. 
 Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor 
-suscipit, eget imperdiet mauris convallis.~\cite[p.~00]{todoResearch}\todoResearch{citation needed}
+suscipit, eget imperdiet mauris convallis.~\cite[p.~00]{todoCitation}\todoCitation
 
 
 
@@ -783,22 +813,22 @@ suscipit, eget imperdiet mauris convallis.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Related Work}
 \section{2D filters}
-	like from Digital Image Processing: i.e. Jaehne~\cite[p.~00]{todoResearch}\todoResearch{citation needed}
+	like from Digital Image Processing: i.e. Jaehne~\cite[p.~00]{todoCitation}\todoCitation
 
 
 
 \section{Work with Diffusion Processes}
-	like from Digital Image Processing: i.e. Jaehne~\cite[p.~00]{todoResearch}\todoResearch{citation needed}
+	like from Digital Image Processing: i.e. Jaehne~\cite[p.~00]{todoCitation}\todoCitation
 
 
 
 \section{Other Mesh filters}
-	which I could have done~\cite[p.~00]{todoResearch}\todoResearch{citation needed}
+	which I could have done~\cite[p.~00]{todoCitation}\todoCitation
 
 
 
 \section{Other approaches to accelerate}
-	operations on a mesh~\cite[p.~00]{todoResearch}\todoResearch{citation needed}
+	operations on a mesh~\cite[p.~00]{todoCitation}\todoCitation
 
 
 
@@ -821,20 +851,11 @@ suscipit, eget imperdiet mauris convallis.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{State of the Art Fast One-Ring Filtering}
-When the field of function values $f(\bp_i)$ are rendered as isolines, or when one visualizes connected components of segmented areas of interest.
-
-In dense, high-resolution meshes, which can feature several hundred points per mm$^2$~\cite[p.~00]{todoResearch}\todoResearch{citation needed}, one can see noise propagating within the results of the MSII filter as jagged outlines.~\cite[s.~3.2]{Mara17}
-
-
+The Fast One-Ring smoothing filter was initially proposed by H. Mara and S. Krömker at the EUROGRAPHICS Workshop on Graphics and Cultural Heritage (2017) ~\cite[s.~3.2]{Mara17}.
+Further research was conducted by the authors and it was determined that the weighting methods required improvement, therefore, they implemented those improvements within the GigaMesh framework.~\cite[p.~00]{todoCitation}\todoCitation
+We will now examine this as-yet-unpublished algorithm as it exists within the GigaMesh framework.\todoReword{redundant}
 
 \section{Serial Iterative Filtering}
-The serial algorihtm is not yet plublished, but was already implemented in Gigamesh.
-The design principles for filtering of function 
-values in irregular grids are the same as for those well-known algorithms used 
-for raster images. However, they require adaptation as there is no fixed 
-distance between the points and no fixed number of neighboring points in 
-1-rings of irregular grids.
-
 In the following we proceed solely the 1-ring neighborhood of all points of 
 $\mathcal{M}$ considering the center of a 1-ring as $\bp_0 \in 
 \mathcal{M}$. Although the number n of the elements in each 1-ring might 
@@ -861,7 +882,6 @@ $\Delta_\text{min}$ and triangles $\mathbf{t}'_i$ used for weighting.
 	interpolated 1-ring of triangles $\mathbf{t}'_i$ having an area of $A'_i$ .}
 	\label{fig:geodesicDisc}}
 \end{figure}
-\todoFigure{geodesicDisc}
 The function values $f'_0$ at the respective points $\bp_i$ along 
 this disc are interpolated by 
 \begin{equation}
@@ -927,7 +947,7 @@ we compute $f  ̃ 0 =tf k t + f k+1$.~\cite[s.~3.2]{Mara17}
 
 
 \section{GigaMesh}
-The serial algorihtm is not yet plublished, but was already implemented in Gigamesh.
+The serial algorithm is not yet plublished, but was already implemented in Gigamesh.
 
 
 
@@ -950,6 +970,10 @@ suscipit, eget imperdiet mauris convallis.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Profiling \& Exploiting Concurrency}
+We have since profiled this as-yet-unpublished algorithm and improved upon its performance by exploiting the discovered cuncurrency. Having had examinated the serial algorithm, we will now explore the...\todoReword{continue}
+
+
+
 \section{Data Partitioning}~\cite[p.~357]{Lang17}
 Data Partitioning is important.
 
@@ -1026,7 +1050,7 @@ Synthetic Examples are generated with ideal vertices, unlike acquired examples.
 	\RawCaption{\caption[Synthetic Square, 2 triangles, Dirac delta function]{A synthetic square, subdivided by triangles, with a Dirac delta function applied: (a) wireframe (b) colored by function value before filter (c) colored by function value after 1000 iterations 
 	colorramp~\cite[p.~???]{Brewer2003}~\cite[p.~19]{Giga17}, visualized using the 
 	GigaMesh~\cite{Mara10} with function values colored with the Improved Hot colorramp, exported as png after disabling the background grid [f7], and screenshot cropping, as well as rejecting tiled rendering, finally cropping to content in GIMP.}\label{fig:sq2}}
-\end{figure}\todoResearch{add GIMP citations}
+\end{figure}\todoCitation
 
 \subsubsection{Square grid, four triangles}
 \subsubsection{Hexagonal grid}
