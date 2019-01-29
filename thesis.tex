@@ -34,6 +34,7 @@
 \newcommand{\todoResearch}[1]{\todo[color=cyan!40]{#1}}
 \newcommand{\todoElaborate}[1]{\todo[color=violet!40]{#1}}
 \newcommand{\todoReword}[1]{\todo[color=magenta!40]{#1}}
+\newcommand{\todoStyle}[1]{\todo[color=pink!40]{#1}}
 %xcolor base colors:
 %	black
 %	blue
@@ -43,7 +44,7 @@
 %%%	magenta
 %	olive
 %	orange
-%	pink
+%%%	pink
 %	purple
 %%%	red
 %%%	teal
@@ -91,5 +92,7 @@
 \printindex
 \bibliography{thesis}{}
 \bibliographystyle{plain}
+\todoRemove{remove todoCitation from bibliography}
+\todoStyle{should bibliographystyle be plain?}
 \end{document}
 
