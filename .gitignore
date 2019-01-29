@@ -14,3 +14,4 @@ thesis.toc
 thesis.tdo
 
 plots/*.png
+chapters/*.aux
