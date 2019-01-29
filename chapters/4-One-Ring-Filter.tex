@@ -1,24 +1,24 @@
-\chapter{State of the Art Fast One-Ring Filtering}
-The Fast One-Ring smoothing filter was initially proposed by H. Mara and S. Krömker at the EUROGRAPHICS Workshop on Graphics and Cultural Heritage (2017) ~\cite[s.~3.2]{Mara17}.
-Further research was conducted by the authors and it was determined that the weighting methods required improvement, therefore, they implemented those improvements within the GigaMesh framework.~\cite[p.~00]{todoCitation}\todoCitation
-We will now examine this as-yet-unpublished algorithm as it exists within the GigaMesh framework.\todoReword{redundant}
-
+\chapter{Fast One-Ring Smoothing Filtering}
+The Fast One-Ring smoothing filter was initially proposed by H. Mara and S. Krömker at the EUROGRAPHICS Workshop on Graphics and Cultural Heritage (2017) ~\cite[s.~3.2]{Mara17}. Further research was conducted by the authors and it was determined that the weighting methods required improvement, therefore, modifcations to the algorithm were made within the GigaMesh framework. We will now examine this as-yet-unpublished version of the Fast One-Ring smoothing filter as it exists within the GigaMesh framework today.
+%
 \section{Serial Iterative Filtering}
-In the following we proceed solely the 1-ring neighborhood of all points of 
-$\mathcal{M}$ considering the center of a 1-ring as $\bp_0 \in 
-\mathcal{M}$. Although the number n of the elements in each 1-ring might 
-differ, it is always indexed by $i \in {1, \ldots, n}$ in a clockwise
-direction. \todoResearch{verify and edit if GigaMesh assumes a counterclockwise direction}
+Given a point $\bp_0$ in a discrete manifold $\mathcal{M}$ which is comprized of $v$ number of points, the one-ring neighborhood $\mathcal{N}$ can be defined as all the points $\bp_i$ which share an edge with $\bp_0$, where $i \in \{1, \ldots, n\}$, and $n$ is the number of points in $\mathcal{N}$ and are always indexed in a clockwise direction\todoResearch{GigaMesh assumes a counter-clockwise direction}. $n$ may vary among all $\bp_0 \in \mathcal{M}$, but must be $\geq 2$ and is typically $\leq 12$.%
+\nomenclature{$\bp$}{a point in $\mathcal{M}$}%
+\nomenclature{$\mathcal{M}$}{a discrete manifold}%
+\nomenclature{$v$}{number of points (vertices) in $\mathcal{M}$}%
+\nomenclature{$\mathcal{N}$}{a one-ring neighborhood}%
+\nomenclature{$n$}{the number of points in $\mathcal{N}$}%
+%
 
-The smallest edge length within the 1-ring around the vertex $\bp_0$ 
+The smallest edge length in $\mathcal{N}$ is then: 
 \begin{equation}
-	\Delta_\text{min}\bp_0 := \text{min}^n_{i=1} (|\bp_i - \bp_0|)
-	\label{eq:globalMinimumEdgeLength}
+	\Dm(\bp_0) := \text{min}^n_{i=1} (|\bp_i - \bp_0|)
+	\label{eq:localMinimumEdgeLength}
 \end{equation}
-is shortly denoted by $\Delta_\text{min}$ and becomes the radius of the
-so-called geodesic disc. Figure~\ref{eq:globalMinimumEdgeLength} shows 
+Abbreviated as $\Dm$, \todoResearch{No longer using GEODESIC DISKS!} and becomes the radius of the
+so-called geodesic disc. Figure~\ref{eq:localMinimumEdgeLength} shows 
 a typical configuration of an 1-ring, its geodesic disc with radius 
-$\Delta_\text{min}$ and triangles $\mathbf{t}'_i$ used for weighting.
+$\Dm$ and triangles $\mathbf{t}'_i$ used for weighting.
 \begin{figure}[ht]
 	%\centering
 	%\includegraphics[width=1.0\linewidth]{example-image-16x9.png}
