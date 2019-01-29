@@ -1,0 +1,111 @@
+\chapter{State of the Art Fast One-Ring Filtering}
+The Fast One-Ring smoothing filter was initially proposed by H. Mara and S. Krömker at the EUROGRAPHICS Workshop on Graphics and Cultural Heritage (2017) ~\cite[s.~3.2]{Mara17}.
+Further research was conducted by the authors and it was determined that the weighting methods required improvement, therefore, they implemented those improvements within the GigaMesh framework.~\cite[p.~00]{todoCitation}\todoCitation
+We will now examine this as-yet-unpublished algorithm as it exists within the GigaMesh framework.\todoReword{redundant}
+
+\section{Serial Iterative Filtering}
+In the following we proceed solely the 1-ring neighborhood of all points of 
+$\mathcal{M}$ considering the center of a 1-ring as $\bp_0 \in 
+\mathcal{M}$. Although the number n of the elements in each 1-ring might 
+differ, it is always indexed by $i \in {1, \ldots, n}$ in a clockwise
+direction. \todoResearch{verify and edit if GigaMesh assumes a counterclockwise direction}
+
+The smallest edge length within the 1-ring around the vertex $\bp_0$ 
+\begin{equation}
+	\Delta_\text{min}\bp_0 := \text{min}^n_{i=1} (|\bp_i - \bp_0|)
+	\label{eq:globalMinimumEdgeLength}
+\end{equation}
+is shortly denoted by $\Delta_\text{min}$ and becomes the radius of the
+so-called geodesic disc. Figure~\ref{eq:globalMinimumEdgeLength} shows 
+a typical configuration of an 1-ring, its geodesic disc with radius 
+$\Delta_\text{min}$ and triangles $\mathbf{t}'_i$ used for weighting.
+\begin{figure}[ht]
+	%\centering
+	%\includegraphics[width=1.0\linewidth]{example-image-16x9.png}
+	\missingfigure{illustrate new geodesic disc algorithm idea}
+	\RawCaption{\caption[1-ring and geodesic disc]{1-ring with (a) irregular 
+	triangles $\mathbf{t}_i$ and the geodesic disc with radius 
+	$\Delta_\text{min}$. Here $\Delta_\text{min} = |\bp_4 - \bp_0|$, 
+	indicated as the red arrow. (b) Approximation of the disc with an 
+	interpolated 1-ring of triangles $\mathbf{t}'_i$ having an area of $A'_i$ .}
+	\label{fig:geodesicDisc}}
+\end{figure}
+The function values $f'_0$ at the respective points $\bp_i$ along 
+this disc are interpolated by 
+\begin{equation}
+	f'_0 := f_0 + \Delta_\text{min}\frac{f_i - f_0}{|\bp_i - \bp_0|} 
+\end{equation}
+where $f_0$ is the function value of $\bp_0$. Note that $0 < \frac{
+\Delta_\text{min}}{|\bp_i - \bp_0|} \leq 1$ such that the new 
+$f'_i$ is always the weighted mean of $f_0$ and $f_i$ by the distance of the
+respective points. For the weighted mean of the function value $\frac{f_i^t}{3}$ at 
+each triangle $f^{\mathbf{t}'}_i$ we compute
+\begin{align}
+	f^{\mathbf{t}}_i & := f_0 + f'_i + f'_{i+1} \\
+	& \: = 3f_0 + \Delta_\text{min}\left\lgroup\frac{f_i - f_0}{|\bp_i - \bp_0|} + 
+	\frac{f_{i+1} - f_0}{|\bp_{i+1} - \bp_0|}\right\rgroup
+\end{align}
+So far we used the distance to the central point $\bp_0$ as weight 
+function, but we also have to consider the distance of the points 
+$\bp_i$ to their neighbors $\bp_{i+1}$ in the 1-ring. We do this 
+by computing the relative area of the geodesic disc marked by the three points 
+$\bp_0$, $\bp_i$, and $\bp_{i+1}$. Instead of circle 
+segments we approximate the geodesic disc by triangles $\mathbf{t}'_i$ achieving 
+faster computation. As all those triangles are isosceles having two egdes of 
+constant length $\Delta_\text{min}$ we can compute their weight as the area of the 
+isosceles triangle $\mathbf{t}'_i$ using the Pythagorean theorem
+\begin{equation}
+	A'_i := |\mathbf{t}'_i| = \frac{|\bp_{i+1} - \bp_i|}{4}
+	\sqrt{4\Delta_\text{min}^2 - |\bp_{i+1} - \bp_i|^2}
+	\label{eq:areaFromPythagoreanTheorem}
+\end{equation}
+Regarding Figure~\ref{fig:geodesicDisc}a, the angle $\alpha_i$ could as well be 
+used for weighting, computing $A'_i = \sin(\alpha_i)\Delta_text{min}^2$, which is 
+equivalent to Equation~\ref{eq:areaFromPythagoreanTheorem}, but it 
+is computationally expensive due to the $\sin(\cdot)$ operation and the numeric error 
+is visible when the result of the mean filtering is rendered as color per 
+vertex. Furthermore, computing $\Delta_\text{min}$ within each 1-ring will cause 
+tremendous amounts of redundant computing operations. Therefore we define 
+\begin{equation}
+	\overline{\Delta_\text{min}} := \min\{\Delta_\text{min}(\bp_0) | 
+	\bp_0 \in \mathcal{M}\}
+\end{equation} 
+as the shortest edge for all triangles of the mesh. We will use this 
+$\overline{\Delta_\text{min}}$ in all the above computations. This will increase the 
+computing speed by a factor of $\approx 10$. 
+
+For a 1-ring we now compute the weighted mean function valuen with the total area
+$A = \displaystyle\sum_{i=1}^nA'_i$ as
+\begin{equation}
+	\bar{f}_0 := \frac{\sum A'_if_i^\mathbf{t}}{3A} \quad \forall i \in \{1,\ldots,n\}
+	\label{eq:weightedMean}
+\end{equation}
+with a negligible error due to the 1-ring approximation of the geodesic 
+disc.
+
+For a 1-ring weighted median filter instead, we can use all equations 
+except~\ref{eq:weightedMean}, which is replaced by a list of pairs $(f_i^\mathbf{t}, 
+A'_i)$ sorted by $f_i^\mathbf{t}$. The area is again used as a weight such that 
+$1 = \displaystyle\sum_{j=1}^n\frac{A'_i}{A}$. The weighted median now becomes
+\begin{equation}
+\end{equation}
+For the special case that $-$, which should not be excluded but rarely occurs, 
+we compute $f  ̃ 0 =tf k t + f k+1$.~\cite[s.~3.2]{Mara17}
+
+
+
+\section{GigaMesh}
+The serial algorithm is not yet plublished, but was already implemented in Gigamesh.
+
+
+
+\section{Summary}
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt eget 
+ipsum eu iaculis. Cras vel sem eu velit eleifend porta vel sit amet massa. Etiam 
+a posuere nunc. Aenean aliquam viverra dapibus. Aliquam ac eros a purus feugiat 
+rhoncus. Donec faucibus ut nibh ut cursus. Aliquam erat volutpat. Proin efficitur 
+nulla sit amet iaculis condimentum. Cras placerat leo vitae venenatis feugiat. In 
+hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis 
+parturient montes, nascetur ridiculus mus. In aliquet sagittis dui eu pulvinar. 
+Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor 
+suscipit, eget imperdiet mauris convallis.

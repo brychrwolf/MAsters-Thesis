@@ -1,0 +1,74 @@
+\chapter{Introduction \& Motivation}
+\section{3D Data is important (and big).}
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt eget 
+ipsum eu iaculis. Cras vel sem eu velit eleifend porta vel sit amet massa. Etiam 
+a posuere nunc. Aenean aliquam viverra dapibus. Aliquam ac eros a purus feugiat 
+rhoncus. Donec faucibus ut nibh ut cursus. Aliquam erat volutpat. Proin efficitur 
+nulla sit amet iaculis condimentum. Cras placerat leo vitae venenatis feugiat. In 
+hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis 
+parturient montes, nascetur ridiculus mus. In aliquet sagittis dui eu pulvinar. 
+Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor 
+suscipit, eget imperdiet mauris convallis.~\cite[p.~00]{todoCitation}\todoCitation
+
+
+\section{Serial is slow.}
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt eget 
+ipsum eu iaculis. Cras vel sem eu velit eleifend porta vel sit amet massa. Etiam 
+a posuere nunc. Aenean aliquam viverra dapibus. Aliquam ac eros a purus feugiat 
+rhoncus. Donec faucibus ut nibh ut cursus. Aliquam erat volutpat. Proin efficitur 
+nulla sit amet iaculis condimentum. Cras placerat leo vitae venenatis feugiat. In 
+hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis 
+parturient montes, nascetur ridiculus mus. In aliquet sagittis dui eu pulvinar. 
+Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor 
+suscipit, eget imperdiet mauris convallis.~\cite[p.~00]{todoCitation}\todoCitation
+
+
+
+\section{Concurrency is fast.}
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt eget 
+ipsum eu iaculis. Cras vel sem eu velit eleifend porta vel sit amet massa. Etiam 
+a posuere nunc. Aenean aliquam viverra dapibus. Aliquam ac eros a purus feugiat 
+rhoncus. Donec faucibus ut nibh ut cursus. Aliquam erat volutpat. Proin efficitur 
+nulla sit amet iaculis condimentum. Cras placerat leo vitae venenatis feugiat. In 
+hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis 
+parturient montes, nascetur ridiculus mus. In aliquet sagittis dui eu pulvinar. 
+Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor 
+suscipit, eget imperdiet mauris convallis.~\cite[p.~00]{todoCitation}\todoCitation
+
+
+
+\section{GPUs are commercially available, use to exploit concurrency.}
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt eget 
+ipsum eu iaculis. Cras vel sem eu velit eleifend porta vel sit amet massa. Etiam 
+a posuere nunc. Aenean aliquam viverra dapibus. Aliquam ac eros a purus feugiat 
+rhoncus. Donec faucibus ut nibh ut cursus. Aliquam erat volutpat. Proin efficitur 
+nulla sit amet iaculis condimentum. Cras placerat leo vitae venenatis feugiat. In 
+hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis 
+parturient montes, nascetur ridiculus mus. In aliquet sagittis dui eu pulvinar. 
+Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor 
+suscipit, eget imperdiet mauris convallis.~\cite[p.~00]{todoCitation}\todoCitation
+
+
+
+\section{Noise propagates when processing dense meshes}
+When the field of function values $f(\bp_i)$ are rendered as isolines, or when one visualizes connected components of segmented areas of interest.
+
+In dense, high-resolution meshes, which can feature several hundred points per mm$^2$~\cite[p.~00]{todoCitation}\todoCitation, one can see noise propagating within the results of the MSII filter as jagged outlines.~\cite[s.~3.2]{Mara17}
+
+The design principles for filtering of function 
+values in irregular grids are the same as for those well-known algorithms used 
+for raster images. However, they require adaptation as there is no fixed 
+distance between the points and no fixed number of neighboring points in 
+1-rings of irregular grids.~\cite[s.~3.2]{Mara17}
+
+
+
+\section{Structure of this paper}
+This paper is structed as follows:
+1. 3D data acquisition
+2. noise filtering
+3. GPGPUs, parallel processing, concurrency profiling
+4. the published and current fast 1-ring smoothing filters
+5. how we exploit found concurrency
+6. experiments and mesh generators
+7. compare serial vs parallel results and compute times

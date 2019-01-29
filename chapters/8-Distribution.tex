@@ -1,0 +1,64 @@
+\chapter{Distribution}
+CLI - commandline interface only
+Focus on theoretical work 
+And specifics regarding CUDA considerations regarding its limitations
+MAYBE 1 page
+Dependencies
+Linux vs Windows
+
+
+
+\section{Standalone Precompiled Binary}
+CLI - commandline interface only
+
+
+
+\section{Integration with Legacy Code (GigaMesh)}
+CLI - commandline interface or GUI - graphical user interface are possible
+\begin{enumerate}
+\item Make GigaMesh CUDA aware
+	\begin{enumerate}
+	\item Update Makefile to include nvcc compiler and new source files
+	\item second item
+	\end{enumerate}
+\item second item
+\end{enumerate}
+Before CUDA 5.0, if a programmer wanted to call particle::advance() from a CUDA 
+kernel launched in main.cpp, the compiler required the main.cpp compilation unit 
+to include the implementation of particle::advance() as well any subroutines it 
+calls (v3::normalize() and v3::scramble() in this case). In complex C++ 
+applications, the call chain may go deeper than the two-levels that our example 
+illustrates. Without device object linking, the developer may need to deviate 
+from the conventional application structure to accommodate this compiler 
+requirement. Such changes are difficult for existing applications in which 
+changing the structure is invasive and/or undesirable.~\cite{Cuda14}
+In order to use the full functionality of GigaMesh a batch program has to be run 
+for generating feature vectors. These vectors contain additional information per 
+vertex concerning surface and volume of a set of spheres intersecting the mesh. 
+See [MKJB10] for more background information on the Multi Scale Integral 
+Invariant (MSII) filtering technique. This operation is rather time consuming 
+(it takes hours or even days of computing time) and therefore better runs 
+without graphical user interface. Although generating feature vectors is quite 
+robust against solo vertices, singularities, non-manifolds and holes, you should 
+first clean up your mesh data to get a proper result. So switch to the advanced 
+task of polishing your mesh in section 4.1 and return to this section when you 
+have got a cleaned mesh. If you do not want to manipulate your mesh you may 
+continue directly. Open a terminal and type and change to the mesh-folder by 
+typing cd GigaMesh/mesh (note that GigaMesh stands for the GigaMesh installation 
+folder). Then start the program nohup ./meshgeneratorfeaturevectors25d\_threads 
+-f [-r 2] \& and use nohup at the beginning of the command and \& at the end to 
+ensure that the job runs in the background. This is because this step can take 
+several hours and you do not want to block the terminal.~\cite[p.~19]{Giga17}
+
+
+
+\section{Summary}
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt eget 
+ipsum eu iaculis. Cras vel sem eu velit eleifend porta vel sit amet massa. Etiam 
+a posuere nunc. Aenean aliquam viverra dapibus. Aliquam ac eros a purus feugiat 
+rhoncus. Donec faucibus ut nibh ut cursus. Aliquam erat volutpat. Proin efficitur 
+nulla sit amet iaculis condimentum. Cras placerat leo vitae venenatis feugiat. In 
+hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis 
+parturient montes, nascetur ridiculus mus. In aliquet sagittis dui eu pulvinar. 
+Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor 
+suscipit, eget imperdiet mauris convallis.
