@@ -16,7 +16,7 @@ taken care of to achieve a robust system [Mar06]. Reducing the resolution for
 acquisition contradicts with the Shannon theorem, while the rule of thumb from 
 our previous projects is: the resolution for acquisition has to be 5 times the 
 size of the smallest detail to be acquired.~\cite[p.~25]{Mara12}
-
+%
 \subsection{3DData}
 Virtually all the software packages accompanying 3D-scanners export
 a 2D-non-planar, manifold and non-regular surface mesh consisting of vertices 
@@ -27,7 +27,7 @@ Triangulated Irregular Networks (TINs), which also can be acquired with
 non-optical methods (e.g. LIDAR). As for our test-case the cuneiform script is
 generally defined by pure geometry and the consideration of a texture-map is
 per-se not necessary.~\cite[p.~25]{Mara12}
-
+%
 \subsection{Points}
 The most primitive element of our data is a measuring point p, having three 
 Cartesian coordinates x, y and z. In Computer Graphics and Computer Vision these 
@@ -51,7 +51,7 @@ o = (0, 0, 0) of the coordinate system: x 2 i + y i 2 + z i 2 . These position
 vectors sampling the surface M 2 in R 3 are identified within homogeneous 
 coordinate system [Gra30] having
 w i = 1 as fourth coordinate~\cite[p.~25-26]{Mara12}
-
+%
 \subsection{Faces}
 Counte-Clokwise vs CloCkwise~\cite[p.~00]{todoCitation}\todoCitation
 The second important class of primitive elements are the so-called faces, which 
@@ -70,7 +70,7 @@ This basic list L M will be extended by other surface properties (e.g. color) in
 the following sections and chapters. In case no L f is provided, it is a 
 necessity to perform a point set triangulation [BE92, HK09] to compute L f from 
 L v .~\cite[p.~26]{Mara12}
-
+%
 \subsection{Funtion Values}
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt eget 
 ipsum eu iaculis. Cras vel sem eu velit eleifend porta vel sit amet massa. Etiam 
@@ -81,8 +81,7 @@ hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis
 parturient montes, nascetur ridiculus mus. In aliquet sagittis dui eu pulvinar. 
 Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor 
 suscipit, eget imperdiet mauris convallis.~\cite[p.~00]{todoCitation}\todoCitation
-
-
+%
 %\section{Irregular Non-Manifold Meshes and 2D-Manifolds in 3D-Space}
 \subsection{Treatment of Unclean Data}
 %\subsection{Borders and Edges}
@@ -246,8 +245,8 @@ to the methods presented within this thesis.~\cite[p.~32]{Mara12}
 
 %\section{Data cleaning - Ensuring a Perfect Mesh} 
 %IS THIS STILL NECCESSARY? Since, Filtering can handle edges
-How does the filter handle edges and unclean meshes?
-
+\todoResearch{Address how does the filter handles edges and unclean meshes, comeback after equations written for new algorithm}
+%
 The modular processing pipeline allows for adaption of the workflow for feature 
 extraction depending on the application. As modules like the MSII filter 
 provides several variants to compute integral invariants leads to a large number 
@@ -319,15 +318,28 @@ will have boundaries ∂M2 the border treatment of the algorithms to compute
 integral invariants stays relevant for robust processing. However, when obeying 
 the described order, it is guaranteed that the remaining boundaries are kept as 
 far as possible from the areas of interest.~\cite[p.~120]{Mara12}
-
-
-
+%
+%
+%
 \section{Achitectures of Concurrency}
 Serial vs Multi-threaded vs GPU order from slow to fast.~\cite[p.~00]{todoCitation}\todoCitation
-
-
-
-\section{What is CUDA?}
+%
+\subsection{Threads}
+thread can be identified using a one-dimensional, two-dimensional, or three-
+dimensional thread index, forming a one-dimensional, two-dimensional, or three-
+dimensional block of thread, called a thread block. This provides a natural way
+to invoke computation across the elements in a domain such as a vector, matrix,
+or volume. However, a kernel can be executed by multiple equally-shaped thread
+blocks, so that the total number of thread is equal to the number of thread
+per block times the number of blocks. thread blocks are required to execute
+independently: It must be possible to execute them in any order, in parallel or
+in series. This independence requirement allows thread blocks to be scheduled
+in any order across any number of cores as illustrated by Figure 5, enabling
+programmers to write code that scales with the number of cores. [7, p. 2.2]\todoRewrite{foudn elsewhere in thesis}
+%
+%
+%
+\section{CUDA: An interface for GPGPU implementation}
 Graphical Processor Units, GPUs, are highly parallel, multithreaded, manycore 
 processors typically characterized by very high computational power and 
 tremendous memory bandwidth. A GPU is especially well-suited when used to 
@@ -423,9 +435,7 @@ built into the device driver.~\cite[p.~3.1.1.2]{CUDA18}
 The front end of the compiler processes CUDA source files according to C++ 
 syntax rules. Full C++ is supported for the host code. However, only a subset 
 of C++ is fully supported for the device code~\cite[p.~3.1.5]{CUDA18}
-
-
-
+%
 \subsection{CUDA C Runtime}%3.2. CUDA C Runtime}
 There is no explicit initialization function for the runtime; it initializes 
 the first time a runtime function is called. During initialization, the runtime 
@@ -447,7 +457,7 @@ texture fetching. They are described in Texture and Surface Memory. Linear
 memory exists on the device in a 40-bit address space, so separately allocated 
 entities can reference one another via pointers, for example, in a binary 
 tree.~\cite[p.~3.2.2]{CUDA18}
-
+%
 \subsubsection{Explicit Synchronization}%3.2.5.5.3. Explicit Synchronization}
 There are various ways to explicitly synchronize streams with each other.
 cudaDeviceSynchronize() waits until all preceding commands in all streams of 
@@ -468,9 +478,7 @@ cudaStreamQuery()provides applications with a way to know if all preceding
 commands in a stream have completed. To avoid unnecessary slowdowns, all these 
 synchronization functions are usually best used for timing purposes or to 
 isolate a launch or memory copy that is failing.
-
-
-
+%
 \subsection{Versioning and Compatibility}%3.3. Versioning and Compatibility}
 There are two version numbers that developers should care about when developing 
 a CUDA application: The compute capability that describes the general 
@@ -492,9 +500,7 @@ statically linked against the CUDA Runtime.
 All plug-ins and libraries used by an application must use the same version of 
 any libraries that use the runtime (such as cuFFT, cuBLAS, ...) unless 
 statically linking to those libraries.
-
-
-
+%
 \subsection{Hardware Implementation}%4. Hardware Implementation}
 The NVIDIA GPU architecture is built around a scalable array of multithreaded 
 Streaming Multiprocessors (SMs). When a CUDA program on the host CPU invokes a 
@@ -514,7 +520,7 @@ single thread\index{thread}, as well as thread\index{thread}-level parallelism
 extensively through simultaneous hardware multithreading as detailed in 
 Hardware Multithreading. Unlike CPU cores they are issued in order however and 
 there is no branch prediction and no speculative execution.
-
+%
 \subsubsection{SIMT Architecture}%4.1. SIMT Architecture}
 The multiprocessor creates, manages, schedules, and executes 
 thread\index{thread} in groups of 32 parallel thread\index{thread} called 
@@ -554,9 +560,7 @@ size can be safely ignored when designing for correctness but must be
 considered in the code structure when designing for peak performance. Vector 
 architectures, on the other hand, require the software to coalesce loads 
 into vectors and manage divergence manually.
-
-
-
+%
 \subsection{Host Memory and Device Memory}
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt eget 
 ipsum eu iaculis. Cras vel sem eu velit eleifend porta vel sit amet massa. Etiam 
@@ -567,9 +571,7 @@ hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis
 parturient montes, nascetur ridiculus mus. In aliquet sagittis dui eu pulvinar. 
 Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor 
 suscipit, eget imperdiet mauris convallis.~\cite[p.~00]{todoCitation}\todoCitation
-
-
-
+%
 \subsection{Versions <9, vs >= 9}
 K.2.1.1. Explicit Allocation Using cudaMallocManaged()~\cite[p.~272]{CUDA18} 
 Explain multi-threading model differences Motivation for choosing earlier 
@@ -586,11 +588,12 @@ adjacent pairs it has. Then flatten the array into a single dismension, using
 the run-length array as the iterator. Pros are that only a single other area is 
 required, and the original array does not need to be padded with extra, unsued 
 memory address.
-
-
+%
+%
+%
 \section{Evaluation and Analysis of Concurrent Algorithms}~\cite[p.~330]{Lang17}
 Multi-node out of scope?!
-
+%
 \subsection{Timing}
 %\begin{equation}
 	N = input size (num. ops)
@@ -599,7 +602,7 @@ Multi-node out of scope?!
 	Tbest(N) = Optimal execution time
 	TP(N, P) = Parallel runtime
 %\end{equation}
-
+%
 \subsection{Speedup, efficiency}
 	Speedup: 
 S(N, P) = Tbest(N)/TP(N, P)
@@ -609,19 +612,20 @@ E(N, P) = Tbest (N)/PTP(N, P) = S/P
 
 	Costs: 
 C(N, P) = PTP(N, P)
-
+%
 \subsection{Degree of Parallelism}
 	0 < q < 1 is the sequential part
 	1-q = is the parallelizable part
-
+%
 \subsection{Iso-efficiency}
 	WK(P) = iso-efficient if it fulfills:
 	TO(WK(P), P) = KWK(P)~\cite[p.~350]{Lang17}
-
+%
 \subsection{Scalability}
 	A parallel system is called scalable only if in has an iso-efficency function
-
-
+%
+%
+%
 \section{Summary}
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt eget 
 ipsum eu iaculis. Cras vel sem eu velit eleifend porta vel sit amet massa. Etiam 
