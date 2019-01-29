@@ -11,6 +11,8 @@
 %\usepackage[lofdepth,lotdepth]{subfig}
 \usepackage[colorinlistoftodos]{todonotes}
 \usepackage{makeidx}
+\usepackage[intoc]{nomencl}
+\usepackage[numbib,numindex]{tocbibind}
 \usepackage[font=small,labelfont=bf,labelsep=period,justification=centerlast]{caption}
 \usepackage{subcaption}
 \usepackage{floatrow}
@@ -68,9 +70,11 @@
 %	chapters/9-Conclusion,
 %	chapters/A1-Appendix,
 %	chapters/A2-Appendix,
+%	chapters/Z1-Back-Matter
 }
 %
 \makeindex
+\makenomenclature
 \begin{document}
 \include{chapters/0-Front-matter}
 %
@@ -92,10 +96,6 @@
 \include{chapters/A2-Appendix}
 %
 \backmatter
-\printindex
-\bibliography{thesis}{}
-\bibliographystyle{plain}
-\todoRemove{remove todoCitation from bibliography}
-\todoStyle{should bibliographystyle be plain?}
+\include{chapters/Z1-Back-Matter}
 \end{document}
 

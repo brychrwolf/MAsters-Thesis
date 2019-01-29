@@ -3,6 +3,7 @@ all: plots thesis
 thesis: plots
 	xelatex --no-pdf thesis
 	makeindex thesis
+	makeindex thesis.nlo -s nomencl.ist -o thesis.nls
 	bibtex thesis
 	xelatex --no-pdf thesis
 	xelatex thesis

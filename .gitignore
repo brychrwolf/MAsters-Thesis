@@ -13,6 +13,8 @@ thesis.pdf
 thesis.toc
 thesis.tdo
 thesis.xdv
+thesis.nls
+thesis.nlo
 
 plots/*.png
 chapters/*.aux
