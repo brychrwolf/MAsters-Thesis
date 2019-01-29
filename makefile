@@ -1,10 +1,10 @@
 all: plots thesis
 
 thesis: plots
-	xelatex thesis
+	xelatex --no-pdf thesis
 	makeindex thesis
 	bibtex thesis
-	xelatex thesis
+	xelatex --no-pdf thesis
 	xelatex thesis
 
 once:

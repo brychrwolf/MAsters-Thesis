@@ -12,6 +12,7 @@ thesis.out
 thesis.pdf
 thesis.toc
 thesis.tdo
+thesis.xdv
 
 plots/*.png
 chapters/*.aux
