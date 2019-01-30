@@ -2,36 +2,58 @@
 The Fast One-Ring smoothing filter was initially proposed by H. Mara and S. Krömker at the EUROGRAPHICS Workshop on Graphics and Cultural Heritage (2017) ~\cite[s.~3.2]{Mara17}. Further research was conducted by the authors and it was determined that the weighting methods required improvement, therefore, modifcations to the algorithm were made within the GigaMesh framework. We will now examine this as-yet-unpublished version of the Fast One-Ring smoothing filter as it exists within the GigaMesh framework today.
 %
 \section{Serial Iterative Filtering}
-Given a point $\bp_0$ in a discrete manifold $\mathcal{M}$ which is comprized of $v$ number of points, the one-ring neighborhood $\mathcal{N}$ can be defined as all the points $\bp_i$ which share an edge with $\bp_0$, where $i \in \{1, \ldots, n\}$, and $n$ is the number of points in $\mathcal{N}$ and are always indexed in a clockwise direction\todoResearch{GigaMesh assumes a counter-clockwise direction}. $n$ may vary among all $\bp_0 \in \mathcal{M}$, but must be $\geq 2$ and is typically $\leq 12$.%
+Given a point $\bp_0$ in a discrete manifold $\mathcal{M}$ which is comprized of $v$ number of points, the one-ring neighborhood $\mathcal{N}$ can be defined as all the points $\bp_i$ which share an edge with $\bp_0$, where $i \in \{1, \ldots, n\}$, and $n$ is the number of points in $\mathcal{N}$ and are always indexed in a clockwise direction\todoResearch{GigaMesh assumes a counter-clockwise direction}. The value of $n$ may vary $\forall \bp_0 \in \mathcal{M}$, but must be $\geq 2$ and is typically $\leq 12$ though there is no upper limit\todoResearch{get real upper limit for n}.\todoReword{is it okay to use forevery like this?}%
 \nomenclature{$\bp$}{a point in $\mathcal{M}$}%
+\nomenclature{$\bp_0$}{the center point of $\mathcal{N}$}%
+\nomenclature{$\bp_i$}{a one-ring neighbor of $\bp_0$}%
 \nomenclature{$\mathcal{M}$}{a discrete manifold}%
 \nomenclature{$v$}{number of points (vertices) in $\mathcal{M}$}%
 \nomenclature{$\mathcal{N}$}{a one-ring neighborhood}%
 \nomenclature{$n$}{the number of points in $\mathcal{N}$}%
-%
 
-The smallest edge length in $\mathcal{N}$ is then: 
+The smallest edge length in $\mathcal{N}$ is 
 \begin{equation}
 	\Dm(\bp_0) := \text{min}^n_{i=1} (|\bp_i - \bp_0|)
 	\label{eq:localMinimumEdgeLength}
 \end{equation}
-Abbreviated as $\Dm$, \todoResearch{No longer using GEODESIC DISKS!} and becomes the radius of the
-so-called geodesic disc. Figure~\ref{eq:localMinimumEdgeLength} shows 
-a typical configuration of an 1-ring, its geodesic disc with radius 
-$\Dm$ and triangles $\mathbf{t}'_i$ used for weighting.
+%
+Abbreviated as $\Dm$, this length will be used as the radius of a geodesic disc\todoCitation on $\mathcal{M}$. The area of each circular sector $\mathbf{s}_i$ comprising that geodesic disc is
+\begin{equation}
+	A_i = \frac{(\Dm)^2\alpha_i}{2}
+	\label{eq:circularSectorArea}
+\end{equation}%
+\nomenclature{$A_i$}{area of circular sector $i$}%
+%
+Figure~\ref{eq:localMinimumEdgeLength} shows a typical configuration of an one-ring with irregular faces, the geodesic disc with radius 
+$\Dm$, and circular sectors $\mathbf{s}_i$ used for weighting.
+%
 \begin{figure}[ht]
-	%\centering
-	%\includegraphics[width=1.0\linewidth]{example-image-16x9.png}
-	\missingfigure{illustrate new geodesic disc algorithm idea}
-	\RawCaption{\caption[1-ring and geodesic disc]{1-ring with (a) irregular 
-	triangles $\mathbf{t}_i$ and the geodesic disc with radius 
-	$\Delta_\text{min}$. Here $\Delta_\text{min} = |\bp_4 - \bp_0|$, 
-	indicated as the red arrow. (b) Approximation of the disc with an 
-	interpolated 1-ring of triangles $\mathbf{t}'_i$ having an area of $A'_i$ .}
-	\label{fig:geodesicDisc}}
-\end{figure}
-The function values $f'_0$ at the respective points $\bp_i$ along 
-this disc are interpolated by 
+\ffigbox{
+	\includegraphics[width=1.0\linewidth]{figures/geodesicDisc.png}
+	%\missingfigure{illustrate new geodesic disc algorithm idea}
+	}{\caption[One-ring and geodesic disc]{A typical one-ring neighborhood $\mathcal{N}$ with (a) irregular triangular faces $\mathbf{t}_i$, the smallest edge length $\Dm = |\bp_4 - \bp_0|$ shown here with a cyan arrow as the radius of the geodesic disc, and $\alpha_1$ as the central angle of $\mathbf{t}_i$. (b) the complete geodesic disc, comprised of all its circular segments $\mathbf{s}_i$, each having central angles $\alpha_i$}\label{fig:geodesicDisc}}
+\end{figure}%
+\nomenclature{$\mathbf{s}_i$}{circular sectors which comprise the geodesic disc}%
+
+
+Next we compute average function value at the center of gravity of the circle sector
+\begin{equation}
+	\label{eq:avFuncValAtCoG}
+\end{equation}
+
+Finally, we can compute the one-ring weighted mean function value at $\bp_0$ as
+\begin{equation}
+	\bar{f}_0 := \frac{\sum A'_if^{\mathbf{t}}_i}{3A} \quad \forall i \in \{1,\ldots,n\}
+	\label{eq:meanFuncValAtP0}
+\end{equation}%
+\nomenclature{$\bar{f}_0$}{the one-ring weighted mean function value at $\bp_0$}%
+
+
+
+
+
+
+The function values $f_i$ are at the respective points $\bp_i$ along this disc are interpolated by 
 \begin{equation}
 	f'_0 := f_0 + \Delta_\text{min}\frac{f_i - f_0}{|\bp_i - \bp_0|} 
 \end{equation}
@@ -47,7 +69,7 @@ each triangle $f^{\mathbf{t}'}_i$ we compute
 \end{align}
 So far we used the distance to the central point $\bp_0$ as weight 
 function, but we also have to consider the distance of the points 
-$\bp_i$ to their neighbors $\bp_{i+1}$ in the 1-ring. We do this 
+$\bp_i$ to their neighbors $\bp_{i+1}$ in the one-ring. We do this 
 by computing the relative area of the geodesic disc marked by the three points 
 $\bp_0$, $\bp_i$, and $\bp_{i+1}$. Instead of circle 
 segments we approximate the geodesic disc by triangles $\mathbf{t}'_i$ achieving 
@@ -64,7 +86,7 @@ used for weighting, computing $A'_i = \sin(\alpha_i)\Delta_text{min}^2$, which i
 equivalent to Equation~\ref{eq:areaFromPythagoreanTheorem}, but it 
 is computationally expensive due to the $\sin(\cdot)$ operation and the numeric error 
 is visible when the result of the mean filtering is rendered as color per 
-vertex. Furthermore, computing $\Delta_\text{min}$ within each 1-ring will cause 
+vertex. Furthermore, computing $\Delta_\text{min}$ within each one-ring will cause 
 tremendous amounts of redundant computing operations. Therefore we define 
 \begin{equation}
 	\overline{\Delta_\text{min}} := \min\{\Delta_\text{min}(\bp_0) | 
@@ -74,16 +96,16 @@ as the shortest edge for all triangles of the mesh. We will use this
 $\overline{\Delta_\text{min}}$ in all the above computations. This will increase the 
 computing speed by a factor of $\approx 10$. 
 
-For a 1-ring we now compute the weighted mean function valuen with the total area
+For a one-ring we now compute the weighted mean function valuen with the total area
 $A = \displaystyle\sum_{i=1}^nA'_i$ as
 \begin{equation}
 	\bar{f}_0 := \frac{\sum A'_if_i^\mathbf{t}}{3A} \quad \forall i \in \{1,\ldots,n\}
 	\label{eq:weightedMean}
 \end{equation}
-with a negligible error due to the 1-ring approximation of the geodesic 
+with a negligible error due to the one-ring approximation of the geodesic 
 disc.
 
-For a 1-ring weighted median filter instead, we can use all equations 
+For a one-ring weighted median filter instead, we can use all equations 
 except~\ref{eq:weightedMean}, which is replaced by a list of pairs $(f_i^\mathbf{t}, 
 A'_i)$ sorted by $f_i^\mathbf{t}$. The area is again used as a weight such that 
 $1 = \displaystyle\sum_{j=1}^n\frac{A'_i}{A}$. The weighted median now becomes
