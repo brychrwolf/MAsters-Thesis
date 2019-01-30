@@ -3,9 +3,9 @@ load "gnuplot-palettes-20190125/dark2.pal"
 load "configs/grid.cfg"
 
 set datafile separator ","
-data = "../data/meshSizes.csv"
+data = "../../data/meshSizes.csv"
 set terminal pngcairo size 1000, 680 #enhanced font "Times New Roman, 10"
-set output "numFacesByVerticesGoTo2.png"
+set output "../numFacesByVerticesGoTo2.png"
 
 set title "Ratio of Faces to Vertices by Increasing Vertex Count" font ",24"
 

@@ -6,9 +6,9 @@ load "configs/grid.cfg"
 round(x, n) = round(x*10**n)*10.0**(-n)
 
 set datafile separator ","
-data = "../data/computeTimesLinespoints.csv"
+data = "../../data/computeTimesLinespoints.csv"
 set terminal pngcairo size 1000, 680 #enhanced font "Times New Roman, 10"
-set output "computeTimesLinespoints.png"
+set output "../computeTimesLinespoints.png"
 
 set title font ",16" offset 8 \
 "Compute Times of Applying the One-Ring Filter for Selected Numbers of Iterations\n \

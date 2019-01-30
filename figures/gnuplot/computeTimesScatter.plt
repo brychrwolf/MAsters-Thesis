@@ -4,9 +4,9 @@ load "gnuplot-palettes-20190125/rdylbu.pal"
 load "configs/grid.cfg"
 
 set datafile separator ","
-data = "../data/computeTimesScatter.csv"
+data = "../../data/computeTimesScatter.csv"
 set terminal pngcairo size 1000, 680 #enhanced font "Times New Roman, 10"
-set output "computeTimesScatter.png"
+set output "../computeTimesScatter.png"
 
 set title font ",16" offset 0 \
 "Compute Times for Different Hardware Configurations\n \

@@ -16,5 +16,5 @@ thesis.xdv
 thesis.nls
 thesis.nlo
 
-plots/*.png
+figures/*.png
 chapters/*.aux
