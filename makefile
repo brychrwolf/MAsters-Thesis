@@ -1,4 +1,4 @@
-all: plots thesis
+all: svgs plots thesis
 
 thesis: plots
 	xelatex --no-pdf thesis
@@ -16,6 +16,15 @@ cleanThesis:
 
 
 
+.PHONY: svgs
+svgs:
+	cd figures/inkscape && $(MAKE)
+
+cleanSvgs:
+	cd figures/inkscape && make clean
+
+
+
 .PHONY: plots
 plots:
 	cd figures/gnuplot && $(MAKE)
@@ -27,5 +36,5 @@ cleanPlots:
 
 clean: cleanThesis
 
-cleanAll: cleanThesis cleanPlots
+cleanAll: cleanThesis cleanPlots cleanSvgs
 
