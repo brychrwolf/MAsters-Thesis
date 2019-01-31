@@ -25,18 +25,9 @@ Because the angles $\alpha_i$ will be used in future calculations, but it is not
 	\label{eq:alphaFromEdgeLengths}
 \end{equation}
 %
-
-The area of each circular sector $\mathbf{s}_i$ comprising that geodesic disc is
+The area of each circular sector $\mathbf{s}_i$ comprising the geodesic disc of $\mathcal{N}$ is
 \begin{equation}
 	A_i = \frac{(\Dm)^2\alpha_i}{2}
-	\label{eq:circularSectorArea}
-\end{equation}
-\todoCitation{are of circle sectors, http://mathworld.wolfram.com/CircularSector.html}%
-\nomenclature{$A_i$}{area of circular sector $i$}%
-%
-And the distance to the center of gravity for the circular sector $\mathbf{s}_i$ from $\bp_0$ is calculated as
-\begin{equation}
-	c_i := \frac{2\Dm\sin(\frac{\alpha_i}{2})}{3\frac{\alpha_i}{2}}
 	\label{eq:circularSectorArea}
 \end{equation}
 \todoCitation{are of circle sectors, http://mathworld.wolfram.com/CircularSector.html}%
@@ -46,14 +37,29 @@ Figure~\ref{eq:localMinimumEdgeLength} shows a typical configuration of an one-r
 $\Dm$, and circular sectors $\mathbf{s}_i$ used for weighting.
 
 \begin{figure}[ht]
-\ffigbox{
-	\includegraphics[width=1.0\linewidth]{figures/geodesicDisc.png}
-	%\missingfigure{illustrate new geodesic disc algorithm idea}
-	}{\caption[One-ring and geodesic disc]{A typical one-ring neighborhood $\mathcal{N}$ with (a) irregular triangular faces $\mathbf{t}_i$, the smallest edge length $\Dm = |\bp_4 - \bp_0|$ shown here with a cyan arrow as the radius of the geodesic disc, and $\alpha_1$ as the central angle of $\mathbf{t}_i$. (b) the complete geodesic disc, comprised of all its circular segments $\mathbf{s}_i$, each having central angles $\alpha_i$}\label{fig:geodesicDisc}}
+\ffigbox
+	{\includegraphics[width=0.5\linewidth]{figures/geodesicDisc.png}}
+	{\caption[One-ring and geodesic disc]{A typical one-ring neighborhood $\mathcal{N}$ with (a) irregular triangular faces $\mathbf{t}_i$, the smallest edge length $\Dm = |\bp_4 - \bp_0|$ shown here with a cyan arrow as the radius of the geodesic disc, and $\alpha_i$ as the central angle of $\mathbf{t}_i$ (b) the complete geodesic disc, comprised of all its circular sectors $\mathbf{s}_i$, each having central angles $\alpha_i$}\label{fig:geodesicDisc}}
 \end{figure}%
-\nomenclature{$\mathbf{s}_i$}{circular sectors which comprise the geodesic disc}
+\nomenclature{$\mathbf{s}_i$}{circular sectors which comprise the geodesic disc}%
 
-The function values $f'_i$ at the respective points $\bp_i$ along this disc are interpolated by 
+The distance from the center point $\bp_0$ to the center of gravity for the circular sector $\mathbf{s}_i$ is calculated as
+\begin{equation}
+	\Delta c_i := \frac{2\:\Dm\:\sin(\frac{\alpha_i}{2})}{3\:\frac{\alpha_i}{2}}
+	\label{eq:circularSectorArea}
+\end{equation}
+\todoCitation{are of circle sectors, http://mathworld.wolfram.com/CircularSector.html}%
+\nomenclature{$A_i$}{area of circular sector $i$}%
+
+\begin{figure}[ht]
+\ffigbox
+	{\includegraphics[width=0.6\linewidth]{figures/centerOfGravity.png}}
+	{\caption[Distance to and Center of Gravity]{A single circle sector $\mathbf{s}_1$ with a bisecting line in black dots and its center of gravity $\mathbf{c}_1$ marked in a sand color, as well as the distance from the center point $\bp_0$ to $\mathbf{c}_1$ drawn in coral as $\Delta c_1$}\label{fig:centerOfGravity}}
+\end{figure}%
+\nomenclature{$\mathbf{s}_i$}{circular sectors which comprise the geodesic disc}%
+In general, the smaller the angle $\alpha_i$ of the circle sector, the longer the distance $\Delta c_1$ becomes.
+
+In order to correctly scale the function values $f_i$ from their respective points $\bp_i$ to become $f'_i$ at the analogous points along the geodesic disc, they must be interpolated by 
 \begin{equation}
 	f'_i := f_0 + \Dm\frac{f_i-f_0}{|\bp_i-\bp_0|}
 	\label{eq:avFuncValAtCoG}
