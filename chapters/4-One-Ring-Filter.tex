@@ -17,46 +17,78 @@ The smallest edge length in $\mathcal{N}$ is
 	\label{eq:localMinimumEdgeLength}
 \end{equation}
 %
-Abbreviated as $\Dm$, this length will be used as the radius of a geodesic disc\todoCitation on $\mathcal{M}$. The area of each circular sector $\mathbf{s}_i$ comprising that geodesic disc is
+Abbreviated as $\Dm$, this length will be used as the radius of a geodesic disc \todoCitation on $\mathcal{M}$.
+%
+Because the angles $\alpha_i$ will be used in future calculations, but it is not typically measured directly as are the edge lengths, it is worth mentioning that one can calculate an inner angle using the law of cosines
+\begin{equation}
+	\alpha_i = cos^{-1}(\frac{|\bp_0 - \bp_{i}|^2 + |\bp_0 - \bp_{i+1}|^2 - |\bp_i - \bp_{i+1}|^2}{2\cdot|\bp_0 - \bp_{i}|\cdot|\bp_0 - \bp_{i+1}|})
+	\label{eq:alphaFromEdgeLengths}
+\end{equation}
+%
+
+The area of each circular sector $\mathbf{s}_i$ comprising that geodesic disc is
 \begin{equation}
 	A_i = \frac{(\Dm)^2\alpha_i}{2}
 	\label{eq:circularSectorArea}
-\end{equation}%
+\end{equation}
+\todoCitation{are of circle sectors, http://mathworld.wolfram.com/CircularSector.html}%
+\nomenclature{$A_i$}{area of circular sector $i$}%
+%
+And the distance to the center of gravity for the circular sector $\mathbf{s}_i$ from $\bp_0$ is calculated as
+\begin{equation}
+	c_i := \frac{2\Dm\sin(\frac{\alpha_i}{2})}{3\frac{\alpha_i}{2}}
+	\label{eq:circularSectorArea}
+\end{equation}
+\todoCitation{are of circle sectors, http://mathworld.wolfram.com/CircularSector.html}%
 \nomenclature{$A_i$}{area of circular sector $i$}%
 %
 Figure~\ref{eq:localMinimumEdgeLength} shows a typical configuration of an one-ring with irregular faces, the geodesic disc with radius 
 $\Dm$, and circular sectors $\mathbf{s}_i$ used for weighting.
-%
+
 \begin{figure}[ht]
 \ffigbox{
 	\includegraphics[width=1.0\linewidth]{figures/geodesicDisc.png}
 	%\missingfigure{illustrate new geodesic disc algorithm idea}
 	}{\caption[One-ring and geodesic disc]{A typical one-ring neighborhood $\mathcal{N}$ with (a) irregular triangular faces $\mathbf{t}_i$, the smallest edge length $\Dm = |\bp_4 - \bp_0|$ shown here with a cyan arrow as the radius of the geodesic disc, and $\alpha_1$ as the central angle of $\mathbf{t}_i$. (b) the complete geodesic disc, comprised of all its circular segments $\mathbf{s}_i$, each having central angles $\alpha_i$}\label{fig:geodesicDisc}}
 \end{figure}%
-\nomenclature{$\mathbf{s}_i$}{circular sectors which comprise the geodesic disc}%
+\nomenclature{$\mathbf{s}_i$}{circular sectors which comprise the geodesic disc}
 
-
-Next we compute average function value at the center of gravity of the circle sector
+The function values $f'_i$ at the respective points $\bp_i$ along this disc are interpolated by 
 \begin{equation}
+	f'_i := f_0 + \Dm\frac{f_i-f_0}{|\bp_i-\bp_0|}
 	\label{eq:avFuncValAtCoG}
 \end{equation}
 
+To calculate the weighted mean of the function value $\frac{\mathbf{f}'_i}{3}$ at each circle sector $\mathbf{s}_i$, we first compute
+\begin{align}
+	f^{\mathbf{s}}_i &:= f_0 + f'_i + f'_{i+1} \\
+		& \: = 3f_0 + \Dm(\frac{f_i-f_0}{|\bp_i-\bp_0|} + \frac{f_{i+1}-f_0}{|\bp_{i+1}-\bp_0|}
+	\label{eq:avFuncValAtCoG}
+\end{align}
+%
+Next we compute average function value at the center of gravity of the circle sector
+\begin{equation}
+	f'_i := 
+	%f_0 (1 - ( 2.0 * sin( alpha ) ) / ( 3.0 * alpha ) ) + ( funcValInterpolA + funcValInterpolB ) * ( 2.0 * sin( alpha ) ) / ( 3.0 * alpha ) / 2.0;
+	\label{eq:avFuncValAtCoG}
+\end{equation}
+%
 Finally, we can compute the one-ring weighted mean function value at $\bp_0$ as
 \begin{equation}
-	\bar{f}_0 := \frac{\sum A'_if^{\mathbf{t}}_i}{3A} \quad \forall i \in \{1,\ldots,n\}
+	\bar{f}_0 := \frac{\sum A'_if^{\mathbf{s}}_i}{3A} \quad \forall i \in \{1,\ldots,n\}
 	\label{eq:meanFuncValAtP0}
 \end{equation}%
 \nomenclature{$\bar{f}_0$}{the one-ring weighted mean function value at $\bp_0$}%
 
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
 
-
-
-
-
-The function values $f_i$ are at the respective points $\bp_i$ along this disc are interpolated by 
-\begin{equation}
-	f'_0 := f_0 + \Delta_\text{min}\frac{f_i - f_0}{|\bp_i - \bp_0|} 
-\end{equation}
 where $f_0$ is the function value of $\bp_0$. Note that $0 < \frac{
 \Delta_\text{min}}{|\bp_i - \bp_0|} \leq 1$ such that the new 
 $f'_i$ is always the weighted mean of $f_0$ and $f_i$ by the distance of the
