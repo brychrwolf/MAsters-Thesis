@@ -1,8 +1,8 @@
 \chapter{Fast One-Ring Smoothing Filtering}
-The Fast One-Ring smoothing filter was initially proposed by H. Mara and S. Krömker at the EUROGRAPHICS Workshop on Graphics and Cultural Heritage (2017) ~\cite[s.~3.2]{Mara17}. Further research was conducted by the authors and it was determined that the weighting methods required improvement, therefore, modifcations to the algorithm were made within the GigaMesh framework. We will now examine this as-yet-unpublished version of the Fast One-Ring smoothing filter as it exists within the GigaMesh framework today.
+The Fast One-Ring smoothing filter was initially proposed by H. Mara and S. Krömker at the EUROGRAPHICS Workshop on Graphics and Cultural Heritage (2017) ~\cite[s.~3.2]{Mara17}. Further research was conducted by the authors and it was determined that the weighting methods required improvement, therefore, modifcations to the algorithm were made within the GigaMesh framework. We will now present this as-yet-unpublished version of the Fast One-Ring smoothing filter as it exists now within the GigaMesh framework.
 %
-\section{Serial Iterative Filtering}
-Given a point $\bp_0$ in a discrete manifold $\mathcal{M}$ which is comprized of $v$ number of points, the one-ring neighborhood $\mathcal{N}$ can be defined as all the points $\bp_i$ which share an edge with $\bp_0$, where $i \in \{1, \ldots, n\}$, and $n$ is the number of points in $\mathcal{N}$ and are always indexed in a clockwise direction\todoResearch{GigaMesh assumes a counter-clockwise direction}. The value of $n$ may vary $\forall \bp_0 \in \mathcal{M}$, but must be $\geq 2$ and is typically $\leq 12$ though there is no upper limit\todoResearch{get real upper limit for n}.\todoReword{is it okay to use forevery like this?}%
+\section{Points \& Edges}
+Given a point $\bp_0$ in a discrete manifold $\mathcal{M}$ which is comprised of $v$ number of points, the one-ring neighborhood $\mathcal{N}$ can be defined as all the points $\bp_i$ which share an edge with $\bp_0$, where $i \in \{1, \ldots, n\}$, and $n$ is the number of points in $\mathcal{N}$ which are always indexed in a clockwise direction\todoResearch{GigaMesh assumes a counter-clockwise direction}. The value of $n$ may vary among each points in $\mathcal{M}$, however the value must always be $\geq 2$ and typically $\leq 12$, though there is no upper limit\todoResearch{get real upper limit for n}.%
 \nomenclature{$\bp$}{a point in $\mathcal{M}$}%
 \nomenclature{$\bp_0$}{the center point of $\mathcal{N}$}%
 \nomenclature{$\bp_i$}{a one-ring neighbor of $\bp_0$}%
@@ -11,77 +11,109 @@ Given a point $\bp_0$ in a discrete manifold $\mathcal{M}$ which is comprized of
 \nomenclature{$\mathcal{N}$}{a one-ring neighborhood}%
 \nomenclature{$n$}{the number of points in $\mathcal{N}$}%
 
-The smallest edge length in $\mathcal{N}$ is 
+The smallest edge length in the one-ring neighborhood $\mathcal{N}$ is 
 \begin{equation}
 	\Dm(\bp_0) := \text{min}^n_{i=1} (|\bp_i - \bp_0|)
 	\label{eq:localMinimumEdgeLength}
 \end{equation}
-%
-Abbreviated as $\Dm$, this length will be used as the radius of a geodesic disc \todoCitation on $\mathcal{M}$.
-%
-Because the angles $\alpha_i$ will be used in future calculations, but it is not typically measured directly as are the edge lengths, it is worth mentioning that one can calculate an inner angle using the law of cosines
+Abbreviated as $\Dm$, this length will be used as the radius of a geodesic disc on $\mathcal{M}$. \todoCitation{geodesic discs} Furthermore, computing $\Dm$ within each one-ring will cause tremendous amounts of redundant computing operations. Therefore we define 
 \begin{equation}
-	\alpha_i = cos^{-1}(\frac{|\bp_0 - \bp_{i}|^2 + |\bp_0 - \bp_{i+1}|^2 - |\bp_i - \bp_{i+1}|^2}{2\cdot|\bp_0 - \bp_{i}|\cdot|\bp_0 - \bp_{i+1}|})
+	\overline{\Delta_\text{min}} := \min\{\Delta_\text{min}(\bp_0) | 
+	\bp_0 \in \mathcal{M}\}
+\end{equation} 
+as the shortest edge for all triangles of the mesh. We will use this 
+$\overline{\Delta_\text{min}}$ in all the above computations.
+
+Figure~\ref{fig:geodesicDisc} shows a typical configuration of an one-ring with irregular faces, the geodesic disc with radius 
+$\Dm$, and circular sectors $\bs_i$ used for weighting.
+\begin{figure}[ht]
+\ffigbox
+	{\includegraphics[width=0.5\linewidth]{figures/geodesicDisc.png}}
+	{\caption[One-ring and geodesic disc]{A typical one-ring neighborhood $\mathcal{N}$ with (a) irregular triangular faces $\mathbf{t}_i$, the smallest edge length $\Dm = |\bp_4 - \bp_0|$ shown here with a cyan arrow as the radius of the geodesic disc, and $\alpha_i$ as the central angle of $\mathbf{t}_i$ (b) the complete geodesic disc, comprised of all its circular sectors $\bs_i$, each having central angles $\alpha_i$}\label{fig:geodesicDisc}}
+\end{figure}%
+\nomenclature{$\bs_i$}{circular sectors which comprise the geodesic disc}%
+
+%
+\section{Angles}
+Because the angles $\alpha_i$ will be used in future calculations, but are not typically measured directly as are the edge lengths, it is worth mentioning that one can calculate an inner angle $\alpha_i$ using the law of cosines. \todoCitation{law of cosines}
+\begin{equation}
+	\alpha_i = cos^{-1}(\frac{|\bp_0 - \bp_{i}|^2 + |\bp_0 - \bp_{\sipo}|^2 - |\bp_i - \bp_{\sipo}|^2}{2\cdot|\bp_0 - \bp_{i}|\cdot|\bp_0 - \bp_{\sipo}|})
 	\label{eq:alphaFromEdgeLengths}
 \end{equation}
+
+For interpolation of the function values over the entire circular sector, we must first interpolate the values one side of the bisecting line at a time. The angles $\beta_i$ are therefore calculated using the third angle theorem as the third angle to form a right triangle along with $\alpha_i/2$ for each half of $\bs_i$. \todoCitation{and third angle theorems}
+\begin{equation}
+	\beta_i = \Big(\frac{\pi}{2} - \frac{\alpha_i}{2}\Big) = \frac{(\pi - \alpha_i)}{2}
+	\label{eq:betaFromHalfAlpha}
+\end{equation}
 %
-The area of each circular sector $\mathbf{s}_i$ comprising the geodesic disc of $\mathcal{N}$ is
+\section{Area \& Center of Gravity (centroid)} 
+We also need the area of each circular sector $\bs_i$ comprising the geodesic disc of $\mathcal{N}$, which can be calculated with just $\Dm$ and $\alpha_i$
 \begin{equation}
 	A_i = \frac{(\Dm)^2\alpha_i}{2}
 	\label{eq:circularSectorArea}
 \end{equation}
-\todoCitation{are of circle sectors, http://mathworld.wolfram.com/CircularSector.html}%
+\todoCitation{area of circle sectors, http://mathworld.wolfram.com/CircularSector.html}%
 \nomenclature{$A_i$}{area of circular sector $i$}%
-%
-Figure~\ref{eq:localMinimumEdgeLength} shows a typical configuration of an one-ring with irregular faces, the geodesic disc with radius 
-$\Dm$, and circular sectors $\mathbf{s}_i$ used for weighting.
 
-\begin{figure}[ht]
-\ffigbox
-	{\includegraphics[width=0.5\linewidth]{figures/geodesicDisc.png}}
-	{\caption[One-ring and geodesic disc]{A typical one-ring neighborhood $\mathcal{N}$ with (a) irregular triangular faces $\mathbf{t}_i$, the smallest edge length $\Dm = |\bp_4 - \bp_0|$ shown here with a cyan arrow as the radius of the geodesic disc, and $\alpha_i$ as the central angle of $\mathbf{t}_i$ (b) the complete geodesic disc, comprised of all its circular sectors $\mathbf{s}_i$, each having central angles $\alpha_i$}\label{fig:geodesicDisc}}
-\end{figure}%
-\nomenclature{$\mathbf{s}_i$}{circular sectors which comprise the geodesic disc}%
-
-The distance from the center point $\bp_0$ to the center of gravity for the circular sector $\mathbf{s}_i$ is calculated as
+Next, the distance from the center point $\bp_0$ to the center of gravity for the circular sector $\bs_i$ is calculated as
 \begin{equation}
-	\Delta c_i := \frac{2\:\Dm\:\sin(\frac{\alpha_i}{2})}{3\:\frac{\alpha_i}{2}}
-	\label{eq:circularSectorArea}
+	\Dc_i := \frac{2\:\Dm\:\sin(\frac{\alpha_i}{2})}{3\:\frac{\alpha_i}{2}}
+	\label{eq:distToCoG}
 \end{equation}
-\todoCitation{are of circle sectors, http://mathworld.wolfram.com/CircularSector.html}%
-\nomenclature{$A_i$}{area of circular sector $i$}%
+\todoCitation{area of circle sectors, http://mathworld.wolfram.com/CircularSector.html}%
+\nomenclature{$\Dc_i$}{the distance to the center of gravity $\bc_i$ within circle sector $\bs_i$}%
 
+Figure~\ref{fig:centerOfGravity} illustrates the center of gravity, or centroid, \todoCitation{centroid} and its distance from the center point of the circular sector, using $\bs_i$ from Figure~\ref{eq:localMinimumEdgeLength} as an example. In general, the smaller the angle $\alpha_i$ of the circle sector, the longer the distance $\Dc_1$ becomes.
 \begin{figure}[ht]
 \ffigbox
 	{\includegraphics[width=0.6\linewidth]{figures/centerOfGravity.png}}
-	{\caption[Distance to and Center of Gravity]{A single circle sector $\mathbf{s}_1$ with a bisecting line in black dots and its center of gravity $\mathbf{c}_1$ marked in a sand color, as well as the distance from the center point $\bp_0$ to $\mathbf{c}_1$ drawn in coral as $\Delta c_1$}\label{fig:centerOfGravity}}
+	{\caption[Distance to and Center of Gravity]{A single circle sector $\bs_1$ with a bisecting line in black dots and its center of gravity $\bc_1$ marked in a sand color, as well as the distance from the center point $\bp_0$ to $\bc_1$ drawn in coral as $\Dc_1$}\label{fig:centerOfGravity}}
 \end{figure}%
-\nomenclature{$\mathbf{s}_i$}{circular sectors which comprise the geodesic disc}%
-In general, the smaller the angle $\alpha_i$ of the circle sector, the longer the distance $\Delta c_1$ becomes.
-
-In order to correctly scale the function values $f_i$ from their respective points $\bp_i$ to become $f'_i$ at the analogous points along the geodesic disc, they must be interpolated by 
+\nomenclature{$\bs_i$}{circular sectors which comprise the geodesic disc}%
+%
+\section{Interpolation}
+With $\alpha_i/2$, $\beta_i$, and $\Dm$ being constant for both halves of any circular sector $\bs_i$ , we can next use the Law of Sines to obtain a constant ratio by which we can interpolate the three function values at the points $\bp_0$, $\bp_i$, and $\bp_{\sipo}$ which comprise the face $\mathbf{t}_i$.
 \begin{equation}
-	f'_i := f_0 + \Dm\frac{f_i-f_0}{|\bp_i-\bp_0|}
-	\label{eq:avFuncValAtCoG}
+	\zeta_i = \frac{\Dm}{\sin(\beta_i)}
+	\label{eq:zeta}
 \end{equation}
 
-To calculate the weighted mean of the function value $\frac{\mathbf{f}'_i}{3}$ at each circle sector $\mathbf{s}_i$, we first compute
+With the constant ratio $\zeta_i$, we can obtain both of the distances for interpolation. Please note, because the points $\bp_i$ and $\bp_{\sipo}$ are likely at different distances from the center point $\bp_0$, we must now begin calculating for each half of the circular sector individually, therefore we  adopt the subscript to denote the index of the sector, as in $\bs_i$, and the superscript to denote the side of the sector defined by its point, as in $\zeta^{\sipo}$ is used with $\bp_{\sipo}$.
 \begin{align}
-	f^{\mathbf{s}}_i &:= f_0 + f'_i + f'_{i+1} \\
-		& \: = 3f_0 + \Dm(\frac{f_i-f_0}{|\bp_i-\bp_0|} + \frac{f_{i+1}-f_0}{|\bp_{i+1}-\bp_0|}
-	\label{eq:avFuncValAtCoG}
+	\zeta^i_i & = \enspace\frac{\zeta_i}{|\bp_0 - \bp_i|}
+	\label{eq:distanceIForInterpolation}\\
+	\zeta^{\sipo}_i & = \frac{\zeta_i}{|\bp_0 - \bp_{\sipo}|}
+	\label{eq:distanceIp1ForInterpolation}
 \end{align}
-%
-Next we compute average function value at the center of gravity of the circle sector
+\todoReword{every equation needs a nomenclature entry}
+
+From the original function values $f_0$, $f_i$, and $f_{\sipo}$, we can now interpolate based on their distances $\zeta^i_i$ and $\zeta^{\sipo}_i$, to become
+\begin{align}
+	f^{'i}_i & = f_0(1 - \zeta^i_i) + f_i\zeta^i_i \\
+	f^{'\sipo}_i & = f_0(1 - \zeta^{\sipo}_i) + f_{\sipo}\zeta^{\sipo}_i
+	\label{eq:interpolatedFs}
+\end{align}
+
+To calculate the weighted mean function value $f^\bs_i$ at the center of gravity $\bc_i$ of the circle sector $\bs_i$, we must use the function value at $\bp_0$, both interpolated function values $f^{'i}_i$ and $f^{'\sipo}_i$, and the distance to the center of gravity $\Dc_i$, and we obtain
 \begin{equation}
-	f'_i := 
-	%f_0 (1 - ( 2.0 * sin( alpha ) ) / ( 3.0 * alpha ) ) + ( funcValInterpolA + funcValInterpolB ) * ( 2.0 * sin( alpha ) ) / ( 3.0 * alpha ) / 2.0;
-	\label{eq:avFuncValAtCoG}
+	f^\bs_i = f_0(1 - \Dc_i) + \frac{(f^{'i}_i + f^{'\sipo}_i)\Dc_i}{2};
+	\label{eq:weightedMeanAtCoGatSector}
 \end{equation}
-%
-Finally, we can compute the one-ring weighted mean function value at $\bp_0$ as
+
+Finally, we can compute the one-ring weighted mean function value at $\bp_0$ by summing all the weighted mean function values from each $\bs_i$ in $\mathcal{N}$, weighting those again by each sector's area $A_i$, then finally dividing by the total area of the geodesic disc.
 \begin{equation}
-	\bar{f}_0 := \frac{\sum A'_if^{\mathbf{s}}_i}{3A} \quad \forall i \in \{1,\ldots,n\}
+	accuFuncVals += currFuncVal * currArea;
+			accuArea += currArea;
+
+			//if(v0 < 1){ //% 1000 == 0){
+				//printf("v0, rNormDist, currFuncVal, currArea %d %f %.8g %.8g\n", v0, rNormDist, currFuncVal, currArea);
+			//}
+		}
+
+		oneRingMeanFunctionValues[v0] = accuFuncVals / accuArea;
+		
+	\bar{f}_0 := \frac{\sum A_if^{\bs}_i}{\sum A_i} \quad \forall i \in \{1,\ldots,n\}
 	\label{eq:meanFuncValAtP0}
 \end{equation}%
 \nomenclature{$\bar{f}_0$}{the one-ring weighted mean function value at $\bp_0$}%
@@ -95,44 +127,6 @@ Finally, we can compute the one-ring weighted mean function value at $\bp_0$ as
 \bigskip
 \bigskip
 
-where $f_0$ is the function value of $\bp_0$. Note that $0 < \frac{
-\Delta_\text{min}}{|\bp_i - \bp_0|} \leq 1$ such that the new 
-$f'_i$ is always the weighted mean of $f_0$ and $f_i$ by the distance of the
-respective points. For the weighted mean of the function value $\frac{f_i^t}{3}$ at 
-each triangle $f^{\mathbf{t}'}_i$ we compute
-\begin{align}
-	f^{\mathbf{t}}_i & := f_0 + f'_i + f'_{i+1} \\
-	& \: = 3f_0 + \Delta_\text{min}\left\lgroup\frac{f_i - f_0}{|\bp_i - \bp_0|} + 
-	\frac{f_{i+1} - f_0}{|\bp_{i+1} - \bp_0|}\right\rgroup
-\end{align}
-So far we used the distance to the central point $\bp_0$ as weight 
-function, but we also have to consider the distance of the points 
-$\bp_i$ to their neighbors $\bp_{i+1}$ in the one-ring. We do this 
-by computing the relative area of the geodesic disc marked by the three points 
-$\bp_0$, $\bp_i$, and $\bp_{i+1}$. Instead of circle 
-segments we approximate the geodesic disc by triangles $\mathbf{t}'_i$ achieving 
-faster computation. As all those triangles are isosceles having two egdes of 
-constant length $\Delta_\text{min}$ we can compute their weight as the area of the 
-isosceles triangle $\mathbf{t}'_i$ using the Pythagorean theorem
-\begin{equation}
-	A'_i := |\mathbf{t}'_i| = \frac{|\bp_{i+1} - \bp_i|}{4}
-	\sqrt{4\Delta_\text{min}^2 - |\bp_{i+1} - \bp_i|^2}
-	\label{eq:areaFromPythagoreanTheorem}
-\end{equation}
-Regarding Figure~\ref{fig:geodesicDisc}a, the angle $\alpha_i$ could as well be 
-used for weighting, computing $A'_i = \sin(\alpha_i)\Delta_text{min}^2$, which is 
-equivalent to Equation~\ref{eq:areaFromPythagoreanTheorem}, but it 
-is computationally expensive due to the $\sin(\cdot)$ operation and the numeric error 
-is visible when the result of the mean filtering is rendered as color per 
-vertex. Furthermore, computing $\Delta_\text{min}$ within each one-ring will cause 
-tremendous amounts of redundant computing operations. Therefore we define 
-\begin{equation}
-	\overline{\Delta_\text{min}} := \min\{\Delta_\text{min}(\bp_0) | 
-	\bp_0 \in \mathcal{M}\}
-\end{equation} 
-as the shortest edge for all triangles of the mesh. We will use this 
-$\overline{\Delta_\text{min}}$ in all the above computations. This will increase the 
-computing speed by a factor of $\approx 10$. 
 
 For a one-ring we now compute the weighted mean function valuen with the total area
 $A = \displaystyle\sum_{i=1}^nA'_i$ as
