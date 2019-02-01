@@ -1,8 +1,8 @@
-\chapter{Fast One-Ring Smoothing Filtering}
-The Fast One-Ring smoothing filter was initially proposed by H. Mara and S. Krömker at the EUROGRAPHICS Workshop on Graphics and Cultural Heritage (2017) ~\cite[s.~3.2]{Mara17}. Further research was conducted by the authors and it was determined that the weighting methods required improvement, therefore, modifcations to the algorithm were made within the GigaMesh framework. We will now present this as-yet-unpublished version of the Fast One-Ring smoothing filter as it exists now within the GigaMesh framework.
+\chapter{Fast One-Ring Smoothing}
+In this chapter we present an updated version of the Fast One-Ring smoothing filter for scalar fields on discrete manifolds, based on the initially proposed by H. Mara and S. Krömker at the EUROGRAPHICS Workshop on Graphics and Cultural Heritage (2017) ~\cite[s.~3.2]{Mara17}. Since its publication, further research has been conducted by the authors and it was determined that the weighting methods required improvement, therefore, modifcations were made directly to the algorithm implemented within the GigaMesh \todoCitation framework. We will now present this as-yet-unpublished version of the Fast One-Ring smoothing filter as it exists now, with more accuracte weighting.
 %
 \section{Points \& Edges}
-Given a point $\bp_0$ in a discrete manifold $\mathcal{M}$ which is comprised of $v$ number of points, the one-ring neighborhood $\mathcal{N}$ can be defined as all the points $\bp_i$ which share an edge with $\bp_0$, where $i \in \{1, \ldots, n\}$, and $n$ is the number of points in $\mathcal{N}$ which are always indexed in a clockwise direction\todoResearch{GigaMesh assumes a counter-clockwise direction}. The value of $n$ may vary among each points in $\mathcal{M}$, however the value must always be $\geq 2$ and typically $\leq 12$, though there is no upper limit\todoResearch{get real upper limit for n}.%
+Given a point $\bp_0$ in a discrete manifold $\mathcal{M}$ which is comprised of $v$ number of points, the one-ring neighborhood $\mathcal{N}$ can be defined as all the points $\bp_i$ which share an edge with $\bp_0$, where $i \in \{1, \ldots, n\}$, and $n$ is the number of points in $\mathcal{N}$ which are always indexed in a clockwise direction\todoResearch{GigaMesh assumes a counter-clockwise direction}. The value of $n$ may vary among vertices in $\mathcal{M}$, however the value must always be $\geq 2$ and typically $\leq 12$, though there is no upper limit\todoResearch{get real upper limit for n}.%
 \nomenclature{$\bp$}{a point in $\mathcal{M}$}%
 \nomenclature{$\bp_0$}{the center point of $\mathcal{N}$}%
 \nomenclature{$\bp_i$}{a one-ring neighbor of $\bp_0$}%
@@ -16,13 +16,12 @@ The smallest edge length in the one-ring neighborhood $\mathcal{N}$ is
 	\Dm(\bp_0) := \text{min}^n_{i=1} (|\bp_i - \bp_0|)
 	\label{eq:localMinimumEdgeLength}
 \end{equation}
-Abbreviated as $\Dm$, this length will be used as the radius of a geodesic disc on $\mathcal{M}$. \todoCitation{geodesic discs} Furthermore, computing $\Dm$ within each one-ring will cause tremendous amounts of redundant computing operations. Therefore we define 
+Abbreviated as $\Dm$, this length will be used as the radius of a geodesic disc on $\mathcal{M}$. \todoCitation{geodesic discs} Furthermore, to ensure that the filter remains the same size for all neighborhoods $\mathcal{N}$ in mesh $\mathcal{M}$, we define
 \begin{equation}
-	\overline{\Delta_\text{min}} := \min\{\Delta_\text{min}(\bp_0) | 
-	\bp_0 \in \mathcal{M}\}
+	\overline{\Delta_\text{min}} := \min\{\Delta_\text{min}(\bp_0) \;|\; \bp_0 \in \mathcal{M}\}
+	\label{eq:globalMinimumEdgeLength}
 \end{equation} 
-as the shortest edge for all triangles of the mesh. We will use this 
-$\overline{\Delta_\text{min}}$ in all the above computations.
+as the global shortest edge length, for all edges of the mesh. We will then use this $\overline{\Delta_\text{min}}$ in all the following computations. \todoReword{rewrite all Dms as globalDms}
 
 Figure~\ref{fig:geodesicDisc} shows a typical configuration of an one-ring with irregular faces, the geodesic disc with radius 
 $\Dm$, and circular sectors $\bs_i$ used for weighting.
@@ -94,7 +93,8 @@ From the original function values $f_0$, $f_i$, and $f_{\sipo}$, we can now inte
 	f^{'\sipo}_i & = f_0(1 - \zeta^{\sipo}_i) + f_{\sipo}\zeta^{\sipo}_i
 	\label{eq:interpolatedFs}
 \end{align}
-
+%
+\section{Weighted Mean}
 To calculate the weighted mean function value $f^\bs_i$ at the center of gravity $\bc_i$ of the circle sector $\bs_i$, we must use the function value at $\bp_0$, both interpolated function values $f^{'i}_i$ and $f^{'\sipo}_i$, and the distance to the center of gravity $\Dc_i$, and we obtain
 \begin{equation}
 	f^\bs_i = f_0(1 - \Dc_i) + \frac{(f^{'i}_i + f^{'\sipo}_i)\Dc_i}{2};
@@ -103,63 +103,18 @@ To calculate the weighted mean function value $f^\bs_i$ at the center of gravity
 
 Finally, we can compute the one-ring weighted mean function value at $\bp_0$ by summing all the weighted mean function values from each $\bs_i$ in $\mathcal{N}$, weighting those again by each sector's area $A_i$, then finally dividing by the total area of the geodesic disc.
 \begin{equation}
-	accuFuncVals += currFuncVal * currArea;
-			accuArea += currArea;
-
-			//if(v0 < 1){ //% 1000 == 0){
-				//printf("v0, rNormDist, currFuncVal, currArea %d %f %.8g %.8g\n", v0, rNormDist, currFuncVal, currArea);
-			//}
-		}
-
-		oneRingMeanFunctionValues[v0] = accuFuncVals / accuArea;
-		
 	\bar{f}_0 := \frac{\sum A_if^{\bs}_i}{\sum A_i} \quad \forall i \in \{1,\ldots,n\}
 	\label{eq:meanFuncValAtP0}
 \end{equation}%
 \nomenclature{$\bar{f}_0$}{the one-ring weighted mean function value at $\bp_0$}%
 
-\bigskip
-\bigskip
-\bigskip
-\bigskip
-\bigskip
-\bigskip
-\bigskip
-\bigskip
-
-
-For a one-ring we now compute the weighted mean function valuen with the total area
-$A = \displaystyle\sum_{i=1}^nA'_i$ as
-\begin{equation}
-	\bar{f}_0 := \frac{\sum A'_if_i^\mathbf{t}}{3A} \quad \forall i \in \{1,\ldots,n\}
-	\label{eq:weightedMean}
-\end{equation}
-with a negligible error due to the one-ring approximation of the geodesic 
-disc.
-
-For a one-ring weighted median filter instead, we can use all equations 
-except~\ref{eq:weightedMean}, which is replaced by a list of pairs $(f_i^\mathbf{t}, 
-A'_i)$ sorted by $f_i^\mathbf{t}$. The area is again used as a weight such that 
-$1 = \displaystyle\sum_{j=1}^n\frac{A'_i}{A}$. The weighted median now becomes
-\begin{equation}
-\end{equation}
-For the special case that $-$, which should not be excluded but rarely occurs, 
-we compute $f  ̃ 0 =tf k t + f k+1$.~\cite[s.~3.2]{Mara17}
-
-
-
-\section{GigaMesh}
-The serial algorithm is not yet plublished, but was already implemented in Gigamesh.
-
-
-
+The one-ring smoothing filter can be modified to use the median operation, instead of the mean, by using all the equations except ~\ref{eq:meanFuncValAtP0} and then sorting the results of ~\ref{eq:weightedMeanAtCoGatSector}. The details of which can be found by the original publication ~\cite[s.~3.2]{Mara17}, but as it was not implemented in GPGPU for this thesis, we exclude the details here. 
+%
 \section{Summary}
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt eget 
-ipsum eu iaculis. Cras vel sem eu velit eleifend porta vel sit amet massa. Etiam 
-a posuere nunc. Aenean aliquam viverra dapibus. Aliquam ac eros a purus feugiat 
-rhoncus. Donec faucibus ut nibh ut cursus. Aliquam erat volutpat. Proin efficitur 
-nulla sit amet iaculis condimentum. Cras placerat leo vitae venenatis feugiat. In 
-hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis 
-parturient montes, nascetur ridiculus mus. In aliquet sagittis dui eu pulvinar. 
-Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor 
-suscipit, eget imperdiet mauris convallis.
+In this chapter we presented an updated version of the Fast One-Ring smoothing filter for scalar fields on discrete manifolds, which since its original publication ~\cite[s.~3.2]{Mara17}, now utilizes the entire area of the geodesic disc $A$ for calculating the weighted averages. First, we have illustrated how one can calculate the smallest edge length $\Dm$, interior angles $\alpha$ and $\beta$, the area $A$ of a sector $\bs$ from the geodesic disc, and distance to the centroid (center of gravity) $\Dc$ for any given one-ring neighborhood $\mathcal{N}$. Next, we provided the equations for interpolating the three function values $f_0$, $f_i$, and $f_{\sipo}$ using the constant ratio $\zeta$ to obtain the weighted mean function value for each $\bs$, and finally the weighted mean function value $\bar{f_0}$ at point ${\bp_0}$ for the entire one-ring neighborhood $\mathcal{N}$. Convolving this filter with the scalar field of function values at each vertex in a mesh, thus produces a smoothing effect. 
+
+
+
+
+
+
