@@ -33,10 +33,13 @@ tempus velit gravida nulla viverra, in suscipit enim mattis.
 
 \section{Future Work}
 What they are and why I did not.
-OpenMP
-PThreads
-(already impl’d in GigaMesh)
-OpenCL
+Implement in OpenCL to include all GPUs
+Implement in OpenMP to use multiple machines
+Implement in PThreads to exploit MIMP
 Pipelining memory reads/calculations exploit more concurrency
-Thread indexing 3D vs 1D
+Edge case handling
+	max mesh size in memory
+	Derive calculation for compute time per iteration by mesh size. Maybe find when load time is greater than iteration time
+support other file types
+Calculating edge length takes longest, so DO NOT DOUBLE EFFORT HERE
 Determine is using $\Dm$ vs $\bar{\Dm}$ has any effect, especially on one-ring neighborhood with a relatively large $\Dm$ on mesh with a very small $\bar{\Dm}$ 
