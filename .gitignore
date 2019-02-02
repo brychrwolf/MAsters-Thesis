@@ -15,6 +15,7 @@ thesis.tdo
 thesis.xdv
 thesis.nls
 thesis.nlo
-
+thesis.loa
+thesis.xdv
 figures/*.png
 chapters/*.aux

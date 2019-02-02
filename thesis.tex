@@ -12,11 +12,13 @@
 \usepackage[colorinlistoftodos]{todonotes}
 \usepackage{makeidx}
 \usepackage[intoc]{nomencl}
+\usepackage{multicol}
 \usepackage[numbib,numindex]{tocbibind}
 \usepackage[font=small,labelfont=bf,labelsep=period,justification=centerlast]{caption}
 \usepackage{subcaption}
 \usepackage{floatrow}
 \usepackage{parskip}
+\usepackage[linesnumbered,ruled]{algorithm2e}
 \usepackage[bookmarks,colorlinks]{hyperref}
 \hypersetup{colorlinks,
 	citecolor=[rgb]{0,0,0.5},
@@ -28,12 +30,30 @@
 		Title={GPGPU Accelerated Iterative Filtering of Scalar Fields on Discrete Manifolds},
 	}
 }
+%For nomenclature 2 columns
+\renewcommand*{\nompreamble}{\begin{multicols}{2}}
+\renewcommand*{\nompostamble}{\end{multicols}}
+\setlength{\columnsep}{2em}
+%\setlength{\nomitemsep}{-\parsep}
+%\renewcommand{\nomunit}{\dotfill}
+\renewcommand{\nomgroup}[1]{%
+	\item[]\hspace*{-\leftmargin}%
+	\rule[2pt]{0.45\linewidth}{1pt}%
+	\hfill #1\hfill%
+	\rule[2pt]{0.45\linewidth}{1pt}
+}
 %
+\newcommand{\bc}{\mathbf{c}}
 \newcommand{\bp}{\mathbf{p}}
 \newcommand{\bs}{\mathbf{s}}
-\newcommand{\bc}{\mathbf{c}}
+\newcommand{\bt}{\mathbf{t}}
+\newcommand{\bG}{\mathcal{\Gamma}}
+\newcommand{\bM}{\mathcal{M}}
+\newcommand{\bN}{\mathcal{N}}
 \newcommand{\Dc}{\Delta c}
 \newcommand{\Dm}{\Delta_\text{min}}
+\newcommand{\gDm}{\overline{\Dm}}
+\newcommand{\Dz}{\Delta\zeta}
 \newcommand{\sipo}{i\kern-.7pt\scalebox{0.66}{+}\kern-1.2pt1}
 %
 \newcommand{\igHalfWidth}{0.48\linewidth}
@@ -63,11 +83,11 @@
 %	yellow
 %
 \includeonly{
-%	chapters/0-Front-matter,
+	chapters/0-Front-matter,
 %	chapters/1-Introduction-Motivation,
 %	chapters/2-Background,
 %	chapters/3-Related-Work,
-%	chapters/4-One-Ring-Filter,
+	chapters/4-One-Ring-Filter,
 %	chapters/5-Profiling-Exploiting-Concurrency,
 %	chapters/6-Meat-3,
 %	chapters/7-Experiments-Evaluation,
