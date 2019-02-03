@@ -11,38 +11,64 @@
 %\usepackage[lofdepth,lotdepth]{subfig}
 \usepackage[colorinlistoftodos]{todonotes}
 \usepackage{makeidx}
-\usepackage[intoc]{nomencl}
+\usepackage[refeq,refpage,intoc]{nomencl}
 \usepackage{multicol}
+\usepackage{ifthen}
 \usepackage[numbib,numindex]{tocbibind}
 \usepackage[font=small,labelfont=bf,labelsep=period,justification=centerlast]{caption}
 \usepackage{subcaption}
 \usepackage{floatrow}
 \usepackage{parskip}
+\usepackage{nameref}
 \usepackage[linesnumbered,ruled]{algorithm2e}
 \usepackage[bookmarks,colorlinks]{hyperref}
 \hypersetup{colorlinks,
-	citecolor=[rgb]{0,0,0.5},
-	filecolor=[rgb]{0,0,0.5},
-	linkcolor=[rgb]{0,0,0.5},
-	urlcolor=[rgb]{0,0,0.5},
+	citecolor=[rgb]{0,0.33,0.33},
+	filecolor=[rgb]{0,0.33,0.33},
+	linkcolor=[rgb]{0,0.33,0.33},
+	urlcolor=[rgb]{0,0.33,0.33},
 	pdfinfo={
 		Author={Bryan Wolfford},
 		Title={GPGPU Accelerated Iterative Filtering of Scalar Fields on Discrete Manifolds},
 	}
 }
+
+\renewcommand*{\nompreamble}{These symbols are used in equations, text, and figures throughout this paper. They are sorted by the order in which they are introduced.\vskip36pt}
 %For nomenclature 2 columns
-\renewcommand*{\nompreamble}{\begin{multicols}{2}}
-\renewcommand*{\nompostamble}{\end{multicols}}
-\setlength{\columnsep}{2em}
+%\renewcommand*{\nompreamble}{\begin{multicols}{2}}
+%\renewcommand*{\nompostamble}{\end{multicols}}
+%\setlength{\columnsep}{2em}
+%put entries right after eachother
 %\setlength{\nomitemsep}{-\parsep}
+%TODO: dotfill after symbol
 %\renewcommand{\nomunit}{\dotfill}
+% the subgroup seperator
 \renewcommand{\nomgroup}[1]{%
 	\item[]\hspace*{-\leftmargin}%
-	\rule[2pt]{0.45\linewidth}{1pt}%
-	\hfill #1\hfill%
-	\rule[2pt]{0.45\linewidth}{1pt}
+	\ifthenelse{\equal{#1}{A}}{%
+		\rule[2pt]{0.425\linewidth}{1pt}\hfill%
+		\nameref{cFONSsPE}%
+		\hfill\rule[2pt]{0.425\linewidth}{1pt}%
+	}{\ifthenelse{\equal{#1}{B}}{%
+		\rule[2pt]{0.475\linewidth}{1pt}\hfill%
+		\nameref{cFONSsA}%
+		\hfill\rule[2pt]{0.475\linewidth}{1pt}%
+	}{\ifthenelse{\equal{#1}{C}}{%
+		\rule[2pt]{0.35\linewidth}{1pt}\hfill%
+		\nameref{cFONSsACG}%
+		\hfill\rule[2pt]{0.35\linewidth}{1pt}%
+	}{\ifthenelse{\equal{#1}{D}}{%
+		\rule[2pt]{0.425\linewidth}{1pt}\hfill%
+		\nameref{cFONSsI}%
+		\hfill\rule[2pt]{0.425\linewidth}{1pt}%
+	}{\ifthenelse{\equal{#1}{E}}{%
+		\rule[2pt]{0.4125\linewidth}{1pt}\hfill%
+		\nameref{cFONSsWM}%
+		\hfill\rule[2pt]{0.4125\linewidth}{1pt}%
+	}{%else
+		ERR: NO DEFINE%
+	}}}}}%
 }
-%
 \newcommand{\bc}{\mathbf{c}}
 \newcommand{\bp}{\mathbf{p}}
 \newcommand{\bs}{\mathbf{s}}
@@ -90,7 +116,7 @@
 	chapters/4-One-Ring-Filter,
 %	chapters/5-Profiling-Exploiting-Concurrency,
 %	chapters/6-Meat-3,
-	chapters/7-Experiments-Evaluation,
+%	chapters/7-Experiments-Evaluation,
 %	chapters/8-Distribution,
 %	chapters/9-Conclusion,
 %	chapters/A1-Appendix,
