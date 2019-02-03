@@ -124,5 +124,37 @@ Finally, we can compute the one-ring weighted mean function value at $\bp_0$ by 
 The one-ring smoothing filter can be modified to use the median operation, instead of the mean, by using all the equations except ~\ref{eq:meanFuncValAtP0} and then sorting the results of ~\ref{eq:weightedMeanAtCoGatSector}. The details of which can be found by the original publication ~\cite[s.~3.2]{Mara17}, but as it was not implemented in GPGPU for this thesis, we exclude the details here.
 %
 \section{Summary}
+\label{cFONSsS}
 In this chapter we presented an updated version of the Fast One-Ring smoothing filter for scalar fields on discrete manifolds, which since its original publication ~\cite[s.~3.2]{Mara17}, now utilizes the entire area of the geodesic disc $A$ for calculating the weighted averages. First, we have illustrated how one can calculate the smallest edge length $\gDm$, interior angles $\alpha$ and $\beta$, the area $A$ of a sector $\bs$ from the geodesic disc, and distance to the centroid (center of gravity) $\Dc$ for any given one-ring neighborhood $\bN$. Next, we provided the equations for interpolating the three function values $f_0$, $f_i$, and $f_{\sipo}$ using the constant ratio $\zeta$ to obtain the weighted mean function value for each $\bs$, and finally the weighted mean function value $\bar{f_0}$ at point ${\bp_0}$ for the entire one-ring neighborhood $\bN$. Convolving this filter with the scalar field of function values at each vertex in a mesh, thus produces a smoothing effect.
+
+In pseudo code that would be...
+\begin{algorithm}
+	\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
+	\Input{things for filter}
+	\Output{new function values}
+	\SetNlSkip{16pt}
+
+	\bigskip
+	\FuncSty{function PreCalculate}\FuncArgSty{(a,b)}\;
+	\For{$i\leftarrow 1\;\KwTo\;m$}{
+		\For{$j\leftarrow 1\;\KwTo\;n_i$}{ %TODO:n_i to nomenclature?
+			$\eta^i_j \leftarrow |\bp_j - \bp_i|$\;
+		}
+		$\Dm^i \leftarrow \min^{n_i}_{j=1}(\eta^i_j)$\;
+	}
+	$\gDm \leftarrow \min\{\Dm^i \;|\; \bp_0 \in \bM\}$\;
+
+
+	\bigskip
+	\underline{function Calculate} $(a,b)$\;
+	\For{$v\leftarrow 1 \KwTo m$}{
+		\For{$f\leftarrow 1 \KwTo n$}{
+			$\alpha_i\leftarrow stuff$\;
+		}
+		$\alpha_i\leftarrow stuff$\;
+	}
+
+	\caption{Serial algorithm for the Fast One-Ring smoothing filter for scalar fields on discrete manifolds\label{alg:serialfilter}}
+\end{algorithm}%
+\nomenclature[f01]{$\eta_{i,j}$}{the length of the edge between $\bp_i$ and $\bp_j$}%
 

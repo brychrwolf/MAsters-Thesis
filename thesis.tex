@@ -20,7 +20,7 @@
 \usepackage{floatrow}
 \usepackage{parskip}
 \usepackage{nameref}
-\usepackage[linesnumbered,ruled]{algorithm2e}
+\usepackage[dotocloa,linesnumbered,ruled,vlined,]{algorithm2e}
 \usepackage[bookmarks,colorlinks]{hyperref}
 \hypersetup{colorlinks,
 	citecolor=[rgb]{0,0.33,0.33},
@@ -65,9 +65,15 @@
 		\rule[2pt]{0.4125\linewidth}{1pt}\hfill%
 		\nameref{cFONSsWM}%
 		\hfill\rule[2pt]{0.4125\linewidth}{1pt}%
+	}{\ifthenelse{\equal{#1}{F}}{%
+		\rule[2pt]{0.4125\linewidth}{1pt}\hfill%
+		\nameref{cFONSsS}%
+		\hfill\rule[2pt]{0.4125\linewidth}{1pt}%
 	}{%else
-		ERR: NO DEFINE%
-	}}}}}%
+		\rule[2pt]{0.425\linewidth}{1pt}\hfill%
+		UNSORTED%
+		\hfill\rule[2pt]{0.425\linewidth}{1pt}%
+	}}}}}}%
 }
 \newcommand{\bc}{\mathbf{c}}
 \newcommand{\bp}{\mathbf{p}}
