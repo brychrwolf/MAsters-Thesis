@@ -32,49 +32,7 @@
 		Title={GPGPU Accelerated Iterative Filtering of Scalar Fields on Discrete Manifolds},
 	}
 }
-
-\renewcommand*{\nompreamble}{These symbols are used in equations, text, and figures throughout this paper. They are sorted by the order in which they are introduced.\vskip36pt}
-%For nomenclature 2 columns
-%\renewcommand*{\nompreamble}{\begin{multicols}{2}}
-%\renewcommand*{\nompostamble}{\end{multicols}}
-%\setlength{\columnsep}{2em}
-%put entries right after eachother
-%\setlength{\nomitemsep}{-\parsep}
-%TODO: dotfill after symbol
-%\renewcommand{\nomunit}{\dotfill}
-% the subgroup seperator
-\renewcommand{\nomgroup}[1]{%
-	\item[]\hspace*{-\leftmargin}%
-	\ifthenelse{\equal{#1}{A}}{%
-		\rule[2pt]{0.425\linewidth}{1pt}\hfill%
-		\nameref{cFONSsPE}%
-		\hfill\rule[2pt]{0.425\linewidth}{1pt}%
-	}{\ifthenelse{\equal{#1}{B}}{%
-		\rule[2pt]{0.475\linewidth}{1pt}\hfill%
-		\nameref{cFONSsA}%
-		\hfill\rule[2pt]{0.475\linewidth}{1pt}%
-	}{\ifthenelse{\equal{#1}{C}}{%
-		\rule[2pt]{0.35\linewidth}{1pt}\hfill%
-		\nameref{cFONSsACG}%
-		\hfill\rule[2pt]{0.35\linewidth}{1pt}%
-	}{\ifthenelse{\equal{#1}{D}}{%
-		\rule[2pt]{0.425\linewidth}{1pt}\hfill%
-		\nameref{cFONSsI}%
-		\hfill\rule[2pt]{0.425\linewidth}{1pt}%
-	}{\ifthenelse{\equal{#1}{E}}{%
-		\rule[2pt]{0.4125\linewidth}{1pt}\hfill%
-		\nameref{cFONSsWM}%
-		\hfill\rule[2pt]{0.4125\linewidth}{1pt}%
-	}{\ifthenelse{\equal{#1}{F}}{%
-		\rule[2pt]{0.4125\linewidth}{1pt}\hfill%
-		\nameref{cFONSsS}%
-		\hfill\rule[2pt]{0.4125\linewidth}{1pt}%
-	}{%else
-		\rule[2pt]{0.425\linewidth}{1pt}\hfill%
-		UNSORTED%
-		\hfill\rule[2pt]{0.425\linewidth}{1pt}%
-	}}}}}}%
-}
+%
 \newcommand{\bc}{\mathbf{c}}
 \newcommand{\bp}{\mathbf{p}}
 \newcommand{\bs}{\mathbf{s}}
@@ -89,6 +47,7 @@
 \newcommand{\gDm}{\overline{\Dm}}
 \newcommand{\Dz}{\Delta\zeta}
 \newcommand{\sipo}{i\kern-.7pt\scalebox{0.66}{+}\kern-1.2pt1}
+\newcommand{\sipt}{i\kern-.7pt\scalebox{0.66}{+}\kern-1.2pt2}
 %
 \newcommand{\igHalfWidth}{0.48\linewidth}
 %TODO:why can"t I use this as an option for includegraphics?
@@ -96,7 +55,7 @@
 \newcommand{\todoRemove}[1]{\todo[color=red!40]{#1}}
 \newcommand{\todoCitation}[1]{\todo[color=teal!40]{citation required}}
 \newcommand{\todoResearch}[1]{\todo[color=cyan!40]{#1}}
-\newcommand{\todoElaborate}[1]{\todo[color=violet!40]{#1}}
+\newcommand{\todoBackground}[1]{\todo[color=violet!40]{#1}}
 \newcommand{\todoReword}[1]{\todo[color=magenta!40]{#1}}
 \newcommand{\todoStyle}[1]{\todo[color=pink!40]{#1}}
 %xcolor base colors:
@@ -117,12 +76,12 @@
 %	yellow
 %
 \includeonly{
-	chapters/0-Front-matter,
+%	chapters/0-Front-matter,
 %	chapters/1-Introduction-Motivation,
 %	chapters/2-Background,
 %	chapters/3-Related-Work,
-	chapters/4-One-Ring-Filter,
-%	chapters/5-Profiling-Exploiting-Concurrency,
+%	chapters/4-One-Ring-Filter,
+	chapters/5-Profiling-Exploiting-Concurrency,
 %	chapters/6-Meat-3,
 %	chapters/7-Experiments-Evaluation,
 %	chapters/8-Distribution,

@@ -1,3 +1,51 @@
+%Config for for Nomenclature
+\renewcommand*{\nompreamble}{These symbols are used in equations, text, and figures throughout this paper. They are sorted by the order in which they are introduced.\vskip36pt}
+%For nomenclature 2 columns
+%\renewcommand*{\nompreamble}{\begin{multicols}{2}}
+%\renewcommand*{\nompostamble}{\end{multicols}}
+%\setlength{\columnsep}{2em}
+%put entries right after eachother
+%\setlength{\nomitemsep}{-\parsep}
+%TODO: dotfill after symbol
+%\renewcommand{\nomunit}{\dotfill}
+% the subgroup seperator
+\renewcommand{\nomgroup}[1]{%
+	\item[]\hspace*{-\leftmargin}%
+	\ifthenelse{\equal{#1}{A}}{%
+		\rule[2pt]{0.425\linewidth}{1pt}\hfill%
+		\nameref{cFONSsPE}%
+		\hfill\rule[2pt]{0.425\linewidth}{1pt}%
+	}{\ifthenelse{\equal{#1}{B}}{%
+		\rule[2pt]{0.475\linewidth}{1pt}\hfill%
+		\nameref{cFONSsA}%
+		\hfill\rule[2pt]{0.475\linewidth}{1pt}%
+	}{\ifthenelse{\equal{#1}{C}}{%
+		\rule[2pt]{0.35\linewidth}{1pt}\hfill%
+		\nameref{cFONSsACG}%
+		\hfill\rule[2pt]{0.35\linewidth}{1pt}%
+	}{\ifthenelse{\equal{#1}{D}}{%
+		\rule[2pt]{0.30\linewidth}{1pt}\hfill%
+		\nameref{cFONSsIFV}%
+		\hfill\rule[2pt]{0.30\linewidth}{1pt}%
+	}{\ifthenelse{\equal{#1}{E}}{%
+		\rule[2pt]{0.4125\linewidth}{1pt}\hfill%
+		\nameref{cFONSsWM}%
+		\hfill\rule[2pt]{0.4125\linewidth}{1pt}%
+	}{\ifthenelse{\equal{#1}{F}}{%
+		\rule[2pt]{0.425\linewidth}{1pt}\hfill%
+		\nameref{cFONSsPC}%
+		\hfill\rule[2pt]{0.425\linewidth}{1pt}%
+	}{\ifthenelse{\equal{#1}{G}}{%
+		\rule[2pt]{0.35\linewidth}{1pt}\hfill%
+		\nameref{cFONSsS}%
+		\hfill\rule[2pt]{0.45\linewidth}{1pt}%
+	}{%else
+		\rule[2pt]{0.475\linewidth}{1pt}\hfill%
+		UNSORTED%
+		\hfill\rule[2pt]{0.475\linewidth}{1pt}%
+	}}}}}}}%
+}
+%
 \frontmatter
 \maketitle
 \todoRemove{update date in final draft}

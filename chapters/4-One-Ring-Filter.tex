@@ -3,7 +3,9 @@ In this chapter we present an updated version of the Fast One-Ring smoothing fil
 %
 \section{Points \& Edges}
 \label{cFONSsPE}
-Given a point $\bp_0$ in a mesh $\bM$, which is comprised of $m$ number of vertices, the one-ring neighborhood $\bN$ can be defined as all the points $\bp_i$ which are adjacent \todoResearch{define adjacent as sharing an edge in background} to and share an edge with $\bp_0$, where $i \in \{1, \ldots, n\}$, with $n$ being the cardinality of $\bN$. The points in $\bN$ are always indexed in a clockwise direction\todoResearch{GigaMesh assumes a counter-clockwise direction}, yet may vary in value among vertices in $\bM$, however, the value must always be $\geq 2$, and though there is no upper limit, $n$ is typically $\leq 12$. \todoResearch{get real upper limit for n}.%
+Given a point $\bp_0$ in a mesh $\bM$, which is comprised of $m$ number of vertices, the one-ring neighborhood $\bN$ can be defined as all the points $\bp_i$ which are adjacent to and share an edge with $\bp_0$, where $i \in \{1, \ldots, n\}$, with $n$ being the cardinality of $\bN$. The points in $\bN$ are always indexed in a clockwise direction\todoResearch{GigaMesh assumes a counter-clockwise direction}, yet may vary in value among vertices in $\bM$, however, the value must always be $\geq 2$, and though there is no upper limit, $n$ is typically $\leq 12$.%
+\todoResearch{get real upper limit for n}.%
+\todoBackground{define adjacent as sharing an edge in background}%
 \nomenclature[aa]{$\bp$}{a point in $\bM$}%
 \nomenclature[ab]{$\bp_0$}{the center point of $\bN$}%
 \nomenclature[ac]{$\bp_i$}{a one-ring neighbor of $\bp_0$}%
@@ -36,7 +38,7 @@ Figure~\ref{fig:geodesicDisc} shows a typical configuration of a one-ring neighb
 	{\caption[One-ring and geodesic disc]{A typical one-ring neighborhood $\bN$ with (a) irregular triangular faces $\bt_i$, the smallest edge length $\Dm = |\bp_4 - \bp_0|$ shown here with a teal arrow as the radius of the geodesic disc, and $\alpha_i$ as the central angle of $\bt_i$ (b) the complete geodesic disc $\bG$, comprised of all its circular sectors $\bs_i$, each having central angles $\alpha_i$}\label{fig:geodesicDisc}}
 \end{figure}%
 \nomenclature[a08]{$\bt_i$}{the triangular faces of $\bN$}%
-\nomenclature[a09]{$\bG$}{the geodesic disc about $\bp_0$}%
+\nomenclature[a09]{$\bG$}{the geodesic disc centered at $\bp_0$}%
 \nomenclature[a10]{$\bs_i$}{the circle sectors which comprise $\bG$}%
 %
 \section{Angles}
@@ -54,10 +56,16 @@ We also require For interpolation of the function values over the entire circula
 	\label{eq:betaFromHalfAlpha}
 \end{equation}%
 \nomenclature[b02]{$\beta_i$}{the third angle with $\frac{\alpha_i}{2}$ and $\frac{\pi}{2}$}%
+Figure~\ref{fig:angles} shows an example of the angles $\alpha_i$ and $\beta_i$ for the circle sector $\bs_i$  which comprises the geodesic disc $\bG$ with radius $\Dm$.
+\begin{figure}[ht]
+\ffigbox
+	{\includegraphics[width=0.8\linewidth]{example-image-16x9.png}}
+	{\caption[The angles $\alpha_i$ and $\beta_i$]{An example of the angles $\alpha_i$ and $\beta_i$ for the circle sector $\bs_i$  which comprises the geodesic disc $\bG$ with radius $\Dm$}\label{fig:angles}}
+\end{figure}%
 %
 \section{Area \& Center of Gravity}
 \label{cFONSsACG}
-We also need the area of each circular sector $\bs_i$ comprising the geodesic disc $\bG$ of the one-ring neighborhood $\bN$, which can be calculated with just $\gDm$ and $\alpha_i$
+We also need the area of each circular sector $\bs_i$ comprising the geodesic disc $\bG$, which can be calculated once both $\gDm$ and $\alpha_i$ have been determined
 \begin{equation}
 	A_i = \frac{(\gDm)^2\alpha_i}{2}
 	\label{eq:circularSectorArea}
@@ -65,7 +73,7 @@ We also need the area of each circular sector $\bs_i$ comprising the geodesic di
 \todoCitation{area of circle sectors, http://mathworld.wolfram.com/CircularSector.html}%
 \nomenclature[c01]{$A_i$}{area of circular sector $i$}%
 
-Next, the distance from the center point $\bp_0$ to the center of gravity for the circular sector $\bs_i$ is calculated as
+Next, the distance from the center point $\bp_0$ to the center of gravity $\bc_i$ for the circular sector $\bs_i$ is calculated along the line which bisect the angle $\alpha_i$
 \begin{equation}
 	\Dc_i := \frac{2\:\gDm\:\sin(\frac{\alpha_i}{2})}{3\:\frac{\alpha_i}{2}}
 	\label{eq:distToCoG}
@@ -73,46 +81,57 @@ Next, the distance from the center point $\bp_0$ to the center of gravity for th
 \todoCitation{area of circle sectors, http://mathworld.wolfram.com/CircularSector.html}%
 \nomenclature[c03]{$\Dc_i$}{the distance to $\bc_i$ within $\bs_i$}%
 
-Figure~\ref{fig:centerOfGravity} illustrates the center of gravity, or centroid, \todoCitation{centroid} and its distance from the center point of the circular sector, using $\bs_i$ from Figure~\ref{eq:localMinimumEdgeLength} as an example. In general, the smaller the angle $\alpha_i$ of the circle sector, the longer the distance $\Dc_1$ becomes.
+Figure~\ref{fig:centerOfGravity} illustrates the center of gravity $\bc_i$, or centroid, \todoCitation{centroid} and its distance from the center point $\bp_0$ of the circular sector $\bs_i$, using $\bs_1$ from Figure~\ref{eq:localMinimumEdgeLength} as an example. In general, the smaller the angle $\alpha_i$ becomes, the longer the distance $\Dc_1$ becomes.
 \begin{figure}[ht]
 \ffigbox
 	{\includegraphics[width=0.6\linewidth]{figures/centerOfGravity.png}}
-	{\caption[Distance to and Center of Gravity]{A single circle sector $\bs_1$ with a bisecting line in black dots and its center of gravity $\bc_1$ marked in a sand color, as well as the distance from the center point $\bp_0$ to $\bc_1$ drawn in coral as $\Dc_1$}\label{fig:centerOfGravity}}
+	{\caption[Distance to the Center of Gravity]{A single circle sector $\bs_1$ with a bisecting line in black dots and its center of gravity $\bc_1$ marked in a sand color, as well as the distance from the center point $\bp_0$ to $\bc_1$ drawn in coral as $\Dc_1$}\label{fig:centerOfGravity}}
 \end{figure}%
-\nomenclature[c02]{$\bc_i$}{center of gravity (centroid) of $\bs_i$}%
+\nomenclature[c02]{$\bc_i$}{the center of gravity, or centroid, of $\bs_i$}%
+\todoReword{consider combining with angles figure}
+\todoReword{lable ti}
 %
-\section{Interpolation}
-\label{cFONSsI}
-With $\alpha_i\mathbin{/}2$, $\beta_i$, and $\gDm$ being constant for both halves of any circular sector $\bs_i$ , we can next use the Law of Sines to obtain a constant ratio by which we can interpolate the three function values at the points $\bp_0$, $\bp_i$, and $\bp_{\sipo}$ which comprise the face $\bt_i$.
+\section{Interpolation \& Function Values}
+\label{cFONSsIFV}
+\todoReword{add details about how function values come about}
+With $\alpha_i\mathbin{/}2$, $\beta_i$, and $\gDm$ being constant for both halves of any circular sector $\bs_i$, we can next use the Law of Sines to obtain the constant ratio by which we will interpolate the three function values $f_0$, $f_i$, and $f_{\sipo}$ at the points $\bp_0$, $\bp_i$, and $\bp_{\sipo}$ which comprise the face $\bt_i$.
 \begin{equation}
 	\zeta_i = \frac{\gDm}{\sin(\beta_i)}
 	\label{eq:zeta}
 \end{equation}%
 \nomenclature[d01]{$\zeta_i$}{constant ratio for interpolation derived from Law of Sines}%
+\nomenclature[d02]{$f_0$}{also $f_i$ and $f_{\sipo}$, function values at points $\bp_0$, $\bp_i$, and $\bp_{\sipo}$}%
 
-With the constant ratio $\zeta_i$, we can obtain both of the distances for interpolation. Please note, because the points $\bp_i$ and $\bp_{\sipo}$ are likely at different distances from the center point $\bp_0$, we must now begin calculating for each half of the circular sector individually, therefore we adopt the superscript to denote the index of the sector, as in $\Dz^i$ for $\bs_i$, and the subscipt to denote the side of the sector defined by its point, as in $\Dz_{\sipo}$ is used with $\bp_{\sipo}$.
+With the constant ratio $\zeta_i$, we can obtain both of the distances required to interpolate $f_i$ and $f_{\sipo}$. It should be noted that because the points $\bp_i$ and $\bp_{\sipo}$ are likely at different distances from the center point $\bp_0$, we must now begin calculating for each half of the circular sector individually. One may look to Figures~\ref{fig:geodesicDisc} and~\ref{fig:centerOfGravity} for an example. Therefore, while subscript for $\zeta_i$ remains the match of index for the circle sector $\bs_i$, we will now adopt the subscipt for $\Dz_i$ to denote the side of the sector defined by its point $\bp_i$, also with $\Dz_{\sipo}$ for $\bp_{\sipo}$.
 \begin{align}
-	\Dz^i_i & = \kern4pt\frac{\zeta_i}{|\bp_0 - \bp_i|}
+	\Dz_i & = \kern4pt\frac{\zeta_i}{|\bp_0 - \bp_i|}
 	\label{eq:distanceIForInterpolation}\\
-	\Dz^i_{\sipo} & = \frac{\zeta_i}{|\bp_0 - \bp_{\sipo}|}
+	\Dz_{\sipo} & = \frac{\zeta_i}{|\bp_0 - \bp_{\sipo}|}
 	\label{eq:distanceIp1ForInterpolation}
 \end{align}%
-\nomenclature[d02]{$\Dz^i_i$}{also $\Dz^i_{\sipo}$, the distances for interpolation of $f_i$ toward $f_0$}%
+\nomenclature[d03]{$\Dz^i_i$}{also $\Dz^i_{\sipo}$, the distances for interpolation of $f_i$ toward $f_0$}%
 
-From the original function values $f_0$, $f_i$, and $f_{\sipo}$, we can now interpolate based on their distances $\Dz^i_i$ and $\Dz^i_{\sipo}$, to become
+From the original function values $f_0$, $f_i$, and $f_{\sipo}$, we can now interpolate based on their distances $\Dz_i$ and $\Dz_{\sipo}$, to become
 \begin{align}
-	f'_i & = f_0(1 - \Dz^i_i) + f_i\Dz^i_i
+	f'_i & = f_0(1 - \Dz_i) + f_i\Dz_i
 	\label{eq:interpolatedFi} \\
-	f'_{\sipo} & = f_0(1 - \Dz^i_{\sipo}) + f_{\sipo}\Dz^i_{\sipo}
+	f'_{\sipo} & = f_0(1 - \Dz_{\sipo}) + f_{\sipo}\Dz_{\sipo}
 	\label{eq:interpolatedFip1}
 \end{align}%
-\nomenclature[d03]{$f'_i$}{also $f'_{\sipo}$, the interpolated values of $f_i$ toward $f_0$}%
+\nomenclature[d04]{$f'_i$}{also $f'_{\sipo}$, the interpolated values of $f_i$ toward $f_0$}%
+
+Figure~\ref{fig:interpolation} illustrates the\dots
+\begin{figure}[ht]
+\ffigbox
+	{\includegraphics[width=0.6\linewidth]{example-image-16x9.png}}
+	{\caption[Interpolation of Function Values toward the Centroid]{Interpolation of Function Values toward the Centroid\ldots}\label{fig:interpolation}}
+\end{figure}
 %
 \section{Weighted Mean}
 \label{cFONSsWM}
-To calculate the weighted mean function value $f^\bs_i$ at the center of gravity $\bc_i$ of the circle sector $\bs_i$, we must use $f_0$ the function value at $\bp_0$, both interpolated function values $f^{'i}_i$ and $f^{'\sipo}_i$, and the distance to the center of gravity $\Dc_i$, and we obtain
+To calculate the weighted mean function value $f^\bs_i$ at the center of gravity $\bc_i$ of the circle sector $\bs_i$, we must use $f_0$, the function value at $\bp_0$, both interpolated function values, $f'_i$ and $f'_{\sipo}$, and the distance to the center of gravity $\Dc_i$, and we obtain
 \begin{equation}
-	f^\bs_i = f_0(1 - \Dc_i) + \frac{(f^{'i}_i + f^{'\sipo}_i)\Dc_i}{2}
+	f^\bs_i = f_0(1 - \Dc_i) + \frac{(f'_i + f'_{\sipo})\Dc_i}{2}
 	\label{eq:weightedMeanAtCoGatSector}
 \end{equation}%
 \nomenclature[e01]{$f^\bs_i$}{the weighted mean function value at $\bc_i$ of $\bs_i$}%
@@ -125,13 +144,26 @@ Finally, we can compute the one-ring weighted mean function value at $\bp_0$ by 
 \nomenclature[e02]{$\bar{f}_0$}{the one-ring weighted mean function value at $\bp_0$}%
 \nomenclature[e03]{$|\bt_v|$}{the number of faces $\bt$ in $\bN_v$, always $\geq 2$, typically $\leq 12$}%
 
-The one-ring smoothing filter can be modified to use the median operation, instead of the mean, by using all the equations except ~\ref{eq:meanFuncValAtP0} and then sorting the results of ~\ref{eq:weightedMeanAtCoGatSector}. The details of which can be found by the original publication ~\cite[s.~3.2]{Mara17}, but as it was not implemented in GPGPU for this thesis, we exclude the details here.
-%
-\section{Summary}
-\label{cFONSsS}
-In this chapter we presented an updated version of the Fast One-Ring smoothing filter for scalar fields on discrete manifolds, which since its original publication ~\cite[s.~3.2]{Mara17}, now utilizes the entire area of the geodesic disc $A$ for calculating the weighted averages. First, we have illustrated how one can calculate the smallest edge length $\gDm$, interior angles $\alpha$ and $\beta$, the area $A$ of a sector $\bs$ from the geodesic disc, and distance to the centroid (center of gravity) $\Dc$ for any given one-ring neighborhood $\bN$. Next, we provided the equations for interpolating the three function values $f_0$, $f_i$, and $f_{\sipo}$ using the constant ratio $\zeta$ to obtain the weighted mean function value for each $\bs$, and finally the weighted mean function value $\bar{f_0}$ at point ${\bp_0}$ for the entire one-ring neighborhood $\bN$. Convolving this filter with the scalar field of function values at each vertex in a mesh, thus produces a smoothing effect.
+The one-ring smoothing filter can be modified to use the median operation, instead of the mean, by using all the equations except Equation~\ref{eq:meanFuncValAtP0} and then sorting the results of Equation~\ref{eq:weightedMeanAtCoGatSector}. The details of which can be found by the original publication ~\cite[s.~3.2]{Mara17}, but as it was not implemented in GPGPU for this thesis, we exclude the details here.
 
-In algorithm~\ref{alg:serialPreCalculation}, we precalculate all the edge lengths $\eta$ in $\bM$, and the global minimum edge length $\gDm$.
+Figure~\ref{fig:weightedMean} illustrates the\dots
+\begin{figure}[ht]
+\ffigbox
+	{\includegraphics[width=0.6\linewidth]{example-image-16x9.png}}
+	{\caption[Weighted Mean function value $f^\bs_i$ at the center of gravity]{the weighted mean function value $f^\bs_i$ at the center of gravity\ldots 3D circle sector as base, floating plane above tilted be interpolated function values, area underneath colored.}\label{fig:weightedMean}}
+\end{figure}
+%
+\section{Pseudo-Code}
+\label{cFONSsPC}
+In this section, we now combine all of the above Equations~\ref{eq:localMinimumEdgeLength} through~\ref{eq:meanFuncValAtP0} into an algorithm using mathematical pseudo-code in order to facilitate the understanding and implementation of the improved Fast One-Ring smoothing filter for scalar fields on discrete meshes. The convolution of the filter requires several values which are shared between adjacent neighborhoods, and thus it is beneficial to split the algorithm into two distict parts, saving the results of the first part to be used in the iterative convolutions of the second part, all in order to reduce the number of required calculations-per-iteration.
+
+Initially, one must discover all points $\bp_k$ which are members of each neighborhood $\bN_v$, then calculate all the edge lengths $\eta_{vk}$, as well as the global minimum edge length $\gDm$. Afterwards, one may efficiently convolve the filter, for as many number of iterations as required to achieve the desired smoothing effect.
+\todoBackground{add adjacent neighborhoods to background}
+\todoBackground{add convolution and convolve to background}
+\todoBackground{mention how 3Ddata doens't save neighborhood information, and only winged pairs save edge info}
+%
+\subsection{Pre-Calculations}
+In Algorithm~\ref{alg:buildNeighborhoods}, we discover the points $\bp_k \; \forall k \in \bN_v$ which are members of each neighborhood $\bN_v \; \forall v \in \bM$.
 \begin{algorithm}
 	\DontPrintSemicolon
 	\SetCommentSty{small}
@@ -142,24 +174,55 @@ In algorithm~\ref{alg:serialPreCalculation}, we precalculate all the edge length
 	\Output{new function values}
 
 	\bigskip
-	\FuncSty{PreCalculate}\FuncArgSty{(a,b)}\;
+	\FuncSty{BuildNeighborhoods}\FuncArgSty{(a,b)}\;
+\nl	\For{$f \in \mathcal{F}$}{
+\nl		\For{$i \in \{0,1,2\}$}{
+			\linespread{1.5}\selectfont
+%seperated
+%\nl			$\bp_a \leftarrow \bp_{\big((i\kern-.7pt\scalebox{0.66}{+}\kern-1.2pt1)\%3\big)}$\;
+%\nl			$\bp_b \leftarrow \bp_{\big((i\kern-.7pt\scalebox{0.66}{+}\kern-1.2pt2)\%3\big)}$\;
+%\nl			$\bN_{\widehat{\bp_i}} \leftarrow \bN_{\widehat{\bp_i}} \cup \{\bp_a, \bp_b\}$\;
+%together
+\nl			$\bN_{\widehat{\bp_i}} \leftarrow \bN_{\widehat{\bp_i}} \cup \{\bp_{\big((i\kern-.7pt\scalebox{0.66}{+}\kern-1.2pt1)\%3\big)}, \bp_{\big((i\kern-.7pt\scalebox{0.66}{+}\kern-1.2pt2)\%3\big)}\}$\;\label{BuildNeighborhoodsComplexSubscripts}
+		}	
+	}
+	\caption{Serial algorithm for discovering the neighborhoods required by the Fast One-Ring smoothing filter, before it can begin iteratively convolving a mesh\label{alg:buildNeighborhoods}}
+\end{algorithm}%
+\nomenclature[f01]{$\mathcal{F}$}{the set of Faces comprising the mesh}%
+\nomenclature[f02]{$\widehat{\bp_i}$}{the unique index for point $\bp_i$, correspondign to $v \in \bM$}%
+
+Algorithm~\ref{alg:buildNeighborhoods} uses complex subscripts in line~\ref{BuildNeighborhoodsComplexSubscripts}. The idea is to increment over each of the 3 vertices of every face $\mathcal{F}$ in the mesh. The symbol $\widehat{\bp_i}$ represents the unique index for point $\bp_i$, corresponding to $v \in \bM$, so we can build the neighborhood $\bN_{\widehat{\bp_i}}$ by performing the union operation with the set of neighboring points $\bp_{\big((i\kern-.7pt\scalebox{0.66}{+}\kern-1.2pt1)\%3\big)}, \bp_{\big((i\kern-.7pt\scalebox{0.66}{+}\kern-1.2pt2)\%3\big)}$, whose indexes change incrementally with $i$ in order to always represent the two neighbors of $\bp_i \in f$.
+
+Next, in Algorithm~\ref{alg:serialGetEdgeLengths}, we calculate the edge lengths $\eta_{vk} \; \forall v \in \bM, \; \forall  k \in \bN_v$, as well as the global minimum edge length $\gDm$ of $\bM$.
+\begin{algorithm}
+	\DontPrintSemicolon
+	\SetCommentSty{small}
+	\SetKwFor{For}{for}{:}{}
+
+	\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
+	\Input{things for filter}
+	\Output{new function values}
+
+	\bigskip
+	\FuncSty{GetEdgeLengths}\FuncArgSty{(a,b)}\;
 \nl	\For{$v\leftarrow 1\;\KwTo\;m$}{
 \nl		\For{$k\leftarrow 1\;\KwTo\;n_v$}{
 			\linespread{1.5}\selectfont
-\nl			$\eta_{vk} \leftarrow |\bp_k - \bp_v|$\tcc*[r]{every edge length}
+\nl			$\eta_{vk} \leftarrow |\bp_k - \bp_v|$\label{precal-bpkbpv}\tcc*[r]{every edge length}
 \nl			$\gDm \leftarrow \min\{\gDm, \eta_{vk}\}$\tcc*[r]{Eq:~\ref{eq:globalMinimumEdgeLength}}
-			%TODO:should I include initialization of \gDm to 0?
 		}
 	}
-	\caption{Serial algorithm for the calculations required by the Fast One-Ring smoothing filter, before it can begin its convolution \label{alg:serialPreCalculation}}
+	\caption{Serial algorithm for the calculations required by the Fast One-Ring smoothing filter, before it can begin iteratively convolving a mesh\label{alg:serialGetEdgeLengths}}
 \end{algorithm}%
-\nomenclature[f01]{$n_i$}{the cardinality of $\bN$ about $\bp_i$}%
-\nomenclature[f02]{$\eta_{vk}$}{the length of the edge between $\bp_v$ and $\bp_k$}%
-
-\todoReword{use more and define, or reword convolution in alg:1 caption}
-Algorithm~\ref{alg:serialPreCalculation} introduces a few\todoReword{give real number} new symbols: $v$ is used to represent a unique index for each vertex in $\bM$, $k$ indexes each neighbor in the one-ring neighborhood $\bN$ of $\bp_v$, whose cardinality is $n_v$, $|\bp_k-\bp_v|$ from $line3$ is analogous to $|\bp_i-\bp_0|$ from equation~\ref{eq:localMinimumEdgeLength} when $\bp_v$ becomes $\bp_0$, and finally, $\eta_{vk}$ is the length of the edge between $\bp_v$ and $\bp_k$.
-
-In algorithm~\ref{alg:serialCalculate}, we illustrate the remaining steps required to process a mesh using the one-ring filter, after having completed the pre-calculations in~\ref{alg:serialPreCalculation}.
+\nomenclature[f03]{$v$}{the cardinality of $\bN$ about $\bp_i$}%
+\nomenclature[f04]{$k$}{the index for a point in $\bN_v$}%
+\nomenclature[f05]{$\eta_{vk}$}{the length of the edge between $\bp_v$ and $\bp_k$}%
+% If alg.1 changes, update refence to number of new symbols.
+%
+Algorithm~\ref{alg:serialGetEdgeLengths} introduces five new symbols: $v$ is used to represent a unique index for each vertex in $\bM$; $k$ indexes each neighboring point in the one-ring neighborhood $\bN_v$; whose cardinality is $n_v$, $|\bp_k-\bp_v|$ from line~\ref{precal-bpkbpv} is analogous to $|\bp_i-\bp_0|$ from Equation~\ref{eq:localMinimumEdgeLength} when $\bp_v$ becomes $\bp_0$; and lastly, $\eta_{vk}$ is the length of the edge between $\bp_v$ and $\bp_k$.
+%
+\subsection{Calculations}
+In Algorithm~\ref{alg:serialCalculate}, we illustrate the remaining steps required to process a mesh using the one-ring filter, after having completed the pre-calculations in~\ref{alg:serialGetEdgeLengths}.
 %
 \begin{algorithm}
 	\DontPrintSemicolon
@@ -174,18 +237,28 @@ In algorithm~\ref{alg:serialCalculate}, we illustrate the remaining steps requir
 	\linespread{1}\selectfont
 	\FuncSty{Calculate}\FuncArgSty{(a,b)}\;
 \nl	\For{$v\leftarrow 1\;\KwTo\;m$}{
-\nl		\For{$i \leftarrow 1\:\KwTo\:|\bt_v|$}{
+\nl		\For{$i \leftarrow 1\:\KwTo\:|\bN_v|$}{
+			\linespread{2}\selectfont
+\nl			$\alpha_i \leftarrow$ \begin{large}
+				$\text{cos}^{-1}\Big(\frac{
+					(\eta_{\widehat{\bp_i},\widehat{\bp_{\sipt}}})^2 + 
+					(\eta_{\widehat{\bp_i},\widehat{\bp_{\sipo}}})^2 - 
+					(\eta_{\widehat{\bp_{\sipo}},\widehat{\bp_{\sipt}}})^2
+				}{2
+					(\eta_{\widehat{\bp_i},\widehat{\bp_{\sipt}}})
+					(\eta_{\widehat{\bp_i},\widehat{\bp_{\sipo}}})
+				}\Big)$\tcc*[r]{Eq:~\ref{eq:alphaFromEdgeLengths}}
+			\end{large}
 			\linespread{1.5}\selectfont
-\nl			$\alpha_i \leftarrow \text{cos}^{-1}\big((\eta^v_{0,2})^2 + (\eta^v_{0,1})^2 - (\eta^v_{1,2})^2\big)\mathbin{/}\big(2(\eta^v_{0,2})(\eta^v_{0,1})\big)$\tcc*[r]{Eq:~\ref{eq:alphaFromEdgeLengths}}
 \nl			$\beta_i \leftarrow (\pi - \alpha_i)\mathbin{/}2$\tcc*[r]{Eq:~\ref{eq:betaFromHalfAlpha}}
 \nl			\kern-2pt$A_i \leftarrow \gDm^2\alpha_i\mathbin{/}2$\tcc*[r]{Eq:~\ref{eq:circularSectorArea}}
 \nl			\kern-7pt$\Dc_i \leftarrow \big(2\:\gDm\:\sin(\alpha_i\mathbin{/}2)\big)\mathbin{/}(3\alpha_i\mathbin{/}2)$\tcc*[r]{Eq:~\ref{eq:distToCoG}}
 \nl			\kern1pt$\zeta_i \leftarrow \gDm\mathbin{/}\sin(\beta_i)$\tcc*[r]{Eq:~\ref{eq:zeta}}
 \nl			\For{$j \in {1,2}$}{
-\nl				\kern-8pt$\Dz^i_j \leftarrow \zeta_j\mathbin{/}|\bp_0 - \bp_j|$\tcc*[r]{Eq:~\ref{eq:distanceIForInterpolation},~\ref{eq:distanceIp1ForInterpolation}}
-\nl				$f'_j \leftarrow f_0(1 - \Dz^i_j) + f_j\Dz^i_j$\tcc*[r]{Eq:~\ref{eq:meanFuncValAtP0},~\ref{eq:interpolatedFip1}}
+\nl				\kern-8pt$\Dz_j \leftarrow \zeta_i\mathbin{/}|\bp_0 - \bp_j|$\tcc*[r]{Eq:~\ref{eq:distanceIForInterpolation},~\ref{eq:distanceIp1ForInterpolation}}
+\nl				$f'_j \leftarrow f_0(1 - \Dz_j) + f_j\Dz_j$\tcc*[r]{Eq:~\ref{eq:meanFuncValAtP0},~\ref{eq:interpolatedFip1}}
 			}
-\nl			$f^\bs_i \leftarrow f_0(1 - \Dc_i) + \big((f^1_i + f^2_i)\Dc_i\big)\mathbin{/}2$\tcc*[r]{Eq:~\ref{eq:weightedMeanAtCoGatSector}}
+\nl			$f^\bs_i \leftarrow f_0(1 - \Dc_i) + \big((f_1 + f_2)\Dc_i\big)\mathbin{/}2$\tcc*[r]{Eq:~\ref{eq:weightedMeanAtCoGatSector}}
 \nl			\kern-2pt$\tilde{A}_v \leftarrow \tilde{A}_v + A_i$\tcc*[r]{Eq:~\ref{eq:meanFuncValAtP0}}
 \nl			$\tilde{f}_v \leftarrow \tilde{f}_v + A_if^{\bs}_i$\tcc*[r]{Eq:~\ref{eq:meanFuncValAtP0}}
 		}
@@ -194,5 +267,8 @@ In algorithm~\ref{alg:serialCalculate}, we illustrate the remaining steps requir
 	}
 	\caption{Serial algorithm for the Fast One-Ring smoothing filter for scalar fields on discrete manifolds\label{alg:serialCalculate}}
 \end{algorithm}%
-\nomenclature[f03]{$\eta^v_{1,2}$}{the length of the edge between $\bp_i$ and its neighbors in $\bt_i$, $\bp_1$ and $\bp_2$}%
-
+\nomenclature[f06]{$\eta^v_{1,2}$}{the length of the edge between $\bp_i$ and its neighbors in $\bt_i$, $\bp_1$ and $\bp_2$}%
+%
+\section{Summary}
+\label{cFONSsS}
+In this chapter we presented an updated version of the Fast One-Ring smoothing filter for scalar fields on discrete manifolds, which since its original publication ~\cite[s.~3.2]{Mara17}, now utilizes the entire area of the geodesic discs centered at $\bp_0$ to calculate the weighted averages of the function values in its one-ring neighborhood. First, we have illustrated how one can calculate the global smallest edge length $\gDm$, interior angles $\alpha$ and $\beta$, the area $A$ of a sector $\bs$ from the geodesic disc $\bG$, and distance $\Dc$ to the centroid (center of gravity) $\bc$ for any given one-ring neighborhood $\bN$ of mesh $\bM$. Next, we provided the equations for interpolating the three function values $f_0$, $f_i$, and $f_{\sipo}$ using the sectorially-constant ratio $\zeta$ to obtain the weighted mean function value for each $\bs$, and finally the weighted mean function value $\bar{f_0}$ at point ${\bp_0}$ for the entire one-ring neighborhood $\bN$. Convolving this filter with the scalar field of function values at each vertex in a mesh for any number of iterations, thus produces a smoothing effect with increasing intensity in relation to the number of iterations.
