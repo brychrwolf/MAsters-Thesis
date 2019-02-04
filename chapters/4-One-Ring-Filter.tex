@@ -19,14 +19,14 @@ The procedure for filtering a mesh begins by calculating the smallest edge lengt
 	\Dm(\bp_0) := \text{min}^n_{i=1} (|\bp_i - \bp_0|)
 	\label{eq:localMinimumEdgeLength}
 \end{equation}%
-\nomenclature[aj]{$\Dm$}{or $\Dm(\bp_0)$, the smallest edge length connected to $\bp_0$}%
+\nomenclature[am]{$\Dm$}{or $\Dm(\bp_0)$, the smallest edge length connected to $\bp_0$}%
 
 Furthermore, to ensure that the filter window remains the same size for all neighborhoods $\bN_v\;\forall v \in \{1,\ldots,m\}$, we define
 \begin{equation}
 	\gDm := \min\{\Dm(\bp_0) \;|\; \bp_0 \in \bM\}
 	\label{eq:globalMinimumEdgeLength}
 \end{equation}%
-\nomenclature[ak]{$\gDm$}{the smallest edge length in $\bM$}%%
+\nomenclature[an]{$\gDm$}{the smallest edge length in $\bM$}%%
 \nomenclature[ah]{$\bN_v$}{the one-ring neighborhood about vertex $v$}%
 \nomenclature[ai]{$n_v$}{the cardinality of $\bN_v$}%
 as the smallest edge length among all edges of the mesh $\bM$, and will then use this $\gDm$ in all the following computations in lieu of $\Dm$.
@@ -37,10 +37,9 @@ Figure~\ref{fig:geodesicDisc} shows a typical configuration of a one-ring neighb
 	{\includegraphics[width=0.5\linewidth]{figures/geodesicDisc.png}}
 	{\caption[One-ring and geodesic disc]{A typical one-ring neighborhood $\bN$ with (a) irregular triangular faces $\bt_i$, the smallest edge length $\Dm = |\bp_4 - \bp_0|$ shown here with a teal arrow as the radius of the geodesic disc, and $\alpha_i$ as the central angle of $\bt_i$ (b) the complete geodesic disc $\bG$, comprised of all its circular sectors $\bs_i$, each having central angles $\alpha_i$}\label{fig:geodesicDisc}}
 \end{figure}%
-\nomenclature[a08]{$\bt_i$}{the triangular faces of $\bN$}%
-\nomenclature[a09]{$\bG$}{the geodesic disc centered at $\bp_0$}%
-\nomenclature[a10]{$\bs_i$}{the circle sectors which comprise $\bG$}%
-%
+\nomenclature[aj]{$\bt_i$}{the triangular faces of $\bN$}%
+\nomenclature[ak]{$\bG$}{the geodesic disc centered at $\bp_0$}%
+\nomenclature[al]{$\bs_i$}{the circle sectors which comprise $\bG$}%
 \section{Angles}
 \label{cFONSsA}
 In order to perform the many neccessary trigonometric operations required by the Fast One-Ring smoothing filter, we now compute the inner angles $\alpha_i$ of triangles $\bt_i$ using the using the Law of Cosines. \todoCitation{law of cosines}
@@ -99,8 +98,8 @@ With $\alpha_i\mathbin{/}2$, $\beta_i$, and $\gDm$ being constant for both halve
 	\zeta_i = \frac{\gDm}{\sin(\beta_i)}
 	\label{eq:zeta}
 \end{equation}%
-\nomenclature[d01]{$\zeta_i$}{constant ratio for interpolation derived from Law of Sines}%
-\nomenclature[d02]{$f_0$}{also $f_i$ and $f_{\sipo}$, function values at points $\bp_0$, $\bp_i$, and $\bp_{\sipo}$}%
+\nomenclature[da]{$\zeta_i$}{constant ratio for interpolation derived from Law of Sines}%
+\nomenclature[dc]{$f_0$}{also $f_i$ and $f_{\sipo}$, function values at points $\bp_0$, $\bp_i$, and $\bp_{\sipo}$}%
 
 With the constant ratio $\zeta_i$, we can obtain both of the distances required to interpolate $f_i$ and $f_{\sipo}$. It should be noted that because the points $\bp_i$ and $\bp_{\sipo}$ are likely at different distances from the center point $\bp_0$, we must now begin calculating for each half of the circular sector individually. One may look to Figures~\ref{fig:geodesicDisc} and~\ref{fig:centerOfGravity} for an example. Therefore, while subscript for $\zeta_i$ remains the match of index for the circle sector $\bs_i$, we will now adopt the subscipt for $\Dz_i$ to denote the side of the sector defined by its point $\bp_i$, also with $\Dz_{\sipo}$ for $\bp_{\sipo}$.
 \begin{align}
@@ -109,7 +108,7 @@ With the constant ratio $\zeta_i$, we can obtain both of the distances required 
 	\Dz_{\sipo} & = \frac{\zeta_i}{|\bp_0 - \bp_{\sipo}|}
 	\label{eq:distanceIp1ForInterpolation}
 \end{align}%
-\nomenclature[d03]{$\Dz^i_i$}{also $\Dz^i_{\sipo}$, the distances for interpolation of $f_i$ toward $f_0$}%
+\nomenclature[db]{$\Dz^i_i$}{also $\Dz^i_{\sipo}$, the distances for interpolation of $f_i$ toward $f_0$}%
 
 From the original function values $f_0$, $f_i$, and $f_{\sipo}$, we can now interpolate based on their distances $\Dz_i$ and $\Dz_{\sipo}$, to become
 \begin{align}
@@ -118,7 +117,7 @@ From the original function values $f_0$, $f_i$, and $f_{\sipo}$, we can now inte
 	f'_{\sipo} & = f_0(1 - \Dz_{\sipo}) + f_{\sipo}\Dz_{\sipo}
 	\label{eq:interpolatedFip1}
 \end{align}%
-\nomenclature[d04]{$f'_i$}{also $f'_{\sipo}$, the interpolated values of $f_i$ toward $f_0$}%
+\nomenclature[dd]{$f'_i$}{also $f'_{\sipo}$, the interpolated values of $f_i$ toward $f_0$}%
 
 Figure~\ref{fig:interpolation} illustrates the\dots
 \begin{figure}[ht]
@@ -152,122 +151,6 @@ Figure~\ref{fig:weightedMean} illustrates the\dots
 	{\includegraphics[width=0.6\linewidth]{example-image-16x9.png}}
 	{\caption[Weighted Mean function value $f^\bs_i$ at the center of gravity]{the weighted mean function value $f^\bs_i$ at the center of gravity\ldots 3D circle sector as base, floating plane above tilted be interpolated function values, area underneath colored.}\label{fig:weightedMean}}
 \end{figure}
-%
-\section{Pseudo-Code}
-\label{cFONSsPC}
-In this section, we now combine all of the above Equations~\ref{eq:localMinimumEdgeLength} through~\ref{eq:meanFuncValAtP0} into an algorithm using mathematical pseudo-code in order to facilitate the understanding and implementation of the improved Fast One-Ring smoothing filter for scalar fields on discrete meshes. The convolution of the filter requires several values which are shared between adjacent neighborhoods, and thus it is beneficial to split the algorithm into two distict parts, saving the results of the first part to be used in the iterative convolutions of the second part, all in order to reduce the number of required calculations-per-iteration.
-
-Initially, one must discover all points $\bp_k$ which are members of each neighborhood $\bN_v$, then calculate all the edge lengths $\eta_{vk}$, as well as the global minimum edge length $\gDm$. Afterwards, one may efficiently convolve the filter, for as many number of iterations as required to achieve the desired smoothing effect.
-\todoBackground{add adjacent neighborhoods to background}
-\todoBackground{add convolution and convolve to background}
-\todoBackground{mention how 3Ddata doens't save neighborhood information, and only winged pairs save edge info}
-%
-\subsection{Pre-Calculations}
-In Algorithm~\ref{alg:buildNeighborhoods}, we discover the points $\bp_k \; \forall k \in \bN_v$ which are members of each neighborhood $\bN_v \; \forall v \in \bM$.
-\begin{algorithm}
-	\DontPrintSemicolon
-	\SetCommentSty{small}
-	\SetKwFor{For}{for}{:}{}
-
-	\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
-	\Input{things for filter}
-	\Output{new function values}
-
-	\bigskip
-	\FuncSty{BuildNeighborhoods}\FuncArgSty{(a,b)}\;
-\nl	\For{$f \in \mathcal{F}$}{
-\nl		\For{$i \in \{0,1,2\}$}{
-			\linespread{1.5}\selectfont
-%seperated
-%\nl			$\bp_a \leftarrow \bp_{\big((i\kern-.7pt\scalebox{0.66}{+}\kern-1.2pt1)\%3\big)}$\;
-%\nl			$\bp_b \leftarrow \bp_{\big((i\kern-.7pt\scalebox{0.66}{+}\kern-1.2pt2)\%3\big)}$\;
-%\nl			$\bN_{\widehat{\bp_i}} \leftarrow \bN_{\widehat{\bp_i}} \cup \{\bp_a, \bp_b\}$\;
-%together
-\nl			$\bN_{\widehat{\bp_i}} \leftarrow \bN_{\widehat{\bp_i}} \cup \{\bp_{\big((i\kern-.7pt\scalebox{0.66}{+}\kern-1.2pt1)\%3\big)}, \bp_{\big((i\kern-.7pt\scalebox{0.66}{+}\kern-1.2pt2)\%3\big)}\}$\;\label{BuildNeighborhoodsComplexSubscripts}
-		}	
-	}
-	\caption{Serial algorithm for discovering the neighborhoods required by the Fast One-Ring smoothing filter, before it can begin iteratively convolving a mesh\label{alg:buildNeighborhoods}}
-\end{algorithm}%
-\nomenclature[f01]{$\mathcal{F}$}{the set of Faces comprising the mesh}%
-\nomenclature[f02]{$\widehat{\bp_i}$}{the unique index for point $\bp_i$, correspondign to $v \in \bM$}%
-
-Algorithm~\ref{alg:buildNeighborhoods} uses complex subscripts in line~\ref{BuildNeighborhoodsComplexSubscripts}. The idea is to increment over each of the 3 vertices of every face $\mathcal{F}$ in the mesh. The symbol $\widehat{\bp_i}$ represents the unique index for point $\bp_i$, corresponding to $v \in \bM$, so we can build the neighborhood $\bN_{\widehat{\bp_i}}$ by performing the union operation with the set of neighboring points $\bp_{\big((i\kern-.7pt\scalebox{0.66}{+}\kern-1.2pt1)\%3\big)}, \bp_{\big((i\kern-.7pt\scalebox{0.66}{+}\kern-1.2pt2)\%3\big)}$, whose indexes change incrementally with $i$ in order to always represent the two neighbors of $\bp_i \in f$.
-
-Next, in Algorithm~\ref{alg:serialGetEdgeLengths}, we calculate the edge lengths $\eta_{vk} \; \forall v \in \bM, \; \forall  k \in \bN_v$, as well as the global minimum edge length $\gDm$ of $\bM$.
-\begin{algorithm}
-	\DontPrintSemicolon
-	\SetCommentSty{small}
-	\SetKwFor{For}{for}{:}{}
-
-	\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
-	\Input{things for filter}
-	\Output{new function values}
-
-	\bigskip
-	\FuncSty{GetEdgeLengths}\FuncArgSty{(a,b)}\;
-\nl	\For{$v\leftarrow 1\;\KwTo\;m$}{
-\nl		\For{$k\leftarrow 1\;\KwTo\;n_v$}{
-			\linespread{1.5}\selectfont
-\nl			$\eta_{vk} \leftarrow |\bp_k - \bp_v|$\label{precal-bpkbpv}\tcc*[r]{every edge length}
-\nl			$\gDm \leftarrow \min\{\gDm, \eta_{vk}\}$\tcc*[r]{Eq:~\ref{eq:globalMinimumEdgeLength}}
-		}
-	}
-	\caption{Serial algorithm for the calculations required by the Fast One-Ring smoothing filter, before it can begin iteratively convolving a mesh\label{alg:serialGetEdgeLengths}}
-\end{algorithm}%
-\nomenclature[f03]{$v$}{the cardinality of $\bN$ about $\bp_i$}%
-\nomenclature[f04]{$k$}{the index for a point in $\bN_v$}%
-\nomenclature[f05]{$\eta_{vk}$}{the length of the edge between $\bp_v$ and $\bp_k$}%
-% If alg.1 changes, update refence to number of new symbols.
-%
-Algorithm~\ref{alg:serialGetEdgeLengths} introduces five new symbols: $v$ is used to represent a unique index for each vertex in $\bM$; $k$ indexes each neighboring point in the one-ring neighborhood $\bN_v$; whose cardinality is $n_v$, $|\bp_k-\bp_v|$ from line~\ref{precal-bpkbpv} is analogous to $|\bp_i-\bp_0|$ from Equation~\ref{eq:localMinimumEdgeLength} when $\bp_v$ becomes $\bp_0$; and lastly, $\eta_{vk}$ is the length of the edge between $\bp_v$ and $\bp_k$.
-%
-\subsection{Calculations}
-In Algorithm~\ref{alg:serialCalculate}, we illustrate the remaining steps required to process a mesh using the one-ring filter, after having completed the pre-calculations in~\ref{alg:serialGetEdgeLengths}.
-%
-\begin{algorithm}
-	\DontPrintSemicolon
-	\SetCommentSty{small}
-	\SetKwFor{For}{for}{:}{}
-
-	\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
-	\Input{things for filter}
-	\Output{new function values}
-
-	\bigskip
-	\linespread{1}\selectfont
-	\FuncSty{Calculate}\FuncArgSty{(a,b)}\;
-\nl	\For{$v\leftarrow 1\;\KwTo\;m$}{
-\nl		\For{$i \leftarrow 1\:\KwTo\:|\bN_v|$}{
-			\linespread{2}\selectfont
-\nl			$\alpha_i \leftarrow$ \begin{large}
-				$\text{cos}^{-1}\Big(\frac{
-					(\eta_{\widehat{\bp_i},\widehat{\bp_{\sipt}}})^2 + 
-					(\eta_{\widehat{\bp_i},\widehat{\bp_{\sipo}}})^2 - 
-					(\eta_{\widehat{\bp_{\sipo}},\widehat{\bp_{\sipt}}})^2
-				}{2
-					(\eta_{\widehat{\bp_i},\widehat{\bp_{\sipt}}})
-					(\eta_{\widehat{\bp_i},\widehat{\bp_{\sipo}}})
-				}\Big)$\tcc*[r]{Eq:~\ref{eq:alphaFromEdgeLengths}}
-			\end{large}
-			\linespread{1.5}\selectfont
-\nl			$\beta_i \leftarrow (\pi - \alpha_i)\mathbin{/}2$\tcc*[r]{Eq:~\ref{eq:betaFromHalfAlpha}}
-\nl			\kern-2pt$A_i \leftarrow \gDm^2\alpha_i\mathbin{/}2$\tcc*[r]{Eq:~\ref{eq:circularSectorArea}}
-\nl			\kern-7pt$\Dc_i \leftarrow \big(2\:\gDm\:\sin(\alpha_i\mathbin{/}2)\big)\mathbin{/}(3\alpha_i\mathbin{/}2)$\tcc*[r]{Eq:~\ref{eq:distToCoG}}
-\nl			\kern1pt$\zeta_i \leftarrow \gDm\mathbin{/}\sin(\beta_i)$\tcc*[r]{Eq:~\ref{eq:zeta}}
-\nl			\For{$j \in {1,2}$}{
-\nl				\kern-8pt$\Dz_j \leftarrow \zeta_i\mathbin{/}|\bp_0 - \bp_j|$\tcc*[r]{Eq:~\ref{eq:distanceIForInterpolation},~\ref{eq:distanceIp1ForInterpolation}}
-\nl				$f'_j \leftarrow f_0(1 - \Dz_j) + f_j\Dz_j$\tcc*[r]{Eq:~\ref{eq:meanFuncValAtP0},~\ref{eq:interpolatedFip1}}
-			}
-\nl			$f^\bs_i \leftarrow f_0(1 - \Dc_i) + \big((f_1 + f_2)\Dc_i\big)\mathbin{/}2$\tcc*[r]{Eq:~\ref{eq:weightedMeanAtCoGatSector}}
-\nl			\kern-2pt$\tilde{A}_v \leftarrow \tilde{A}_v + A_i$\tcc*[r]{Eq:~\ref{eq:meanFuncValAtP0}}
-\nl			$\tilde{f}_v \leftarrow \tilde{f}_v + A_if^{\bs}_i$\tcc*[r]{Eq:~\ref{eq:meanFuncValAtP0}}
-		}
-
-\nl		$\bar{f}_v \leftarrow \tilde{f}_v\mathbin{/}\tilde{A}_v$\tcc*[r]{Eq:~\ref{eq:meanFuncValAtP0}}
-	}
-	\caption{Serial algorithm for the Fast One-Ring smoothing filter for scalar fields on discrete manifolds\label{alg:serialCalculate}}
-\end{algorithm}%
-\nomenclature[f06]{$\eta^v_{1,2}$}{the length of the edge between $\bp_i$ and its neighbors in $\bt_i$, $\bp_1$ and $\bp_2$}%
 %
 \section{Summary}
 \label{cFONSsS}
