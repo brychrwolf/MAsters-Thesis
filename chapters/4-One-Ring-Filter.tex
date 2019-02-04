@@ -4,27 +4,29 @@ In this chapter we present an updated version of the Fast One-Ring smoothing fil
 \section{Points \& Edges}
 \label{cFONSsPE}
 Given a point $\bp_0$ in a mesh $\bM$, which is comprised of $m$ number of vertices, the one-ring neighborhood $\bN$ can be defined as all the points $\bp_i$ which are adjacent \todoResearch{define adjacent as sharing an edge in background} to and share an edge with $\bp_0$, where $i \in \{1, \ldots, n\}$, with $n$ being the cardinality of $\bN$. The points in $\bN$ are always indexed in a clockwise direction\todoResearch{GigaMesh assumes a counter-clockwise direction}, yet may vary in value among vertices in $\bM$, however, the value must always be $\geq 2$, and though there is no upper limit, $n$ is typically $\leq 12$. \todoResearch{get real upper limit for n}.%
-\nomenclature[a01]{$\bp$}{a point in $\bM$}%
-\nomenclature[a02]{$\bp_0$}{the center point of $\bN$}%
-\nomenclature[a03]{$\bp_i$}{a one-ring neighbor of $\bp_0$}%
-\nomenclature[a04]{$\bM$}{a discrete manifold}%
-\nomenclature[a05]{$m$}{the cardinality of $\bM$}%
-\nomenclature[a06]{$\bN$}{a one-ring neighborhood}%
-\nomenclature[a07]{$n$}{the cardinality of $\bN$}%
+\nomenclature[aa]{$\bp$}{a point in $\bM$}%
+\nomenclature[ab]{$\bp_0$}{the center point of $\bN$}%
+\nomenclature[ac]{$\bp_i$}{a one-ring neighbor of $\bp_0$}%
+\nomenclature[ad]{$\bM$}{a mesh, a discrete manifold}%
+\nomenclature[ae]{$m$}{the cardinality of $\bM$}%
+\nomenclature[af]{$\bN$}{a one-ring neighborhood}%
+\nomenclature[ag]{$n$}{the cardinality of $\bN$}%
 
 The procedure for filtering a mesh begins by calculating the smallest edge length $\Dm$ adjacent to the center point $\bp_0$, which be used later as the radius of a geodesic disc.\todoCitation{geodesic discs}
 \begin{equation}
 	\Dm(\bp_0) := \text{min}^n_{i=1} (|\bp_i - \bp_0|)
 	\label{eq:localMinimumEdgeLength}
 \end{equation}%
-\nomenclature[a11]{$\Dm$}{or $\Dm(\bp_0)$, the smallest edge length connected to $\bp_0$}%
+\nomenclature[aj]{$\Dm$}{or $\Dm(\bp_0)$, the smallest edge length connected to $\bp_0$}%
 
 Furthermore, to ensure that the filter window remains the same size for all neighborhoods $\bN_v\;\forall v \in \{1,\ldots,m\}$, we define
 \begin{equation}
 	\gDm := \min\{\Dm(\bp_0) \;|\; \bp_0 \in \bM\}
 	\label{eq:globalMinimumEdgeLength}
 \end{equation}%
-\nomenclature[a11]{$\gDm$}{the smallest edge length in $\bM$}%
+\nomenclature[ak]{$\gDm$}{the smallest edge length in $\bM$}%%
+\nomenclature[ah]{$\bN_v$}{the one-ring neighborhood about vertex $v$}%
+\nomenclature[ai]{$n_v$}{the cardinality of $\bN_v$}%
 as the smallest edge length among all edges of the mesh $\bM$, and will then use this $\gDm$ in all the following computations in lieu of $\Dm$.
 %
 Figure~\ref{fig:geodesicDisc} shows a typical configuration of a one-ring neighborhood with irregular faces, the geodesic disc $\bG$ with radius $\Dm$, and the circular sectors $\bs_i$ to be used for weighting the function values of the face $\bt_i$.
@@ -39,14 +41,14 @@ Figure~\ref{fig:geodesicDisc} shows a typical configuration of a one-ring neighb
 %
 \section{Angles}
 \label{cFONSsA}
-Because the angles $\alpha_i$ will be used in future calculations, but are not typically measured directly as are the edge lengths, it is worth mentioning that one can calculate an inner angle $\alpha_i$ using the law of cosines. \todoCitation{law of cosines}
+In order to perform the many neccessary trigonometric operations required by the Fast One-Ring smoothing filter, we now compute the inner angles $\alpha_i$ of triangles $\bt_i$ using the using the Law of Cosines. \todoCitation{law of cosines}
 \begin{equation}
 	\alpha_i = cos^{-1}(\frac{|\bp_0 - \bp_{i}|^2 + |\bp_0 - \bp_{\sipo}|^2 - |\bp_i - \bp_{\sipo}|^2}{2\cdot|\bp_0 - \bp_{i}|\cdot|\bp_0 - \bp_{\sipo}|})
 	\label{eq:alphaFromEdgeLengths}
 \end{equation}%
 \nomenclature[b01]{$\alpha_i$}{the central angle of $\bs_i$}%
 
-For interpolation of the function values over the entire circular sector, we must first interpolate the values one side of the bisecting line at a time. The angles $\beta_i$ are therefore calculated using the third angle theorem as the third angle to form a right triangle along with $\alpha_i\mathbin{/}2$ for each half of $\bs_i$. \todoCitation{and third angle theorems}
+We also require For interpolation of the function values over the entire circular sector, we must first interpolate the values one side of the bisecting line at a time. The angles $\beta_i$ are therefore calculated using the third angle theorem as the third angle to form a right triangle along with $\alpha_i\mathbin{/}2$ for each half of $\bs_i$. \todoCitation{and third angle theorems}
 \begin{equation}
 	\beta_i = \Big(\frac{\pi}{2} - \frac{\alpha_i}{2}\Big) = \frac{(\pi - \alpha_i)}{2}
 	\label{eq:betaFromHalfAlpha}
@@ -99,7 +101,7 @@ With the constant ratio $\zeta_i$, we can obtain both of the distances for inter
 
 From the original function values $f_0$, $f_i$, and $f_{\sipo}$, we can now interpolate based on their distances $\Dz^i_i$ and $\Dz^i_{\sipo}$, to become
 \begin{align}
-	f'_i & = f_0(1 - \Dz^i_i) + f_i\Dz^i_i 
+	f'_i & = f_0(1 - \Dz^i_i) + f_i\Dz^i_i
 	\label{eq:interpolatedFi} \\
 	f'_{\sipo} & = f_0(1 - \Dz^i_{\sipo}) + f_{\sipo}\Dz^i_{\sipo}
 	\label{eq:interpolatedFip1}
@@ -121,7 +123,7 @@ Finally, we can compute the one-ring weighted mean function value at $\bp_0$ by 
 	\label{eq:meanFuncValAtP0}
 \end{equation}%
 \nomenclature[e02]{$\bar{f}_0$}{the one-ring weighted mean function value at $\bp_0$}%
-\nomenclature[e03]{$|\bt_v|$}{the number of faces $\bt$ in $N_v$, always $\geq 2$, typically $\leq 12$}%
+\nomenclature[e03]{$|\bt_v|$}{the number of faces $\bt$ in $\bN_v$, always $\geq 2$, typically $\leq 12$}%
 
 The one-ring smoothing filter can be modified to use the median operation, instead of the mean, by using all the equations except ~\ref{eq:meanFuncValAtP0} and then sorting the results of ~\ref{eq:weightedMeanAtCoGatSector}. The details of which can be found by the original publication ~\cite[s.~3.2]{Mara17}, but as it was not implemented in GPGPU for this thesis, we exclude the details here.
 %
@@ -134,7 +136,7 @@ In algorithm~\ref{alg:serialPreCalculation}, we precalculate all the edge length
 	\DontPrintSemicolon
 	\SetCommentSty{small}
 	\SetKwFor{For}{for}{:}{}
-	
+
 	\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
 	\Input{things for filter}
 	\Output{new function values}
@@ -187,7 +189,7 @@ In algorithm~\ref{alg:serialCalculate}, we illustrate the remaining steps requir
 \nl			\kern-2pt$\tilde{A}_v \leftarrow \tilde{A}_v + A_i$\tcc*[r]{Eq:~\ref{eq:meanFuncValAtP0}}
 \nl			$\tilde{f}_v \leftarrow \tilde{f}_v + A_if^{\bs}_i$\tcc*[r]{Eq:~\ref{eq:meanFuncValAtP0}}
 		}
-		
+
 \nl		$\bar{f}_v \leftarrow \tilde{f}_v\mathbin{/}\tilde{A}_v$\tcc*[r]{Eq:~\ref{eq:meanFuncValAtP0}}
 	}
 	\caption{Serial algorithm for the Fast One-Ring smoothing filter for scalar fields on discrete manifolds\label{alg:serialCalculate}}
