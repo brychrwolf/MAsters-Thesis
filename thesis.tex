@@ -1,4 +1,4 @@
-\documentclass[openany]{book}
+\documentclass[a4paper,openany]{book}
 \author{Bryan Wolfford}
 \title{GPGPU Accelerated Iterative Filtering of Scalar Fields on Discrete Manifolds}
 \date{\today}
@@ -35,32 +35,37 @@
 	}
 }
 %
+\newcommand{\forf}[1]{#1he Fast One-Ring smoothing filter}
+\newcommand{\Forf}[1]{#1he Fast One-Ring smoothing filter for scalar fields on discrete manifolds}
+\newcommand{\tdd}{3D-data}
+%
+\newcommand{\bE}{\mathcal{E}} %edges
+\newcommand{\bG}{\Gamma}
+\newcommand{\bM}{\mathcal{M}} %mesh superset
+\newcommand{\bN}{\mathcal{N}} %one-ring neighborhood
+\newcommand{\bP}{\mathcal{P}} %points
+\newcommand{\bT}{\mathcal{T}} %faces
 \newcommand{\bc}{\mathbf{c}}
 \newcommand{\bp}{\mathbf{p}}
 \newcommand{\bs}{\mathbf{s}}
 \newcommand{\bt}{\mathbf{t}}
 \newcommand{\bv}{\mathbf{v}}
-\newcommand{\bE}{\mathcal{E}}
-\newcommand{\bG}{\Gamma}
-\newcommand{\bM}{\mathcal{M}}
-\newcommand{\bN}{\mathcal{N}}
-\newcommand{\bP}{\mathcal{P}}
+%
 \newcommand{\Dc}{\Delta c}
 \newcommand{\Dm}{\Delta_\text{min}}
 \newcommand{\etamin}{\eta_\text{min}}
 \newcommand{\gDm}{\overline{\Dm}}
 \newcommand{\Ds}{\Delta^{\kern-3pt\star}}
 \newcommand{\Dz}{\Delta\zeta}
+%
 \newcommand{\sipo}{i\kern-.7pt\scalebox{0.66}{+}\kern-1.2pt1}
 \newcommand{\sipt}{i\kern-.7pt\scalebox{0.66}{+}\kern-1.2pt2}
 %
 \newcommand{\igHalfWidth}{0.48\linewidth}
-\newcommand{\forf}{the Fast One-Ring smoothing filter}
-\newcommand{\Forf}{the Fast One-Ring smoothing filter for scalar fields on discrete manifolds}
-\newcommand{\tdd}{3D-data}
 %TODO:why can"t I use this as an option for includegraphics?
 %
 \newcommand{\todoRemove}[1]{\todo[color=red!40]{#1}}
+\newcommand{\todoAsk}[1]{\todo[color=yellow!40]{#1}}
 \newcommand{\todoCitation}[1]{\todo[color=teal!40]{citation required}}
 \newcommand{\todoResearch}[1]{\todo[color=cyan!40]{#1}}
 \newcommand{\todoBackground}[1]{\todo[color=violet!40]{#1}}
@@ -81,18 +86,18 @@
 %%%	teal
 %%%	violet
 %	white
-%	yellow
+%%%	yellow
 %
 %	teal = 0,127,127
 %	sand = 255,159,0
 %	coral = 255,96,96
 \includeonly{
-	chapters/0-Front-matter,
+%	chapters/0-Front-matter,
 %	chapters/1-Introduction-Motivation,
 	chapters/2-Background,
 %	chapters/3-Related-Work,
 	chapters/4-One-Ring-Filter,
-	chapters/5-Profiling-Exploiting-Concurrency,
+%	chapters/5-Profiling-Exploiting-Concurrency,
 %	chapters/6-Meat-3,
 %	chapters/7-Experiments-Evaluation,
 %	chapters/8-Distribution,
