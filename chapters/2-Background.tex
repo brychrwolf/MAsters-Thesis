@@ -9,59 +9,92 @@
 \subsection{Circle Sectors}
 %
 \section{\tdd}
-The data upon which one convolves \forf{t} is called \tdd\todoCitation{\tdd{} name origin, BB82 from Mara12}. It consists primarily of a single mesh $\bM$, which is the superset of two sets of elements, set $\bP$ consiting of points, and set $\bT$ consisting of triangular faces. \tdd{} also comes in two disticnt flavors depending on its origin: acquired or synthetic, as discussed in Section~\ref{chBsSvA}. The data can as well include a texture map, or other various types of information stored as scalar fields upon the points, with a few examples being: RGB color, material type, reflectivity, transparency, quality, confidence, or the resulting function values from an analytical filter such as the Multi-Scale Integral Invariants (MSII) filter~\cite[p.~21]{Mara12}. \forf{T} is agnostic to information represented by the scalar fields, and can similarly process any such data.\todoReword{any maybe too strong, constrained to single field at a time}%
-\nomenclature[a0]{$\bM$}{a mesh; the superset which includes the sets of all points $\bp$ and faces $\bt$}%
+The data upon which one convolves \forf{t} is called \tdd\todoCitation{\tdd{} name origin, BB82 from Mara12}. It consists primarily of a single mesh $\bM$, which is the superset of the set $\bP$ consiting of points, and the set $\bT$ consisting of triangular faces, covered in Sections~\ref{chBsP} and~\ref{chBsF} respectively. \tdd{} also comes in two disticnt flavors depending on its origin: acquired or synthetic, as discussed in Section~\ref{chBsSvA}. The data can as well include a texture map, or other various types of information stored as scalar fields, with a few examples being: RGB color, material type, reflectivity, transparency, quality, confidence, or the resulting function values, from an analytical filter such as the Multi-Scale Integral Invariants (MSII) filter~\cite[p.~21]{Mara12}, which are elaborated upon in Section~\ref{chBsFV}. \forf{T} is agnostic to the type of information represented by the scalar fields, therefore, it can similarly process any such data.\todoReword{any maybe too strong, constrained to single field at a time}
 %
 \subsection{Points}
 \label{chBsP}
-A point $\bp$ is the most primitive element of \tdd{}. "Point" is the abbreviated form of "measuring point", and is also known in other fields of study as a vertex, or a position vector $\in \mathbb{R}^3$\todoCitation{other names for a point}. A point is defined by the 3-dimensional Cartesian coordinates $x$, $y$ and $z$, and in \tdd{}, points are generally unique and not required to be in any particular order. In this thesis, a point is addressed using multiple\todoReword{how many?} different subscripts, depending on the context.
+A point $\bp$ is the most primitive element of \tdd{}. "Point" is the abbreviated form of "measuring point", and is also known in other fields of study as a vertex, or a position vector $\in \mathbb{R}^3$\todoCitation{other names for a point}. A point is defined by the 3-dimensional Cartesian coordinates $x$, $y$ and $z$, and in \tdd{}, points are generally unique and not required to be in any particular order. In this thesis, a point is addressed using several different subscripts, depending on the context.
 
-For globally unique indices, we define:
+Please note that the indices in Equation~\ref{eq:defineSetOfPoints} begin with 1. This is significant because of the discordant conventions between addressing the first element of a data structure with 0 in programming languages such as C++ and python, versus addressing first elements with 1 as is the standard for mathematical literature. Because this thesis should indeed be considered mathematical literature, we will always start indicies at 1, and only use index 0 for special cases. For example, $\bp_0$ is used to represent the defining center point of a one-ring neighborhood.\todoReword{Reference when one-ring neighborhoods are define}
+
+The index $v$ is the globally unique index, with which we can define the set
 \begin{equation}
 	\bP = \left \{\bp_v \mid v \in \mathbb{Z}^+, \;\text{and}\; 1\leq v \leq|\bP| \right \}
 	\label{eq:defineSetOfPoints}
 \end{equation}%
-\nomenclature[a0]{$\bP$}{the set of points $\bp$ in $\bM$}%
+\nomenclature[c2b]{$\bP$}{the set of points $\bp$ in $\bM$}%
+\nomenclature[bd]{$\bp$}{a point}%
+\nomenclature[be]{$\bp_v$}{a specific point in $\bP$}%
 \todoAsk{is own cardinality in own definition okay?}
 
-Please note that the indexing in Equation~\ref{eq:defineSetOfPoints} does indeed begin with 1. This is significant because of the conflict in .......\todoReword{norm, standards, establish habit, ...} between addressing the first element of a data structure with 0 in programming languages such as C++ and python, versus addressing with 1 as found in mathematical literature.
+Otherwise,
+% when referencing to a point by its index within a specific one-ring neighborhood, we will use $\bp_k$, and %
+ when referencing to a point within a particular face or neighborhood, the three corners can be referenced indirectly\footnote{or in the case of a nested loop: $\bp_k$, as seen in Algorithm~\ref{alg:serialBuildNeighborhoods}, and $\bp_j$, as seen in Algorithm~\ref{alg:serialCompute}}\todoAsk{can I use footnotes like this?, should I?} as $\bp_i$, $\bp_{\sipo}$, and $\bp_{\sipt}$, or directly as $\bp_0$, $\bp_1$, and $\bp_2$.%
+\nomenclature[bf]{$\bp_k$}{a specific point in $\bN$}%
+\nomenclature[bg]{$\bp_i$}{also $\bp_{\sipo}$, and $\bp_{\sipt}$; an indirectly referenced point within a particular face}%
+\nomenclature[bh]{$\bp_0$}{also $\bp_1$, and $\bp_2$; a directly referenced point within a particular face}~\cite[p.~25]{Mara12}%
 
-When referencing to a point within a particular face, the three corners can be referenced directly as $\bp_0$, $\bp_1$, and $\bp_2$, or indirectly as $\bp_i$, $\bp_{\sipo}$, and $\bp_{\sipt}$.\footnote{or as $\bp_j$ in the case of a nested loop, as seen in Algorithm~\ref{alg:serialCompute}}\todoAsk{can I use footnotes like this?, should I?}Otherwise, when referencing to a point by its index within a specific one-ring neighborhood, one would use $\bp_k$.
-
-
-for all other
-equations. 3 A mesh having more than two triangles connected by one edge. 25∣L v
-∣ is the cardinality of the list of vertices, while ∣p i ∣ is the length of the
-position vector.
-In case of position vector, its length is equal
-√ to the distance of a vertex from the origin
-T
-o = (0, 0, 0) of the coordinate system: x 2 i + y i 2 + z i 2 . These position
-vectors sampling the surface M 2 in R 3 are identified within homogeneous
-coordinate system [Gra30] having
-w i = 1 as fourth coordinate~\cite[p.~25-26]{Mara12}%
-\nomenclature{$\bp$}{a point}%
 %
 \subsection{Faces}
 \label{chBsF}
-Faces are defined by the association of three distinct points.
-Counte-Clokwise vs CloCkwise~\cite[p.~00]{todoCitation}\todoCitation
-The second important class of primitive elements are the so-called faces, which
-are triangles t having an orientation provided by the data-structure of the
-3D-models, e.g. for visualization using virtual illumination. The triangles are
-addressed using the index j,while each triangle has three implicit edges: e a j
-, e b j and e c j .t j ∶= {p A j , p B j , p C j } ≡ {A j , B j , C j }p C jyyyy
-yyyye bjp A je cjt = {A, B, C}abbreviated:EE eEE ajEEEEp B j~~~~~~ ~bA(2.4)C \_
-The faces are stored in the list L f : L f = { t 1 , . . . , t j , . . . , t j
-max } with j max = ∣L f ∣ and j = Z + ∧ j ≤ j max
-(2.5)
-So the list of vertices L v and the list of faces L f describe the discrete,
-meshed geometry of the surface M 2 as provided by our 3D-models (triangulation
-networks): M 2 ∶= L M = {L v , L f } (2.6)
-This basic list L M will be extended by other surface properties (e.g. color) in
-the following sections and chapters. In case no L f is provided, it is a
-necessity to perform a point set triangulation [BE92, HK09] to compute L f from
-L v .~\cite[p.~26]{Mara12}
+Faces are the another primative element of \tdd{}, and comprise the set $\bT$.
+\begin{equation}
+	\bT := \left \{\bt_f \mid f \in \mathbb{Z}^+, \;\text{and}\; 1\leq f \leq|\bT| \right \}
+	\label{eq:defineSetOfFaces}
+\end{equation}%
+\nomenclature[c2c]{$\bT$}{the set of faces $\bt$ in $\bM$}%
+\nomenclature[bd]{$\bt$}{a face}%
+\nomenclature[be]{$\bt_f$}{a specific face in $\bT$}%
+\todoAsk{is own cardinality in own definition okay?}
+
+As we are working exclusively with triangular meshes~\cite[p.~26]{Mara12}, we define a face $\bt$ by the totally ordered set~\cite{Weisstein19a} of three distinct points, which we will index in clockwise order~\cite[p.~4]{Mara17}. The triangular faces are addressed using the index $f$, and each has three implicit edges, whose descriptions are elaborated upon in Section~\ref{chBsEEL}.
+\begin{equation}
+	\bt_f := \left \{\bp_0, \bp_1, \bp_2\right \} \equiv \left \{A_f, B_f, C_f\right \} \hspace{20pt}\text{abbreviated:}\hspace{20pt} \bt = \left \{A, B, C\right \}
+	\label{eq:defineSetOfFaces}
+\end{equation}%
+\nomenclature[bd]{$\bt$}{a face}%
+\nomenclature[be]{$\bt_f$}{a specific face in $\bT$}%
+
+
+
+\begin{figure}[ht]
+\ffigbox
+	{\includegraphics[width=0.8\linewidth]{example-image-16x9.png}}
+	{\caption[A Triangular Face]{A triangular face}\label{fig:facesOfAMesh}}
+\end{figure}%
+
+It is worth noting that many software packages, such as the GigaMesh Framework~\cite[p.~89]{Mara12}, may expect counter-clockwise ordering of indexes. This is significant because the ordering provides an orientation by which visualization software can apply texture and/or lighting. The only mathematical significance of the ordering is the sign of the area of a face, and totally inconsequential when the absolute value is expected, as shown by\cite[p.~2]{Braden86}. This is yet another example of the difference between the conventions of mathematical literature versus those of computer science. And again, because this thesis should indeed be considered mathematical literature, we will follow the conventions of mathematical literature. 
+%
+\subsection{Edges \& Edge Lengths}
+\label{chBsEEL}
+While not typically\footnote{Other data structures, such as the Winged-Edge~\cite[p.~1]{Baumgart75}, may use edges as a primitive element} a primitive element of \tdd{}, but becuase as illustrated in Figure~\ref{fig:facesOfAMesh}, each triangular face is implicitly composed of three edges, we will define the lengths of an edge with either a single index, when it is in relation to a particular face $\bt_j$
+\begin{equation}
+	|\xi_i| := |\bp_{(\sipo)\%3} - \bp_{(\sipt)\%3}| \;:\; \forall i \in\{0,1,2\} \;\text{and}\; \bp_i \in \bt_k
+	\label{eq:defineEdgeLengthFace}
+\end{equation}%
+\todoAsk{do I need $\forall$ here?}
+
+or with double indices, when it is in relation to particular point $\bp_v$
+\begin{equation}
+	|\xi_{v,k}| := |\bp_k - \bp_v|
+	\label{eq:defineEdgeLengthPoint}
+\end{equation}%
+%\nomenclature[bd]{$\bp$}{a point}%
+%
+Please note the similar symbology for the cardinatily of a set $|\bP|$ to that of $|\bp_k - \bp_v|$, which instead denotes the length of the edge $\xi_{v,k}$ as defined in Equation~\ref{eq:defineEdgeLengthPoint}~\cite[p.~26]{Mara12} and is calculated as the L2-norm of the resulting vector.
+
+In modern software, the square root operation is performed by computing multiple iterations of the so-called recurrence equation using Newton's method\todoCitation{software uses Newton's iteration for sqrt}, otherwise known as "Newton's Iteration." ~\cite{Weisstein19b} The impact for \forf{t} is that the computation the square root typically\todoCitation{how slow is Newton's iteration compaed to others} takes many more compute cycles than other operations, and thus takes more time to complete. In fact, because of the slowness of the square root operation, computing the L2-norm in order to calculate an edge's length is emperically the most costly operation performed by the filter. \todoResearch{qualify, do experiment to prove how slow sqrt is}, Therefore, it is imperitive that one takes special attention to avoid unneccessary calls to calculate an edge's length, so we define the symbol $|\xi|_\star$ to facilitate designing an efficient implementation of \forf{t}.
+%
+\begin{align}
+%\begin{equation}
+%\begin{aligned}
+	|\bp_k - \bp_v| & = \lVert\bp_k - \bp_v\rVert_2 \\
+					& = \sqrt{(x_k-x_v)^2 + (y_k-y_v)^2 + (y_k-y_v)^2} \\
+					& = |\xi|^\star
+	\label{eq:defineEdgeLengthCalc}
+%\end{aligned}
+%\end{equation}
+\end{align}
 %
 \subsection{Synthetic vs Aquired 3D Meshes}
 \label{chBsSvA}
@@ -77,9 +110,19 @@ per-se not necessary.~\cite[p.~25]{Mara12}
 
 We have to mention that a common misunderstanding is that acquired 3D-objects are similar or even identical to modeled 3D-objects – this is not true! Both utilize the same methods for organizing the data, but per-se the concepts of primitives and other simplifications do not exist for acquired 3D-objects. Additionally acquired 3D-objects contain noise, which partially prevents simplification. Furthermore this adds to the complexity as simple objects, which can be modeled with a few primitives, are acquired as pointclouds, which can – and do – have thousands to millions of points. For worst cases even the assumption of a non-manifold mesh3 may not apply due to incorrect registration of multiple 3D-scans [BR07]. As we know from our previous work, there is always at least a minor number of non-manifold points within our data, which has to be taken care of to achieve a robust system [Mar06]. Reducing the resolution for acquisition contradicts with the Shannon theorem, while the rule of thumb from our previous projects is: the resolution for acquisition has to be 5 times the size of the smallest detail to be acquired.~\cite[p.~25]{Mara12}
 %
-\subsection{Discrete Manifold}
+\subsection{Mesh, Discrete Manifold}%
+So the list of vertices L v and the list of faces L f describe the discrete,
+meshed geometry of the surface M 2 as provided by our 3D-models (triangulation
+networks): M 2 ∶= L M = {L v , L f } (2.6)
+This basic list L M will be extended by other surface properties (e.g. color) in
+the following sections and chapters. In case no L f is provided, it is a
+necessity to perform a point set triangulation [BE92, HK09] to compute L f from
+L v .~\cite[p.~26]{Mara12}%
+\nomenclature[c2a]{$\bM$}{a mesh; the superset which includes the sets of all points $\bp$ and faces $\bt$}%
+
 %
 \subsection{Funtion Values}
+\label{chBsFV}
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt eget
 ipsum eu iaculis. Cras vel sem eu velit eleifend porta vel sit amet massa. Etiam
 a posuere nunc. Aenean aliquam viverra dapibus. Aliquam ac eros a purus feugiat
