@@ -1,28 +1,32 @@
 \chapter{Background}
-\section{}
+\label{ch2}
+\Forf{T} relies on the research from many fields of study in both mathematics and computer science\ldots
+\todoReword{Elaborate like a teasing summary}
 %
 %
 %
 %
 %
-%
-\section{Basic Theory}\todoReword{theorhetical foundation}
-Set Theory \& Geometry \& Topology
-\subsection{Set Theory}
+\section{Basic Theory}\todoReword{theoretical foundation}
+\subsection{Sets}
 Cardinality
+
 Union
 %
-\subsection{Interpolation}
+\subsection{Geometry}
+Interpolation
+
+Circle Sectors
 %
-\subsection{Circle Sectors}
+\subsection{Topology}
 %
-\subsection{Neighborhoods}
+\subsubsection{Neighborhoods}
 %\subsection{Adjacencies, Singularities and k-ring Neighborhoods}
 Knowing the neighbors of a measuring point is the key to analyze our data. For regular data structures, e.g. 2D-images a pixel has four neighbors in orthogonal direction with a (relative) geometric distance of 1 and four further neighbors with a geometric distance of √2. Neglecting the geometric distance we can apply the same for vertices and faces and determine their neighbors using the orientation of the triangles:
 • A face t j is adjacent to a face t i , when t j has an edge e m = {A m , B m }and t i has an edge e k = {B m , A m }.
 • The vertices adjacent to a vertex p i are those p̊ i , belonging to the faces t̊ i ∶= {A i , B ≠i , C ≠i } ∨ {A ≠i , B i , C ≠i } ∨ {A ≠i , B ≠i , C i }.
 
-Faces t̊ i and vertices p̊ i belong to the so-called 1-ring as they have distance of 1 within the graph of the mesh. The 1-ring can be extended to a 2-ring by using the verticesp̊ i as p i , which adds vertices and faces having a distance of 2 within the graph. This iterative concept can be repeated k times and the neighborhood is than refered to as k-ring. The distance within the graph can not be assumed equal to the geometric distance nor geodesic distance.
+Faces t̊ i and vertices p̊ i belong to the so-called 1-ring as they have distance of 1 within the graph of the mesh. The 1-ring can be extended to a 2-ring by using the verticesp̊ i as p i , which adds vertices and faces having a distance of 2 within the graph. This iterative concept can be repeated k times and the neighborhood is than referred to as k-ring. The distance within the graph can not be assumed equal to the geometric distance nor geodesic distance.
 
 However it is used throughout literature as experiments are often done on synthetic data – especially in the field of Computer Graphics. Figure 2.6 shows the scheme of the 1-ring and an example for a 5-ring on a synthetic sphere in contrast to 5-rings on an acquired mesh. Even the triangles of the sphere are almost equal, we see that the outlines of the k-rings have a hexagonal shape, while geodesic ring would have the shape of a circle. Already the 1-rings of the acquired mesh have completely arbitrary shapes and sizes.
 
@@ -43,54 +47,44 @@ Figure 2.7: Schematic visualization of (a) a non-singular vertex p A with its tr
 %
 %
 \section{\tdd}
-The data upon which one convolves \forf{t} is called \tdd\todoCitation{\tdd{} name origin, BB82 from Mara12}. It consists primarily of a single mesh $\bM$, which is the superset of $\bP$, a set of points, and the set $\bT$ consisting of triangular faces, each to be covered in Sections~\ref{chBsP} and~\ref{chBsF} respectively. \tdd{} also comes in two disticnt flavors depending on its origin: acquired or synthetic, as discussed in Section~\ref{chBsSvA}. The data can as well include a texture map and other various types of information stored as scalar or vector fields as elaborated upon  in~\ref{chBsFV}.
-%
-\subsection{Meshes}
-\label{chBsP}
-In \tdd{}, a mesh $\bM$ is the digital representation of a discrete manifold embedded in $\mathbb{R}^3$, and is typically\footnote{except in the case of specifically designed synthetic data~\ref{Experiments}} 2D-non-planar and comprised of non-regular trianglular faces, which are composed of points connected into triangular faces.~\cite[p.~25]{Mara12} A mesh is the superset defined as
-\begin{equation}
-	\bM := \left \{\bP, \bT\right \}
-	\label{eq:defineMesh}
-\end{equation}%
-\nomenclature[ch2a]{$\bM$}{a mesh; the superset including the sets of all points $\bp$ and faces $\bt$}%
-with the set $\bP$ consiting of points, and the set $\bT$ consisting of triangular faces.
-
-Many 3D-scanners produce point clouds\todoCitation{}, which as the name suggests, are comprised soley of a set of points $\bP$ and do not provide a set of triangular faces $\bT$. However, it is possible, and necessary for the production of a mesh, to perform a point set triangulation\todoCitation{} in order to connect $\bP$ into a set of triangle faces $\bT$, enabling one to combine the two sets into a mesh~\cite[p.~26]{Mara12}. For example, during our experments, we perform the well-known Dalauney triangulation\todoCitation{} in order to produce a mesh from a randomly generated point cloud\todoReword{cite\ref Experiments}.
+\label{ch2s3}
+The data upon which one convolves \forf{t} is called \tdd\todoCitation{\tdd{} name origin, BB82 from Mara12}. As described in Section~\ref{ch2s3ssM}, \tdd{} consists primarily of a single mesh $\bM$, which is the superset of $\bP$, a set of points, and the set $\bT$ consisting of triangular faces, each to be covered in Sections~\ref{ch2s3ssP} and~\ref{ch2s3ssF} respectively. \tdd{} also comes in two distinct flavors depending on its origin: acquired or synthetic, as discussed in Section~\ref{ch2s3ssAVS3}. The data can as well include a texture map and other various types of information stored as scalar or vector fields as elaborated upon  in~\ref{ch2s3ssFV}.
 %
 \subsection{Points}
-\label{chBsP}
-A point $\bp$ is the most primitive element of \tdd{}. "Point" is the abbreviated form of "measuring point", and is also known in other fields of study as a vertex, or a position vector $\in \mathbb{R}^3$\todoCitation{other names for a point}. A point is defined by the 3-dimensional Cartesian coordinates $x$, $y$ and $z$, and in \tdd{}, points are generally unique and not required to be in any particular order. In this thesis, a point is addressed using several different subscripts, depending on the context.
+\label{ch2s3ssP}
+A point $\bp$ is the most primitive element of \tdd{}. "Point" is the abbreviated form of "measuring point", and is also known in other fields of study as a vertex, or a position vector $\in \mathbb{R}^3$\todoCitation{}{other names for a point}. A point is defined by the 3-dimensional Cartesian coordinates $x$, $y$ and $z$, and in \tdd{}, points are generally unique and not required to be in any particular order. In this thesis, a point is addressed using several different subscripts, depending on the context.
 
 Index $v$ is the globally unique index, with which we can define the set
 \begin{equation}
-	\bP = \left \{\bp_v \mid v \in \mathbb{Z}^+, \;\text{and}\; 1\leq v \leq|\bP| \right \}
+	\bP := \left \{\:\bp_v \mid v \in \mathbb{Z}^+, \;\text{and}\; 1\leq v \leq|\bP|\:\right \}
 	\label{eq:defineSetOfPoints}
 \end{equation}%
-\nomenclature[c2b]{$\bP$}{the set of points $\bp$ in $\bM$}%
-\nomenclature[bd]{$\bp$}{a point}%
-\nomenclature[be]{$\bp_v$}{a specific point in $\bP$}%
+\nomenclature[ab]{$\bP$}{the set of points $\bp$ in $\bM$}%
+\nomenclature[ac]{$|\bP|$}{the cardinality of $\bP$}%
+\nomenclature[ad]{$\bp$}{a point}%
+\nomenclature[ae]{$\bp_v$}{a specific point in $\bP$}%
 \todoAsk{is own cardinality in own definition okay?}
 
-Please note that the indices in Equation~\ref{eq:defineSetOfPoints} begin with 1. This is significant because of the discordant conventions between addressing the first element of a data structure with 0 in programming languages such as C++ and python, versus addressing first elements with 1, as is the standard for mathematical literature. Because this thesis should indeed be considered mathematical literature, we will always start indicies at 1, and only use index 0 for special cases. For example, $\bp_0$ is used to represent the defining center point of a one-ring neighborhood.\todoReword{Reference when one-ring neighborhoods are define}
+Please note that the indices in Equation~\ref{eq:defineSetOfPoints} begin with 1. This is significant because of the discordant conventions between addressing the first element of a data structure with 0 in programming languages such as C++ and python, versus addressing first elements with 1, as is the standard for mathematical literature. Because this thesis should indeed be considered mathematical literature, we will always start indices at 1, and only use index 0 for special cases. For example, $\bp_0$ is used to represent the defining center point of a one-ring neighborhood.\todoReword{Reference when one-ring neighborhoods are define}
 \todoReword{this reads like a loooong footnote}
 
 Otherwise,
 % when referencing to a point by its index within a specific one-ring neighborhood, we will use $\bp_k$, and %
  when referencing to a point within a particular face or neighborhood, the three corners can be referenced indirectly\footnote{or in the case of a nested loop: $\bp_k$, as seen in Algorithm~\ref{alg:serialBuildNeighborhoods}, and $\bp_j$, as seen in Algorithm~\ref{alg:serialCompute}}\todoAsk{can I use footnotes like this?, should I?} as $\bp_i$, $\bp_{\sipo}$, and $\bp_{\sipt}$, or directly as $\bp_0$, $\bp_1$, and $\bp_2$.%
-\nomenclature[bf]{$\bp_k$}{a specific point in $\bN$}%
-\nomenclature[bg]{$\bp_i$}{also $\bp_{\sipo}$, and $\bp_{\sipt}$; an indirectly referenced point within a particular face}%
-\nomenclature[bh]{$\bp_0$}{also $\bp_1$, and $\bp_2$; a directly referenced point within a particular face}~\cite[p.~25]{Mara12}%
+\nomenclature[af]{$\bp_k$}{a specific point in $\bN$}%
+\nomenclature[ag]{$\bp_i$}{also $\bp_{\sipo}$, and $\bp_{\sipt}$; an indirectly referenced point within a particular face}%
+\nomenclature[ah]{$\bp_0$}{also $\bp_1$, and $\bp_2$; a directly referenced point within a particular face}~\cite[p.~25]{Mara12}%
 %
 \subsection{Faces}
-\label{chBsF}
-Faces are the another primative element of \tdd{}, and comprise the set $\bT$.
+\label{ch2s3ssF}
+Faces are the another primitive element of \tdd{}, and comprise the set $\bT$.
 \begin{equation}
-	\bT := \left \{\bt_f \mid f \in \mathbb{Z}^+, \;\text{and}\; 1\leq f \leq|\bT| \right \}
+	\bT := \left \{\:\bt_j \mid j \in \mathbb{Z}^+, \;\text{and}\; 1\leq j \leq|\bT|\:\right \}
 	\label{eq:defineSetOfFaces}
 \end{equation}%
-\nomenclature[c2c]{$\bT$}{the set of faces $\bt$ in $\bM$}%
-\nomenclature[bd]{$\bt$}{a face}%
-\nomenclature[be]{$\bt_f$}{a specific face in $\bT$}%
+\nomenclature[ai]{$\bT$}{the set of faces $\bt$ in $\bM$}%
+\nomenclature[aj]{$|\bT|$}{the cardinality of $\bT$}%
+\nomenclature[ak]{$\bt$}{a face}%
 \todoAsk{is own cardinality in own definition okay?}
 
 As we are working exclusively with triangular meshes~\cite[p.~26]{Mara12}, we define a face $\bt$ by the totally ordered~\cite{Weisstein19a} set of three distinct points, which we will index in clockwise order~\cite[p.~4]{Mara17}. The triangular faces are addressed using the global index $j$, and each has three implicit edges whose descriptions are elaborated upon in Section~\ref{chBsEEL}.
@@ -98,8 +92,7 @@ As we are working exclusively with triangular meshes~\cite[p.~26]{Mara12}, we de
 	\bt_j := \left \{\bp_0, \bp_1, \bp_2\right \} \equiv \left \{A_f, B_f, C_f\right \} \hspace{20pt}\text{abbreviated:}\hspace{20pt} \bt = \left \{A, B, C\right \}
 	\label{eq:defineSetOfFaces}
 \end{equation}%
-\nomenclature[bd]{$\bt$}{a face}%
-\nomenclature[be]{$\bt_j$}{a specific face in $\bT$}%
+\nomenclature[al]{$\bt_j$}{a specific face in $\bT$}%
 
 \begin{figure}[ht]
 \ffigbox
@@ -111,24 +104,25 @@ It is worth noting that many software packages, such as the GigaMesh Framework~\
 %
 \subsection{Edges \& Edge Lengths}
 \label{chBsEEL}
-While an edge is not typically\footnote{Other data structures, such as the Winged-Edge~\cite[p.~1]{Baumgart75}, may use edges as a primitive element} a primitive element of \tdd{}, but becuase edge lengths are of particular significance for both the design and implementation of \forf{t}, and as illustrated in Figure~\ref{fig:facesOfAMesh}, each triangular face is implicitly composed of three edges, we will endeavor to define edges and their lengths.
+While an edge is not typically\footnote{Other data structures, such as the Winged-Edge~\cite[p.~1]{Baumgart75}, may use edges as a primitive element} a primitive element of \tdd{}, but because edge lengths are of particular significance for both the design and implementation of \forf{t}, and as illustrated in Figure~\ref{fig:facesOfAMesh}, each triangular face is implicitly composed of three edges, we will endeavor to define edges and their lengths.
 
 When in the context of a particular face $\bt_j$, we will use the single index $i$
 \begin{equation}
-	|\xi_i| := |\bp_{(\sipo)\%3} - \bp_{(\sipt)\%3}| \;:\; \forall i \in\{0,1,2\} \;\text{and}\; \bp_i \in \bt_k
+	|\xi_i| := |\bp_{(\sipo)\%3} - \bp_{(\sipt)\%3}| \;:\; \forall i \in\{0,1,2\} \;\text{and}\; \bp_i \in \bt_j
 	\label{eq:defineEdgeLengthFace}
 \end{equation}%
+\nomenclature[am]{$|\xi_i|$}{the length of edge $\xi_i$ of face $\bt_j$}%
+\todoAsk{do I need explicitly define $\xi$?}
 \todoAsk{do I need $\forall$ here?}
 
 and the double indices $v,k$, when an edge length is referenced in relation to particular point $\bp_v$
 \begin{equation}
 	|\xi_{v,k}| := |\bp_k - \bp_v|
 	\label{eq:defineEdgeLengthPoint}
-\end{equation}
-\todoAsk{do I need a comma with dobule indicies}%
-%\nomenclature[bd]{$\bp$}{a point}%
-%
-Please note the similar notation for the cardinatily of a set $|\bP|$, to that for the length of the edge $|\xi_{v,k}|$ as defined in Equation~\ref{eq:defineEdgeLengthPoint}. While cardinality is simply the count of elements in the set, the length is calculated as the L2-norm of the referenced vector.~\cite[p.~26]{Mara12}
+\end{equation}%
+\nomenclature[an]{$|\xi_{v,k}|$}{the length of edge $\xi_i$ from point $\bp_v$}%
+\todoAsk{do I need a comma with double indices}
+Please note the similar notation for the cardinality of a set $|\bP|$, to that for the length of the edge $|\xi_{v,k}|$ as defined in Equation~\ref{eq:defineEdgeLengthPoint}. While cardinality is simply the count of elements in the set, the length is calculated as the L2-norm of the referenced vector.~\cite[p.~26]{Mara12}
 %\begin{align}
 \begin{equation}
 \begin{aligned}
@@ -139,39 +133,56 @@ Please note the similar notation for the cardinatily of a set $|\bP|$, to that f
 \end{aligned}
 \end{equation}
 %\end{align}
+\todoAsk{all about $\xi\star$}
 %
-In modern software, the square root operation is performed by computing multiple iterations of the so-called, recurrence equation, using Newton's method\todoCitation{software uses Newton's iteration for sqrt}. This procedure is otherwise known as "Newton's Iteration." ~\cite{Weisstein19b} The impact for \forf{t} is that the computation of a square root typically\todoCitation{how slow is Newton's iteration compaed to others} takes many more compute cycles than other operations, and thus takes more time to complete. In fact, because of the slowness of the square root operation, computing the L2-norm in order to calculate an edge's length is emperically the most costly operation performed by the filter\todoResearch{qualify, do experiment to prove how slow sqrt is}. Therefore, it is imperitive that we take special attention to avoid unneccessary calls to calculate an edge's length, thus we have defined the symbol $\xistar$ to represent the calculation of an edge's length using Newton's Iteration, in order to draw focus to its importance \todoReword{facilitate that attention} in designing an efficient implementation of \forf{t}.
+In modern software, the square root operation is performed by computing multiple iterations of the so-called, recurrence equation, using Newton's method\todoCitation{}{software uses Newton's iteration for sqrt}. This procedure is otherwise known as "Newton's Iteration." ~\cite{Weisstein19b} The impact for \forf{t} is that the computation of a square root typically\todoCitation{}{how slow is Newton's iteration compared to others} takes many more compute cycles than other operations, and thus takes more time to complete. In fact, because of the slowness of the square root operation, computing the L2-norm in order to calculate an edge's length is empirically the most costly operation performed by the filter\todoResearch{qualify, do experiment to prove how slow sqrt is}. Therefore, it is imperative that we take special attention to avoid unnecessary calls to calculate an edge's length, thus we have defined the symbol $\xistar$ to represent the calculation of an edge's length using "Newton's Iteration", in order to draw focus to its importance \todoReword{facilitate that attention} in designing an efficient implementation of \forf{t}.%
+\nomenclature[ao]{$\xistar$}{the procedure of calculating an edge's length using "Newton's Iteration"}%
+%
+\subsection{Meshes}
+\label{ch2s3ssM}
+In \tdd{}, a mesh $\bM$ is the digital representation of a discrete manifold embedded in $\mathbb{R}^3$, and is typically\footnote{except in the case of specifically designed synthetic data~\ref{Experiments}} 2D-non-planar and comprised of non-regular triangular faces, which are composed of points connected into triangular faces.~\cite[p.~25]{Mara12} A mesh is the superset defined as
+\begin{equation}
+	\bM := \left \{\bP,\:\bT\right \}
+	\label{eq:defineMesh}
+\end{equation}%
+\nomenclature[aa]{$\bM$}{a mesh; the superset including the sets of all points $\bp$ and faces $\bt$}%
+with the set $\bP$ consisting of points, and the set $\bT$ consisting of triangular faces.
+
+Many 3D-scanners produce point clouds\todoCitation{}{}, which as the name suggests, are comprised soley of a set of points $\bP$ and do not provide a set of triangular faces $\bT$. However, it is possible, and necessary for the production of a mesh, to perform a point set triangulation\todoCitation{}{} in order to connect $\bP$ into a set of triangle faces $\bT$, enabling one to combine the two sets into a mesh~\cite[p.~26]{Mara12}. For example, during our experiments, we perform the well-known Delaunay triangulation\todoCitation{} in order to produce a mesh from a randomly generated point cloud\todoReword{add ref to experiments}.
 %
 \subsection{Acquired vs Synthetic \tdd{}}
-\label{chBsSvA}
+\label{ch2s3ssAVS3}
 The corpus of \tdd{} exists in two flavors, acquired and synthetic data, with each handily classifiable by the fashion in which it was generated, and the characteristics innate to those techniques.
 
-Acquired \tdd{} is typically captured as a point cloud utilizing various methods, such as: Time-of-Flight, Structured Light, or Structure from Motion~\cite[p.~19]{Mara12}, then exported as a triangle mesh, often consisting upwards of a million points and upto twice as many faces\footnote{TODO: reference the interesting experimental finding about face to vertex ratio}, from software packages accompanying the 3D-scanners. These exported meshes ~\cite[p.~25]{Mara12} uniformly contain noise and may exhibit other complexities for analysis, such as: non-manifold points, multiple borders or holes in the surface, inverted face orientation, non-manifold edges, and agglutination or degenerate faces. ~\cite[p.~28-32]{Mara12}
+Acquired \tdd{} is typically captured as a point cloud utilizing various methods, such as: Time-of-Flight, Structured Light, or Structure from Motion~\cite[p.~19]{Mara12}, then exported as a triangle mesh, often consisting upwards of a million points and up to twice as many faces\footnote{TODO: reference the interesting experimental finding about face to vertex ratio}, from software packages accompanying the 3D-scanners. These exported meshes ~\cite[p.~25]{Mara12} uniformly contain noise and may exhibit other complexities for analysis, such as: non-manifold points, multiple borders or holes in the surface, inverted face orientation, non-manifold edges, and agglutination or degenerate faces. ~\cite[p.~28-32]{Mara12}
 \todoResearch{Address how does the filter handles edges and unclean meshes, comeback after equations written for new algorithm}
 
-Converserely, synthetic \tdd{} is artfully crafted to obey the contraints of being a good mesh\todoReword{define a good mesh here}, without the complexities exhibited by acquired data. When modeling 3-dimensional objects, synthetic \tdd{} can require significantly less memory for storage, as simplifications can made for large regular surfaces. For example, even the largest rectangular surface can be modeled with only four points and two faces, whereas the acquired data methods require that the Nyquist-Shannon sampling theorem\todoCitation{Nyquist Shannon Theorem} be obeyed for the smallest detectable feature throughout the entire surface.
+Conversely, synthetic \tdd{} is artfully crafted to obey the constraints of being a good mesh\todoReword{define a good mesh here}, without the complexities exhibited by acquired data. When modeling 3-dimensional objects, synthetic \tdd{} can require significantly less memory for storage, as simplifications can made for large regular surfaces. For example, even the largest rectangular surface can be modeled with only four points and two faces, whereas the acquired data methods require that the Nyquist–Shannon sampling theorem\todoCitation{Nyquist Shannon Theorem} be obeyed for the smallest detectable feature throughout the entire surface.
 
-For our experiments, we created another kind synthetic \tdd{} which does not model an object. Instead, our new synthetic mesh generators\todoCitation{reference experiments} produce four different types of tessellations on arbitrarily large planar surfaces.
-
+For our experiments, we created another kind synthetic \tdd{} which does not model an object. Instead, our new synthetic mesh generators\todoReword{reference experiments} produce four different types of tessellations on arbitrarily large planar surfaces.
 %
-\subsection{Funtion Values}
-\label{chBsFV}
-In addition to the 3 cartesian coordinates, a point may often contain other relavent data in the form of scalar fields, or when taken together, vector fields. This information, which is stored at each point $\bp$, can include data regarding: RGB color, material type, reflectivity, transparency, quality, confidence, or the resulting function values from an analytical filter such as the Multi-Scale Integral Invariants (MSII) filter~\cite[p.~21]{Mara12}.
+\subsection{Function Values}
+\label{ch2s3ssFV}
+In addition to the 3 Cartesian coordinates, a point may often contain other relevant data in the form of scalar fields, or when taken together, vector fields. This information, which is stored at each point $\bp$, can include data regarding: RGB color, material type, reflectivity, transparency, quality, confidence, or the resulting function values from an analytical filter such as the Multi-Scale Integral Invariants (MSII) filter~\cite[p.~21]{Mara12}.
 
-\forf{T} is agnostic to the meaning of information represented by the data, therefore, it can similarly process any such function values stored as a scalar field. However, because the filter was designed to only convolve scalar fields, any multi-dimensional data, such as RGB color, msut be processed individually as independnt scalar fields. The result is that we can define a scalar field simply as a set of function values.
+\forf{T} is agnostic to the meaning of information represented by the data, therefore, it can similarly process any such function values stored as a scalar field. However, because the filter was designed to only convolve scalar fields, any multi-dimensional data, such as RGB color, must be processed individually as independent scalar fields. The result is that we can define a scalar field simply as a set of function values.
 %
 \begin{equation}
 	\bF := \left \{\: f_v \mid v \in \mathbb{Z}^+, \;\text{and}\; 1\leq v \leq|\bP| \:\right \}
 	\label{eq:defineSetOfFunctionValues}
-\end{equation}
-\todoStyle{make sure all := are there for defines vs = for equality}
+\end{equation}%
+\nomenclature[ap]{$\bF$}{a scalar field; the set of function values $f_v$}%
+\nomenclature[aq]{$|\bF|$}{the cardinality of $\bF$, $\equiv |\bP|$}%
+\nomenclature[ar]{$f$}{a function value}%
+\nomenclature[as]{$f_v$}{a specific function value in $\bF$, corresponding to $\bp_v$}%
 %
 This definition shares the index $v$ with the definition for a set of points and uses $|\bP|$ instead of $|\bF|$ as the maximum iteration value, in order to highlight the fact that indeed $|\bF| \mbeq |\bP|$, because function values are stored 1-for-1 with points in \tdd{}.
 %
 %
 %
 %
-\section{Achitectures of Concurrency}
+%
+\section{Architectures of Concurrency}
 %
 \subsection{Serial Computation \& Threads}
 thread can be identified using a one-dimensional, two-dimensional, or three-
