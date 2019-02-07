@@ -43,7 +43,7 @@ Figure 2.7: Schematic visualization of (a) a non-singular vertex p A with its tr
 %
 %
 \section{\tdd}
-The data upon which one convolves \forf{t} is called \tdd\todoCitation{\tdd{} name origin, BB82 from Mara12}. It consists primarily of a single mesh $\bM$, which is the superset of the set $\bP$ consiting of points, and the set $\bT$ consisting of triangular faces, covered in Sections~\ref{chBsP} and~\ref{chBsF} respectively. \tdd{} also comes in two disticnt flavors depending on its origin: acquired or synthetic, as discussed in Section~\ref{chBsSvA}. The data can as well include a texture map, or other various types of information stored as scalar fields, with a few examples being: RGB color, material type, reflectivity, transparency, quality, confidence, or the resulting function values, from an analytical filter such as the Multi-Scale Integral Invariants (MSII) filter~\cite[p.~21]{Mara12}, which are elaborated upon in Section~\ref{chBsFV}. \forf{T} is agnostic to the type of information represented by the scalar fields, therefore, it can similarly process any such data.\todoReword{any maybe too strong, constrained to single field at a time}
+The data upon which one convolves \forf{t} is called \tdd\todoCitation{\tdd{} name origin, BB82 from Mara12}. It consists primarily of a single mesh $\bM$, which is the superset of $\bP$, a set of points, and the set $\bT$ consisting of triangular faces, each to be covered in Sections~\ref{chBsP} and~\ref{chBsF} respectively. \tdd{} also comes in two disticnt flavors depending on its origin: acquired or synthetic, as discussed in Section~\ref{chBsSvA}. The data can as well include a texture map and other various types of information stored as scalar or vector fields as elaborated upon  in~\ref{chBsFV}.
 %
 \subsection{Meshes}
 \label{chBsP}
@@ -52,16 +52,16 @@ In \tdd{}, a mesh $\bM$ is the digital representation of a discrete manifold emb
 	\bM := \left \{\bP, \bT\right \}
 	\label{eq:defineMesh}
 \end{equation}%
-\nomenclature[c2a]{$\bM$}{a mesh; the superset including the sets of all points $\bp$ and faces $\bt$}%
-Many 3D-scanners produce point clouds\todoCitation{}, which are as the name suggests, comprised soley of a set of points and do not provide a set of triangular faces. However, it is possible, and necessary for the production of a mesh, to perform a point set triangulation\todoCitation{} in order to connect a set of points into a set of faces, enabling one to combine the two sets into a mesh~\cite[p.~26]{Mara12}. For example, during our experments, we perform the well-known Dalauney triangulation\todoCitation{} in order to produce a mesh from a randomly generated point cloud\todoReword{cite\ref Experiments}.
+\nomenclature[ch2a]{$\bM$}{a mesh; the superset including the sets of all points $\bp$ and faces $\bt$}%
+with the set $\bP$ consiting of points, and the set $\bT$ consisting of triangular faces.
+
+Many 3D-scanners produce point clouds\todoCitation{}, which as the name suggests, are comprised soley of a set of points $\bP$ and do not provide a set of triangular faces $\bT$. However, it is possible, and necessary for the production of a mesh, to perform a point set triangulation\todoCitation{} in order to connect $\bP$ into a set of triangle faces $\bT$, enabling one to combine the two sets into a mesh~\cite[p.~26]{Mara12}. For example, during our experments, we perform the well-known Dalauney triangulation\todoCitation{} in order to produce a mesh from a randomly generated point cloud\todoReword{cite\ref Experiments}.
 %
 \subsection{Points}
 \label{chBsP}
 A point $\bp$ is the most primitive element of \tdd{}. "Point" is the abbreviated form of "measuring point", and is also known in other fields of study as a vertex, or a position vector $\in \mathbb{R}^3$\todoCitation{other names for a point}. A point is defined by the 3-dimensional Cartesian coordinates $x$, $y$ and $z$, and in \tdd{}, points are generally unique and not required to be in any particular order. In this thesis, a point is addressed using several different subscripts, depending on the context.
 
-Please note that the indices in Equation~\ref{eq:defineSetOfPoints} begin with 1. This is significant because of the discordant conventions between addressing the first element of a data structure with 0 in programming languages such as C++ and python, versus addressing first elements with 1 as is the standard for mathematical literature. Because this thesis should indeed be considered mathematical literature, we will always start indicies at 1, and only use index 0 for special cases. For example, $\bp_0$ is used to represent the defining center point of a one-ring neighborhood.\todoReword{Reference when one-ring neighborhoods are define}
-
-The index $v$ is the globally unique index, with which we can define the set
+Index $v$ is the globally unique index, with which we can define the set
 \begin{equation}
 	\bP = \left \{\bp_v \mid v \in \mathbb{Z}^+, \;\text{and}\; 1\leq v \leq|\bP| \right \}
 	\label{eq:defineSetOfPoints}
@@ -70,6 +70,9 @@ The index $v$ is the globally unique index, with which we can define the set
 \nomenclature[bd]{$\bp$}{a point}%
 \nomenclature[be]{$\bp_v$}{a specific point in $\bP$}%
 \todoAsk{is own cardinality in own definition okay?}
+
+Please note that the indices in Equation~\ref{eq:defineSetOfPoints} begin with 1. This is significant because of the discordant conventions between addressing the first element of a data structure with 0 in programming languages such as C++ and python, versus addressing first elements with 1, as is the standard for mathematical literature. Because this thesis should indeed be considered mathematical literature, we will always start indicies at 1, and only use index 0 for special cases. For example, $\bp_0$ is used to represent the defining center point of a one-ring neighborhood.\todoReword{Reference when one-ring neighborhoods are define}
+\todoReword{this reads like a loooong footnote}
 
 Otherwise,
 % when referencing to a point by its index within a specific one-ring neighborhood, we will use $\bp_k$, and %
@@ -91,7 +94,7 @@ Faces are the another primative element of \tdd{}, and comprise the set $\bT$.
 \nomenclature[be]{$\bt_f$}{a specific face in $\bT$}%
 \todoAsk{is own cardinality in own definition okay?}
 
-As we are working exclusively with triangular meshes~\cite[p.~26]{Mara12}, we define a face $\bt$ by the totally ordered set~\cite{Weisstein19a} of three distinct points, which we will index in clockwise order~\cite[p.~4]{Mara17}. The triangular faces are addressed using the index $f$, and each has three implicit edges, whose descriptions are elaborated upon in Section~\ref{chBsEEL}.
+As we are working exclusively with triangular meshes~\cite[p.~26]{Mara12}, we define a face $\bt$ by the totally ordered~\cite{Weisstein19a} set of three distinct points, which we will index in clockwise order~\cite[p.~4]{Mara17}. The triangular faces are addressed using the index $f$, and each has three implicit edges, whose descriptions are elaborated upon in Section~\ref{chBsEEL}.
 \begin{equation}
 	\bt_f := \left \{\bp_0, \bp_1, \bp_2\right \} \equiv \left \{A_f, B_f, C_f\right \} \hspace{20pt}\text{abbreviated:}\hspace{20pt} \bt = \left \{A, B, C\right \}
 	\label{eq:defineSetOfFaces}
@@ -102,29 +105,28 @@ As we are working exclusively with triangular meshes~\cite[p.~26]{Mara12}, we de
 \begin{figure}[ht]
 \ffigbox
 	{\includegraphics[width=0.8\linewidth]{example-image-16x9.png}}
-	{\caption[A Triangular Face]{A triangular face}\label{fig:facesOfAMesh}}
+	{\caption[A Triangular Face]{A triangular face showing points, edges, and orientation}\label{fig:facesOfAMesh}}
 \end{figure}%
 
-It is worth noting that many software packages, such as the GigaMesh Framework~\cite[p.~89]{Mara12}, may expect counter-clockwise ordering of indexes. This is significant because the ordering provides an orientation by which visualization software can apply texture and/or lighting. The only mathematical significance of the ordering is the sign of the area of a face, and totally inconsequential when the absolute value is expected, as shown by\cite[p.~2]{Braden86}. This is yet another example of the difference between the conventions of mathematical literature versus those of computer science. And again, because this thesis should indeed be considered mathematical literature, we will follow the conventions of mathematical literature.
+It is worth noting that many software packages, such as the GigaMesh Framework~\cite[p.~89]{Mara12}, may expect counter-clockwise ordering of indexes. \todoResearch{does the "right-hand-rule apply here?"} This is significant because the ordering provides an orientation by which visualization software can apply texture and/or lighting. The only mathematical significance of the ordering is the sign of the area of a face, and totally inconsequential when the absolute value is expected, as shown by\cite[p.~2]{Braden86}. This is yet another example of the difference between the conventions of mathematical literature versus those of computer science. And again, because this thesis should indeed be considered mathematical literature, we will continue to follow the conventions of mathematical literature.
 %
 \subsection{Edges \& Edge Lengths}
 \label{chBsEEL}
-While not typically\footnote{Other data structures, such as the Winged-Edge~\cite[p.~1]{Baumgart75}, may use edges as a primitive element} a primitive element of \tdd{}, but becuase as illustrated in Figure~\ref{fig:facesOfAMesh}, each triangular face is implicitly composed of three edges, we will define the lengths of an edge with either a single index, when it is in relation to a particular face $\bt_j$
+While an edge is not typically\footnote{Other data structures, such as the Winged-Edge~\cite[p.~1]{Baumgart75}, may use edges as a primitive element} a primitive element of \tdd{}, but becuase edge lengths are of particular significance for both the design and implementation of \forf{t}, and as illustrated in Figure~\ref{fig:facesOfAMesh}, each triangular face is implicitly composed of three edges, we will yet define edges and their lengths. When in the context of a particular face $\bt_j$, we will use a single index
 \begin{equation}
 	|\xi_i| := |\bp_{(\sipo)\%3} - \bp_{(\sipt)\%3}| \;:\; \forall i \in\{0,1,2\} \;\text{and}\; \bp_i \in \bt_k
 	\label{eq:defineEdgeLengthFace}
 \end{equation}%
 \todoAsk{do I need $\forall$ here?}
 
-or with double indices, when it is in relation to particular point $\bp_v$
+and double indices, when an edge length is referenced to relation to particular point $\bp_v$
 \begin{equation}
 	|\xi_{v,k}| := |\bp_k - \bp_v|
 	\label{eq:defineEdgeLengthPoint}
 \end{equation}%
 %\nomenclature[bd]{$\bp$}{a point}%
 %
-Please note the similar symbol for the cardinatily of a set $|\bP|$ to that of $|\bp_k - \bp_v|$, which instead denotes the length of the edge $\xi_{v,k}$ as defined in Equation~\ref{eq:defineEdgeLengthPoint}~\cite[p.~26]{Mara12} and is calculated as the L2-norm of the resulting vector.
-%
+Please note the similar notation for the cardinatily of a set $|\bP|$ to that for the length of the edge $\xi_{v,k}$, $|\xi_{v,k}|$ as defined in Equation~\ref{eq:defineEdgeLengthPoint}~\cite[p.~26]{Mara12}. While cardinality is simply the count of elements in the set, the length is calculated as the L2-norm of the referenced vector.
 \begin{align}
 %\begin{equation}
 %\begin{aligned}
@@ -151,13 +153,22 @@ For our experiments, we created another kind synthetic \tdd{} which does not mod
 %
 \subsection{Funtion Values}
 \label{chBsFV}
+In addition to the 3 cartesian coordinates, a point may often contain other relavent data in the form of scalar fields, or when taken together, vector fields. This information, which is stored at each point $\bp$, can include data regarding: RGB color, material type, reflectivity, transparency, quality, confidence, or the resulting function values from an analytical filter such as the Multi-Scale Integral Invariants (MSII) filter~\cite[p.~21]{Mara12}.
+
+\forf{T} is agnostic to the meaning of information represented by the data, therefore, it can similarly process any such function values stored as a scalar field. However, because the filter was designed to only convolve scalar fields, any multi-dimensional data, such as RGB color, must be considered as 3 seperate function values, and be processed individually. The result is that we can define a scalar field simply as a set of function values.
 %
+\begin{equation}
+	\bF := \left \{f_v \mid v \in \mathbb{Z}^+, \;\text{and}\; 1\leq v \leq|\bP| \right \}
+	\label{eq:defineSetOfFunctionValues}
+\end{equation}
+\todoStyle{make sure all := are there for defines vs = for equality}
+%
+This definition shares the index $v$ with the definition for a set of points, as well as $|\bP|$, instead of $|\bF|$ as the maximum iteration value, in order to highlight the fact that indeed $|\bF| \mbeq |\bP|$, because function values are stored 1-for-1 with points in \tdd{}.
 %
 %
 %
 %
 \section{Achitectures of Concurrency}
- vs GPU order from slow to fast.
 %
 \subsection{Serial Computation \& Threads}
 thread can be identified using a one-dimensional, two-dimensional, or three-
