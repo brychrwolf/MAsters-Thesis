@@ -1,15 +1,59 @@
 \chapter{Background}
-\section{Set Theory}
-\subsection{Neighborhoods \& Cardinality}
+\section{}
 %
-\section{Geometry}
+%
+%
+%
+%
+%
+\section{Basic Theory}\todoReword{theorhetical foundation}
+Set Theory \& Geometry \& Topology
+\subsection{Set Theory}
+Cardinality
+Union
 %
 \subsection{Interpolation}
 %
 \subsection{Circle Sectors}
 %
+\subsection{Neighborhoods}
+%\subsection{Adjacencies, Singularities and k-ring Neighborhoods}
+Knowing the neighbors of a measuring point is the key to analyze our data. For regular data structures, e.g. 2D-images a pixel has four neighbors in orthogonal direction with a (relative) geometric distance of 1 and four further neighbors with a geometric distance of √2. Neglecting the geometric distance we can apply the same for vertices and faces and determine their neighbors using the orientation of the triangles:
+• A face t j is adjacent to a face t i , when t j has an edge e m = {A m , B m }and t i has an edge e k = {B m , A m }.
+• The vertices adjacent to a vertex p i are those p̊ i , belonging to the faces t̊ i ∶= {A i , B ≠i , C ≠i } ∨ {A ≠i , B i , C ≠i } ∨ {A ≠i , B ≠i , C i }.
+
+Faces t̊ i and vertices p̊ i belong to the so-called 1-ring as they have distance of 1 within the graph of the mesh. The 1-ring can be extended to a 2-ring by using the verticesp̊ i as p i , which adds vertices and faces having a distance of 2 within the graph. This iterative concept can be repeated k times and the neighborhood is than refered to as k-ring. The distance within the graph can not be assumed equal to the geometric distance nor geodesic distance.
+
+However it is used throughout literature as experiments are often done on synthetic data – especially in the field of Computer Graphics. Figure 2.6 shows the scheme of the 1-ring and an example for a 5-ring on a synthetic sphere in contrast to 5-rings on an acquired mesh. Even the triangles of the sphere are almost equal, we see that the outlines of the k-rings have a hexagonal shape, while geodesic ring would have the shape of a circle. Already the 1-rings of the acquired mesh have completely arbitrary shapes and sizes.
+
+(a)(b)(c)(d)
+
+Figure 2.6: k-ring neighborhood: (a) Scheme of a 1-ring neighborhood and 1 to 5-ring neighborhood for (b) a synthetic sphere and (c) for a wedge acquired using a 3D-scanner. The 1-ring shown in Figure 2.6a is closely related to the so-called triangle-fan used by Open Graphics Language (OpenGL). While the
+
+Figure represents the most common case of an 1-ring equal to a triangle-fan as most parts of M 2 are organized like this. The second common case looks the same, with one or more adjacent faces missing – this is the case, when p̊ i is on the border of the mesh. However the data structure allows that non-adjacent faces are missing leading to singular vertices – not to be confused with solo vertices. 29 We can identify singular vertices connecting different parts of M 2 by determining one triangle-fan per vertex and compare them to the 1-ring neighborhood. The faces of the 1-ring are determined just by the presence of a shared central vertex [MB05] as shown before. Having the 1-ring we need to test if we can walk around the shared vertex using the faces and their neighbors.
+
+This is shown in Figure 2.7a, where we can start at any of the vertices {B, . . . , G} following the directional edges between them. We than will arrive at vertex p G . If we have not started at p B , we will have to backtrack the edges in opposite direction as p A is a vertex on the border ∂M 2 . In the end we will have visited all vertices of the triangle fan {B, . . . , G}. When p A is not on the border, because a triangle {A, G, B} exists, we can visit all vertices without backtracking. Figure 2.7b shows the scheme for a border vertex, which is singular, because we can visit either the {B, C, D, E} or {F, G, H} of these two triangle-fans. Figure 2.7c shows an example from a 3D-model, where a non-border, singular vertex p A connects different parts of the mesh.
+
+(a)(b)(C)
+
+Figure 2.7: Schematic visualization of (a) a non-singular vertex p A with its triangle fan equaling its 1-ring neighborhood. When there is a triangle {A, G, B} the fan is closed – if not p A , p B and p G are vertices on the border of M 2 . (b) Singular vertex p A connecting two triangle fans. (c) Real world example for a singular vertex p A .~\cite[p.~29]{Mara12}
+%
+%
+%
+%
+%
 \section{\tdd}
 The data upon which one convolves \forf{t} is called \tdd\todoCitation{\tdd{} name origin, BB82 from Mara12}. It consists primarily of a single mesh $\bM$, which is the superset of the set $\bP$ consiting of points, and the set $\bT$ consisting of triangular faces, covered in Sections~\ref{chBsP} and~\ref{chBsF} respectively. \tdd{} also comes in two disticnt flavors depending on its origin: acquired or synthetic, as discussed in Section~\ref{chBsSvA}. The data can as well include a texture map, or other various types of information stored as scalar fields, with a few examples being: RGB color, material type, reflectivity, transparency, quality, confidence, or the resulting function values, from an analytical filter such as the Multi-Scale Integral Invariants (MSII) filter~\cite[p.~21]{Mara12}, which are elaborated upon in Section~\ref{chBsFV}. \forf{T} is agnostic to the type of information represented by the scalar fields, therefore, it can similarly process any such data.\todoReword{any maybe too strong, constrained to single field at a time}
+%
+\subsection{Meshes}
+\label{chBsP}
+In \tdd{}, a mesh $\bM$ is the digital representation of a discrete manifold embedded in $\mathbb{R}^3$, and is typically\footnote{except in the case of specifically designed synthetic data~\ref{Experiments}} 2D-non-planar and comprised of non-regular trianglular faces, which are composed of points connected into triangular faces.~\cite[p.~25]{Mara12} A mesh is the superset defined as
+\begin{equation}
+	\bM := \left \{\bP, \bT\right \}
+	\label{eq:defineMesh}
+\end{equation}%
+\nomenclature[c2a]{$\bM$}{a mesh; the superset including the sets of all points $\bp$ and faces $\bt$}%
+Many 3D-scanners produce point clouds\todoCitation{}, which are as the name suggests, comprised soley of a set of points and do not provide a set of triangular faces. However, it is possible, and necessary for the production of a mesh, to perform a point set triangulation\todoCitation{} in order to connect a set of points into a set of faces, enabling one to combine the two sets into a mesh~\cite[p.~26]{Mara12}. For example, during our experments, we perform the well-known Dalauney triangulation\todoCitation{} in order to produce a mesh from a randomly generated point cloud\todoReword{cite\ref Experiments}.
 %
 \subsection{Points}
 \label{chBsP}
@@ -55,15 +99,13 @@ As we are working exclusively with triangular meshes~\cite[p.~26]{Mara12}, we de
 \nomenclature[bd]{$\bt$}{a face}%
 \nomenclature[be]{$\bt_f$}{a specific face in $\bT$}%
 
-
-
 \begin{figure}[ht]
 \ffigbox
 	{\includegraphics[width=0.8\linewidth]{example-image-16x9.png}}
 	{\caption[A Triangular Face]{A triangular face}\label{fig:facesOfAMesh}}
 \end{figure}%
 
-It is worth noting that many software packages, such as the GigaMesh Framework~\cite[p.~89]{Mara12}, may expect counter-clockwise ordering of indexes. This is significant because the ordering provides an orientation by which visualization software can apply texture and/or lighting. The only mathematical significance of the ordering is the sign of the area of a face, and totally inconsequential when the absolute value is expected, as shown by\cite[p.~2]{Braden86}. This is yet another example of the difference between the conventions of mathematical literature versus those of computer science. And again, because this thesis should indeed be considered mathematical literature, we will follow the conventions of mathematical literature. 
+It is worth noting that many software packages, such as the GigaMesh Framework~\cite[p.~89]{Mara12}, may expect counter-clockwise ordering of indexes. This is significant because the ordering provides an orientation by which visualization software can apply texture and/or lighting. The only mathematical significance of the ordering is the sign of the area of a face, and totally inconsequential when the absolute value is expected, as shown by\cite[p.~2]{Braden86}. This is yet another example of the difference between the conventions of mathematical literature versus those of computer science. And again, because this thesis should indeed be considered mathematical literature, we will follow the conventions of mathematical literature.
 %
 \subsection{Edges \& Edge Lengths}
 \label{chBsEEL}
@@ -81,303 +123,43 @@ or with double indices, when it is in relation to particular point $\bp_v$
 \end{equation}%
 %\nomenclature[bd]{$\bp$}{a point}%
 %
-Please note the similar symbology for the cardinatily of a set $|\bP|$ to that of $|\bp_k - \bp_v|$, which instead denotes the length of the edge $\xi_{v,k}$ as defined in Equation~\ref{eq:defineEdgeLengthPoint}~\cite[p.~26]{Mara12} and is calculated as the L2-norm of the resulting vector.
-
-In modern software, the square root operation is performed by computing multiple iterations of the so-called recurrence equation using Newton's method\todoCitation{software uses Newton's iteration for sqrt}, otherwise known as "Newton's Iteration." ~\cite{Weisstein19b} The impact for \forf{t} is that the computation the square root typically\todoCitation{how slow is Newton's iteration compaed to others} takes many more compute cycles than other operations, and thus takes more time to complete. In fact, because of the slowness of the square root operation, computing the L2-norm in order to calculate an edge's length is emperically the most costly operation performed by the filter. \todoResearch{qualify, do experiment to prove how slow sqrt is}, Therefore, it is imperitive that one takes special attention to avoid unneccessary calls to calculate an edge's length, so we define the symbol $|\xi|_\star$ to facilitate designing an efficient implementation of \forf{t}.
+Please note the similar symbol for the cardinatily of a set $|\bP|$ to that of $|\bp_k - \bp_v|$, which instead denotes the length of the edge $\xi_{v,k}$ as defined in Equation~\ref{eq:defineEdgeLengthPoint}~\cite[p.~26]{Mara12} and is calculated as the L2-norm of the resulting vector.
 %
 \begin{align}
 %\begin{equation}
 %\begin{aligned}
 	|\bp_k - \bp_v| & = \lVert\bp_k - \bp_v\rVert_2 \\
-					& = \sqrt{(x_k-x_v)^2 + (y_k-y_v)^2 + (y_k-y_v)^2} \\
-					& = |\xi|^\star
+					& = \sqrt{(x_k-x_v)^2 + (y_k-y_v)^2 + (y_k-y_v)^2}
 	\label{eq:defineEdgeLengthCalc}
 %\end{aligned}
 %\end{equation}
 \end{align}
 %
-\subsection{Synthetic vs Aquired 3D Meshes}
-\label{chBsSvA}
-
-Acquired \tdd{} is typically exported from software packages accompanying 3D-scanners as a 2D-non-planar, manifold, and non-regular surface meshes embedded in $\mathbb{R}^3$ consisting of points connected into triangular faces.
-
-
-In the field of geography a similar data structure is called
-Triangulated Irregular Networks (TINs), which also can be acquired with
-non-optical methods (e.g. LIDAR). As for our test-case the cuneiform script is
-generally defined by pure geometry and the consideration of a texture-map is
-per-se not necessary.~\cite[p.~25]{Mara12}
-
-We have to mention that a common misunderstanding is that acquired 3D-objects are similar or even identical to modeled 3D-objects – this is not true! Both utilize the same methods for organizing the data, but per-se the concepts of primitives and other simplifications do not exist for acquired 3D-objects. Additionally acquired 3D-objects contain noise, which partially prevents simplification. Furthermore this adds to the complexity as simple objects, which can be modeled with a few primitives, are acquired as pointclouds, which can – and do – have thousands to millions of points. For worst cases even the assumption of a non-manifold mesh3 may not apply due to incorrect registration of multiple 3D-scans [BR07]. As we know from our previous work, there is always at least a minor number of non-manifold points within our data, which has to be taken care of to achieve a robust system [Mar06]. Reducing the resolution for acquisition contradicts with the Shannon theorem, while the rule of thumb from our previous projects is: the resolution for acquisition has to be 5 times the size of the smallest detail to be acquired.~\cite[p.~25]{Mara12}
+In modern software, the square root operation is performed by computing multiple iterations of the so-called recurrence equation using Newton's method\todoCitation{software uses Newton's iteration for sqrt}, otherwise known as "Newton's Iteration." ~\cite{Weisstein19b} The impact for \forf{t} is that the computation of a square root typically\todoCitation{how slow is Newton's iteration compaed to others} takes many more compute cycles than other operations, and thus takes more time to complete. In fact, because of the slowness of the square root operation, computing the L2-norm in order to calculate an edge's length is emperically the most costly operation performed by the filter. \todoResearch{qualify, do experiment to prove how slow sqrt is} Therefore, it is imperitive that we takes special attention to avoid unneccessary calls to calculate an edge's length, so we define the symbol $\xistar$ to facilitate that attention in designing an efficient implementation of \forf{t}.
 %
-\subsection{Mesh, Discrete Manifold}%
-So the list of vertices L v and the list of faces L f describe the discrete,
-meshed geometry of the surface M 2 as provided by our 3D-models (triangulation
-networks): M 2 ∶= L M = {L v , L f } (2.6)
-This basic list L M will be extended by other surface properties (e.g. color) in
-the following sections and chapters. In case no L f is provided, it is a
-necessity to perform a point set triangulation [BE92, HK09] to compute L f from
-L v .~\cite[p.~26]{Mara12}%
-\nomenclature[c2a]{$\bM$}{a mesh; the superset which includes the sets of all points $\bp$ and faces $\bt$}%
+\subsection{Acquired vs Synthetic \tdd{}}
+\label{chBsSvA}
+The corpus of \tdd{} exists in two flavors, acquired and synthetic data, with each handily classifiable by the fashion in which it was generated, and the characteristics which innate to those techniques.
+
+Acquired \tdd{} is typically captured as a point cloud utilizing various methods, such as Time-of-Flight, Structured Light, or Structure from Motion~\cite[p.~19]{Mara12}, then exported as a triangle mesh, often consisting upwards of a million points and upto twice as many faces\footnote{TODO: reference the interesting experimental finding about face to vertex ratio}, from software packages accompanying the 3D-scanners. These exported meshes ~\cite[p.~25]{Mara12} uniformly contain noise and may exhibit other complexities for analysis, such as: non-manifold points, multiple borders or holes in the surface, inverted face orientation, non-manifold edges, and agglutination or degenerate faces. ~\cite[p.~28-32]{Mara12}
+\todoResearch{Address how does the filter handles edges and unclean meshes, comeback after equations written for new algorithm}
+
+Converserely, synthetic \tdd{} is artfully crafted to obey the contraints of being a good mesh\todoReword{define a good mesh here}, without the complexities exhibited by acquired data. When modeling 3-dimensional objects, synthetics can require significantly less memory for storage, as simplifications can made for large regular surfaces, for example, even the largest rectangular surface can be modeled with only four points and two faces, whereas the acquired methods require that the Nyquist-Shannon sampling theorem be obeyed for the smallest detectable feature throughout the entire surface.\todoCitation{Nyquist Shannon Theorem}
+
+For our experiments, we created another kind synthetic \tdd{} which does not model an object. Instead, our new synthetic mesh generators produce four different types of tessellations on arbitrarily large flat surfaces.
 
 %
 \subsection{Funtion Values}
 \label{chBsFV}
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt eget
-ipsum eu iaculis. Cras vel sem eu velit eleifend porta vel sit amet massa. Etiam
-a posuere nunc. Aenean aliquam viverra dapibus. Aliquam ac eros a purus feugiat
-rhoncus. Donec faucibus ut nibh ut cursus. Aliquam erat volutpat. Proin efficitur
-nulla sit amet iaculis condimentum. Cras placerat leo vitae venenatis feugiat. In
-hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis
-parturient montes, nascetur ridiculus mus. In aliquet sagittis dui eu pulvinar.
-Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor
-suscipit, eget imperdiet mauris convallis.~\cite[p.~00]{todoCitation}\todoCitation
 %
-%\section{Irregular Non-Manifold Meshes and 2D-Manifolds in 3D-Space}
-\subsection{Treatment of Unclean Data}
-%\subsection{Borders and Edges}
-Proper detection and treatment of borders of M 2 is important even for watertight
-3D-models as we will encounter borders for subsets M 2 in Chapter 4. These
-subsets are typically connected components also called labeled regions – see
-Chapter 2 in [BB82]. In general we have to expect holes within the surfaces of
-our 3D-models, because the data structure is designed to handle real world data,
-where measurements of the surface may be missing.
-Holes within the surfaces of a 3D-model mean mathematically, that M 2 can have
-one or more borders. Consequently there is an area along the borders, which have
-to be determined. Borders have to be treated differently than the rest of the
-surface. The border area contains faces with vertices, which can be computed by
-examination of theedges e of t. A list of orientated edges L e can be derived
-from L f by splitting each triple
-{j A , j B , j C } into three tuples:
-t j ↦ L e j (t j ) = {{A j , B j }, {B j , C j }, {C j , A j }} ≡ {e c j ,
-e b j , e a j }
-L e = { e c 1 , e b 1 , e a 1 , . . . , e c jmax , e b jmax , e a jmax }
-⇒ ∣L e ∣ = 3∣L f ∣ , with k = Z + ∧ k ≤ k max ∧ k max = 3j max we get:
-L e = { e 1 , e 2 , e 3 , . . . , e k max −2 , e k max −1 , e k max }
-(2.13)(2.14)(2.15)
-Edges not on the border appear twice within a mesh with inverted orientation.
-An edge e m = {A m , B m } is on the border ∂M 2 of M 2 , when: ∄ k with e k =
-{B m , A m } ∈ L e (2.16)
-These edges are stored in the list L ∂e , which holds the indices of edges along
-the boundary of the mesh. A mesh with an empty list of edges L ∂e = Ø is called
-a closed mesh.Consequently the face t k−(k mod 3) and the vertices p A m and p B
-m are on the border, 3
-when M 2 is a manifold. The only exceptions are the so-called solo vertices,
-which are not connected to any face. These vertices are extreme cases of holes
-and typically occur as outliers for surfaces with properties like translucency,
-high reflectance and/or dark color. Let I be an index set for solo vertices, the
-list of solo vertices L v s is be determined by:
-L v s ∶= {p s ∣ ∄ t j ∈ L f with
-t j = {A j = s, B j , C j }∨
-t j = {A j , B j = s, C j }∨
-t j = {A j , B j , C j = s}} s∈I ⊆ L v
-(2.17)(2.18)(2.19)(2.20)
-When L f = Ø than L v s = L v , which is the definition of a point cloud. This
-is the contrary of an ideal M 2 having L v s = Ø as a necessary
-criteria.~\cite[p.~28]{Mara12}
-
-%\subsection{Adjacencies, Singularities and k-ring Neighborhoods}
-Knowing the neighbors of a measuring point is the key to analyze our data.
-For regular data structures, e.g. 2D-images a pixel has four neighbors in
-orthogonal direction with a (relative) geometric distance of 1 and four further
-neighbors with a geometric distance of √2. Neglecting the geometric distance we
-can apply the same for vertices and faces and determine their neighbors using
-the orientation of the triangles:
-• A face t j is adjacent to a face t i , when t j has an edge e m = {A m , B m }
-and t i has an edge e k = {B m , A m }.
-• The vertices adjacent to a vertex p i are those p̊ i , belonging to the
-faces t̊ i ∶= {A i , B ≠i , C ≠i } ∨ {A ≠i , B i , C ≠i } ∨ {A ≠i , B ≠i , C i }.
-Faces t̊ i and vertices p̊ i belong to the so-called 1-ring as they have
-distance of 1 within the graph of the mesh. The 1-ring can be extended to a
-2-ring by using the verticesp̊ i as p i , which adds vertices and faces having
-a distance of 2 within the graph. This iterative concept can be repeated k times
-and the neighborhood is than refered to as k-ring. The distance within the graph
-can not be assumed equal to the geometric distance nor geodesic distance.
-However it is used throughout literature as experiments are often done on
-synthetic data – especially in the field of Computer Graphics. Figure 2.6 shows
-the scheme of the 1-ring and an example for a 5-ring on a synthetic sphere in
-contrast to 5-rings on an acquired mesh. Even the triangles of the sphere are
-almost equal, we see that the outlines of the k-rings have a hexagonal shape,
-while geodesic ring would have the shape of a circle. Already the 1-rings of
-the acquired mesh have completely arbitrary shapes and sizes.
-(a)(b)(c)(d)
-Figure 2.6: k-ring neighborhood: (a) Scheme of a 1-ring neighborhood and 1 to
-5-ring neighborhood for (b) a synthetic sphere and (c) for a wedge acquired
-using a 3D-scanner. The 1-ring shown in Figure 2.6a is closely related to the
-so-called triangle-fan used by Open Graphics Language (OpenGL). While the
-Figure represents the most common case of an 1-ring equal to a triangle-fan as
-most parts of M 2 are organized like this. The second common case looks the
-same, with one or more adjacent faces missing – this is the case, when p̊ i is
-on the border of the mesh. However the data structure allows that non-adjacent
-faces are missing leading to singular vertices – not to be confused with solo
-vertices. 29 We can identify singular vertices connecting different parts of M
-2 by determining one triangle-fan per vertex and compare them to the 1-ring
-neighborhood. The faces of the 1-ring are determined just by the presence of a
-shared central vertex [MB05] as shown before. Having the 1-ring we need to test
-if we can walk around the shared vertex using the faces and their neighbors.
-This is shown in Figure 2.7a, where we can start at any of the vertices
-{B, . . . , G} following the directional edges between them. We than will
-arrive at vertex p G . If we have not started at p B , we will have to
-backtrack the edges in opposite direction as p A is a vertex on the border
-∂M 2 . In the end we will have visited all vertices of the triangle fan
-{B, . . . , G}. When p A is not on the border, because a triangle {A, G, B}
-exists, we can visit all vertices without backtracking. Figure 2.7b shows the
-scheme for a border vertex, which is singular, because we can visit either the
-{B, C, D, E} or {F, G, H} of these two triangle-fans. Figure 2.7c shows an
-example from a 3D-model, where a non-border, singular vertex p A connects
-different parts of the mesh.
-(a)(b)(C)
-Figure 2.7: Schematic visualization of (a) a non-singular vertex p A with its
-triangle fan equaling its 1-ring neighborhood. When there is a triangle
-{A, G, B} the fan is closed – if not p A , p B and p G are vertices on the
-border of M 2 . (b) Singular vertex p A connecting two triangle fans.
-(c) Real world example for a singular vertex p A .~\cite[p.~29]{Mara12}
-
-%\subsection{Non-Manifold Edges}
-Previous Sections have shown that 3D-models from optical 3D-scanners consist of a dis-
-crete surface representation and are generally not regular having singular vertices due to
-the missing constraints from file formats organized by L v and L f . The lack of these con-
-straints also allows for non-manifold structures as faces can have more than one neighbor
-per edge. This is useful for synthetic 3D-models from Computer Aided Design (CAD)
-systems, e.g to connect primitives like walls of buildings. However these non-manifold
-structures have to be detected and treated. Methods to analyze \tdd{} have to search
-along the graph of the mesh. Applying e.g. a search algorithm designed for manifold
-30surfaces may not reach all parts of the mesh as it will ignore junctions caused by non-
-manifoldness. In worst-case scenarios an algorithm may be trapped in an infinite loop. By
-definition of our data structure, non-manifold edges, singular vertices and agglutinated
-faces can occur.
-Manifold edges are edges shared by exactly two faces. Exceptions are edges at the
-border of the surface, having no adjacent face. As each edge derived from L f has an
-orientation, a non-manifold edge e 2+
-m is found, when there are two edges from different
-triangles defined by the same vertices, having the same direction:e 2+
-m ∶= e k ∈ t u ∨ e m ∈ t v ∨ e k = e m = {A m , B m }(2.21)
-Such a non-manifold edge can connect an arbitrary number of faces t ≠v , which leads to:
-e + m ∶= e ≠m ∈ t ≠v ∨ e m ∈ t v ∨ ∀e ≠m ∶ e ≠m = e m = {A m , B m }(2.22)
-As the faces t have an orientation, a special case of wrong connections can be found
-using the above definition: pairs of faces sharing one edge having the edge orientated in
-the same direction. This means that one of the faces has a wrong orientation resulting
-in a normal vector pointing in the negative direction. Such cases become immediately
-visible, when rendered using a virtual illumination and have to be removed or corrected.
-Figure 2.8a shows the scheme for one edge e k≠m connecting two manifold faces (t u , t v ).
-Figure 2.8b shows the same faces having a face t w added sharing a non-manifold edge
-e k=m and Figure 2.8c shows the special case for a manifold edge connecting the face t w
-having a wrong orientation.(a)(b)(c)
-Figure 2.8: Schematic visualization of M 2 in green with an edge connecting (a) two manifold
-faces (t u , t v ) and (b) the face t w added along the non-manifold edge e k = e m and
-(c) having aface t w embedded with a wrong orientation.~\cite[p.~30-31]{Mara12}
-
-%\subsection{Agglutinated Faces and Faces with Zero Area}
-Faces literally sticking together having a proper orientation (no e + ) are typical remains
-of outliers from acquisition. They can be removed as they describe parts of objects
-without any volume. This can be shown using Equation 2.10 with two faces sharing
-the same vertices in opposite orientation. Let the first face be t 1 ∶= {p a , p b , p c } and the
-agglutination face be t 2 ∶= {p c , p b , p a }, we can simplify: s = s 1 = s 2 , A(t) =
-A(t 1 ) = A(t 2 ) and n̂ 2 = −n̂ 1 and substitute:⎛ s x 1 ⎞⎛ s x 2 ⎞⎛ s x ⎞
-V M = A(t 1 ) ⎜ 0 ⎟ n̂ 1 + A(t 2 ) ⎜ 0 ⎟ n̂ 2 = A(t) ⎜ 0 ⎟ (n̂ 1 − n̂ 1 ) = 0⎝ 0 ⎠⎝ 0 ⎠⎝ 0 ⎠(2.23)
-An indicator for an agglutinated face are edges with faces having a wrong orientation as
-shown in Figure 2.8c. In practical examples agglunating faces often appear along non-
-manifold edges. However agglunating faces can be found and removed using the following
-definition, which should be done before removing non-manifold edges and removing faces
-with wrong orientation to minimize the changes to the mesh.
-∃ t i ∨t j ∈ L f with t i ∶= {A i , B i , C i } and t j ∶= {C i , B i , A i }∧
-{B i , A i , C i }∧{A i , C i , B i } (2.24)
-Besides agglutinated faces having enclosing no volume, there also exist degenerated
-faces having no area. This happens, when two or all three vertices of a face have the same
-position vector. For example, when we substitue p A = p B in Equation 2.7 we get:
-n j = (p B j − p B j ) × (p C j − p B j ) = (0, 0, 0) T and therefore A(t j ) =
-∣n j ∣= 02(2.25)
-Summarizing this Section we can detect the worst case scenarios within the data
-structure of files provided by 3D-scanners, which can render an algorithm for local surface
-filtering instable, because of e.g. an area of zero leading to a division by zero. The case
-of self-intersecting surfaces as known from synthetic data and their treatment [JSC04] is
-not necessary, as it does not change or influence the critical surfaces properties in respect
-to the methods presented within this thesis.~\cite[p.~32]{Mara12}
-
-%\section{Data cleaning - Ensuring a Perfect Mesh}
-%IS THIS STILL NECCESSARY? Since, Filtering can handle edges
-\todoResearch{Address how does the filter handles edges and unclean meshes, comeback after equations written for new algorithm}
 %
-The modular processing pipeline allows for adaption of the workflow for feature
-extraction depending on the application. As modules like the MSII filter
-provides several variants to compute integral invariants leads to a large number
-of combinations. Hard-coding all these combinations is as impracticable as
-asking an user to implement their own pipeline. The compromise is to provide an
-user interface including visualization of intermediate results.
-Therefore GigaMesh got a base layer of classes and methods as described
-previously, which can be used to assemble a tool-chain for command line use on
-compute servers. To give a visual feedback of final and intermediate results an
-OpenGL layer was added. On top of this second layer a GUI using Trolltech’s Qt,
-because it is available on all major platforms under the GNU General Public
-License (GPL) – an Open Source license.
-
-Layer I: Processing Methods
-This layer contains all the algorithms to compute integral invariants as well as
-means to determine irregularities shown in Section 2.2. In spite of the integral
-invariant algorithms being robust against irregularities and missing data
-(holes), the results improve, when faulty parts of a mesh are repaired. A mesh is
-typically repaired in a first step by removing faulty primitives.
-Removing primitives of a mesh is related to the morphological operation erosion.
-Section 2.2 on pages 25ff. shows different types primitives to be eroded, because
-they are considered irregular. Each type of irregularity requires a different
-erosion method. The application of an erosion method can introduce new
-irregularities e.g. removing a nonmanifold edge can lead to a singular vertex.
-Another common case is the removal of such singular vertices, which leads to new
-singular vertices within the 1-ring neighborhood. This means that the erosion
-methods have to be applied repeatingly and their order has an influence on the
-amount of removed primitives. As this number has to be kept to a minimum the
-Layer I of GigaMesh provides an highly automated mesh polishing algorithm, which
-fulfills this demand. Erosion additional leads to a segmentation of the mesh M2
-into connected components C, which are either a meaningful part of the object or
-noise. The parts introduced by measuring errors are typically smaller than the
-meaningful components.
-Therefore the connected components labeling as shown in Section 4.1.1 on pages
-94ff. is applied and the surface area ∣Cl ∣ of each connected Cl is computed.
-Then the components are sorted by their area: ∣C1∣ ≤ ∣C2∣ ≤ ⋅ ⋅ ⋅ ≤ ∣Cn∣ (4.29)
-Next the index i is determined as there typically exists: ∣Ci ∣ ⋘ ∣Ci+1∣ (4.30)
-120 and leads to a threshold tC > ∣Ci ∣ to remove small surface components
-introduced by noise, which are shortly denoted as labels Ci<t .
-Removing singular vertices has to applied before removing Ci<t , because the
-erosion of singularities typically increases the number of labels Ci<t . The
-same can happen, when faces along non-manifold edges are removed. Before these
-are removed, sticky faces have be removed as very first, because they introduce
-a sub-set of non-manifold edges. This leads to a sequence of erosion operations,
-which has to be repeated until the number of vertices ∣Lv∣ and faces ∣Lf ∣ of a
-3D-model does not decrease anymore:
-1. Remove sticky faces and face with zero area shown on page 32.
-2. Remove non-manifold faces shown on page 30.
-3. Label all vertices as shown using Algorithm 12 on page 95 ↝ {. . . , Cl , .
-. . } ∧ ∄CØ without considering the function value f(pi), e.g. using tp = +∞.
-4. Compute the area ∣Cl ∣ of all labels Cl using Equation 2.7 on page 27.
-5. Remove all labels Ci<t having an area less than tC.
-6. Remove solo vertices Lvs shown in Equation 2.20 on page 28.
-7. Remove singular vertices – shown on page 29.
-Afterwards the eroded mesh becomes a so-called clean mesh. Note that in most of
-the cases of clean meshes, there will be holes ∂M2. Therefore these holes have
-to be filled, which can be achieved by dilation as shown in [Lie03]. Due to
-numeric errors the dilation can re-introduce faces with zero area and other
-irregularities, the erosion and dilation have to be repeatingly applied to a mesh
-until no more holes are present:
-1. Erode the mesh until it is clean as shown above.
-2. Determine a list of boundaries ∂M2 ∶= n ⋃ i=1 ∂Ci of the holes.
-3. Remove boundaries ∂Ci of large connected components with ∣Ci ∣ > tC from the
-list.
-4. Fill the remaining holes ∂Ci>t within the list.
-The result is a so-called perfect mesh, which provides the best numeric results
-in respect to the quality of an acquired data-set. Because even a perfect mesh
-will have boundaries ∂M2 the border treatment of the algorithms to compute
-integral invariants stays relevant for robust processing. However, when obeying
-the described order, it is guaranteed that the remaining boundaries are kept as
-far as possible from the areas of interest.~\cite[p.~120]{Mara12}
 %
 %
 %
 \section{Achitectures of Concurrency}
-Serial vs Multi-threaded vs GPU order from slow to fast.~\cite[p.~00]{todoCitation}
-\todoCitation
+ vs GPU order from slow to fast.
 %
-
-\subsection{Threads}
+\subsection{Serial Computation \& Threads}
 thread can be identified using a one-dimensional, two-dimensional, or three-
 dimensional thread index, forming a one-dimensional, two-dimensional, or three-
 dimensional block of thread, called a thread block. This provides a natural way
@@ -391,257 +173,27 @@ in any order across any number of cores as illustrated by Figure 5, enabling
 programmers to write code that scales with the number of cores. [7, p. 2.2]
 \todoReword{found elsewhere in thesis}
 %
+\subsection{Multi-threaded Computation}
+Processors through Supercomputers and Data Centers
 %
+\subsection{Concurrency vs Parallelism}
+%
+\subsection{Flynn's taxonomy}
+1.1	Single instruction stream single data stream (SISD)
+1.2	Single instruction stream, multiple data streams (SIMD)
+1.3	Multiple instruction streams, single data stream (MISD)
+1.4	Multiple instruction streams, multiple data streams (MIMD)
 %
 \section{CUDA: An interface for GPGPU implementation}
-Graphical Processor Units, GPUs, are highly parallel, multithreaded, manycore
-processors typically characterized by very high computational power and
-tremendous memory bandwidth. A GPU is especially well-suited when used to
-data-parallel computations, in which the same program is executed on many data
-elements in parallel.~\cite[p.~1.1]{CUDA18}
-
-Mainstream processor chips, both CPU and GPUs, are now parallel systems, and as
-this parallelism continues to scale with Moore's law, the real challenge is to
-develop application software that transparently scales its parallelism to
-leverage the increasing number of processor cores. The CUDA parallel
-programming model, introduced by NVIDIA in November of 2006, was specifically
-designed to overcome this challenge.~\cite[p.~1.3]{CUDA18}
-
-In fact, due to its inherent scalable programming model in which problems are
-decomposed in a way that each block of thread\index{thread} can be scheduled on
-any of the available multiprocessors within a GPU, in any order, concurrently
-or sequentially, so that any compiled CUDA program, such as our implementation
-of the MSII filter, can be executed on any number of multiprocessors, and only
-the runtime system needs to know the physical multiprocessor
-count.~\cite[p.~1.3]{CUDA18}
-
-~~~~~~~~~
-
-CUDA C extends C by allowing the programmer to define C functions, called
-kernels, that, when called, are executed N times in parallel by N different
-CUDA thread\index{thread}, as opposed to only once like regular C
-functions.~\cite[p.~2.1]{CUDA18}
-
-thread\index{thread} can be identified using a one-dimensional,
-two-dimensional, or three-dimensional thread\index{thread} index, forming a
-one-dimensional, two-dimensional, or three-dimensional block of
-thread\index{thread}, called a thread\index{thread} block. This provides a
-natural way to invoke computation across the elements in a domain such as a
-vector, matrix, or volume. However, a kernel can be executed by multiple
-equally-shaped thread\index{thread} blocks, so that the total number of
-thread\index{thread} is equal to the number of thread\index{thread} per block
-times the number of blocks. thread\index{thread} blocks are required to execute
-independently: It must be possible to execute them in any order, in parallel or
-in series. This independence requirement allows thread\index{thread} blocks to
-be scheduled in any order across any number of cores as illustrated by Figure 5,
-enabling programmers to write code that scales with the number of
-cores.~\cite[p.~2.2]{CUDA18}
-
-CUDA threads\index{thread} may access data from multiple memory spaces during
-their execution as illustrated by Figure 7. Each thread\index{thread} has
-private local memory. Each thread\index{thread} block has shared memory visible
-to all thread\index{thread} of the block and with the same lifetime as the
-block. All thread\index{thread} have access to the same global
-memory.~\cite[p.~2.3]{CUDA18}
-
-the CUDA programming model assumes that the CUDA thread\index{thread} execute
-on a physically separate device that operates as a coprocessor to the host
-running the C program. The CUDA programming model also assumes that both the
-host and the device maintain their own separate memory spaces in DRAM,
-referred to as host memory and device memory. Unified Memory provides managed
-memory to bridge the host and device memory spaces. Managed memory is
-accessible from all CPUs and GPUs in the system as a single, coherent memory
-image with a common address space.~\cite[p.~2.4]{CUDA18}
-
-The compute capability of a device is represented by a version number, also
-sometimes called its "SM version". This version number identifies the features
-supported by the GPU hardware and is used by applications at runtime to
-determine which hardware features and/or instructions are available on the
-present GPU. Devices with the same major revision number are of the same core
-architecture. The major revision number is 7 for devices based on the Volta
-architecture, 6 for devices based on the Pascal architecture, 5 for devices
-based on the Maxwell architecture, 3 for devices based on the Kepler
-architecture, 2 for devices based on the Fermi architecture, and 1 for devices
-based on the Tesla architecture. Note: The compute capability version of a
-particular GPU should not be confused with the CUDA version (e.g., CUDA 7.5,
-CUDA 8, CUDA 9), which is the version of the CUDA software
-platform.~\cite[p.~2.4]{CUDA18}
-
-Kernels can be written using the CUDA instruction set architecture, called PTX,
-which is described in the PTX reference manual. It is however usually more
-effective to use a high-level programming language such as
-C.~\cite[p.~3.1]{CUDA18}
-
-Any PTX code loaded by an application at runtime is compiled further to binary
-code by the device driver. This is called just-in-time compilation.
-Just-in-time compilation increases application load time, but allows the
-application to benefit from any new compiler improvements coming with each new
-device driver. It is also the only way for applications to run on devices that
-did not exist at the time the application was compiled, as detailed in
-Application Compatibility. When the device driver just-in-time compiles some
-PTX code for some application, it automatically caches a copy of the generated
-binary code in order to avoid repeating the compilation in subsequent
-invocations of the application. The cache - referred to as compute cache - is
-automatically invalidated when the device driver is upgraded, so that
-applications can benefit from the improvements in the new just-in-time compiler
-built into the device driver.~\cite[p.~3.1.1.2]{CUDA18}
-
-The front end of the compiler processes CUDA source files according to C++
-syntax rules. Full C++ is supported for the host code. However, only a subset
-of C++ is fully supported for the device code~\cite[p.~3.1.5]{CUDA18}
-%
 \subsection{CUDA C Runtime}%3.2. CUDA C Runtime}
-There is no explicit initialization function for the runtime; it initializes
-the first time a runtime function is called. During initialization, the runtime
-creates a CUDA context for each device in the system (see Context for more
-details on CUDA contexts). This context is the primary context for this device
-and it is shared among all the host thread\index{thread} of the application. As
-part of this context creation, the device code is just-in-time compiled if
-necessary (see Just-in-Time Compilation) and loaded into device memory. This
-all happens under the hood and the runtime does not expose the primary context
-to the application.~\cite[p.~3.2.1]{CUDA18}
-
-As mentioned in Heterogeneous Programming, the CUDA programming model assumes a
-system composed of a host and a device, each with their own separate memory.
-Kernels operate out of device memory, so the runtime provides functions to
-allocate, deallocate, and copy device memory, as well as transfer data between
-host memory and device memory. Device memory can be allocated either as linear
-memory or as CUDA arrays. CUDA arrays are opaque memory layouts optimized for
-texture fetching. They are described in Texture and Surface Memory. Linear
-memory exists on the device in a 40-bit address space, so separately allocated
-entities can reference one another via pointers, for example, in a binary
-tree.~\cite[p.~3.2.2]{CUDA18}
-%
 \subsubsection{Explicit Synchronization}%3.2.5.5.3. Explicit Synchronization}
-There are various ways to explicitly synchronize streams with each other.
-cudaDeviceSynchronize() waits until all preceding commands in all streams of
-all host thread\index{thread} have completed.
-
-cudaStreamSynchronize()takes a stream as a parameter and waits until all
-preceding commands in the given stream have completed. It can be used to
-synchronize the host with a specific stream, allowing other streams to
-continue executing on the device.
-
-cudaStreamWaitEvent()takes a stream and an event as parameters (see Events
-for a description of events)and makes all the commands added to the given
-stream after the call to cudaStreamWaitEvent()delay their execution until the
-given event has completed. The stream can be 0, in which case all the commands
-added to any stream after the call to cudaStreamWaitEvent()wait on the event.
-
-cudaStreamQuery()provides applications with a way to know if all preceding
-commands in a stream have completed. To avoid unnecessary slowdowns, all these
-synchronization functions are usually best used for timing purposes or to
-isolate a launch or memory copy that is failing.
-%
 \subsection{Versioning and Compatibility}%3.3. Versioning and Compatibility}
-There are two version numbers that developers should care about when developing
-a CUDA application: The compute capability that describes the general
-specifications and features of the compute device (see Compute Capability) and
-the version of the CUDA driver API that describes the features supported by the
-driver API and runtime.
-
-In the driver header file, the version of the driver API is defined by variable CUDA\_VERSION. It allows developers to check whether their application requires a newer device driver than the one currently installed. This is important, because the driver API is backward compatible, meaning that applications, plug-ins, and libraries (including the C runtime) compiled against a particular version of the driver API will continue to work on subsequent device driver releases as illustrated in Figure 11. The driver API is not forward compatible, which means that applications, plug-ins, and libraries (including the C runtime) compiled against a particular version of the driver API will not work on previous versions of the device driver.
-
-It is important to note that there are limitations on the mixing and matching of versions that is supported: Since only one version of the CUDA Driver can be installed at a time on a system, the installed driver must be of the same or higher version than the maximum Driver API version against which any application, plug-ins, or libraries that must run on that system were built.
-
-All plug-ins and libraries used by an application must use the same version of
-the CUDA Runtime unless they statically link to the Runtime, in which case
-multiple versions of the runtime can coexist in the same process space. Note
-that if nvcc is used to link the application, the static version of the CUDA
-Runtime library will be used by default, and all CUDA Toolkit libraries are
-statically linked against the CUDA Runtime.
-
-All plug-ins and libraries used by an application must use the same version of
-any libraries that use the runtime (such as cuFFT, cuBLAS, ...) unless
-statically linking to those libraries.
-%
 \subsection{Hardware Implementation}%4. Hardware Implementation}
-The NVIDIA GPU architecture is built around a scalable array of multithreaded
-Streaming Multiprocessors (SMs). When a CUDA program on the host CPU invokes a
-kernel grid, the blocks of the grid are enumerated and distributed to
-multiprocessors with available execution capacity. The thread\index{thread} of
-a thread\index{thread} block execute concurrently on one multiprocessor, and
-multiple thread\index{thread} blocks can execute concurrently on one
-multiprocessor. As thread\index{thread} blocks terminate, new blocks are
-launched on the vacated multiprocessors.
-
-A multiprocessor is designed to execute hundreds of thread\index{thread}
-concurrently. To manage such a large amount of thread\index{thread}, it employs
-a unique architecture called SIMT (Single-Instruction,
-Multiple-thread\index{thread}) that is described in SIMT Architecture. The
-instructions are pipelined to leverage instruction-level parallelism within a
-single thread\index{thread}, as well as thread\index{thread}-level parallelism
-extensively through simultaneous hardware multithreading as detailed in
-Hardware Multithreading. Unlike CPU cores they are issued in order however and
-there is no branch prediction and no speculative execution.
-%
 \subsubsection{SIMT Architecture}%4.1. SIMT Architecture}
-The multiprocessor creates, manages, schedules, and executes
-thread\index{thread} in groups of 32 parallel thread\index{thread} called
-warps. Individual thread\index{thread} composing a warp start together at the
-same program address, but they have their own instruction address counter and
-register state and are therefore free to branch and execute independently. The
-term warp originates from weaving, the first parallel thread\index{thread}
-technology. A half-warp is either the first or second half of a warp. A
-quarter-warp is either the first, second, third, or fourth quarter of a warp.
-When a multiprocessor is given one or more thread\index{thread} blocks to
-execute, it partitions them into warps and each warp gets scheduled by a warp
-scheduler for execution. The way a block is partitioned into warps is always
-the same; each warp contains thread\index{thread} of consecutive, increasing
-thread\index{thread} IDs with the first warp containing thread\index{thread}
-0. thread\index{thread} Hierarchy describes how thread\index{thread} IDs
-relate to thread\index{thread} indices in the block.
-A warp executes one common instruction at a time, so full efficiency is
-realized when all 32 thread\index{thread} of a warp agree on their execution
-path. If thread\index{thread} of a warp diverge via a data-dependent
-conditional branch, the warp executes each branch path taken, disabling
-thread\index{thread} that are not on that path. Branch divergence occurs only
-within a warp; different warps execute independently regardless of whether
-they are executing common or disjoint code paths.
-The SIMT architecture is akin to SIMD (Single Instruction, Multiple Data)
-vector organizations in that a single instruction controls multiple processing
-elements. A key difference is that SIMD vector organizations expose the SIMD
-width to the software, whereas SIMT instructions specify the execution and
-branching behavior of a single thread\index{thread}. In contrast with SIMD
-vector machines, SIMT enables programmers to write thread\index{thread}-level
-parallel code for independent, scalar thread\index{thread}, as well as
-data-parallel code for coordinated thread\index{thread}. For the purposes of
-correctness, the programmer can essentially ignore the SIMT behavior; however,
-substantial performance improvements can be realized by taking care that the
-code seldom requires thread\index{thread} in a warp to diverge. In practice,
-this is analogous to the role of cache lines in traditional code: Cache line
-size can be safely ignored when designing for correctness but must be
-considered in the code structure when designing for peak performance. Vector
-architectures, on the other hand, require the software to coalesce loads
-into vectors and manage divergence manually.
-%
 \subsection{Host Memory and Device Memory}
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt eget
-ipsum eu iaculis. Cras vel sem eu velit eleifend porta vel sit amet massa. Etiam
-a posuere nunc. Aenean aliquam viverra dapibus. Aliquam ac eros a purus feugiat
-rhoncus. Donec faucibus ut nibh ut cursus. Aliquam erat volutpat. Proin efficitur
-nulla sit amet iaculis condimentum. Cras placerat leo vitae venenatis feugiat. In
-hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis
-parturient montes, nascetur ridiculus mus. In aliquet sagittis dui eu pulvinar.
-Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor
-suscipit, eget imperdiet mauris convallis.~\cite[p.~00]{todoCitation}\todoCitation
-%
 \subsection{Versions <9, vs >= 9}
-K.2.1.1. Explicit Allocation Using cudaMallocManaged()~\cite[p.~272]{CUDA18}
-Explain multi-threading model differences Motivation for choosing earlier
-version Adjacent vertices are stored in an array of variable-length arrays.
-First idea was determine max "width" of 2nd dimension, then to put the adjacent
-vertices into a 2D array with constant width. The pros were that a single index
-(i.e. CUDA) would then be able to now read the data.  The cons were that there
-were lots of allocated memory never to be used, if a single vertex had a large
-number of adjacenet pairs, it would greatly affect the size. Also, another
-array of counts of pairs per vertex is needed, so that only memory containing
-pair data was processesed per any given vertex. Instead, we can first create a
-single array of "run lengths," which is for each vertex, the count of how many
-adjacent pairs it has. Then flatten the array into a single dismension, using
-the run-length array as the iterator. Pros are that only a single other area is
-required, and the original array does not need to be padded with extra, unsued
-memory address.
+%
+%
 %
 %
 %
@@ -677,6 +229,8 @@ C(N, P) = PTP(N, P)
 %
 \subsection{Scalability}
 	A parallel system is called scalable only if in has an iso-efficency function
+%
+%
 %
 %
 %
