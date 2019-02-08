@@ -35,11 +35,15 @@
 		\rule[2pt]{0.30\linewidth}{1pt}\hfill%
 		\nameref{ch4sWM}%
 		\hfill\rule[2pt]{0.30\linewidth}{1pt}%
+	}{\ifthenelse{\equal{#1}{G}}{%
+		\rule[2pt]{0.30\linewidth}{1pt}\hfill%
+		\nameref{ch5sSI}%
+		\hfill\rule[2pt]{0.30\linewidth}{1pt}%
 	}{%else
 		\rule[2pt]{0.30\linewidth}{1pt}\hfill%
 		UNSORTED%
 		\hfill\rule[2pt]{0.30\linewidth}{1pt}%
-	}}}}}}%
+	}}}}}}}% add a bracket for each new case
 }
 %
 \frontmatter
