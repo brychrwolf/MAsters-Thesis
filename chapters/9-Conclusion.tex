@@ -33,15 +33,15 @@ tempus velit gravida nulla viverra, in suscipit enim mattis.
 
 \section{Future Work}
 What they are and why I did not.
-Implement in OpenCL to include all GPUs
-Implement in OpenMP to use multiple machines
-Implement in PThreads to exploit MIMP
-Pipelining memory reads/calculations exploit more concurrency
-Edge case handling
-	max mesh size in memory
-	Derive calculation for compute time per iteration by mesh size. Maybe find when load time is greater than iteration time
-support other file types
-Calculating edge length takes longest, so DO NOT DOUBLE EFFORT HERE
-Determine is using $\Dm$ vs $\bar{\Dm}$ has any effect, especially on one-ring neighborhood with a relatively large $\Dm$ on mesh with a very small $\bar{\Dm}$ 
-
-More analysis on \forf. it is my intuition that the un-isotropic nature of the filter is due to the speed at which information travels along longer edges.
+\begin{itemize}
+	\item Implement in OpenCL to include all GPUs
+	\item Implement in OpenMP to use multiple machines
+	\item Implement in PThreads to exploit MIMP
+	\item Pipelining memory reads/calculations exploit more concurrency
+	\item Edge case handling: max mesh size in memory, Derive calculation for compute time per iteration by mesh size. Maybe find when load time is greater than iteration time
+	\item support other file types
+	\item Calculating edge length takes longest, so DO NOT DOUBLE EFFORT HERE
+	\item Determine is using $\Dm$ vs $\bar{\Dm}$ has any effect, especially on one-ring neighborhood with a relatively large $\Dm$ on mesh with a very small $\bar{\Dm}$ 
+	\item More analysis on \forf. it is my intuition that the un-isotropic nature of the filter is due to the speed at which information travels along longer edges.
+	\item Apply the filter to multi-channel vector fields like RGB, however color-wheel based methods may be better
+\end{itemize}
