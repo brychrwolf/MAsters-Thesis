@@ -1,47 +1,18 @@
 \chapter{Conclusions}
+%
 \section{Summary}
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt eget 
-ipsum eu iaculis. Cras vel sem eu velit eleifend porta vel sit amet massa. Etiam 
-a posuere nunc. Aenean aliquam viverra dapibus. Aliquam ac eros a purus feugiat 
-rhoncus. Donec faucibus ut nibh ut cursus. Aliquam erat volutpat. Proin efficitur 
-nulla sit amet iaculis condimentum. Cras placerat leo vitae venenatis feugiat. In 
-hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis 
-parturient montes, nascetur ridiculus mus. In aliquet sagittis dui eu pulvinar. 
-Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor 
-suscipit, eget imperdiet mauris convallis.
-
-Aliquam in justo ut est eleifend facilisis vitae nec mi. Suspendisse pellentesque, 
-ligula ut mattis volutpat, ex risus scelerisque ligula, at ornare arcu augue ut r
-isus. Integer non pellentesque quam, quis laoreet nisi. Donec aliquam leo mi, vel 
-consectetur magna vestibulum eu. Ut quis efficitur metus. Donec consequat mi nec 
-pellentesque rhoncus. Phasellus sit amet laoreet quam. Quisque dictum ex non elit 
-aliquet lobortis. Quisque molestie egestas dolor vel interdum. In fermentum sit 
-amet mi non venenatis. In ut tempus arcu.
-
-Donec arcu eros, vestibulum maximus volutpat nec, euismod a purus. Nullam bibendum 
-eros posuere sem sollicitudin, vitae porttitor ex scelerisque. Sed nisi felis, 
-consectetur sed lacinia vitae, egestas non nibh. Curabitur a ex sed neque lacinia 
-tempor sit amet consectetur ipsum. Sed et eros dictum, dictum magna lacinia, 
-elementum lacus. Praesent enim tortor, semper ut egestas at, faucibus quis metus. 
-Aliquam mattis, lorem et ultrices mattis, erat neque bibendum est, nec condimentum 
-ex tellus sit amet diam. In sollicitudin placerat diam, lobortis efficitur leo. 
-Integer id erat tellus. Ut quis odio velit. Nulla facilisi. Donec mollis 
-scelerisque lobortis. Nam eu felis sed purus feugiat semper ac ac ante. Maecenas 
-faucibus odio diam, id tristique orci placerat sed. Ut vel ex metus. Maecenas 
-tempus velit gravida nulla viverra, in suscipit enim mattis.
-
-
+%
 \section{Future Work}
-What they are and why I did not.
-\begin{itemize}
-	\item Implement in OpenCL to include all GPUs
-	\item Implement in OpenMP to use multiple machines
-	\item Implement in PThreads to exploit MIMP
-	\item Pipelining memory reads/calculations exploit more concurrency
-	\item Edge case handling: max mesh size in memory, Derive calculation for compute time per iteration by mesh size. Maybe find when load time is greater than iteration time
-	\item support other file types
-	\item Calculating edge length takes longest, so DO NOT DOUBLE EFFORT HERE
-	\item Determine is using $\Dm$ vs $\bar{\Dm}$ has any effect, especially on one-ring neighborhood with a relatively large $\Dm$ on mesh with a very small $\bar{\Dm}$ 
-	\item More analysis on \forf. it is my intuition that the un-isotropic nature of the filter is due to the speed at which information travels along longer edges.
-	\item Apply the filter to multi-channel vector fields like RGB, however color-wheel based methods may be better
-\end{itemize}
+%What they are and why I did not.
+%\begin{itemize}
+%	\item Implement in OpenCL to include all GPUs
+%	\item Implement in OpenMP to use multiple machines
+%	\item Implement in PThreads to exploit MIMP
+%	\item Pipelining memory reads/calculations exploit more concurrency
+%	\item Edge case handling: max mesh size in memory, Derive calculation for compute time per iteration by mesh size. Maybe find when load time is greater than iteration time
+%	\item support other file types
+%	\item Calculating edge length takes longest, so DO NOT DOUBLE EFFORT HERE
+%	\item Determine is using $\elm$ vs $\bar{\elm}$ has any effect, especially on one-ring neighborhood with a relatively large $\elm$ on mesh with a very small $\bar{\elm}$ 
+%	\item More analysis on \forf. it is my intuition that the un-isotropic nature of the filter is due to the speed at which information travels along longer edges.
+%	\item Apply the filter to multi-channel vector fields like RGB, however color-wheel based methods may be better
+%\end{itemize}
