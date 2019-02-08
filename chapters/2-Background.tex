@@ -266,21 +266,11 @@ because function values are only stored alongside the Cartesian coordinates, 1-f
 \section{Architectures of Concurrency}
 %
 \subsection{Serial Computation \& Threads}
-thread can be identified using a one-dimensional, two-dimensional, or three-
-dimensional thread index, forming a one-dimensional, two-dimensional, or three-
-dimensional block of thread, called a thread block. This provides a natural way
-to invoke computation across the elements in a domain such as a vector, matrix,
-or volume. However, a kernel can be executed by multiple equally-shaped thread
-blocks, so that the total number of thread is equal to the number of thread
-per block times the number of blocks. thread blocks are required to execute
-independently: It must be possible to execute them in any order, in parallel or
-in series. This independence requirement allows thread blocks to be scheduled
-in any order across any number of cores as illustrated by Figure 5, enabling
-programmers to write code that scales with the number of cores. [7, p. 2.2]
+%thread can be identified using a one-dimensional, two-dimensional, or three-dimensional thread index, forming a one-dimensional, two-dimensional, or three- dimensional block of thread, called a thread block. This provides a natural way to invoke computation across the elements in a domain such as a vector, matrix, or volume. However, a kernel can be executed by multiple equally-shaped thread blocks, so that the total number of thread is equal to the number of thread per block times the number of blocks. thread blocks are required to execute independently: It must be possible to execute them in any order, in parallel or in series. This independence requirement allows thread blocks to be scheduled in any order across any number of cores as illustrated by Figure 5, enabling programmers to write code that scales with the number of cores. [7, p. 2.2]
 \todoReword{found elsewhere in thesis}
 %
 \subsection{Multi-threaded Computation}
-Processors through Supercomputers and Data Centers
+%Processors through Supercomputers and Data Centers
 %
 \subsection{Concurrency vs Parallelism}
 %
@@ -304,49 +294,41 @@ Processors through Supercomputers and Data Centers
 %
 %
 \section{Evaluation and Analysis of Concurrent Algorithms}~\cite[p.~330]{Lang17}
-Multi-node out of scope?!
+%Multi-node out of scope?!
 %
 \subsection{Timing}
 %\begin{equation}
-	N = input size (num. ops)
-	P = processor count
-	Ts(N) = Sequential execution time
-	Tbest(N) = Optimal execution time
-	TP(N, P) = Parallel runtime
+%	N = input size (num. ops)
+%	P = processor count
+%	Ts(N) = Sequential execution time
+%	Tbest(N) = Optimal execution time
+%	TP(N, P) = Parallel runtime
 %\end{equation}
 %
 \subsection{Speedup, efficiency}
-	Speedup:
-S(N, P) = Tbest(N)/TP(N, P)
+%	Speedup:
+%S(N, P) = Tbest(N)/TP(N, P)
 
-	Efficiency:
-E(N, P) = Tbest (N)/PTP(N, P) = S/P
+%	Efficiency:
+%E(N, P) = Tbest (N)/PTP(N, P) = S/P
 
-	Costs:
-C(N, P) = PTP(N, P)
+%	Costs:
+%C(N, P) = PTP(N, P)
 %
 \subsection{Degree of Parallelism}
-	0 < q < 1 is the sequential part
-	1-q = is the parallelizable part
+%	0 < q < 1 is the sequential part
+%	1-q = is the parallelizable part
 %
 \subsection{Iso-efficiency}
-	WK(P) = iso-efficient if it fulfills:
-	TO(WK(P), P) = KWK(P)~\cite[p.~350]{Lang17}
+%	WK(P) = iso-efficient if it fulfills:
+%	TO(WK(P), P) = KWK(P)~\cite[p.~350]{Lang17}
 %
 \subsection{Scalability}
-	A parallel system is called scalable only if in has an iso-efficency function
+%	A parallel system is called scalable only if in has an iso-efficency function
 %
 %
 %
 %
 %
 \section{Summary}
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt eget
-ipsum eu iaculis. Cras vel sem eu velit eleifend porta vel sit amet massa. Etiam
-a posuere nunc. Aenean aliquam viverra dapibus. Aliquam ac eros a purus feugiat
-rhoncus. Donec faucibus ut nibh ut cursus. Aliquam erat volutpat. Proin efficitur
-nulla sit amet iaculis condimentum. Cras placerat leo vitae venenatis feugiat. In
-hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis
-parturient montes, nascetur ridiculus mus. In aliquet sagittis dui eu pulvinar.
-Morbi a arcu eu dolor sagittis varius. Aliquam dignissim tortor sed tortor
-suscipit, eget imperdiet mauris convallis.
+%
