@@ -1,6 +1,6 @@
 \chapter{Background}
 \label{ch2}
-\Forf{T} relies on the research from many fields of study in both mathematics and computer science\ldots
+\Forf{T} relies on the research from many fields of study in both mathematics and computer science. In this chapter we will briefly examine the underlying theory, concepts, and frameworks upon which we rely to convey the ideas presented in this thesis and bring to fruition the work invested in designing and developing \forf{t}.
 \todoReword{Elaborate like a teasing summary}
 %
 %
@@ -8,7 +8,7 @@
 %
 %
 \section{Basic Theory}\todoReword{theoretical foundation}
-The following is an abbreviated list of the important theoretical concepts upon which we will rely to convey the ideas presented in this thesis.
+The following is an abbreviated list of the important theoretical concepts used in the chapters to follow. These include concepts from set theory, geometry, and topology.
 %
 \subsection{Set Theory}
 A set is one of the most fundamental concepts in mathematics. Informally, a set is a collection of distinct objects, and is also itself considered to be an object. In this thesis, sets are denoted using capital, calligraphic letters, such as: $\bM$, $\bP$, $\bT$, and $\bF$. 
@@ -26,7 +26,7 @@ The other option, extensional definition, is denoted by enclosing the list of me
 	\mathbb{N} = \left \{\:0,\,1,\,2,\,3,\,\ldots\:\right \}
 \end{equation}
 %
-A set member is allowed to be listed two or more times in a definition, for example $\left \{\:4,\,2,\,2\:\right \}$. However, it is identical to the set $\left \{\:4,\,2\:\right \}$ per the axiom of extensionality\todoReference{Zermelo–Fraenkel set theory., Axiom of extensionality, logical extensionality}, which states that two definitions of sets, which differ only in that one of the definitions lists members multiple times, define the same set.
+A set member is allowed to be listed two or more times in a definition, for example $\left \{\:4,\,2,\,2\:\right \}$. However, it is identical to the set $\left \{\:4,\,2\:\right \}$ per the axiom of extensionality\todoResearch{Zermelo–Fraenkel set theory., Axiom of extensionality, logical extensionality}, which states that two definitions of sets, which differ only in that one of the definitions lists members multiple times, define the same set.
 %
 \subsubsection{Special Sets}
 There exists some sets which are used in mathematical literature with such frequency as to demand their own standardized symbols. In this thesis\todoReference{defineSetofNaturalNumbers}, we have already encountered $\mathbb{N}$, which denotes the set of all natural numbers.
@@ -65,11 +65,10 @@ Given the two data points in $\mathbb{R}^2$, $(x_a, y_a)$ and $(x_b, y_b)$, the 
 To illustrate the concept, consider the two points $(1, 4)$ and $(3, 1)$, then find the interpolant of a point located at $x = 2$\todoReword{don't use point located at, maybe value sampled at instead?}
 \begin{align}
 	y_c & = 4 + (1 - 4) \frac{2 - 1}{3 - 1} \\
-	& = 4 + -3 \frac{1}{2} \\
-	& = \frac{5}{2}	
+	& = 4 + -3 \frac{1}{2} \enspace = \enspace  2.5	
 	\label{eq:interpolationSpecific}
 \end{align}
-So the value halfway between the two given points is interpolated to be $(2, 2.5)$, which is halfway between as expected. Interpolation becomes even more intuitive when seen graphically, consider 
+So the value halfway between the two given points is interpolated to be $(2, 2.5)$, which is halfway between as expected. Interpolation becomes even more intuitive when seen graphically as shown in Figure~\ref{fig:interpolation}.
 \begin{figure}
 \ffigbox
 	{\includegraphics[width=1.0\linewidth]{example-image-16x9.png}}
@@ -77,13 +76,22 @@ So the value halfway between the two given points is interpolated to be $(2, 2.5
 \end{figure}
 %
 \subsubsection{Circle Sectors}
-A circular sector or circle sector (symbol: ⌔), is the portion of a disk enclosed by two radii and an arc, where the smaller area is known as the minor sector and the larger being the major sector. In the diagram, θ is the central angle in radians,  r the radius of the circle, and L is the arc length of the minor sector.
+A circular sector, or circle sector, is the portion of a disc enclosed by two radii and an arc. In general, the larger area is known as the major sector, however \forf{t} is only concerned with the area of other, smaller area, known as the minor sector, but from here will be abbreviated as the circle sector, or even more simply, the sector.
+
+In the Figure~\ref{fig:circleSector}, $\alpha$ is the central angle\footnote{expressed in radians, as all angles are in this thesis}, r the radius of the circle, and L is the arc length of the minor sector.
 \todoResearch{https://en.wikipedia.org/wiki/Circular\_sector}
 \begin{figure}
 \ffigbox
 	{\includegraphics[width=1.0\linewidth]{example-image-16x9.png}}
-	{\caption[Regular Planar and Irregular Non-planar Neighborhoods in $\mathbb{R}^2$]{Neighborhoods in differing manifolds in $\mathbb{R}^2$ (a) a regular, planar mesh (b) a regular, planar triangle mesh (c) an irregular, non-planar triangle mesh, typical of acquired \tdd{}}\label{fig:neighborhoods}}
+	{\caption[Regular Planar and Irregular Non-planar Neighborhoods in $\mathbb{R}^2$]{A circle sector}\label{fig:circleSector}}
 \end{figure}
+
+As the sector is defined entirely the central angle and the circle's radius, the area of the sector can be given as
+\begin{equation}
+	A = \pi r^2\frac{\alpha}{2\pi} = \frac{r^2\alpha}{2}
+	\label{eq:areaOfCircleSector}
+\end{equation}
+because the area can be obtained by multiplying the circle's total area by the ratio of the sector's central angle $\alpha$, and $2\pi$, the total angle of the circle in radians.
 %
 %
 %
@@ -94,15 +102,17 @@ Topology is the mathematical study of the properties of space that are preserved
 A manifold is a topological space that is locally, but possibly not globally, Euclidean; a concept that is central to many parts of geometry because it allows complicated structures, such as the triangle mesh, to be described and understood in terms of the simpler, local topological properties. In general, that means that a manifold is an $n$D-subset of an Euclidean space $\mathbb{R}^{>n}$.~\cite[p.~199]{Mara12} For example, 1-dimensional manifolds in $\mathbb{R}^{2}$ include lines and circles, and 2-dimensional manifolds in $\mathbb{R}^{3}$, also called surfaces, can include commonly-known shapes such as the plane, the sphere, and the torus, but also of prime importance for this thesis, the triangle mesh.
 %
 \subsubsection{Neighborhoods}
-A neighborhood is also one of the basic concepts of topology. Intuitively speaking, a neighborhood of a point is a set of points containing that point where one can in any direction without leaving the set.  While determining the neighborhood is trivial for 1-dimensional manifolds, and relatively simple to regular, planar surfaces such as a 2D-images whose pixels have at most four neighbors in orthogonal direction with a geometric distance of 1, as well as four neighbors at the diagonal directions with a geometric distance of $sqrt{2}$, on non-planar, irregular surfaces like those found in \tdd{}, one must determine the set of neighbors using the orientation of the triangles.
+A neighborhood is also one of the basic concepts of topology. Intuitively speaking, a neighborhood of a point is a set of points containing that point where one can move in any direction without leaving the set. While determining the neighborhood is trivial for 1-dimensional manifolds, and relatively simple to regular surfaces, such as a 2D-images whose pixels have at most four neighbors in orthogonal direction with a geometric distance of 1, as well as four neighbors at the diagonal directions with a geometric distance of $\sqrt{2}$, determining the neighborhood becomes more complicated for non-planar, irregular surfaces like those found in \tdd{}. With those surfaces, one must determine the set of neighbors using the definition of the connected triangular faces. The details of which are covered in detail in Section:~\ref{ch2s3ssNRN}, after the necessary topics regarding \tdd{} have already been discussed.
 
-Figure~\ref{fig:neighborhoods} illustrates the difference between the neighborhood of point in regular, planar mesh, with the neighborhood of a point in an irregular, non-planar mesh.
+Figure~\ref{fig:neighborhoods} illustrates the difference between the neighborhood of a point in a two kinds of regular meshes, and the neighborhood of a point in an irregular, non-planar mesh as found in \tdd{}.
+%
 \begin{figure}
 \ffigbox
 	{\includegraphics[width=1.0\linewidth]{example-image-16x9.png}}
 	{\caption[Regular Planar and Irregular Non-planar Neighborhoods in $\mathbb{R}^2$]{Neighborhoods in differing manifolds in $\mathbb{R}^2$ (a) a regular, planar mesh (b) a regular, planar triangle mesh (c) an irregular, non-planar triangle mesh, typical of acquired \tdd{}}\label{fig:neighborhoods}}
 \end{figure}
-Notice the completely arbitrary shape and size of the 1 ring neighborhood found in the (c) acquired mesh. This observation is from where the motivation behind \forf{t} came.
+%
+Notice the completely arbitrary shape and size of the 1 ring neighborhood found in the (c) acquired mesh. From this observation is where the motivation behind \forf{t} came.
 %
 %
 %
@@ -212,30 +222,19 @@ Many 3D-scanners produce point clouds\todoCitation{}{}, which as the name sugges
 %
 \subsection{1-Ring Neighborhoods}
 \label{ch2s3ssNRN}
-It was mentioned in Section~\ref{ch2sBssT}, that determining the neighborhood of a point $\bp_v$ is non-trivial. Having now examined the definitions of points, faces, and meshes, we can now formalize the 1-ring neighborhood in \tdd{}. 
+It was mentioned in Section~\ref{ch2sBssT}, that determining the neighborhood of a point $\bp_v$ is non-trivial. Having now examined the definitions of points, faces, and meshes, we can now formalize the 1-ring neighborhood in \tdd{} as
 \begin{equation}
-	\bN := {\hat{\bp_v} | {\hat{\bp_v}, \bp_v} \subseteq \bt \forall \bt \in \bT}
+	\bN_v := \left \{\;\widetilde{\bp_v}\;|\;\left \{\,\widetilde{\bp_v},\,\bp_v\right \} \subseteq \bt \quad \forall \bt \in \bT\;\right \}
 	\label{eq:defineNeighborhood}
-\end{equation}
+\end{equation}%
+\nomenclature[]{$\bN$}{a set of points comprising a 1-ring neighborhood}%
+\nomenclature[]{$\bN_v$}{the set of points comprising the 1-ring neighborhood about $\bP_v$}%
+\nomenclature[]{$\widetilde{\bp_v}$}{a 1-ring neighbor of $\bP_v$}%
+which said another way, means that the neighborhood $\bN_v$ is defined as the set of points $\widetilde{\bp_v}$ such that both $\widetilde{\bp_v}$ and $\bp_v$ are two points of a triangular face $\bt$, for all faces in the mesh.
 
-• A face tj is adjacent to a face t i , when t j has an edge e m = {A m , B m }and t i has an edge e k = {B m , A m }.
-• The vertices adjacent to a vertex p i are those p̊ i , belonging to the faces t̊ i ∶= {A i , B ≠i , C ≠i } ∨ {A ≠i , B i , C ≠i } ∨ {A ≠i , B ≠i , C i }.
+The set of points $\widetilde{\bp_v}$, as illustrated in Figure~\ref{fig:neighborhoods}, which comprise $\bN_v$, belong to what is known as a 1-ring neighborhood of $\bp_v$, because are directly connected with the center point $\bp_v$ and so are considered to have a relative distance of 1 within the graph\todoReword{do I need graph theory in basic theory section?} of the mesh. The 1-ring can be extended to a 2-ring by taking the union of the neighborhood $\bN_v$ with each neighborhood of each 1-ring neighbor $\widetilde{\bp_v}$, which adds points having the relative distance of 2 within the graph. This iterative concept can be repeated k times and the neighborhood is than referred to as k-ring. Unfortunately, the relative distance within the graph can not be assumed equal to the geometric distance nor geodesic distance, regardless of that fact, it is used throughout the literature – especially in the field of Computer Graphics.~\cite[p.~29]{Mara12}
 
-%Faces t̊ i and vertices p̊ i belong to the so-called 1-ring as they have distance of 1 within the graph of the mesh. The 1-ring can be extended to a 2-ring by using the verticesp̊ i as p i , which adds vertices and faces having a distance of 2 within the graph. This iterative concept can be repeated k times and the neighborhood is than referred to as k-ring. The distance within the graph can not be assumed equal to the geometric distance nor geodesic distance.
-
-%However it is used throughout literature as experiments are often done on synthetic data – especially in the field of Computer Graphics. Figure 2.6 shows the scheme of the 1-ring and an example for a 5-ring on a synthetic sphere in contrast to 5-rings on an acquired mesh. Even the triangles of the sphere are almost equal, we see that the outlines of the k-rings have a hexagonal shape, while geodesic ring would have the shape of a circle. Already the 1-rings of the acquired mesh have completely arbitrary shapes and sizes.
-
-%(a)(b)(c)(d)
-
-%Figure 2.6: k-ring neighborhood: (a) Scheme of a 1-ring neighborhood and 1 to 5-ring neighborhood for (b) a synthetic sphere and (c) for a wedge acquired using a 3D-scanner. The 1-ring shown in Figure 2.6a is closely related to the so-called triangle-fan used by Open Graphics Language (OpenGL). While the
-
-%Figure represents the most common case of an 1-ring equal to a triangle-fan as most parts of M 2 are organized like this. The second common case looks the same, with one or more adjacent faces missing – this is the case, when p̊ i is on the border of the mesh. However the data structure allows that non-adjacent faces are missing leading to singular vertices – not to be confused with solo vertices. 29 We can identify singular vertices connecting different parts of M 2 by determining one triangle-fan per vertex and compare them to the 1-ring neighborhood. The faces of the 1-ring are determined just by the presence of a shared central vertex [MB05] as shown before. Having the 1-ring we need to test if we can walk around the shared vertex using the faces and their neighbors.
-
-%This is shown in Figure 2.7a, where we can start at any of the vertices {B, . . . , G} following the directional edges between them. We than will arrive at vertex p G . If we have not started at p B , we will have to backtrack the edges in opposite direction as p A is a vertex on the border ∂M 2 . In the end we will have visited all vertices of the triangle fan {B, . . . , G}. When p A is not on the border, because a triangle {A, G, B} exists, we can visit all vertices without backtracking. Figure 2.7b shows the scheme for a border vertex, which is singular, because we can visit either the {B, C, D, E} or {F, G, H} of these two triangle-fans. Figure 2.7c shows an example from a 3D-model, where a non-border, singular vertex p A connects different parts of the mesh.
-
-%(a)(b)(C)
-
-%Figure 2.7: Schematic visualization of (a) a non-singular vertex p A with its triangle fan equaling its 1-ring neighborhood. When there is a triangle {A, G, B} the fan is closed – if not p A , p B and p G are vertices on the border of M 2 . (b) Singular vertex p A connecting two triangle fans. (c) Real world example for a singular vertex p A .~\cite[p.~29]{Mara12}
+Our solution for computing \forf{t} in light of these complications is explained in greater detail in Chapter~\ref{}, later in this thesis.
 %
 \subsection{Acquired vs Synthetic \tdd{}}
 \label{ch2s3ssAVS3}
