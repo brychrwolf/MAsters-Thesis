@@ -2,7 +2,9 @@ SVGS_OUTPUTS =  ../geodesicDisc.png \
 				../centerOfGravity.png \
 				../functionValues.png \
 				../interpolation.png \
-				../circleSector.png
+				../circleSector.png \
+				../neighborhoods.png \
+				../triangularFaces.png
 
 
 

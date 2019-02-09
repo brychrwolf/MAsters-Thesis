@@ -109,17 +109,17 @@ Topology is the mathematical study of the properties of space that are preserved
 A manifold is a topological space that is locally, but possibly not globally, Euclidean; a concept that is central to many parts of geometry because it allows complicated structures, such as the triangle mesh, to be described and understood in terms of the simpler, local topological properties. In general, that means that a manifold is an $n$D-subset of an Euclidean space $\mathbb{R}^{>n}$.~\cite[p.~199]{Mara12} For example, 1-dimensional manifolds in $\mathbb{R}^{2}$ include lines and circles, and 2-dimensional manifolds in $\mathbb{R}^{3}$, also called surfaces, can include commonly-known shapes such as the plane, the sphere, and the torus, but also of prime importance for this thesis, the triangle mesh.
 %
 \subsubsection{Neighborhoods}
-A neighborhood is also one of the basic concepts of topology. Intuitively speaking, a neighborhood of a point is a set of points containing that point where one can move in any direction without leaving the set. While determining the neighborhood is trivial for 1-dimensional manifolds, and relatively simple to regular surfaces, such as a 2D-images whose pixels have at most four neighbors in orthogonal direction with a geometric distance of 1, as well as four neighbors at the diagonal directions with a geometric distance of $\sqrt{2}$, determining the neighborhood becomes more complicated for non-planar, irregular surfaces like those found in \tdd{}. With those surfaces, one must determine the set of neighbors using the definition of the connected triangular faces. The details of which are covered in detail in Section:~\ref{ch2s3ssNRN}, after the necessary topics regarding \tdd{} have already been discussed.
+A neighborhood is also one of the basic concepts of topology. Intuitively speaking, a neighborhood of a point is a set of points containing that point, where one can move in any direction without leaving the set. While determining the neighborhood is trivial for 1-dimensional manifolds, and relatively simple to regular surfaces, such as a 2D-images whose pixels have at most four neighbors in orthogonal directions with a geometric distance of 1, as well as four neighbors at the diagonal directions with a geometric distance of $\sqrt{2}$, determining the neighborhood becomes more complicated for irregular surfaces like those found in \tdd{}. With those surfaces, one must determine the set of neighbors using the associations that define the triangular faces\footnote{The details of which are covered in detail in Section:~\ref{ch2s3ssNRN}, after the necessary topics regarding \tdd{} have already been discussed.}.
 
-Figure~\ref{fig:neighborhoods} illustrates the difference between the neighborhood of a point in a two kinds of regular meshes, and the neighborhood of a point in an irregular, non-planar mesh as found in \tdd{}.
+Figure~\ref{fig:neighborhoods} illustrates the difference among a one-ring neighborhood in two kinds of regular meshes, as well as one in an irregular mesh as found in \tdd{}.
 %
 \begin{figure}
 \ffigbox
-	{\includegraphics[width=1.0\linewidth]{example-image-16x9.png}}
-	{\caption[Regular Planar and Irregular Non-planar Neighborhoods in $\mathbb{R}^2$]{Neighborhoods in differing manifolds in $\mathbb{R}^2$ (a) a regular, planar mesh (b) a regular, planar triangle mesh (c) an irregular, non-planar triangle mesh, typical of acquired \tdd{}}\label{fig:neighborhoods}}
+	{\includegraphics[width=1.0\linewidth]{figures/neighborhoods.png}}
+	{\caption[One-ring neighborhoods in regular and irregular meshes]{One-ring neighborhoods in (a) a regular mesh, as in a 2D-image (b) a regular triangle mesh, as in a hexagonal tessellation (c) an irregular triangle mesh, typical of acquired \tdd{}}\label{fig:neighborhoods}}
 \end{figure}
 %
-Notice the completely arbitrary shape and size of the 1 ring neighborhood found in the (c) acquired mesh. From this observation is where the motivation behind \forf{t} came.
+In particular, notice the completely arbitrary shape and size of the one-ring neighborhood found in (c) irregular triangle mesh; even the number of neighbors can varies widely. From this observation is where the motivation behind \forf{t} came.
 %
 %
 %
@@ -154,45 +154,43 @@ Otherwise,
 %
 \subsection{Faces}
 \label{ch2s3ssF}
-Faces are the another primitive element of \tdd{}. As we are working exclusively with triangular meshes~\cite[p.~26]{Mara12}, we define a face $\bt$ by the totally ordered~\cite{Weisstein19a} set of three distinct points, which we will index in clockwise order~\cite[p.~4]{Mara17}.
-
-It is worth mentioning here that many software packages, such as the GigaMesh Framework~\cite[p.~89]{Mara12}, may expect counter-clockwise ordering of indexes. \todoResearch{does the "right-hand-rule apply here?"} This is significant because the ordering provides an orientation by which visualization software can apply texture and/or lighting. The only mathematical significance of the ordering is the sign of the area of a face, and totally inconsequential when the absolute value is expected, as shown by\cite[p.~2]{Braden86}. This is yet another example of the difference between the conventions of mathematical literature versus those of computer science. And again, because this thesis should indeed be considered mathematical literature, we will continue to follow the conventions of mathematical literature.
-\todoStyle{probably better as a footnote}
-
-The triangular faces are addressed using the global index $k$, and each has three implicit edges whose descriptions are elaborated upon in Section~\ref{chBsEL}.
+Faces are the another primitive element of \tdd{}. As we are working exclusively with triangular meshes~\cite[p.~26]{Mara12}, we define a face $\bt$ by the totally ordered~\cite{Weisstein19a} set of three distinct points, which we will index in clockwise order\footnote{It is worth mentioning here that many software packages, such as the GigaMesh Framework~\cite[p.~89]{Mara12}, may expect counter-clockwise ordering of indexes.  This is significant because the ordering provides an orientation by which visualization software can apply texture and/or lighting. The only mathematical significance of the ordering is the sign of the area of a face, and totally inconsequential when the absolute value is expected, as shown by\cite[p.~2]{Braden86}. This is yet another example of the difference between the conventions of mathematical literature versus those of computer science. And again, because this thesis should indeed be considered mathematical literature, we will continue to follow the conventions of mathematical literature.}~\cite[p.~4]{Mara17}.
+\todoResearch{does the "right-hand-rule apply here?"}
+%
 \begin{equation}
-	\bt_k := \left \{\bp_0, \bp_1, \bp_2\right \} \equiv \left \{A_k, B_k, C_k\right \} \hspace{20pt}\text{abbreviated:}\hspace{20pt} \bt = \left \{A, B, C\right \}
+	\bt := \left \{\,\bp_a,\,\bp_b,\,\bp_c\right \} = \left \{\,\bp_0,\,\bp_1,\,\bp_2\right \} 
 	\label{eq:defineSetOfFaces}
-\end{equation}%
-\nomenclature[ae]{$\bt_k$}{a specific face in $\bT$}%
-%
-\begin{figure}[]
+\end{equation}
+
+The Figure~\ref{fig:triangularFaces} shows two adjacent triangular faces $\bt_1$ and $\bt_2$, and the relationship between their points $\bp_a$, $\bp_b$, and $\bp_c$, their edge lengths $\ell_a$, $\ell_b$, and $\ell_c$, and their clockwise orientation.
+\begin{figure}
 \ffigbox
-	{\includegraphics[width=0.8\linewidth]{example-image-16x9.png}}
-	{\caption[A Triangular Face]{A triangular face showing points, edges, and orientation}\label{fig:facesOfAMesh}}
+	{\includegraphics[width=0.8\linewidth]{figures/triangularFaces.png}}
+	{\caption[Two Triangular Faces]{Two adjacent triangular faces $\bt_1$ and $\bt_2$, showing the relationship between their points $\bp_a$, $\bp_b$, and $\bp_c$, their edge lengths $\ell_a$, $\ell_b$, and $\ell_c$, and their clockwise orientation.}\label{fig:triangularFaces}}
 \end{figure}
-%
-The set of triangular faces is defined as
+
+Each distinct triangular face is addressed using the global index $k$, and when taken together, comprise the set
 \begin{equation}
 	\bT := \left \{\:\bt_k \mid k \in \mathbb{N}, \;\text{and}\; 1\leq k \leq k_{max}\:\right \}
 	\label{eq:defineSetOfFaces}
 \end{equation}
 where $k_{max}$ is the maximum index of faces in the data, and is equivalent to the cardinality of the set of faces $|\bT|$.%
 \nomenclature[ad]{$\bT$}{the set of faces $\bt$ in $\bM$}%
+\nomenclature[ae]{$\bt_k$}{a specific face in $\bT$}%
 
-%
 \subsection{Edge Lengths}
 \label{ch2s3ssEL}
-As illustrated in Figure~\ref{fig:facesOfAMesh}, each triangular face is implicitly composed of three edges. Despite the fact that an edge is not typically\footnote{Other data structures, such as the Winged-Edge~\cite[p.~1]{Baumgart75}, may use edges as a primitive element} a primitive element of \tdd{}, we will endeavor to define the length of an edge $\ell$, because edge lengths are of particular significance for both the design and implementation of \forf{t}.
+As illustrated in Figure~\ref{fig:triangularFaces}, each triangular face is implicitly composed of three edges. Despite the fact that an edge is not typically\footnote{Other data structures, such as the Winged-Edge~\cite[p.~1]{Baumgart75}, may use edges as a primitive element} a primitive element of \tdd{}, we will endeavor to define the length of an edge $\ell$, because edge lengths are of particular significance for both the design and implementation of \forf{t}.
 
-When in the context of a particular face $\bt_k$, we will use the single index $i$ to define the length
+What is also particularly interesting about Figure~\ref{fig:triangularFaces}, is that when edge lengths are defined by the points of specific faces, each non-border edge length, illustrated by the figure as $\ell_a$ in $\bt_1$, and $\ell_c$ in $\bt_2$, will be labeled twice, despite representing the same distance.
+
+When in the context of a particular face $\bt_k$, we will use a single index to define the length
 \begin{equation}
-	\ell_a := |\bp_b - \bp_c| \enspace:\enspace \left \{\:\bp_a, \bp_b, \bp_c\:\right \} = \bt_k
+	\ell_a := |\bp_b - \bp_c| \enspace:\enspace \left \{\,\bp_a,\,\bp_b,\,\bp_c\right \} = \bt_k
 	\label{eq:defineEdgeLengthFace}
 \end{equation}%
 \nomenclature[af]{$\ell_i$}{the length of edge $\ell_i$ of a specific face}%
- 
-and the double indices $v,k$, when an edge length is referenced in relation to specific point $\bp_v$ and its neighbor $\bp_k$
+and double indices $v,k$, when an edge length is referenced in relation to a specific point $\bp_v$ and its neighbor $\bp_k$
 \begin{equation}
 	\ell_{v,k} := |\bp_k - \bp_v|
 	\label{eq:defineEdgeLengthPoint}
@@ -209,7 +207,7 @@ Please note the similar notation for the cardinality of a set $|\bP|$, to that f
 \end{equation}
 %\end{align}
 \todoResearch{can I avoid sqrt altogether by performing entire algorithm squared?}
-%
+
 \subsection{Meshes}
 \label{ch2s3ssM}
 In \tdd{}, a mesh $\bM$ is the digital representation of a discrete manifold embedded in $\mathbb{R}^3$, and is typically\footnote{except in the case of specifically designed synthetic data~\ref{Experiments}} 2D-non-planar\todoStyle{in 2D, the 2 looks small} and comprised of non-regular, triangular faces composed of connected points.~\cite[p.~25]{Mara12} A mesh is the superset defined as
@@ -222,19 +220,19 @@ with the set $\bP$ consisting of points, and the set $\bT$ consisting of triangu
 
 Many 3D-scanners produce point clouds\todoCitation{}{}, which as the name suggests, are comprised soley of a set of points $\bP$ and do not provide the set $\bT$. However, it is possible, and necessary for the production of a mesh, to perform a point set triangulation\todoCitation{}{} in order to connect $\bP$ into a set of triangle faces, enabling one to combine the two sets into a mesh~\cite[p.~26]{Mara12}. For example, during our experiments, we perform the well-known Delaunay triangulation\todoCitation{} in order to produce a mesh from a randomly generated point cloud\todoReword{add ref to experiments}.
 %
-\subsection{1-Ring Neighborhoods}
+\subsection{One-ring Neighborhoods}
 \label{ch2s3ssNRN}
-It was mentioned in Section~\ref{ch2sBssT}, that determining the neighborhood of a point $\bp_v$ is non-trivial. Having now examined the definitions of points, faces, and meshes, we can now formalize the 1-ring neighborhood in \tdd{} as
+It was mentioned in Section~\ref{ch2sBssT}, that determining the neighborhood of a point $\bp_v$ is non-trivial. Having now examined the definitions of points, faces, and meshes, we can now formalize the one-ring neighborhood in \tdd{} as
 \begin{equation}
 	\bN_v := \left \{\;\widetilde{\bp_v}\;|\;\left \{\,\widetilde{\bp_v},\,\bp_v\right \} \subseteq \bt \quad \forall \bt \in \bT\;\right \}
 	\label{eq:defineNeighborhood}
 \end{equation}%
-\nomenclature[ai]{$\bN_v$}{the set of points comprising the 1-ring neighborhood about $\bP_v$}%
-\nomenclature[aj]{$\widetilde{\bp_v}$}{a 1-ring neighbor of $\bP_v$}%
+\nomenclature[ai]{$\bN_v$}{the set of points comprising the one-ring neighborhood about $\bP_v$}%
+\nomenclature[aj]{$\widetilde{\bp_v}$}{a one-ring neighbor of $\bP_v$}%
 \todoStyle{use a big $\mathring{\bp_v}$ instead of $\widetilde{\bp_v}$}
 which said another way, means that the neighborhood $\bN_v$ is defined as the set of points $\widetilde{\bp_v}$ such that both $\widetilde{\bp_v}$ and $\bp_v$ are two points of a triangular face $\bt$, for all faces in the mesh.
 
-The set of points $\widetilde{\bp_v}$, as illustrated in Figure~\ref{fig:neighborhoods}, which comprise $\bN_v$, belong to what is known as a 1-ring neighborhood of $\bp_v$, because are directly connected with the center point $\bp_v$ and so are considered to have a relative distance of 1 within the graph\todoReword{do I need graph theory in basic theory section?} of the mesh. The 1-ring can be extended to a 2-ring by taking the union of the neighborhood $\bN_v$ with each neighborhood of each 1-ring neighbor $\widetilde{\bp_v}$, which adds points having the relative distance of 2 within the graph. This iterative concept can be repeated k times and the neighborhood is than referred to as k-ring. Unfortunately, the relative distance within the graph can not be assumed equal to the geometric distance nor geodesic distance, regardless of that fact, it is used throughout the literature – especially in the field of Computer Graphics.~\cite[p.~29]{Mara12}
+The set of points $\widetilde{\bp_v}$, as illustrated in Figure~\ref{fig:neighborhoods}, which comprise $\bN_v$, belong to what is known as a one-ring neighborhood of $\bp_v$, because are directly connected with the center point $\bp_v$ and so are considered to have a relative distance of 1 within the graph\todoReword{do I need graph theory in basic theory section?} of the mesh. The one-ring can be extended to a 2-ring by taking the union of the neighborhood $\bN_v$ with each neighborhood of each one-ring neighbor $\widetilde{\bp_v}$, which adds points having the relative distance of 2 within the graph. This iterative concept can be repeated k times and the neighborhood is than referred to as k-ring. Unfortunately, the relative distance within the graph can not be assumed equal to the geometric distance nor geodesic distance, regardless of that fact, it is used throughout the literature – especially in the field of Computer Graphics.~\cite[p.~29]{Mara12}
 
 Our solution for computing \forf{t} in light of these complications is explained in greater detail in Chapter~\ref{}, later in this thesis.
 %
