@@ -143,7 +143,7 @@ Otherwise,
 % when referencing to a point by its index within a specific one-ring neighborhood, we will use $\bp_k$, and %
  when referencing to a point within a particular face or neighborhood, the three corners can be referenced indirectly as $\bp_i$\footnote{or generally as $\bp_a$, $\bp_b$, $\bp_c$ in the case of Equation~\ref{eq:defineEdgeLengthFace}, or in the case of a nested loops: as $\bp_k$ in Algorithm~\ref{alg:serialBuildNeighborhoods}, and $\bp_j$ in Algorithm~\ref{alg:serialCompute}}, $\bp_{\sipo}$, and $\bp_{\sipt}$, or directly as $\bp_0$, $\bp_1$, and $\bp_2$.~\cite[p.~25]{Mara12}%
 \todoReword{ensure footnote indice remain correct}%
-\nomenclature[ad]{$\bp_i$}{also $\bp_{\sipo}$, and $\bp_{\sipt}$; an indirectly referenced point within a particular face}%
+\nomenclature[ad]{$\bp_i$}{also $\bp_{\sipo}$, and $\bp_{\sipt}$; one of three indirectly referenced points comprising a face}%
 %
 \subsection{Faces}
 \label{ch2s3ssF}
@@ -183,14 +183,14 @@ When in the context of a particular face $\bt_k$, we will use the single index $
 	\ell_a := |\bp_b - \bp_c| \enspace:\enspace \left \{\:\bp_a, \bp_b, \bp_c\:\right \} = \bt_k
 	\label{eq:defineEdgeLengthFace}
 \end{equation}%
-\nomenclature[af]{$\ell_i$}{the length of edge $\ell_i$ of face $\bt_k$}%
+\nomenclature[af]{$\ell_i$}{the length of edge $\ell_i$ of a specific face}%
  
 and the double indices $v,k$, when an edge length is referenced in relation to specific point $\bp_v$ and its neighbor $\bp_k$
 \begin{equation}
 	\ell_{v,k} := |\bp_k - \bp_v|
 	\label{eq:defineEdgeLengthPoint}
 \end{equation}%
-\nomenclature[ag]{$\ell_{v,k}$}{the length of edge $\ell_i$ from point $\bp_v$}%
+\nomenclature[ag]{$\ell_{v,k}$}{the length of distance from point $\bp_v$ to $\bp_k$}%
 Please note the similar notation for the cardinality of a set $|\bP|$, to that for the calculation for the length of the edge $|\bp_k - \bp_v|$ as defined in Equation~\ref{eq:defineEdgeLengthPoint}. While cardinality is simply the count of elements in the set, the length is calculated as the L2-norm of the referenced vector.~\cite[p.~26]{Mara12}
 %\begin{align}
 \begin{equation}
@@ -224,6 +224,7 @@ It was mentioned in Section~\ref{ch2sBssT}, that determining the neighborhood of
 \end{equation}%
 \nomenclature[ai]{$\bN_v$}{the set of points comprising the 1-ring neighborhood about $\bP_v$}%
 \nomenclature[aj]{$\widetilde{\bp_v}$}{a 1-ring neighbor of $\bP_v$}%
+\todoStyle{use a big $\mathring{\bp_v}$ instead of $\widetilde{\bp_v}$}
 which said another way, means that the neighborhood $\bN_v$ is defined as the set of points $\widetilde{\bp_v}$ such that both $\widetilde{\bp_v}$ and $\bp_v$ are two points of a triangular face $\bt$, for all faces in the mesh.
 
 The set of points $\widetilde{\bp_v}$, as illustrated in Figure~\ref{fig:neighborhoods}, which comprise $\bN_v$, belong to what is known as a 1-ring neighborhood of $\bp_v$, because are directly connected with the center point $\bp_v$ and so are considered to have a relative distance of 1 within the graph\todoReword{do I need graph theory in basic theory section?} of the mesh. The 1-ring can be extended to a 2-ring by taking the union of the neighborhood $\bN_v$ with each neighborhood of each 1-ring neighbor $\widetilde{\bp_v}$, which adds points having the relative distance of 2 within the graph. This iterative concept can be repeated k times and the neighborhood is than referred to as k-ring. Unfortunately, the relative distance within the graph can not be assumed equal to the geometric distance nor geodesic distance, regardless of that fact, it is used throughout the literature – especially in the field of Computer Graphics.~\cite[p.~29]{Mara12}
@@ -250,7 +251,7 @@ In addition to the 3 Cartesian coordinates, a point may often contain other rele
 	\bF := \left \{\: f_v \mid v \in \mathbb{N}, \;\text{and}\; 1\leq v \leq v_{max} \:\right \}
 	\label{eq:defineSetOfFunctionValues}
 \end{equation}%
-\nomenclature[ak]{$\bF$}{a scalar field; the set of function values $f_v$}%
+\nomenclature[ak]{$\bF$}{the set of function values $f$; a scalar field}%
 \nomenclature[al]{$f_v$}{a specific function value in $\bF$, corresponding to $\bp_v$}%
 %
 This definition shares the indices $v$ and $v_{max}$ with the definition for a set of points, Equation~\ref{eq:defineSetOfPoints}. Indeed, it is a fact that the cardinality of $|\bF|$ must be equal to $|\bP|$
