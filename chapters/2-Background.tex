@@ -75,23 +75,30 @@ So the value halfway between the two given points is interpolated to be $(2, 2.5
 	{\caption[Interpolation between two points in $\mathbb{R}^2$]{$\bp_c$ is interpolated as a value between $\bp_a$ and $\bp_b$}\label{fig:interpolation}}
 \end{figure}
 %
-\subsubsection{Circle Sectors}
-A circular sector, or circle sector, is the portion of a disc enclosed by two radii and an arc. In general, the larger area is known as the major sector, however \forf{t} is only concerned with the area of other, smaller area, known as the minor sector, but from here will be abbreviated as the circle sector, or even more simply, the sector.
+\subsubsection{Circle Sectors \& Center of Gravity}
+A circular sector, or circle sector, is the portion of a disc enclosed by two radii and an arc. In general, the larger area is known as the major sector, however \forf{t} is only concerned with the area of the other, smaller area, known as the minor sector. Going forward, the minor circle sector will be abbreviated as just the circle sector, or even more simply, the sector.%
+%\nomenclature[db]{the sector}{or the circle sector; the minor sector of a circle defined by its radius and central angle}%
 
-In the Figure~\ref{fig:circleSector}, $\alpha$ is the central angle\footnote{expressed in radians, as all angles are in this thesis}, r the radius of the circle, and L is the arc length of the minor sector.
-\todoResearch{https://en.wikipedia.org/wiki/Circular\_sector}
-\begin{figure}
-\ffigbox
-	{\includegraphics[width=1.0\linewidth]{example-image-16x9.png}}
-	{\caption[Regular Planar and Irregular Non-planar Neighborhoods in $\mathbb{R}^2$]{A circle sector}\label{fig:circleSector}}
-\end{figure}
-
-As the sector is defined entirely the central angle and the circle's radius, the area of the sector can be given as
+As the sector can be described entirely by the central angle $\alpha$ and the circle's radius $\ell_{a,b}$, the area of the sector can be given as
 \begin{equation}
-	A = \pi r^2\frac{\alpha}{2\pi} = \frac{r^2\alpha}{2}
+	A = \pi \ell_{a,b}^2\frac{\alpha}{2\pi} = \frac{\ell_{a,b}^2\alpha}{2}
 	\label{eq:areaOfCircleSector}
 \end{equation}
-because the area can be obtained by multiplying the circle's total area by the ratio of the sector's central angle $\alpha$, and $2\pi$, the total angle of the circle in radians.
+because the area of the sector can be obtained by multiplying the circle's total area by the ratio of the sector's central angle $\alpha$, and $2\pi$, the total angle of the circle in radians.~\cite{Weisstein19d}
+
+Along with area, the other important characteristic of a circle sector for \forf{t} is the centroid, or center of gravity. So named, because it is the point where the sector would balance on a pin\footnote{given that it had been bestowed a volume with uniform density}. The center of gravity $\bc$ is calculated as the distance from the center point $\bp_a$, along the line which bisects the central angle $\alpha$, or is given by
+\begin{equation}
+	\ell_\bc := \frac{2\:\ell_{a,b}\:\sin(\alpha/2)}{3\:\alpha/2}
+	\label{eq:ch2distToCoG}
+\end{equation}%
+%\nomenclature[db]{$\ell_\bc$}{the distance to $\bc$ from $\bp_a$}%
+In the Figure~\ref{fig:circleSector}, a circle sector is produced by the points $\bp_a$, $\bp_b$, and $\bp_c$, has the central angle $\alpha$, which is bisected by a dotted line, and $\ell_{a,b}$\footnote{$\ell_{a,b}$ was chosen to represent the radius instead of the much more common $r$, because in \tdd{}, edges are not stored, yet distances between points can be calculated as shown in Section~\ref{ch2s3ssEL}} representing the length between points $\bp_a$ and $\bp_b$, which is equal radius of the circle. Also shown, is the center of gravity $\bc$, as well as $\ell_\bc$, the distance to $\bc$ from the center point $\bp_a$.
+\begin{figure}
+\ffigbox
+	{\includegraphics[width=1.0\linewidth]{figures/circleSector.png}}
+	{\caption[A Circle Sector in Detail]{The circle sector produced by points $\bp_a$, $\bp_b$, and $\bp_c$, with $\alpha$ as the central angle bisected by a dotted line, and $\ell_{a,b}$ as the length between points $\bp_a$ and $\bp_b$ which is equal radius of the circle. Also labeled is the center of gravity $\bc$ in a sand color, as well as the distance from the center point $\bp_a$ to $\bc$, drawn in coral as $\ell_\bc$}\label{fig:circleSector}}
+\end{figure}
+\todoStyle{convert the $l$s in the fig to $\ell$}
 %
 %
 %
@@ -175,7 +182,7 @@ where $k_{max}$ is the maximum index of faces in the data, and is equivalent to 
 
 %
 \subsection{Edge Lengths}
-\label{chBsEL}
+\label{ch2s3ssEL}
 As illustrated in Figure~\ref{fig:facesOfAMesh}, each triangular face is implicitly composed of three edges. Despite the fact that an edge is not typically\footnote{Other data structures, such as the Winged-Edge~\cite[p.~1]{Baumgart75}, may use edges as a primitive element} a primitive element of \tdd{}, we will endeavor to define the length of an edge $\ell$, because edge lengths are of particular significance for both the design and implementation of \forf{t}.
 
 When in the context of a particular face $\bt_k$, we will use the single index $i$ to define the length
