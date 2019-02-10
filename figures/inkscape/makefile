@@ -1,5 +1,5 @@
 SVGS_OUTPUTS =  ../geodesicDisc.png \
-				../centerOfGravity.png \
+				../anglesAndCenterOfGravity.png \
 				../functionValues.png \
 				../interpolation.png \
 				../circleSector.png \
