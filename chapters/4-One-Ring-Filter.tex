@@ -1,6 +1,6 @@
 \chapter{Fast One-Ring Smoothing}
-\label{chFONS}
-In this chapter we present an updated version of the Fast One-Ring smoothing filter for scalar fields on discrete manifolds, based on the filter initially proposed by H. Mara and S. Krömker at the EUROGRAPHICS Workshop on Graphics and Cultural Heritage (2017) ~\cite[s.~3.2]{Mara17}. Since publication, further research has been conducted by the authors, and it was determined that improving the weighting methods was possible, therefore, modifcations to the algorithm were implemented directly within the GigaMesh \todoCitation{GigaMesh} framework. This chapter now presents the as-yet-unpublished version of the Fast One-Ring smoothing filter as it exists now, with more accuracte weighting based on the interpolation of function values to the center of gravity for each circular sector comprising the geodesic disc centered upon a vertex in a mesh.
+\label{ch4}
+In this chapter we present an updated version of \Forf{t}, based on the filter initially proposed by H. Mara and S. Krömker at the EUROGRAPHICS Workshop on Graphics and Cultural Heritage (2017) ~\cite[s.~3.2]{Mara17}. Since publication, further research has been conducted by the authors, and it was determined that improving the weighting methods was possible, therefore, modifcations to the algorithm were implemented directly within the GigaMesh \todoCitation{GigaMesh} framework. This chapter presents the as-yet-unpublished version of \forf{t} as it exists now, with more accuracte weighting based on the interpolation of function values to the center of gravity for each circular sector comprising the geodesic disc centered upon a vertex in a mesh.
 %
 %
 %
@@ -8,9 +8,13 @@ In this chapter we present an updated version of the Fast One-Ring smoothing fil
 %
 \section{Points \& Edges}
 \label{ch4sPE}
-Given a point $\bp_0$ in a mesh $\bM$, which is comprised of $m$ number of vertices, the one-ring neighborhood $\bN$ can be defined as all the points $\bp_i$ which are adjacent to and share an edge with $\bp_0$, where $i \in \{1, \ldots, n\}$, with $n$ being the cardinality of $\bN$. The points in $\bN$ are always indexed in a clockwise direction\todoResearch{GigaMesh assumes a counter-clockwise direction}, yet may vary in value among vertices in $\bM$, however, the value must always be $\geq 2$, and though there is no upper limit, $n$ is typically $\leq 12$.%
+Given the triangle mesh $\bM$, the superset of both a set of points $\bP$ and a set of faces $\bT$, then choosing a point on that mesh $\bp_v$, the one-ring neighborhood $\bN_v$ can be described as all the points $\widetilde{\bp_v}$, when taken together with $\bp_v$, become a subset of any face $\bt_k$ in $\bT$. The cardinality of this neighborhood $|\bN_v|$ will likely vary among other neighborhoods in $\bM$
+
+neighboring points are always indexed in a clockwise direction,  $\bM$, however, the value must always be $\geq 2$, and though there is no upper limit, $n$ is typically $\leq 12$.%
 \todoResearch{get real upper limit for n}.%
 \todoBackground{define adjacent as sharing an edge in background}
+
+
 
 The procedure for filtering a mesh begins by calculating the smallest edge length $\elm$ adjacent to the center point $\bp_0$, which be used later as the radius of a geodesic disc.\todoCitation{geodesic discs}
 \begin{equation}
@@ -27,14 +31,14 @@ Furthermore, to ensure that the filter window remains the same size for all neig
 \nomenclature[bb]{$\gelm$}{the smallest edge length in $\bM$}%
 as the smallest edge length among all edges of the mesh $\bM$, and will then use this $\gelm$ in all the following computations in lieu of $\elm$.
 %
-Figure~\ref{fig:geodesicDisc} shows a typical configuration of a one-ring neighborhood with irregular faces, the geodesic disc $\bG$ with radius $\elm$, and the circular sectors $\bs_i$ to be used for weighting the function values of the face $\bt_i$.
+Figure~\ref{fig:geodesicDisc} shows a typical configuration of a one-ring neighborhood with irregular faces, the geodesic disc $\bO$ with radius $\elm$, and the circular sectors $\bs_i$ to be used for weighting the function values of the face $\bt_i$.
 \begin{figure}[ht]
 \ffigbox
 	{\includegraphics[width=1.0\linewidth]{figures/geodesicDisc.png}}
-	{\caption[One-ring and geodesic disc]{A typical one-ring neighborhood $\bN$ with (a) irregular triangular faces $\bt_i$, the smallest edge length $\elm = |\bp_4 - \bp_0|$ shown here with a teal arrow as the radius of the geodesic disc, and $\alpha_i$ as the central angle of $\bt_i$ (b) the complete geodesic disc $\bG$, comprised of all its circular sectors $\bs_i$, each having central angles $\alpha_i$}\label{fig:geodesicDisc}}
+	{\caption[One-ring and geodesic disc]{A typical one-ring neighborhood $\bN$ with (a) irregular triangular faces $\bt_i$, the smallest edge length $\elm = |\bp_4 - \bp_0|$ shown here with a teal arrow as the radius of the geodesic disc, and $\alpha_1$ as the central angle of $\bt_1$ (b) the complete geodesic disc $\bO$, comprised of all its circular sectors $\bs_i$}\label{fig:geodesicDisc}}
 \end{figure}%
-\nomenclature[bc]{$\bG$}{the geodesic disc centered at $\bp_0$}%
-\nomenclature[bd]{$\bs_i$}{the circle sectors which comprise $\bG$}%
+\nomenclature[bc]{$\bO$}{the geodesic disc centered at $\bp_0$}%
+\nomenclature[bd]{$\bs_i$}{the circle sectors which comprise $\bO$}%
 %
 %
 %
@@ -43,10 +47,11 @@ Figure~\ref{fig:geodesicDisc} shows a typical configuration of a one-ring neighb
 \section{Angles}
 \label{ch4sA}
 In order to perform the many neccessary trigonometric operations required by the Fast One-Ring smoothing filter, we now compute the inner angles $\alpha_i$ of triangles $\bt_i$ using the using the Law of Cosines. \todoCitation{law of cosines}
-\begin{equation}
-	\alpha_i = cos^{-1}(\frac{|\bp_0 - \bp_{i}|^2 + |\bp_0 - \bp_{\sipo}|^2 - |\bp_i - \bp_{\sipo}|^2}{2\cdot|\bp_0 - \bp_{i}|\cdot|\bp_0 - \bp_{\sipo}|})
+\begin{align}
+	\alpha_i & = cos^{-1}(\frac{|\bp_0 - \bp_{i}|^2 + |\bp_0 - \bp_{\sipo}|^2 - |\bp_i - \bp_{\sipo}|^2}{2\cdot|\bp_0 - \bp_{i}|\cdot|\bp_0 - \bp_{\sipo}|}) \\
+	\alpha_i & = cos^{-1}\left (\frac{\ell_c^2 + \ell_b^2 - \ell_a^2}{2\cdot\ell_c\cdot\ell_b}\right )
 	\label{eq:alphaFromEdgeLengths}
-\end{equation}%
+\end{align}%
 \nomenclature[ca]{$\alpha_i$}{the central angle of $\bs_i$}%
 
 We also require For interpolation of the function values over the entire circular sector, we must first interpolate the values one side of the bisecting line at a time. The angles $\beta_i$ are therefore calculated using the third angle theorem as the third angle to form a right triangle along with $\alpha_i\mathbin{/}2$ for each half of $\bs_i$. \todoCitation{and third angle theorems}
@@ -55,11 +60,11 @@ We also require For interpolation of the function values over the entire circula
 	\label{eq:betaFromHalfAlpha}
 \end{equation}%
 \nomenclature[cb]{$\beta_i$}{the third angle with $\frac{\alpha_i}{2}$ and $\frac{\pi}{2}$}%
-Figure~\ref{fig:angles} shows an example of the angles $\alpha_i$ and $\beta_i$ for the circle sector $\bs_i$  which comprises the geodesic disc $\bG$ with radius $\elm$.
+Figure~\ref{fig:angles} shows an example of the angles $\alpha_i$ and $\beta_i$ for the circle sector $\bs_i$  which comprises the geodesic disc $\bO$ with radius $\elm$.
 \begin{figure}[ht]
 \ffigbox
 	{\includegraphics[width=0.8\linewidth]{example-image-16x9.png}}
-	{\caption[The angles $\alpha_i$ and $\beta_i$]{An example of the angles $\alpha_i$ and $\beta_i$ for the circle sector $\bs_i$  which comprises the geodesic disc $\bG$ with radius $\elm$}\label{fig:angles}}
+	{\caption[The angles $\alpha_i$ and $\beta_i$]{An example of the angles $\alpha_i$ and $\beta_i$ for the circle sector $\bs_i$  which comprises the geodesic disc $\bO$ with radius $\elm$}\label{fig:angles}}
 \end{figure}%
 %
 %
@@ -68,7 +73,7 @@ Figure~\ref{fig:angles} shows an example of the angles $\alpha_i$ and $\beta_i$ 
 %
 \section{Area \& Center of Gravity}
 \label{ch4sACG}
-We also need the area of each circular sector $\bs_i$ comprising the geodesic disc $\bG$, which can be calculated once both $\gelm$ and $\alpha_i$ have been determined
+We also need the area of each circular sector $\bs_i$ comprising the geodesic disc $\bO$, which can be calculated once both $\gelm$ and $\alpha_i$ have been determined
 \begin{equation}
 	A_i = \frac{(\gelm)^2\alpha_i}{2}
 	\label{eq:circularSectorArea}
@@ -165,4 +170,4 @@ Figure~\ref{fig:weightedMean} illustrates the\dots
 %
 \section{Summary}
 \label{ch4sS}
-In this chapter we presented an updated version of the Fast One-Ring smoothing filter for scalar fields on discrete manifolds, which since its original publication ~\cite[s.~3.2]{Mara17}, now utilizes the entire area of the geodesic discs centered at $\bp_0$ to calculate the weighted averages of the function values in its one-ring neighborhood. First, we have illustrated how one can calculate the global smallest edge length $\gelm$, interior angles $\alpha$ and $\beta$, the area $A$ of a sector $\bs$ from the geodesic disc $\bG$, and distance $\Dc$ to the centroid (center of gravity) $\bc$ for any given one-ring neighborhood $\bN$ of mesh $\bM$. Next, we provided the equations for interpolating the three function values $f_0$, $f_i$, and $f_{\sipo}$ using the sectorially-constant ratio $\zeta$ to obtain the weighted mean function value for each $\bs$, and finally the weighted mean function value $\bar{f_0}$ at point ${\bp_0}$ for the entire one-ring neighborhood $\bN$. Convolving this filter with the scalar field of function values at each vertex in a mesh for any number of iterations, thus produces a smoothing effect with increasing intensity in relation to the number of iterations.
+In this chapter we presented an updated version of the Fast One-Ring smoothing filter for scalar fields on discrete manifolds, which since its original publication ~\cite[s.~3.2]{Mara17}, now utilizes the entire area of the geodesic discs centered at $\bp_0$ to calculate the weighted averages of the function values in its one-ring neighborhood. First, we have illustrated how one can calculate the global smallest edge length $\gelm$, interior angles $\alpha$ and $\beta$, the area $A$ of a sector $\bs$ from the geodesic disc $\bO$, and distance $\Dc$ to the centroid (center of gravity) $\bc$ for any given one-ring neighborhood $\bN$ of mesh $\bM$. Next, we provided the equations for interpolating the three function values $f_0$, $f_i$, and $f_{\sipo}$ using the sectorially-constant ratio $\zeta$ to obtain the weighted mean function value for each $\bs$, and finally the weighted mean function value $\bar{f_0}$ at point ${\bp_0}$ for the entire one-ring neighborhood $\bN$. Convolving this filter with the scalar field of function values at each vertex in a mesh for any number of iterations, thus produces a smoothing effect with increasing intensity in relation to the number of iterations.
