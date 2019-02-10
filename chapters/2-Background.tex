@@ -100,22 +100,26 @@ As the sector can be described entirely by the central angle $\alpha$ and the ci
 	\label{eq:areaOfCircleSector}
 \end{equation}
 %
-because the area of the sector can be obtained by multiplying the circle's total area by the ratio of the sector's central angle $\alpha$, and $2\pi$, the total angle of the circle in radians.~\cite{Weisstein19d}
+because the area of the sector can be obtained by multiplying the circle's total area by the ratio of the sector's central angle $\alpha$, and $2\pi$, the total angle of the circle in radians.~\cite{Weisstein19d}%
+\nomenclature[]{$A$}{an area of a circular sector}%
 
 Along with area, the other important characteristic of a circle sector for \forf{t} is the centroid, or center of gravity. So named, because it is the point where the sector would balance on a pin\footnote{given that it had been bestowed a volume with uniform density}. The center of gravity $\bc$ is calculated as the distance from the center point $\bp_a$, along the line which bisects the central angle $\alpha$, or is given by
 %
 \begin{equation}
-	\ell_\bc := \frac{2\:\ell_{a,b}\:\sin(\alpha/2)}{3\:\alpha/2}
+	\check{\ell} := \frac{4\:\gelm\:\sin(\frac{\alpha_i}{2})}{3\,\alpha_i}
 	\label{eq:ch2distToCoG}
 \end{equation}%
-%\nomenclature[db]{$\ell_\bc$}{the distance to $\bc$ from $\bp_a$}%
+\nomenclature[]{$\check{\ell}$}{the distance from $\bp_0$ to $\bc$}%
 
-In the Figure~\ref{fig:circleSector}, a circle sector is produced by the points $\bp_a$, $\bp_b$, and $\bp_c$, has the central angle $\alpha$, which is bisected by a dotted line, and $\ell_{a,b}$\footnote{$\ell_{a,b}$ was chosen to represent the radius instead of the much more common $r$, because in \tdd{}, edges are not stored, yet distances between points can be calculated as shown in Section~\ref{ch2s3ssEL}} representing the length between points $\bp_a$ and $\bp_b$, which is equal radius of the circle. Also shown, is the center of gravity $\bc$, as well as $\ell_\bc$, the distance to $\bc$ from the center point $\bp_a$.
+This line which bisects the center angle of a circle sector, while not used explicitly in calculations, is an important concept for much of the computations used by \forf{t}, as will be seen in Chapter~\ref{ch4}. Therefore, we make a special note here that the abbreviated, "bisecting line," indeed refers to this line which splits the circle sector, and its central angle $\alpha$, into two equivalent halves.%
+\nomenclature[]{"bisecting line"}{the line which bisects the center angle of a circle sector}
+
+In the Figure~\ref{fig:circleSector}, a circle sector is produced by the points $\bp_a$, $\bp_b$, and $\bp_c$, has the central angle $\alpha$, which is bisected by a dotted line, and $\ell_{a,b}$\footnote{$\ell_{a,b}$ was chosen to represent the radius instead of the much more common $r$, because in \tdd{}, edges are not stored, yet distances between points can be calculated as shown in Section~\ref{ch2s3ssEL}} representing the length between points $\bp_a$ and $\bp_b$, which is equal radius of the circle. Also shown, is the center of gravity $\bc$, as well as $\check{\ell}$, the distance to $\bc$ from the center point $\bp_a$.
 
 \begin{figure}
 \ffigbox
 	{\includegraphics[width=1.0\linewidth]{figures/circleSector.png}}
-	{\caption[A Circle Sector in Detail]{The circle sector produced by points $\bp_a$, $\bp_b$, and $\bp_c$, with $\alpha$ as the central angle bisected by a dotted line, and $\ell_{a,b}$ as the length between points $\bp_a$ and $\bp_b$ which is equal radius of the circle. Also labeled is the center of gravity $\bc$ as well as the distance from the center point $\bp_a$ to $\bc$, drawn in a coral color as $\ell_\bc$}\label{fig:circleSector}}
+	{\caption[A Circle Sector in Detail]{The circle sector produced by points $\bp_a$, $\bp_b$, and $\bp_c$, with $\alpha$ as the central angle bisected by a dotted line, and $\ell_{a,b}$ as the length between points $\bp_a$ and $\bp_b$ which is equal radius of the circle. Also labeled is the center of gravity $\bc$ as well as the distance from the center point $\bp_a$ to $\bc$, drawn in a coral color as $\check{\ell}$}\label{fig:circleSector}}
 \end{figure}
 \todoStyle{convert the $l$s in the fig to $\ell$}
 %
@@ -179,12 +183,12 @@ Faces are the another primitive element of \tdd{}. As we are working exclusively
 
 With the introduction of faces comes the concept of adjacency. A face $\bt_i$ is said to be adjacent to another face $\bt_j$ if, and only if, they share the same subset of two points. Similarly, a point $\bp_a$ is said to be adjacent to another point $\bp_b$ if, and only if, the set $\{\bp_a, \bp_b\}$ is a subset of at least one face $\bt \in \bT$. A synonym for adjacent is ``neighboring,'' and this thesis will use both interchangeably. \todoReword{add equation for these identities}\todoReword{index entry for adjacent}
 
-The Figure~\ref{fig:triangularFaces} shows two adjacent triangular faces $\bt_1$ and $\bt_2$, and the relationship between their points $\bp_a$, $\bp_b$, and $\bp_c$, their edge lengths $\ell_a$, $\ell_b$, and $\ell_c$, and their clockwise orientation.
+The Figure~\ref{fig:triangularFaces} shows two adjacent triangular faces $\bt_1$ and $\bt_2$, and the relationship between their points $\bp_a$, $\bp_b$, and $\bp_c$, their edge lengths $\ell_a$, $\ell_b$, and $\check{\ell}$, and their clockwise orientation.
 
 \begin{figure}
 \ffigbox
 	{\includegraphics[width=0.8\linewidth]{figures/triangularFaces.png}}
-	{\caption[Two Triangular Faces]{Two adjacent triangular faces $\bt_1$ and $\bt_2$, showing the relationship between their points $\bp_a$, $\bp_b$, and $\bp_c$, their edge lengths $\ell_a$, $\ell_b$, and $\ell_c$, and their clockwise orientation.}\label{fig:triangularFaces}}
+	{\caption[Two Triangular Faces]{Two adjacent triangular faces $\bt_1$ and $\bt_2$, showing the relationship between their points $\bp_a$, $\bp_b$, and $\bp_c$, their edge lengths $\ell_a$, $\ell_b$, and $\check{\ell}$, and their clockwise orientation.}\label{fig:triangularFaces}}
 \end{figure}
 
 Each distinct triangular face is addressed using the global index $k$, and when taken together, comprise the set
@@ -202,7 +206,7 @@ where $k_{max}$ is the maximum index of faces in the data, and is equivalent to 
 \label{ch2s3ssEL}
 As illustrated in Figure~\ref{fig:triangularFaces}, each triangular face is implicitly composed of three edges. Despite the fact that an edge is not typically\footnote{Other data structures, such as the Winged-Edge~\cite[p.~1]{Baumgart75}, may use edges as a primitive element} a primitive element of \tdd{}, we will endeavor to define the length of an edge $\ell$, because edge lengths are of particular significance for both the design and implementation of \forf{t}.
 
-What is also particularly interesting about Figure~\ref{fig:triangularFaces}, is that when edge lengths are defined by the points of specific faces, each non-border edge length, illustrated by the figure as $\ell_a$ in $\bt_1$, and $\ell_c$ in $\bt_2$, will be labeled twice, despite representing the same distance.
+What is also particularly interesting about Figure~\ref{fig:triangularFaces}, is that when edge lengths are defined by the points of specific faces, each non-border edge length, illustrated by the figure as $\ell_a$ in $\bt_1$, and $\check{\ell}$ in $\bt_2$, will be labeled twice, despite representing the same distance.
 
 When in the context of a particular face $\bt_k$, we will use a single index to define the length
 %
@@ -281,9 +285,7 @@ For our experiments\todoReference{experiments}, we created another kind of synth
 
 \subsection{Function Values}
 \label{ch2s3ssFV}
-In addition to the 3 Cartesian coordinates, a point may often contain other relevant data in the form of scalar fields, or when taken together, vector fields. This information, which is stored at each point $\bp$, often includes data regarding: RGB color, material type, reflectivity, transparency, quality, confidence, or the resulting function values from an analytical filter such as the Multi-Scale Integral Invariants (MSII) filter~\cite[p.~21]{Mara12}, but can be extended to include data important to other fields of study, such as: infrared or ultraviolet light, temperature, rainfall, population, crime-rates, etc; essentially, any kind of data that may be measured at a point.
-
-\forf{T} is agnostic to the meaning of information represented by the data, therefore, it can similarly process any such function values stored as a scalar field. However, because the filter was designed to only convolve scalar fields, any multi-dimensional data, such as RGB color, must be processed individually as independent scalar fields.\todoReference{future work/applications} The result is that we can define a scalar field simply as a set of function values.
+In addition to the 3 Cartesian coordinates, a point may often contain other relevant data in the form of scalar fields, or when taken together, vector fields. This information, which is stored at each point $\bp$, often includes data regarding: RGB color, material type, reflectivity, transparency, quality, confidence, or the resulting function values from an analytical filter such as the Multi-Scale Integral Invariants (MSII) filter~\cite[p.~21]{Mara12}, but can be extended to include data important to other fields of study, such as: infrared or ultraviolet light, temperature, rainfall, population, crime-rates, etc; essentially, any kind of data that may be measured at a point. As \forf{t} will currently\todoReference{future work/applications} only process a single field at a time, we can define a scalar field simply as the set of function values
 %
 \begin{equation}
 	\bF := \left \{\: f_v \mid v \in \mathbb{N}, \;\text{and}\; 1\leq v \leq v_{max} \:\right \}

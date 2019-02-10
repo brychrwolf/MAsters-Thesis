@@ -8,7 +8,7 @@ In this chapter we present an updated version of \Forf{t}, based on the filter i
 %
 \section{A Mesh of \tdd{}}
 \label{ch4sPE}
-Given the triangle mesh of \tdd{} $\bM$, a superset of both a set of points $\bP$ and a set of faces $\bT$, the procedure for \forf{t}  begins by choosing a point $\bp_v$, which defines the one-ring neighborhood $\bN_v$, then calculating the shortest edge length $\elm$ among all the points $\bp_i$ adjacent to the center point $\bp_v$ which  is indexed locally within the neighborhood as $\bp_0$.
+Given the triangle mesh of \tdd{} $\bM$, a superset of both a set of points $\bP$ and a set of faces $\bT$, the procedure for \forf{t}  begins by choosing a point $\bp_v$, which defines the one-ring neighborhood $\bN_v$, then calculating the shortest edge length $\elm$ among all the points $\bp_i$ adjacent to the center point $\bp_v$, which  is indexed locally within the neighborhood as $\bp_0$. That shortest edge length
 %
 \begin{equation}
 	\elm(\bp_0) := \text{min}^{|\bN_v|}_{i=1}\,\big(|\bp_i - \bp_0|\big)
@@ -17,7 +17,7 @@ Given the triangle mesh of \tdd{} $\bM$, a superset of both a set of points $\bP
 \nomenclature[ba]{$\elm(\bp_v)$}{the shortest edge length in $\bN_v$}%
 \nomenclature[ba]{$\bp_0$}{the center point of $\bN_v$}%
 %
-which when considered as a radius, defines the geodesic circle $\bO_v$ about the point $\bv$.
+when considered as a radius, defines the geodesic circle $\bO_v$ about the point $\bv$.
 
 Furthermore, to ensure that the filter window remains the same size\footnote{a footnote about filter window size importance}\todoReword{footnote about filter window size importance}\todoCitation{SBN-13: 9781598296204}\todoResearch{call to question the importance of global minimum edge length in light of the typo found in source} for the entirity of the mesh, we define
 %
@@ -27,9 +27,9 @@ Furthermore, to ensure that the filter window remains the same size\footnote{a f
 \end{equation}%
 \nomenclature[bb]{$\gelm$}{the shortest edge length in $\bM$}%
 %   
-as the shortest edge length among all adjacent edges in the mesh $\bM$. In lieu of $\elm$, we will use $\gelm$ in all the following computations presented in this chapter.
+as the shortest edge length among all adjacent points in the mesh $\bM$, so that in lieu of $\elm$, we can use $\gelm$ in all the following computations presented in this chapter.
 
-Figure~\ref{fig:geodesicDisc} shows a typical configuration of a one-ring neighborhood with irregular faces, the geodesic disc $\bO$ with radius $\elm$, and the circular sectors $\bs_i$ to be used for weighting the function values of the face $\bt_i$.
+Figure~\ref{fig:geodesicDisc} shows a typical configuration of a one-ring neighborhood with irregular faces, the geodesic disc $\bO$ with radius $\elm$, and the circular sectors $\bs_i$.
 
 \begin{figure}[ht]
 \ffigbox
@@ -43,7 +43,7 @@ Figure~\ref{fig:geodesicDisc} shows a typical configuration of a one-ring neighb
 %
 \section{Angles}
 \label{ch4sA}
-Before we can calculate the area of the circle sectors in $\bO$, we must first compute the inner angles $\alpha_i$ for each triangle $\bt_i$ in the neighborhood $\bN_v$ using the using the Law of Cosines~\cite{Weisstein19e}.
+Before we can calculate the area of the circle sectors in $\bO_v$, we must first compute the inner angles $\alpha_i$ for each triangle $\bt_i$ in the neighborhood $\bN_v$. That is possible using the using the Law of Cosines~\cite{Weisstein19e}
 %
 \begin{equation}
 	\alpha_i = cos^{-1}(\frac{|\bp_0 - \bp_{i}|^2 + |\bp_0 - \bp_{\sipo}|^2 - |\bp_i - \bp_{\sipo}|^2}{2\cdot|\bp_0 - \bp_{i}|\cdot|\bp_0 - \bp_{\sipo}|})
@@ -57,21 +57,15 @@ or more compactly:
 \end{equation}%
 \nomenclature[ca]{$\alpha$}{the central angle of a circle sector $\bs$}%
 
-In order to interpolate the function values over the entire circular sector as will be discussed in detail in Section~\ref{ch4sIFV}, we must first interpolate the values one side of the bisecting line at a time. For that, the angles $\beta_i$ are required, and having now obtained the $\alpha_i$, can be calculated using the third angle theorem\footnote{otherwise known as the Angle-Angle-Angle Theorem, abbreviated as AAA}~\cite{Weisstein19f} and a proxy right triangle for each half of $\bs_i$.
-
+In order to interpolate the function values from each point over the entire sector, we must first interpolate the values one side of the bisecting line at a time, as will be discussed in detail in Section~\ref{ch4sWM}. For those coupled computations, the angles $\beta_i$ will be required, and having now obtained the $\alpha_i$, they can be calculated using a proxy right triangle and the third angle theorem\footnote{otherwise known as the Angle-Angle-Angle Theorem, abbreviated as AAA}~\cite{Weisstein19f} as
+%
 \begin{equation}
 	\beta_i = \Big(\frac{\pi}{2} - \frac{\alpha_i}{2}\Big) = \frac{(\pi - \alpha_i)}{2}
 	\label{eq:betaFromHalfAlpha}
 \end{equation}%
 \nomenclature[cb]{$\beta_i$}{the third angle with $\frac{\alpha_i}{2}$ and $\frac{\pi}{2}$}%
 
-Figure~\ref{fig:angles} shows an example of the angles $\alpha_i$ and $\beta_i$ for the circle sector $\bs_i$ which comprises the geodesic disc $\bO$ with radius $\elm$.
-
-\begin{figure}[ht]
-\ffigbox
-	{\includegraphics[width=0.8\linewidth]{example-image-16x9.png}}
-	{\caption[The angles $\alpha_i$ and $\beta_i$]{An example of the angles $\alpha_i$ and $\beta_i$ for the circle sector $\bs_i$  which comprises the geodesic disc $\bO$ with radius $\elm$}\label{fig:angles}}
-\end{figure}%
+Figure~\ref{fig:anglesAndCenterOfGravity} extends Figure~\ref{fig:geodesicDisc} by enhancing the circle sector $\bs_1$ to show an example of the angles $\alpha/2$ and $\beta$, with the proxy right triangles used to calculate it, as well as the center of gravity which is discussed in detail in Section~\ref{ch4sACG}.
 
 %
 %
@@ -79,31 +73,27 @@ Figure~\ref{fig:angles} shows an example of the angles $\alpha_i$ and $\beta_i$ 
 %
 \section{Area \& Center of Gravity}
 \label{ch4sACG}
-We also need the area of each circular sector $\bs_i$ comprising the geodesic disc $\bO$, which can be calculated once both $\gelm$ and $\alpha_i$ have been determined
+Because a circle sector may be described entirely by its radius and central angle~\cite{Weisstein19d}, having now calculated $\gelm$ and $\alpha_i$, the area of the sector can be obtained using the formula
+%
 \begin{equation}
 	A_i = \frac{(\gelm)^2\alpha_i}{2}
 	\label{eq:circularSectorArea}
 \end{equation}
-\todoCitation{area of circle sectors, http://mathworld.wolfram.com/CircularSector.html}%
-\nomenclature[da]{$A_i$}{area of circular sector $i$}%
-
-Next, the distance from the center point $\bp_0$ to the center of gravity $\bc_i$ for the circular sector $\bs_i$ is calculated along the line which bisect the angle $\alpha_i$
+%
+and similarly $\check{\ell}$, the distance from the center point $\bp_0$ along the bisecting line to the center of gravity $\bc_i$ can be calculated directly using the formula
+%
 \begin{equation}
-	\Dc_i := \frac{2\:\gelm\:\sin(\frac{\alpha_i}{2})}{3\:\frac{\alpha_i}{2}}
+	\check{\ell} := \frac{4\:\gelm\:\sin(\frac{\alpha_i}{2})}{3\,\alpha_i}
 	\label{eq:distToCoG}
-\end{equation}
-\todoCitation{area of circle sectors, http://mathworld.wolfram.com/CircularSector.html}%
-\nomenclature[db]{$\Dc_i$}{the distance to $\bc_i$ within $\bs_i$}%
+\end{equation}%
 
-Figure~\ref{fig:centerOfGravity} illustrates the center of gravity $\bc_i$, or centroid, \todoCitation{centroid} and its distance from the center point $\bp_0$ of the circular sector $\bs_i$, using $\bs_1$ from Figure~\ref{eq:localMinimumEdgeLength} as an example. In general, the smaller the angle $\alpha_i$ becomes, the longer the distance $\Dc_1$ becomes.
+Figure~\ref{fig:anglesAndCenterOfGravity} extends Figure~\ref{fig:geodesicDisc} by enhancing the circle sector $\bs_1$ to illustrate the center of gravity $\bc$ and its distance from the center point $\bp_0$. In general, while holding the radius constant, the smaller the angle $\alpha$ becomes, the longer the distance $\check{\ell}$ becomes.
+
 \begin{figure}[ht]
 \ffigbox
-	{\includegraphics[width=0.6\linewidth]{figures/centerOfGravity.png}}
-	{\caption[Distance to the Center of Gravity]{A single circle sector $\bs_1$ with a bisecting line in black dots and its center of gravity $\bc_1$ marked in a sand color, as well as the distance from the center point $\bp_0$ to $\bc_1$ drawn in coral as $\Dc_1$}\label{fig:centerOfGravity}}
+	{\includegraphics[width=0.5\linewidth]{figures/anglesAndCenterOfGravity.png}}
+	{\caption[Angles and Center of Gravity]{An enhanced view of Figure~\ref{fig:geodesicDisc}, focusing on the circle sector $\bs_1$, showing $\alpha$ and the bisecting line in gray dots. In sand color is the center of gravity $\bc$ and $\check{\ell}$, the distance to it from $\bp_0$ along the bisecting line. Also shown in coral color, are the angles $\beta$, with the proxy right triangles used to calculate them.}\label{fig:anglesAndCenterOfGravity}}
 \end{figure}%
-\nomenclature[dc]{$\bc_i$}{the center of gravity, or centroid, of $\bs_i$}%
-\todoReword{consider combining with angles figure}
-\todoReword{lable ti}
 
 %
 %
@@ -112,15 +102,24 @@ Figure~\ref{fig:centerOfGravity} illustrates the center of gravity $\bc_i$, or c
 %
 \section{Interpolation \& Function Values}
 \label{ch4sIFV}
-\todoReword{add details about how function values come about}
-With $\alpha_i\mathbin{/}2$, $\beta_i$, and $\gelm$ being constant for both halves of any circular sector $\bs_i$, we can next use the Law of Sines to obtain the constant ratio by which we will interpolate the three function values $f_0$, $f_i$, and $f_{\sipo}$ at the points $\bp_0$, $\bp_i$, and $\bp_{\sipo}$ which comprise the face $\bt_i$.
+%
+\forf{T} is agnostic to the meaning of information represented by the data, therefore, it can similarly process any such function values stored as a scalar field. However, because the filter was designed to only convolve scalar fields, any multi-dimensional data, such as RGB color, must be processed individually as independent scalar fields. The result is that we can define a scalar field simply as a set of function values.
+\todoReword{MOVE ME}
+
+The intuition about the importance of , is that any number of triangles which share the same three angles are similar to eachother. In this case, both sides of the bisecting line share $\alpha/2$, $\pi/2$, and $\beta$, so we can exploit that similarity in order to interpolate the function values, a topic discussed in detail in Section:~\ref{ch4sSIssIFV}.
+\todoReword{MOVE ME}
+
+Given the scalar field of function values $\bF$, and having now calculated $\beta_i$, and $\gelm$, both values which are constant between halves of the circle sector, we can next use the Law of Sines~\cite{Weisstein19g} to obtain the constant ratio by which we will interpolate the three function values $f_0$, $f_j$, and $f_{\sjpo}$, from the points $\bp_0$, $\bp_j$, and $\bp_{\sjpo}$, toward the center of gravity $\bc_i$. With this ratio
+%
 \begin{equation}
 	\zeta_i = \frac{\gelm}{\sin(\beta_i)}
 	\label{eq:zeta}
 \end{equation}%
 \nomenclature[ea]{$\zeta_i$}{constant ratio for interpolation derived from Law of Sines}%
+%
+we can obtain both of the distances required to interpolate $f_i$ and $f_{\sipo}$. 
 
-With the constant ratio $\zeta_i$, we can obtain both of the distances required to interpolate $f_i$ and $f_{\sipo}$. It should be noted that because the points $\bp_i$ and $\bp_{\sipo}$ are likely at different distances from the center point $\bp_0$, we must now begin calculating for each half of the circular sector individually. One may look to Figures~\ref{fig:geodesicDisc} and~\ref{fig:centerOfGravity} for an example. Therefore, while subscript for $\zeta_i$ remains the match of index for the circle sector $\bs_i$, we will now adopt the subscipt for $\Dz_i$ to denote the side of the sector defined by its point $\bp_i$, also with $\Dz_{\sipo}$ for $\bp_{\sipo}$.
+It should be noted that because the points $\bp_i$ and $\bp_{\sipo}$ are likely at different distances from the center point $\bp_0$, we must now begin calculating for each half of the circular sector individually. One may look to Figures~\ref{fig:geodesicDisc} and~\ref{fig:centerOfGravity} for an example. Therefore, while subscript for $\zeta_i$ remains the match of index for the circle sector $\bs_i$, we will now adopt the subscipt for $\Dz_i$ to denote the side of the sector defined by its point $\bp_i$, also with $\Dz_{\sipo}$ for $\bp_{\sipo}$.
 \begin{align}
 	\Dz_i & = \kern4pt\frac{\zeta_i}{|\bp_0 - \bp_i|}
 	\label{eq:distanceIForInterpolation}\\
