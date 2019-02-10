@@ -104,11 +104,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.3070427"
-     inkscape:cx="299.67332"
-     inkscape:cy="185.59611"
+     inkscape:zoom="1.8484375"
+     inkscape:cx="322.85245"
+     inkscape:cy="157.22474"
      inkscape:document-units="px"
-     inkscape:current-layer="layer4"
+     inkscape:current-layer="layer23"
      showgrid="true"
      units="px"
      inkscape:pagecheckerboard="false"
@@ -116,7 +116,7 @@
      objecttolerance="10"
      inkscape:snap-path-clip="true"
      inkscape:window-width="1865"
-     inkscape:window-height="1021"
+     inkscape:window-height="916"
      inkscape:window-x="55"
      inkscape:window-y="25"
      inkscape:window-maximized="1"
@@ -140,7 +140,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -607,14 +607,14 @@
       <text
          xml:space="preserve"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.52777767px;line-height:1.25;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif Bold';letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-         x="121.94025"
-         y="164.80798"
+         x="119.42168"
+         y="165.8515"
          id="text1235"><tspan
            sodipodi:role="line"
            id="tspan1233"
-           x="121.94025"
-           y="164.80798"
-           style="font-size:5.64444447px;stroke-width:0.26458332">(b)</tspan></text>
+           x="119.42168"
+           y="165.8515"
+           style="font-weight:normal;font-size:5.64444447px;stroke-width:0.26458332">(b)</tspan></text>
     </g>
   </g>
   <g
@@ -1036,14 +1036,14 @@
       <text
          xml:space="preserve"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.52777767px;line-height:1.25;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif Bold';letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-         x="38.116989"
-         y="164.80798"
+         x="35.080235"
+         y="165.8515"
          id="text1231"><tspan
            sodipodi:role="line"
            id="tspan1229"
-           x="38.116989"
-           y="164.80798"
-           style="font-size:5.64444447px;stroke-width:0.26458332">(a)</tspan></text>
+           x="35.080235"
+           y="165.8515"
+           style="font-weight:normal;font-size:5.64444447px;stroke-width:0.26458332">(a)</tspan></text>
     </g>
   </g>
 </svg>
