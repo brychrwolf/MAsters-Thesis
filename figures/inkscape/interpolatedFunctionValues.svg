@@ -9,9 +9,9 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="580.78101"
-   height="308.31326"
-   viewBox="0 0 153.66498 81.57455"
+   width="581.23511"
+   height="308.24908"
+   viewBox="0 0 153.78513 81.557569"
    version="1.1"
    id="svg8"
    inkscape:version="0.92.4 5da689c313, 2019-01-14"
@@ -329,21 +329,21 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.4142136"
-     inkscape:cx="256.38473"
-     inkscape:cy="121.51076"
+     inkscape:cx="302.26909"
+     inkscape:cy="43.804691"
      inkscape:document-units="px"
-     inkscape:current-layer="layer7"
+     inkscape:current-layer="layer2"
      showgrid="true"
      units="px"
      inkscape:pagecheckerboard="false"
      gridtolerance="10"
      objecttolerance="10"
      inkscape:snap-path-clip="true"
-     inkscape:window-width="1661"
-     inkscape:window-height="818"
-     inkscape:window-x="2115"
-     inkscape:window-y="82"
-     inkscape:window-maximized="0"
+     inkscape:window-width="1865"
+     inkscape:window-height="1021"
+     inkscape:window-x="55"
+     inkscape:window-y="25"
+     inkscape:window-maximized="1"
      fit-margin-top="0"
      fit-margin-left="0"
      fit-margin-right="0"
@@ -354,8 +354,8 @@
        id="grid839"
        visible="false"
        snapvisiblegridlinesonly="false"
-       originx="-79.145301"
-       originy="-0.69494721" />
+       originx="-78.506732"
+       originy="-0.71192577" />
   </sodipodi:namedview>
   <metadata
      id="metadata5">
@@ -370,7 +370,7 @@
     </rdf:RDF>
   </metadata>
   <g
-     transform="translate(-79.145295,-76.480504)"
+     transform="translate(-78.506723,-76.480505)"
      inkscape:label="scew"
      id="g1576"
      inkscape:groupmode="layer">
@@ -413,7 +413,7 @@
            x="110.86938"
            id="tspan1476-9-9"
            sodipodi:role="line"><tspan
-             style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif Bold Italic';fill:#007f7f;fill-opacity:1"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.64444447px;font-family:Allura;-inkscape-font-specification:'Allura, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#007f7f;fill-opacity:1"
              id="tspan9755">l</tspan><tspan
              style="font-weight:normal;font-size:3.66888881px;baseline-shift:sub;fill:#007f7f;fill-opacity:1;stroke-width:0.51274401"
              id="tspan9169-2-7">min</tspan></tspan></text>
@@ -699,13 +699,13 @@
          ry="0.68359035" />
       <text
          id="text1508-9-3-6-1-2-4"
-         y="112.84055"
-         x="133.16486"
+         y="111.71803"
+         x="133.35196"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.83658648px;line-height:1.25;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;display:inline;fill:#f78008;fill-opacity:1;stroke:none;stroke-width:0.51274401"
          xml:space="preserve"><tspan
            style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.64444447px;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif Italic';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;fill:#f78008;fill-opacity:1;stroke-width:0.51274401"
-           y="112.84055"
-           x="133.16486"
+           y="111.71803"
+           x="133.35196"
            id="tspan1506-1-6-2-8-3-5"
            sodipodi:role="line">f<tspan
    style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.66888881px;font-family:FreeSerif;-inkscape-font-specification:FreeSerif;baseline-shift:sub;fill:#f78008;fill-opacity:1;stroke-width:0.51274401"
@@ -721,14 +721,14 @@
       <text
          xml:space="preserve"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.64444494px;line-height:1.25;font-family:FreeSerif;-inkscape-font-specification:FreeSerif;letter-spacing:0px;word-spacing:0px;display:inline;fill:#f78008;fill-opacity:1;stroke:none;stroke-width:0.26458335"
-         x="-138.07942"
-         y="-104.03361"
+         x="-136.49194"
+         y="-102.97527"
          id="text9881"
          transform="scale(-1)"><tspan
            sodipodi:role="line"
            id="tspan9879"
-           x="-138.07942"
-           y="-104.03361"
+           x="-136.49194"
+           y="-102.97527"
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:FreeSerif;-inkscape-font-specification:FreeSerif;fill:#f78008;fill-opacity:1;stroke-width:0.26458335">^</tspan></text>
     </g>
     <g

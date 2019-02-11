@@ -190,9 +190,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4142135"
-     inkscape:cx="134.38924"
-     inkscape:cy="252.68363"
+     inkscape:zoom="1.9999999"
+     inkscape:cx="283.06685"
+     inkscape:cy="226.2337"
      inkscape:document-units="px"
      inkscape:current-layer="layer14"
      showgrid="true"
@@ -226,7 +226,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -351,7 +351,7 @@
          x="147.24236"
          y="119.99551"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.64444447px;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#007f7f;fill-opacity:1;stroke-width:0.69378555"><tspan
-           style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif Bold Italic'"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Allura;-inkscape-font-specification:'Allura, Normal';font-size:5.64444426px;text-anchor:start;text-align:start;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal"
            id="tspan3094">l</tspan><tspan
            style="font-size:64.99999762%;baseline-shift:sub"
            id="tspan3092">min</tspan></tspan></text>
@@ -717,7 +717,7 @@
          id="tspan1312"
          sodipodi:role="line"><tspan
            id="tspan1308"
-           style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif Bold Italic';fill:#ee9912;fill-opacity:1;stroke-width:0.61489165;stroke-miterlimit:3.4000001;stroke-dasharray:none;">l</tspan><tspan
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Allura;-inkscape-font-specification:'Allura, Normal';fill:#ee9912;fill-opacity:1;stroke-width:0.61489165;stroke-miterlimit:3.4000001;stroke-dasharray:none;font-size:5.64444426px;text-anchor:start;text-align:start;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal">l</tspan><tspan
            id="tspan1310"
            style="font-size:64.99999762%;baseline-shift:sub;fill:#ee9912;fill-opacity:1;stroke-width:0.61489165;stroke-miterlimit:3.4000001;stroke-dasharray:none;">c</tspan></tspan></text>
     <path

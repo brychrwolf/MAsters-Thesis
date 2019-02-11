@@ -70,7 +70,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.8046875"
-     inkscape:cx="322.61178"
+     inkscape:cx="182.4213"
      inkscape:cy="183.92533"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -258,7 +258,7 @@
          y="232.17976"
          style="font-size:5.64444447px;stroke-width:0.26458332"><tspan
    id="tspan3217"
-   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.64444447px;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif Italic'">l</tspan><tspan
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.64444445px;font-family:Allura;-inkscape-font-specification:'Allura, Normal';text-anchor:start;text-align:start;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal">l</tspan><tspan
    style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.72886109px;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif Italic';baseline-shift:sub"
    id="tspan3194">a,b</tspan> </tspan></text>
     <path
@@ -289,9 +289,11 @@
          y="267.83112"
          style="font-size:5.64444447px;fill:#ff6060;fill-opacity:1;stroke-width:0.26458332"><tspan
    id="tspan3217-0"
-   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.64444447px;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif Italic';fill:#ff6060;fill-opacity:1;stroke-width:0.26458332">l<tspan
-   style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:64.99999762%;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif Bold';baseline-shift:sub"
-   id="tspan5520">c</tspan></tspan> </tspan></text>
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.64444447px;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif Italic';fill:#ff6060;fill-opacity:1;stroke-width:0.26458332"><tspan
+     style="-inkscape-font-specification:'Allura, Normal';font-family:Allura;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:5.64444445px;text-anchor:start;text-align:start;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal"
+     id="tspan5782">l</tspan><tspan
+     style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:64.99999762%;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif Bold';baseline-shift:sub"
+     id="tspan5520">c</tspan></tspan> </tspan></text>
     <circle
        style="opacity:1;fill:#ff6060;fill-opacity:1;stroke:none;stroke-width:0.263237;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="path5528"
