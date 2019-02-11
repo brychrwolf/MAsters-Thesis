@@ -6,16 +6,16 @@ In this chapter we present an updated version of \Forf{t}, based on the filter i
 %
 %
 %
-\section{A Mesh of \tdd{}}
-\label{ch4sPE}
+\section{The Shortest Edge Length}
+\label{ch4sSEL}
 Given the triangle mesh of \tdd{} $\bM$, a superset of both a set of points $\bP$ and a set of faces $\bT$, the procedure for \forf{t}  begins by choosing a point $\bp_v$, which defines the one-ring neighborhood $\bN_v$, then calculating the shortest edge length $\elm$ among all the points $\bp_i$ adjacent to the center point $\bp_v$, which  is indexed locally within the neighborhood as $\bp_0$. That shortest edge length
 %
 \begin{equation}
 	\elm(\bp_0) := \text{min}^{|\bN_v|}_{i=1}\,\big(|\bp_i - \bp_0|\big)
 	\label{eq:localMinimumEdgeLength}
 \end{equation}%
-\nomenclature[ba]{$\elm(\bp_v)$}{the shortest edge length in $\bN_v$}%
 \nomenclature[ba]{$\bp_0$}{the center point of $\bN_v$}%
+\nomenclature[ba]{$\elm(\bp_v)$}{the shortest edge length in $\bN_v$}%
 %
 when considered as a radius, defines the geodesic circle $\bO_v$ about the point $\bv$.
 
@@ -42,7 +42,7 @@ Figure~\ref{fig:geodesicDisc} shows a typical configuration of a one-ring neighb
 %
 %
 \section{Angles}
-\label{ch4sA}
+\label{ch4sIA}
 Before we can calculate the area of the circle sectors in $\bO_v$, we must first compute the inner angles $\alpha_i$ for each triangle $\bt_i$ in the neighborhood $\bN_v$. That is possible using the using the Law of Cosines~\cite{Weisstein19e}
 %
 \begin{equation}
@@ -55,7 +55,7 @@ or more compactly:
 	\alpha = cos^{-1}\left (\frac{\ell_c^2 + \ell_b^2 - \ell_a^2}{2\cdot\ell_c\cdot\ell_b}\right )
 	\label{eq:alphaFromEdgeLengths}
 \end{equation}%
-\nomenclature[ca]{$\alpha$}{the central angle of a circle sector $\bs$}%
+\nomenclature[ca]{$\alpha_i$}{the central angle of circle sector $\bs_i$}%
 
 In order to interpolate the function values from each point over the entire sector, we must first interpolate the values one side of the bisecting line at a time, as will be discussed in detail in Section~\ref{ch4sWM}. For those coupled computations, the angles $\beta_i$ will be required, and having now obtained the $\alpha_i$, they can be calculated using a proxy right triangle and the third angle theorem\footnote{otherwise known as the Angle-Angle-Angle Theorem, abbreviated as AAA}~\cite{Weisstein19f} as
 %
@@ -65,14 +65,14 @@ In order to interpolate the function values from each point over the entire sect
 \end{equation}%
 \nomenclature[cb]{$\beta_i$}{the third angle with $\frac{\alpha_i}{2}$ and $\frac{\pi}{2}$}%
 
-Figure~\ref{fig:anglesAndCenterOfGravity} extends Figure~\ref{fig:geodesicDisc} by enhancing the circle sector $\bs_1$ to show an example of the angles $\alpha/2$ and $\beta$, with the proxy right triangles used to calculate it, as well as the center of gravity which is discussed in detail in Section~\ref{ch4sACG}.
+Figure~\ref{fig:anglesAndCenterOfGravity} extends Figure~\ref{fig:geodesicDisc} by enhancing the circle sector $\bs_1$ to show an example of the angles $\alpha/2$ and $\beta$, with the proxy right triangles used to calculate it, as well as the center of gravity which is discussed in detail in Section~\ref{ch4sIACG}.
 
 %
 %
 %
 %
 \section{Area \& Center of Gravity}
-\label{ch4sACG}
+\label{ch4sIACG}
 Because a circle sector may be described entirely by its radius and central angle~\cite{Weisstein19d}, having now calculated $\gelm$ and $\alpha_i$, the area of the sector can be obtained using the formula
 %
 \begin{equation}
@@ -99,9 +99,8 @@ Figure~\ref{fig:anglesAndCenterOfGravity} extends Figure~\ref{fig:geodesicDisc} 
 %
 %
 %
-%
-\section{Interpolation \& Function Values}
-\label{ch4sIFV}
+\section{Function Values \& Interpolation}
+\label{ch4sFVI}
 Given the scalar field\footnote{\forf{T} is agnostic to the meaning of information represented by the data stored as function values in scalar fields, therefore, it can similarly convolve any such data. However, because the filter was designed to only convolve scalar fields, any multi-dimensional data, such as RGB color, must be processed individually as independent scalar fields.} of function values $\bF$, and having now calculated $\beta_i$, and $\gelm$, both values which are constant between halves of the circle sector, we can next use the Law of Sines~\cite{Weisstein19g} to obtain the constant ratio
 %
 \begin{equation}
@@ -153,17 +152,17 @@ In order to calculate the weighted mean function value at the center of gravity 
 \nomenclature[fa]{$\check{f}_i$}{the weighted mean function value at $\bc_i$ of $\bs_i$}%
 we obtain the weighted mean function value $\check{f}_i$, at the center of gravity, representing the entire circle sector.
 
-Figure~\ref{fig:interpolatedFunctionValues} illustrates $\check{f}_i$ in sand color as a volume over an enhanced view of the circle sector $\bs_1$, continuing with the example introduced in Figure~\ref{fig:geodesicDisc}. The figure also shows details pertaining to the interpolation of the function values $f_j$ and $f_{\sjpo}$, as discussed in detail in Section~\ref{ch4sIFV}.
+Figure~\ref{fig:interpolatedFunctionValues} illustrates $\check{f}_i$ in sand color as a volume over an enhanced view of the circle sector $\bs_1$, continuing with the example introduced in Figure~\ref{fig:geodesicDisc}. The figure also shows details pertaining to the interpolation of the function values $f_j$ and $f_{\sjpo}$, as discussed in detail in Section~\ref{ch4sFVI}.
 
-Finally, we can compute the one-ring weighted mean function value at $\bp_0$ by first multiplying each interpolated function value located at each circle sector's center of gravity $\check{f}_i$, by each sector's area $A_i$, to obtain a volume of function value over the entire circle sector. Then by dividing the sum of all the function value volumes, by the total area of the geodesic disc $\Omega_v$, we can compute
+Finally, we can compute the one-ring weighted mean function value at $\bp_0$ by first multiplying each interpolated function value located at each circle sector's center of gravity $\check{f}_i$, by each sector's area $A_i$, to obtain a volume of function value over the entire circle sector. Then by dividing the sum of all the function value volumes, by the total area of the geodesic disc $\bO_v$, we can compute
 \begin{equation}
 	f'_v := \frac{\sum A_if^{\bs}_i}{\sum A_i} \quad \forall i \in \{1,\ldots,|\bt_v|\}
-	\label{eq:meanFuncValAtP0}
+	\label{eq:meanFuncValAtPv}
 \end{equation}%
 \nomenclature[fb]{$f'_v$}{the one-ring weighted mean function value at $\bp_v$}%
 the one-ring weighted mean\footnote{The one-ring smoothing filter can be modified to use the median operation, instead of the mean, by using all the equations except Equation~\ref{eq:meanFuncValAtP0} and then sorting the results of Equation~\ref{eq:weightedMeanAtCoGatSector}. The details of which can be found by the original publication ~\cite[s.~3.2]{Mara17}, but as it was not implemented in GPGPU for this thesis, we exclude the details here.} function value for $\bp_v$, which is the center point $\bp_0$ of the neighborhood $\bN_v$.
 
-Figure~\ref{fig:weightedMean} illustrates the\dots
+Figure~\ref{fig:weightedMean} illustrates the geodesic disc $\bO$, as introduced in Figure~\ref{fig:geodesicDisc}, with volumes of interpolated function value over each circle sector, which will shall be divided by each sector's area in order to obtain the the one-ring weighted mean function value at $\bp_v$.
 \begin{figure}[ht]
 \ffigbox
 	{\includegraphics[width=0.6\linewidth]{example-image-16x9.png}}
@@ -172,4 +171,4 @@ Figure~\ref{fig:weightedMean} illustrates the\dots
 %
 \section{Summary}
 \label{ch4sS}
-In this chapter we presented an updated version of the Fast One-Ring smoothing filter for scalar fields on discrete manifolds, which since its original publication ~\cite[s.~3.2]{Mara17}, now utilizes the entire area of the geodesic discs centered at $\bp_0$ to calculate the weighted averages of the function values in its one-ring neighborhood. First, we have illustrated how one can calculate the global smallest edge length $\gelm$, interior angles $\alpha$ and $\beta$, the area $A$ of a sector $\bs$ from the geodesic disc $\bO$, and distance $\Dc$ to the centroid (center of gravity) $\bc$ for any given one-ring neighborhood $\bN$ of mesh $\bM$. Next, we provided the equations for interpolating the three function values $f_0$, $f_i$, and $f_{\sipo}$ using the sectorially-constant ratio $\zeta$ to obtain the weighted mean function value for each $\bs$, and finally the weighted mean function value $\bar{f_0}$ at point ${\bp_0}$ for the entire one-ring neighborhood $\bN$. Convolving this filter with the scalar field of function values at each vertex in a mesh for any number of iterations, thus produces a smoothing effect with increasing intensity in relation to the number of iterations.
+In this chapter we presented an updated version of \Forf{t}, which since its original publication~\cite[s.~3.2]{Mara17}, now utilizes the entire area of the geodesic discs $\bO$ centered at each point in the mesh $\bp_v$, in order to calculate the weighted average of all the function values in its one-ring neighborhood. First, we illustrated in detail how one can calculate the globally shortest edge length $\gelm$, interior angles $\alpha$ and $\beta$, the area $A$, and the distance $\check{\ell}$ from the center point to the center of gravity $\bc$, for any given of a sector $\bs$ of a geodesic disc $\bO$ in a one-ring neighborhood $\bN$ of mesh $\bM$. Next, we provided the equations for interpolating the three function values $f_0$, $f_j$, and $f_{\sjpo}$, using the pairwise constant ratio $\zeta$, in order to obtain the weighted mean function value for each $\bs$, and finally the weighted mean function value $\bar{f_0}$ at point ${\bp_0}$ for the entire one-ring neighborhood $\bN$. Convolving this filter with the scalar field of function values at each vertex in a mesh, for any number of iterations, thus produces a smoothing effect with increasing intensity in relation to the number of iterations.
