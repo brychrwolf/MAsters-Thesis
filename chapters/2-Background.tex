@@ -56,14 +56,15 @@ As vast and encompassing is geometry as a field of study, of paramount importanc
 \todoResearch{weighted averaging using density}
 
 \subsubsection{Interpolation}
+\todoReword{add variant oninterpolation for NOT between points}
 Simply stated, interpolation is a method of constructing new data points within the range of a discrete set of known data points, such as those points used in \tdd{}. There exist a large variety of methods for interpolating different kinds of data\todoCitation{different kinds of interpolation}, but as an introduction, let us first consider linear interpolation, which is simple to calculate\footnote{however can become imprecise in relation to the square of the distance between the data points.}\todoCitation{footnote:error of linear interpolation} and can be extended for n-dimensions\todoCitation{n-dimensional linear interpolation}.
 
-Given the two data points in $\mathbb{R}^2$, $(x_a, y_a)$ and $(x_b, y_b)$, the so called interpolant of a point located at\todoReword{don't use point located at, maybe value sampled at instead?} $x_c$ can be calculated as
+Given the two data points in $\mathbb{R}^2$, $(x_a, y_a)$ and $(x_b, y_b)$, the so called interpolant of a point located at\todoReword{interpolant is wrong, don't use point located at, maybe value sampled at instead?} $x_c$ can be calculated as
 \begin{equation}
 	y_c = y_a + (y_b - y_a) \frac{x_c - x_a}{x_b - x_a}
 	\label{eq:interpolationGeneral}
 \end{equation}
-To illustrate the concept, consider the two points $(1, 2)$ and $(5, 1)$, then find the interpolant of a point located at $x = 3$\todoReword{don't use point located at, maybe value sampled at instead?}
+To illustrate the concept, consider the two points $(1, 2)$ and $(5, 1)$, then find the interpolant of a point located at $x = 3$\todoReword{interpolant is wrong, don't use point located at, maybe value sampled at instead?}
 \begin{align}
 	y_c & = 2 + (1 - 2) \frac{3 - 1}{5 - 1} \\
 	& = 2 + -1 \frac{2}{4} \enspace = \enspace  1.5

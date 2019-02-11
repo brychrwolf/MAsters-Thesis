@@ -4,7 +4,8 @@ SVGS_OUTPUTS =  ../geodesicDisc.png \
 				../interpolation.png \
 				../circleSector.png \
 				../neighborhoods.png \
-				../triangularFaces.png
+				../triangularFaces.png \
+				../interpolatedFunctionValues.png
 
 
 
