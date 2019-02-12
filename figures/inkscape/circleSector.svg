@@ -15,7 +15,8 @@
    version="1.1"
    id="svg8"
    inkscape:version="0.92.4 5da689c313, 2019-01-14"
-   sodipodi:docname="circleSector.svg">
+   sodipodi:docname="circleSector.svg"
+   enable-background="new">
   <defs
      id="defs2">
     <marker
@@ -61,6 +62,16 @@
          style="fill:#007f7f;fill-opacity:1;fill-rule:evenodd;stroke:#007f7f;stroke-width:1.00000003pt;stroke-opacity:1"
          transform="matrix(-0.8,0,0,-0.8,-10,0)" />
     </marker>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter2775">
+      <feBlend
+         inkscape:collect="always"
+         mode="multiply"
+         in2="BackgroundImage"
+         id="feBlend2777" />
+    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -70,8 +81,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.8046875"
-     inkscape:cx="182.4213"
-     inkscape:cy="183.92533"
+     inkscape:cx="263.87585"
+     inkscape:cy="161.76083"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -104,7 +115,8 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-201.74998)">
+     transform="translate(0,-201.74998)"
+     style="filter:url(#filter2775);opacity:1">
     <path
        style="display:inline;fill:#ff9f00;fill-opacity:0.12156863;fill-rule:evenodd;stroke:none;stroke-width:0.43035027;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="path817-0-5"
@@ -117,7 +129,7 @@
        sodipodi:end="1.6631079"
        d="m 117.00618,223.41994 a 41.959152,41.959152 0 0 1 1.71081,45.04208 41.959152,41.959152 0 0 1 -40.090399,20.6028 l 3.867817,-41.7805 z" />
     <path
-       style="display:inline;fill:none;fill-opacity:1;stroke:#535457;stroke-width:0.6455254;stroke-miterlimit:4;stroke-dasharray:0.64552544, 1.29105086;stroke-dashoffset:0;stroke-opacity:1"
+       style="display:inline;fill:none;fill-opacity:1;stroke:#535457;stroke-width:0.6455254;stroke-miterlimit:4;stroke-dasharray:0.64552544, 1.29105085999999991;stroke-dashoffset:0;stroke-opacity:1"
        id="path1244-3"
        sodipodi:type="arc"
        sodipodi:cx="82.833656"
@@ -129,7 +141,7 @@
        d="m 98.53911,235.92489 a 19.213646,19.213646 0 0 1 1.208166,20.18368"
        sodipodi:open="true" />
     <path
-       style="fill:none;stroke:#535457;stroke-width:0.6455254;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.64552544, 1.29105086;stroke-dashoffset:0;stroke-opacity:1"
+       style="fill:none;stroke:#535457;stroke-width:0.6455254;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.64552544, 1.29105085999999991;stroke-dashoffset:0;stroke-opacity:1"
        d="m 82.869889,246.92897 c 27.011241,14.57947 9.711809,5.10502 36.814621,19.51319"
        id="path3092"
        inkscape:connector-curvature="0"
@@ -302,7 +314,7 @@
        r="1.0583333" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.64444445px;line-height:1.25;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif Bold';letter-spacing:0px;word-spacing:0px;fill:#ff6060;fill-opacity:1;stroke:none;stroke-width:0.26458332;"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.64444445px;line-height:1.25;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif Bold';letter-spacing:0px;word-spacing:0px;fill:#ff6060;fill-opacity:1;stroke:none;stroke-width:0.26458332"
        x="109.14578"
        y="259.39478"
        id="text5532"><tspan
@@ -310,7 +322,7 @@
          id="tspan5530"
          x="109.14578"
          y="259.39478"
-         style="stroke-width:0.26458332;fill:#ff6060;fill-opacity:1;font-size:5.64444445px;">c</tspan></text>
+         style="stroke-width:0.26458332;fill:#ff6060;fill-opacity:1;font-size:5.64444445px">c</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.73800373px;line-height:1.25;font-family:FreeSerif;-inkscape-font-specification:FreeSerif;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.43035027"

@@ -149,11 +149,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4142136"
-     inkscape:cx="260.24351"
-     inkscape:cy="12.958056"
+     inkscape:zoom="5.6568544"
+     inkscape:cx="304.77059"
+     inkscape:cy="149.38981"
      inkscape:document-units="px"
-     inkscape:current-layer="layer4"
+     inkscape:current-layer="g2240"
      showgrid="true"
      units="px"
      inkscape:pagecheckerboard="false"
@@ -161,7 +161,7 @@
      objecttolerance="10"
      inkscape:snap-path-clip="true"
      inkscape:window-width="1865"
-     inkscape:window-height="1021"
+     inkscape:window-height="916"
      inkscape:window-x="55"
      inkscape:window-y="25"
      inkscape:window-maximized="1"
@@ -520,6 +520,11 @@
          id="path2285"
          inkscape:connector-curvature="0"
          sodipodi:nodetypes="ccccccc" />
+      <path
+         style="fill:none;stroke:#007f7f;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 81.22708,119.0625 v 14.55209 0 0"
+         id="path7106"
+         inkscape:connector-curvature="0" />
     </g>
     <g
        inkscape:groupmode="layer"
@@ -684,7 +689,7 @@
        inkscape:groupmode="layer">
       <text
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.64444447px;line-height:1.25;font-family:Z003;-inkscape-font-specification:'Z003 Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.64444447px;line-height:1.25;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
          x="103.03542"
          y="143.20483"
          id="text2064"><tspan
@@ -692,12 +697,12 @@
            id="tspan2062"
            x="103.03542"
            y="143.20483"
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Z003;-inkscape-font-specification:'Z003 Bold';fill:#000000;fill-opacity:1;stroke-width:0.26458332">s<tspan
-   style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:64.99999762%;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif Bold';baseline-shift:sub;fill:#000000;fill-opacity:1;"
-   id="tspan2068">1</tspan></tspan></text>
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.64444447px;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke-width:0.26458332">s<tspan
+   style="font-size:64.99999762%;baseline-shift:sub"
+   id="tspan954">1</tspan></tspan></text>
       <text
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.64444447px;line-height:1.25;font-family:Z003;-inkscape-font-specification:'Z003 Bold';letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.64444447px;line-height:1.25;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
          x="117.78792"
          y="122.19319"
          id="text2064-3"><tspan
@@ -705,12 +710,12 @@
            id="tspan2062-6"
            x="117.78792"
            y="122.19319"
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Z003;-inkscape-font-specification:'Z003 Bold';fill:#000000;fill-opacity:1;stroke-width:0.26458332">s<tspan
-   style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.66888881px;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif Bold';baseline-shift:sub;fill:#000000;fill-opacity:1;stroke-width:0.26458332;"
-   id="tspan2068-7">2</tspan></tspan></text>
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.64444447px;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke-width:0.26458332">s<tspan
+   style="font-size:64.99999762%;baseline-shift:sub"
+   id="tspan952">2</tspan></tspan></text>
       <text
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.64444447px;line-height:1.25;font-family:Z003;-inkscape-font-specification:'Z003 Bold';letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.64444447px;line-height:1.25;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
          x="100.54427"
          y="112.42737"
          id="text2064-5"><tspan
@@ -718,12 +723,12 @@
            id="tspan2062-3"
            x="100.54427"
            y="112.42737"
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Z003;-inkscape-font-specification:'Z003 Bold';fill:#000000;fill-opacity:1;stroke-width:0.26458332">s<tspan
-   style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:64.99999762%;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif Bold';baseline-shift:sub;fill:#000000;fill-opacity:1;"
-   id="tspan2101">3</tspan></tspan></text>
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.64444447px;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke-width:0.26458332">s<tspan
+   style="font-size:64.99999762%;baseline-shift:sub"
+   id="tspan950">3</tspan></tspan></text>
       <text
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.64444447px;line-height:1.25;font-family:Z003;-inkscape-font-specification:'Z003 Bold';letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.64444447px;line-height:1.25;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
          x="72.800613"
          y="107.64492"
          id="text2064-6"><tspan
@@ -731,12 +736,12 @@
            id="tspan2062-2"
            x="72.800613"
            y="107.64492"
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Z003;-inkscape-font-specification:'Z003 Bold';fill:#000000;fill-opacity:1;stroke-width:0.26458332">s<tspan
-   style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.66888881px;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif Bold';baseline-shift:sub;fill:#000000;fill-opacity:1;stroke-width:0.26458332;"
-   id="tspan2068-9">4</tspan></tspan></text>
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.64444447px;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke-width:0.26458332">s<tspan
+   style="font-size:64.99999762%;baseline-shift:sub"
+   id="tspan947">4</tspan></tspan></text>
       <text
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.64444447px;line-height:1.25;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif Bold';letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332;"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.64444447px;line-height:1.25;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif Bold';letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
          x="36.529716"
          y="121.72005"
          id="text2064-1"><tspan
@@ -744,12 +749,12 @@
            id="tspan2062-27"
            x="36.529716"
            y="121.72005"
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif Bold';fill:#000000;fill-opacity:1;stroke-width:0.26458332;">s<tspan
-   style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:64.99999762%;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif Bold';baseline-shift:sub;fill:#000000;fill-opacity:1;"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif Bold';fill:#000000;fill-opacity:1;stroke-width:0.26458332">s<tspan
+   style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:64.99999762%;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif Bold';baseline-shift:sub;fill:#000000;fill-opacity:1"
    id="tspan2123">5</tspan></tspan></text>
       <text
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.64444447px;line-height:1.25;font-family:Z003;-inkscape-font-specification:'Z003 Bold';letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.64444447px;line-height:1.25;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
          x="60.658176"
          y="139.98955"
          id="text2064-9"><tspan
@@ -757,9 +762,9 @@
            id="tspan2062-36"
            x="60.658176"
            y="139.98955"
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Z003;-inkscape-font-specification:'Z003 Bold';fill:#000000;fill-opacity:1;stroke-width:0.26458332">s<tspan
-   style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.66888881px;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif Bold';baseline-shift:sub;fill:#000000;fill-opacity:1;stroke-width:0.26458332;"
-   id="tspan2068-0">6</tspan></tspan></text>
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.64444447px;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke-width:0.26458332">s<tspan
+   style="font-size:64.99999762%;baseline-shift:sub"
+   id="tspan956">6</tspan></tspan></text>
     </g>
     <g
        style="display:none"
