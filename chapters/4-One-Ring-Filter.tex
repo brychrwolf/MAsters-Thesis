@@ -32,7 +32,7 @@ Figure~\ref{fig:geodesicDisc} shows a typical configuration of a one-ring neighb
 \begin{figure}[ht]
 \ffigbox
 	{\includegraphics[width=1.0\linewidth]{figures/geodesicDisc.png}}
-	{\caption[One-ring and geodesic disc]{A typical one-ring neighborhood $\bN$ with (a) irregular triangular faces $\bt_i$, the smallest edge length $\elm = \ell_4 = |\bp_4 - \bp_0|$ illustrated with a teal arrow as the radius of the geodesic disc, and $\alpha_1$ as the central angle of $\bt_1$ (b) the complete geodesic disc $\bO$, comprised of all its circular sectors $\bs_i$}\label{fig:geodesicDisc}}
+	{\caption[One-ring and geodesic disc]{A typical one-ring neighborhood $\bN$ with (a) irregular triangular faces $\bt_i$, the smallest edge length $\elm = \ell_5 = |\bp_5 - \bp_0|$ illustrated with a teal arrow as the radius of the geodesic disc, and $\alpha_1$ as the central angle of $\bt_1$ (b) the complete geodesic disc $\bO$, comprised of all its circular sectors $\bs_i$}\label{fig:geodesicDisc}}
 \end{figure}%
 
 %
@@ -41,7 +41,7 @@ Figure~\ref{fig:geodesicDisc} shows a typical configuration of a one-ring neighb
 %
 \section{Angles}
 \label{ch4sIA}
-Before we can calculate the area of the circle sectors in $\bO_v$, we must first compute the inner angles $\alpha_i$ for each triangle $\bt_i$ in the neighborhood $\bN_v$. That is possible using the using the Law of Cosines~\cite{Weisstein19e}
+Before we can calculate the area of the circle sectors in $\bO_v$, we must first compute the inner angle $\alpha$ for each triangle $\bt$ in the neighborhood $\bN_v$. That is possible using the using the Law of Cosines~\cite{Weisstein19e}
 %
 \begin{equation}
 	\alpha_i = cos^{-1}(\frac{|\bp_0 - \bp_{i}|^2 + |\bp_0 - \bp_{\sipo}|^2 - |\bp_i - \bp_{\sipo}|^2}{2\cdot|\bp_0 - \bp_{i}|\cdot|\bp_0 - \bp_{\sipo}|})
@@ -55,13 +55,13 @@ or more compactly:
 \end{equation}%
 \nomenclature[ca]{$\alpha_i$}{the central angle of circle sector $\bs_i$}%
 
-In order to interpolate the function values from each point over the entire sector, we must first interpolate the values one side of the bisecting line at a time, as will be discussed in detail in Section~\ref{ch4sWM}. For those coupled computations, the angles $\beta_i$ will be required, and having now obtained the $\alpha_i$, they can be calculated using a proxy right triangle and the third angle theorem\footnote{otherwise known as the Angle-Angle-Angle Theorem, abbreviated as AAA}~\cite{Weisstein19f} as
+In order to interpolate the function values from each point over the entire sector, we must first interpolate the values one side of the bisecting line at a time, as will be discussed in detail in Section~\ref{ch4sWM}. For those coupled computations, the angles $\beta$ will be required, and having now obtained the $\alpha$, they can be calculated using a proxy right triangle and the third angle theorem\footnote{otherwise known as the Angle-Angle-Angle Theorem, abbreviated as AAA}~\cite{Weisstein19f} as
 %
 \begin{equation}
-	\beta_i = \Big(\frac{\pi}{2} - \frac{\alpha_i}{2}\Big) = \frac{(\pi - \alpha_i)}{2}
+	\beta = \Big(\frac{\pi}{2} - \frac{\alpha}{2}\Big) = \frac{(\pi - \alpha)}{2}
 	\label{eq:betaFromHalfAlpha}
 \end{equation}%
-\nomenclature[cb]{$\beta_i$}{the third angle with $\frac{\alpha_i}{2}$ and $\frac{\pi}{2}$}%
+\nomenclature[cb]{$\beta$}{the third angle with $\frac{\alpha}{2}$ and $\frac{\pi}{2}$}%
 
 Figure~\ref{fig:anglesAndCenterOfGravity} extends Figure~\ref{fig:geodesicDisc} by enhancing the circle sector $\bs_1$ to show an example of the angles $\alpha/2$ and $\beta$, with the proxy right triangles used to calculate it, as well as the center of gravity which is discussed in detail in Section~\ref{ch4sIACG}.
 
@@ -71,17 +71,17 @@ Figure~\ref{fig:anglesAndCenterOfGravity} extends Figure~\ref{fig:geodesicDisc} 
 %
 \section{Area \& Center of Gravity}
 \label{ch4sIACG}
-Because a circle sector may be described entirely by its radius and central angle~\cite{Weisstein19d}, having now calculated $\gelm$ and $\alpha_i$, the area of the sector can be obtained using the formula
+Because a circle sector may be described entirely by its radius and central angle~\cite{Weisstein19d}, having now calculated $\gelm$ and $\alpha$, the area of the sector can be obtained using the formula
 %
 \begin{equation}
-	A_i = \frac{(\gelm)^2\alpha_i}{2}
+	A = \frac{(\gelm)^2\alpha}{2}
 	\label{eq:circularSectorArea}
 \end{equation}
 %
-and similarly $\check{\ell}$, the distance from the center point $\bp_0$ along the bisecting line to the center of gravity $\bc_i$ can be calculated directly using the formula
+and similarly $\check{\ell}$, the distance from the center point $\bp_0$ along the bisecting line to the center of gravity $\bc$ can be calculated directly using the formula
 %
 \begin{equation}
-	\check{\ell} := \frac{4\:\gelm\:\sin(\frac{\alpha_i}{2})}{3\,\alpha_i}
+	\check{\ell} := \frac{4\:\gelm\:\sin(\frac{\alpha}{2})}{3\,\alpha}
 	\label{eq:distToCoG}
 \end{equation}%
 
@@ -99,21 +99,21 @@ Figure~\ref{fig:anglesAndCenterOfGravity} extends Figure~\ref{fig:geodesicDisc} 
 %
 \section{Function Values \& Interpolation}
 \label{ch4sFVI}
-Given the scalar field\footnote{\forf{T} is agnostic to the meaning of information represented by the data stored as function values in scalar fields, therefore, it can similarly convolve any such data. However, because the filter was designed to only convolve scalar fields, any multi-dimensional data, such as RGB color, must be processed individually as independent scalar fields.} of function values $\bF$, and having now calculated $\beta_i$, and $\gelm$, both values which are constant between halves of the circle sector, we can next use the Law of Sines~\cite{Weisstein19g} to obtain the constant ratio
+Given the scalar field\footnote{\forf{T} is agnostic to the meaning of information represented by the data stored as function values in scalar fields, therefore, it can similarly convolve any such data. However, because the filter was designed to only convolve scalar fields, any multi-dimensional data, such as RGB color, must be processed individually as independent scalar fields.} of function values $\bF$, and having now calculated $\beta$, and $\gelm$, both values which are constant between halves of the circle sector, we can next use the Law of Sines~\cite{Weisstein19g} to obtain the constant ratio
 %
 \begin{equation}
-	\zeta_i = \frac{\gelm}{\sin(\beta_i)}
+	\zeta = \frac{\gelm}{\sin(\beta)}
 	\label{eq:zeta}
 \end{equation}%
-\nomenclature[ea]{$\zeta_i$}{constant ratio for interpolation derived from Law of Sines}%
+\nomenclature[ea]{$\zeta$}{constant ratio for interpolation derived from Law of Sines}%
 
-It should be noted, that because the points $\bp_j$ and $\bp_{\sjpo}$ are likely\footnote{One need only to look at Figures~\ref{fig:geodesicDisc} or~\ref{fig:anglesAndCenterOfGravity} for an example of why that may be.} at different distances from the center point $\bp_0$, we must now begin calculating for each half of the circular sector individually. Therefore, while the index for $\zeta_i$ remains the match for the index of the circle sector $\bs_i$, we will now use the index $j$ to denote the side of the sector defined by its point $\bp_j$ or $\bp_{\sjpo}$.
+It should be noted, that because the points $\bp_j$ and $\bp_{\sjpo}$ are likely\footnote{One need only to look at Figures~\ref{fig:geodesicDisc} or~\ref{fig:anglesAndCenterOfGravity} for an example of why that may be.} at different distances from the center point $\bp_0$, we must now begin calculating for each half of the circular sector individually. Therefore, while the index for $\zeta$ remains the match for the index of the circle sector $\bs$, we will now use the index $j$ to denote the side of the sector defined by its point $\bp_j$ or $\bp_{\sjpo}$.
 
-Next, using $\zeta_i$, we can interpolate the offset from the original function values $f_j$ and $f_{\sjpo}$ at the points $\bp_j$ and $\bp_{\sjpo}$.
+Next, using $\zeta$, we can interpolate the offset from the original function values $f_j$ and $f_{\sjpo}$ at the points $\bp_j$ and $\bp_{\sjpo}$.
 \begin{align}
-	\tilde{\ell}_j & = \kern2pt\frac{\zeta_i}{\kern2pt\ell_j\kern2pt}\kern1pt = \kern3pt\frac{\zeta_i}{|\bp_j - \bp_0|}
+	\tilde{\ell}_j & = \kern2pt\frac{\zeta}{\kern2pt\ell_j\kern2pt}\kern1pt = \kern3pt\frac{\zeta}{|\bp_j - \bp_0|}
 	\label{eq:distanceIForInterpolation}\\
-	\tilde{\ell}_{\sjpo} & = \frac{\zeta_i}{\ell_{\sjpo}} = \frac{\zeta_i}{|\bp_{\sjpo} - \bp_0|}
+	\tilde{\ell}_{\sjpo} & = \frac{\zeta}{\ell_{\sjpo}} = \frac{\zeta}{|\bp_{\sjpo} - \bp_0|}
 	\label{eq:distanceIp1ForInterpolation}
 \end{align}%
 \nomenclature[eb]{$\tilde{\ell}_j$}{also $\tilde{\ell}_{\sjpo}$, the distances for interpolation of $f_j$ and of $f_{\sjpo}$ towards $f_0$}%
@@ -142,19 +142,19 @@ Figure~\ref{fig:interpolatedFunctionValues} illustrates an enhanced view of the 
 %
 \section{Weighted Mean}
 \label{ch4sWM}
-In order to calculate the weighted mean function value at the center of gravity $\bc_i$, of the circle sector $\bs_i$, we must combine the original function value at the center point $f_0$, and both interpolated function values, $f'_j$ and $f'_{\sjpo}$. Then using the distance to the center of gravity $\check{\ell}_i$, and the formula
+In order to calculate the weighted mean function value at the center of gravity $\bc$, of the circle sector $\bs_i$, we must combine the original function value at the center point $f_0$, and both interpolated function values, $f'_j$ and $f'_{\sjpo}$. Then using the distance to the center of gravity $\check{\ell}$, and the formula
 \begin{equation}
-	\check{f}_i = f_0\,(1 - \check{\ell}_i) + \frac{(f'_j + f'_{\sjpo})\,\check{\ell}_i}{2}
+	\check{f} = f_0\,(1 - \check{\ell}) + \frac{(f'_j + f'_{\sjpo})\,\check{\ell}}{2}
 	\label{eq:weightedMeanAtCoGatSector}
 \end{equation}%
-\nomenclature[fa]{$\check{f}_i$}{the weighted mean function value at $\bc_i$ of $\bs_i$}%
-we obtain the weighted mean function value $\check{f}_i$, at the center of gravity, representing the entire circle sector.
+\nomenclature[fa]{$\check{f}$}{the weighted mean function value at $\bc$ of $\bs_i$}%
+we obtain the weighted mean function value $\check{f}$, at the center of gravity, representing the entire circle sector.
 
-Figure~\ref{fig:interpolatedFunctionValues} illustrates $\check{f}_i$ in sand color as a volume over an enhanced view of the circle sector $\bs_1$, continuing with the example introduced in Figure~\ref{fig:geodesicDisc}. The figure also shows details pertaining to the interpolation of the function values $f_j$ and $f_{\sjpo}$, as discussed in detail in Section~\ref{ch4sFVI}.
+Figure~\ref{fig:interpolatedFunctionValues} illustrates $\check{f}$ in sand color as a volume over an enhanced view of the circle sector $\bs_1$, continuing with the example introduced in Figure~\ref{fig:geodesicDisc}. The figure also shows details pertaining to the interpolation of the function values $f_j$ and $f_{\sjpo}$, as discussed in detail in Section~\ref{ch4sFVI}.
 
-Finally, we can compute the one-ring weighted mean function value at $\bp_0$ by first multiplying each interpolated function value located at each circle sector's center of gravity $\check{f}_i$, by each sector's area $A_i$, to obtain a volume of function value over the entire circle sector. Then by dividing the sum of all the function value volumes, by the total area of the geodesic disc $\bO_v$, we can compute
+Finally, we can compute the one-ring weighted mean function value at $\bp_0$ by first multiplying each interpolated function value located at each circle sector's center of gravity $\check{f}$, by each sector's area $A$, to obtain a volume of function value over the entire circle sector. Then by dividing the sum of all the function value volumes, by the total area of the geodesic disc $\bO_v$, we can compute
 \begin{equation}
-	f'_v := \frac{\sum A_if^{\bs}_i}{\sum A_i} \quad \forall i \in \{1,\ldots,|\bt_v|\}
+	f'_v := \frac{\sum A\check{f}}{\sum A} \quad \forall i \in \{1,\ldots,|\bt_v|\}
 	\label{eq:meanFuncValAtPv}
 \end{equation}%
 \nomenclature[fb]{$f'_v$}{the one-ring weighted mean function value at $\bp_v$}%
@@ -164,7 +164,7 @@ Figure~\ref{fig:weightedMean} illustrates the geodesic disc $\bO$, as introduced
 \begin{figure}[ht]
 \ffigbox
 	{\includegraphics[width=1.0\linewidth]{figures/funcValVolumes.png}}
-	{\caption[Weighted Mean Function Value $f'_v$at $\bp_v$]{The geodesic disc $\bO$, as introduced in Figure~\ref{fig:geodesicDisc}, with volumes of interpolated function values over each circle sector $\bs_i$, which shall be divided by each sector's area $A_i$ in order to obtain the the one-ring weighted mean function value $f'_v$ at $\bp_v$.}\label{fig:funcValVolumes}}
+	{\caption[Weighted Mean Function Value $f'_v$at $\bp_v$]{The geodesic disc $\bO$, as introduced in Figure~\ref{fig:geodesicDisc}, with volumes of interpolated function values over each circle sector $\bs$, which shall be divided by each sector's area $A$ in order to obtain the the one-ring weighted mean function value $f'_v$ at $\bp_v$.}\label{fig:funcValVolumes}}
 \end{figure}
 %
 \section{Summary}
