@@ -132,7 +132,7 @@ In the Figure~\ref{fig:circleSector}, a circle sector is produced by the points 
 
 \begin{figure}
 \ffigbox
-	{\includegraphics[width=1.0\linewidth]{figures/circleSector.png}}
+	{\includegraphics[width=0.6\linewidth]{figures/circleSector.png}}
 	{\caption[A Circle Sector in Detail]{The circle sector produced by points $\bp_a$, $\bp_b$, and $\bp_c$, with $\alpha$ as the central angle bisected by a dotted line, and $\ell_{a,b}$ as the length between points $\bp_a$ and $\bp_b$ which is equal radius of the circle. Also labeled is the center of gravity $\bc$ as well as the distance from the center point $\bp_a$ to $\bc$, drawn in a coral color as $\check{\ell}$}\label{fig:circleSector}}
 \end{figure}
 \todoStyle{convert the $l$s in the fig to $\ell$}
@@ -210,7 +210,7 @@ The Figure~\ref{fig:triangularFaces} shows two adjacent triangular faces $\bt_1$
 
 \begin{figure}
 \ffigbox
-	{\includegraphics[width=0.8\linewidth]{figures/triangularFaces.png}}
+	{\includegraphics[width=1.0\linewidth]{figures/triangularFaces.png}}
 	{\caption[Two Triangular Faces]{Two adjacent triangular faces $\bt_1$ and $\bt_2$, showing the relationship between their points $\bp_a$, $\bp_b$, and $\bp_c$, their edge lengths $\ell_a$, $\ell_b$, and $\check{\ell}$, and their clockwise orientation.}\label{fig:triangularFaces}}
 \end{figure}
 
@@ -242,13 +242,13 @@ When in the context of a particular face $\bt_k$, we will use a single index to 
 \end{equation}%
 \nomenclature[af]{$\ell_i$}{the length of edge $\ell_i$ of a specific face}%
 %
-and double indices $v,i$, when an edge length is referenced in relation to a specific point $\bp_v$ and its neighbor $\bp_i$
+and double indices when an edge length is referenced in relation to a specific point $\bp_v$ and its neighbor $\bp_i$
 %
 \begin{equation}
-	\ell_{v,i} := |\bp_i - \bp_v|
+	\ell_{\svi} := |\bp_i - \bp_v|
 	\label{eq:defineEdgeLengthPoint}
 \end{equation}%
-\nomenclature[ag]{$\ell_{v,i}$}{the length of distance from point $\bp_v$ to $\bp_i$}%
+\nomenclature[ag]{$\ell_{\svi}$}{the length of distance from point $\bp_v$ to $\bp_i$}%
 
 Please note the similar notation for the cardinality of a set $|\bP|$, to that for the calculation for the length of the edge $|\bp_i - \bp_v|$ as defined in Equation~\ref{eq:defineEdgeLengthPoint}. While cardinality is simply the count of elements in the set, the length is calculated as the L2-norm of the referenced vector.~\cite[p.~26]{Mara12}
 

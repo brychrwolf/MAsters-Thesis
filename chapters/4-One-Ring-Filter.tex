@@ -17,9 +17,7 @@ Given the triangle mesh of \tdd{} $\bM$, a superset of both a set of points $\bP
 \nomenclature[ba]{$\bp_0$}{the center point of $\bN_v$}%
 \nomenclature[ba]{$\elm(\bp_v)$}{the shortest edge length in $\bN_v$}%
 %
-when considered as a radius, defines the geodesic circle $\bO_v$ about the point $\bv$.
-
-Furthermore, to ensure that the filter window remains the same size\footnote{a footnote about filter window size importance}\todoReword{footnote about filter window size importance}\todoCitation{SBN-13: 9781598296204}\todoResearch{call to question the importance of global minimum edge length in light of the typo found in source} for the entirity of the mesh, we define
+when considered as a radius, defines the geodesic circle $\bO_v$ about the point $\bv$. Furthermore, to ensure that the filter window remains the same size for the entirity of the mesh\footnote{a footnote about filter window size importance}\todoReword{footnote about filter window size importance}\todoCitation{SBN-13: 9781598296204}\todoResearch{call to question the importance of global minimum edge length in light of the typo found in source}, we define
 %
 \begin{equation}
 	\gelm := \min\left \{\elm(\bp_0) \;|\; \bp_0 \in \bM\,\right \}
@@ -91,7 +89,7 @@ Figure~\ref{fig:anglesAndCenterOfGravity} extends Figure~\ref{fig:geodesicDisc} 
 
 \begin{figure}[ht]
 \ffigbox
-	{\includegraphics[width=0.5\linewidth]{figures/anglesAndCenterOfGravity.png}}
+	{\includegraphics[width=0.8\linewidth]{figures/anglesAndCenterOfGravity.png}}
 	{\caption[Angles and Center of Gravity]{An enhanced view of Figure~\ref{fig:geodesicDisc}, focusing on the circle sector $\bs_1$, showing $\alpha$ and the bisecting line in gray dots. In sand color is the center of gravity $\bc$ and $\check{\ell}$, the distance to it from $\bp_0$ along the bisecting line. Also shown in coral color, are the angles $\beta$, with the proxy right triangles used to calculate them.}\label{fig:anglesAndCenterOfGravity}}
 \end{figure}%
 
@@ -133,8 +131,8 @@ Figure~\ref{fig:interpolatedFunctionValues} illustrates an enhanced view of the 
 
 \begin{figure}[ht]
 \ffigbox
-	{\includegraphics[width=0.9\linewidth]{figures/interpolatedFunctionValues}}
-	{\caption[Interpolation of Function Values toward the Center of Gravity]{An enhanced view of the circle sector $\bs_1$, continuing with the example introduced in Figure~\ref{fig:geodesicDisc}, labeled in black are the function values $f_0$, $f_1$, and $f_6$, with the height of the line indicating magnitude of the value. Drawn in coral color, are the interpolated function values $f'_1$ and $f'_6$, along with the dotted lines illustrating how they were determined. In sand color is $\check{f}_1$, the weighted mean function value for the entire sector.}\label{fig:interpolatedFunctionValues}}
+	{\includegraphics[width=1.0\linewidth]{figures/interpolatedFunctionValues}}
+	{\caption[Interpolation of Function Values toward the Center of Gravity]{An enhanced view of the circle sector $\bs_1$, continuing with the example introduced in Figure~\ref{fig:geodesicDisc}, labeled in black are the function values $f_0$, $f_1$, and $f_2$, with the height of the line indicating magnitude of the value. Drawn in coral color, are the interpolated function values $f'_1$ and $f'_2$, along with the dotted lines illustrating how they were determined. In sand color is $\check{f}_1$, the weighted mean function value for the entire sector.}\label{fig:interpolatedFunctionValues}}
 \end{figure}
 \todoStyle{the fs need to match $f$}
 
@@ -165,7 +163,7 @@ the one-ring weighted mean\footnote{The one-ring smoothing filter can be modifie
 Figure~\ref{fig:weightedMean} illustrates the geodesic disc $\bO$, as introduced in Figure~\ref{fig:geodesicDisc}, with volumes of interpolated function value over each circle sector, which shall be divided by each sector's area in order to obtain the the one-ring weighted mean function value $f'_v$ at $\bp_v$.
 \begin{figure}[ht]
 \ffigbox
-	{\includegraphics[width=0.8\linewidth]{figures/funcValVolumes.png}}
+	{\includegraphics[width=1.0\linewidth]{figures/funcValVolumes.png}}
 	{\caption[Weighted Mean Function Value $f'_v$at $\bp_v$]{The geodesic disc $\bO$, as introduced in Figure~\ref{fig:geodesicDisc}, with volumes of interpolated function values over each circle sector $\bs_i$, which shall be divided by each sector's area $A_i$ in order to obtain the the one-ring weighted mean function value $f'_v$ at $\bp_v$.}\label{fig:funcValVolumes}}
 \end{figure}
 %
