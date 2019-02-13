@@ -14,8 +14,8 @@ Given the triangle mesh of \tdd{} $\bM$, a superset of both a set of points $\bP
 	\elm(\bp_0) := \text{min}^{|\bN_v|}_{i=1}\,\big(|\bp_i - \bp_0|\big)
 	\label{eq:localMinimumEdgeLength}
 \end{equation}%
-\nomenclature[ba]{$\bp_0$}{the center point of $\bN_v$}%
-\nomenclature[ba]{$\elm(\bp_v)$}{the shortest edge length in $\bN_v$}%
+\nomenclature[ja]{$\bp_0$}{the center point of $\bN_v$}%
+\nomenclature[jb]{$\elm(\bp_v)$}{the shortest edge length in $\bN_v$}%
 %
 when considered as a radius, defines the geodesic circle $\bO_v$ about the point $\bv$. Furthermore, to ensure that the filter window remains the same size for the entirity of the mesh\footnote{a footnote about filter window size importance}\todoReword{footnote about filter window size importance}\todoCitation{SBN-13: 9781598296204}\todoResearch{call to question the importance of global minimum edge length in light of the typo found in source}, we define
 %
@@ -23,7 +23,7 @@ when considered as a radius, defines the geodesic circle $\bO_v$ about the point
 	\gelm := \min\left \{\elm(\bp_0) \;|\; \bp_0 \in \bM\,\right \}
 	\label{eq:globalMinimumEdgeLength}
 \end{equation}%
-\nomenclature[bb]{$\gelm$}{the shortest edge length in $\bM$}%
+\nomenclature[jc]{$\gelm$}{the shortest edge length in $\bM$}%
 %
 as the shortest edge length among all adjacent points in the mesh $\bM$, so that in lieu of $\elm$, we can use $\gelm$ in all the following computations presented in this chapter.
 
@@ -53,7 +53,7 @@ or more compactly:
 	\alpha = cos^{-1}\left (\frac{\ell_c^2 + \ell_b^2 - \ell_a^2}{2\cdot\ell_c\cdot\ell_b}\right )
 	\label{eq:alphaFromEdgeLengths}
 \end{equation}%
-\nomenclature[ca]{$\alpha_i$}{the central angle of circle sector $\bs_i$}%
+\nomenclature[ka]{$\alpha$}{the central angle of circle sector $\bs_i$}%
 
 In order to interpolate the function values from each point over the entire sector, we must first interpolate the values one side of the bisecting line at a time, as will be discussed in detail in Section~\ref{ch4sWM}. For those coupled computations, the angles $\beta$ will be required, and having now obtained the $\alpha$, they can be calculated using a proxy right triangle and the third angle theorem\footnote{otherwise known as the Angle-Angle-Angle Theorem, abbreviated as AAA}~\cite{Weisstein19f} as
 %
@@ -61,7 +61,7 @@ In order to interpolate the function values from each point over the entire sect
 	\beta = \Big(\frac{\pi}{2} - \frac{\alpha}{2}\Big) = \frac{(\pi - \alpha)}{2}
 	\label{eq:betaFromHalfAlpha}
 \end{equation}%
-\nomenclature[cb]{$\beta$}{the third angle with $\frac{\alpha}{2}$ and $\frac{\pi}{2}$}%
+\nomenclature[kb]{$\beta$}{the third angle with $\frac{\alpha}{2}$ and $\frac{\pi}{2}$}%
 
 Figure~\ref{fig:anglesAndCenterOfGravity} extends Figure~\ref{fig:geodesicDisc} by enhancing the circle sector $\bs_1$ to show an example of the angles $\alpha/2$ and $\beta$, with the proxy right triangles used to calculate it, as well as the center of gravity which is discussed in detail in Section~\ref{ch4sIACG}.
 
@@ -97,15 +97,15 @@ Figure~\ref{fig:anglesAndCenterOfGravity} extends Figure~\ref{fig:geodesicDisc} 
 %
 %
 %
-\section{Function Values \& Interpolation}
-\label{ch4sFVI}
+\section{Interpolation}
+\label{ch4sI}
 Given the scalar field\footnote{\forf{T} is agnostic to the meaning of information represented by the data stored as function values in scalar fields, therefore, it can similarly convolve any such data. However, because the filter was designed to only convolve scalar fields, any multi-dimensional data, such as RGB color, must be processed individually as independent scalar fields.} of function values $\bF$, and having now calculated $\beta$, and $\gelm$, both values which are constant between halves of the circle sector, we can next use the Law of Sines~\cite{Weisstein19g} to obtain the constant ratio
 %
 \begin{equation}
 	\zeta = \frac{\gelm}{\sin(\beta)}
 	\label{eq:zeta}
 \end{equation}%
-\nomenclature[ea]{$\zeta$}{constant ratio for interpolation derived from Law of Sines}%
+\nomenclature[la]{$\zeta$}{constant ratio for interpolation derived from Law of Sines}%
 
 It should be noted, that because the points $\bp_j$ and $\bp_{\sjpo}$ are likely\footnote{One need only to look at Figures~\ref{fig:geodesicDisc} or~\ref{fig:anglesAndCenterOfGravity} for an example of why that may be.} at different distances from the center point $\bp_0$, we must now begin calculating for each half of the circular sector individually. Therefore, while the index for $\zeta$ remains the match for the index of the circle sector $\bs$, we will now use the index $j$ to denote the side of the sector defined by its point $\bp_j$ or $\bp_{\sjpo}$.
 
@@ -116,7 +116,7 @@ Next, using $\zeta$, we can interpolate the offset from the original function va
 	\tilde{\ell}_{\sjpo} & = \frac{\zeta}{\ell_{\sjpo}} = \frac{\zeta}{|\bp_{\sjpo} - \bp_0|}
 	\label{eq:distanceIp1ForInterpolation}
 \end{align}%
-\nomenclature[eb]{$\tilde{\ell}_j$}{also $\tilde{\ell}_{\sjpo}$, the distances for interpolation of $f_j$ and of $f_{\sjpo}$ towards $f_0$}%
+\nomenclature[lb]{$\tilde{\ell}_j$}{also $\tilde{\ell}_{\sjpo}$, the distances for interpolation of $f_j$ and of $f_{\sjpo}$ towards $f_0$}%
 
 Then, applying the offset distances $\tilde{\ell}_j$ and $\tilde{\ell}_{\sjpo}$, to the original function values $f_0$, $f_j$, and $f_{\sjpo}$, we can now interpolate the function values at $\bp_j$ and $\bp_{\sjpo}$ as
 \begin{align}
@@ -125,7 +125,7 @@ Then, applying the offset distances $\tilde{\ell}_j$ and $\tilde{\ell}_{\sjpo}$,
 	f'_{\sjpo} & = f_0(1 - \tilde{\ell}_{\sjpo}) + f_{\sjpo}\tilde{\ell}_{\sjpo}
 	\label{eq:interpolatedFip1}
 \end{align}%
-\nomenclature[ec]{$f'_j$}{also $f'_{\sjpo}$, the interpolated values of $f_j$ and $f_{\sjpo}$ toward $f_0$}%
+\nomenclature[lc]{$f'_j$}{also $f'_{\sjpo}$, the interpolated values of $f_j$ and $f_{\sjpo}$ toward $f_0$}%
 
 Figure~\ref{fig:interpolatedFunctionValues} illustrates an enhanced view of the circle sector $\bs_1$, continuing with the example introduced in Figure~\ref{fig:geodesicDisc}. It shows how, as a result of \tdd{} being composed of a discrete manifold, therefore, all function values must be stored 1-for-1 at the location of each point, instead of simply interpolating the function values at the corners of the geodesic disc, which are at the distance $\gelm$ between $\bp_0$ and $\bp_j$ or $\bp_{\sjpo}$, we must\todoAsk{but must we? we aren't ever going to save these values since they are unique to every neighborhood} instead interpolate as if $f_j$ were at $\gelm$, then calculate the $f'_j$ at the point $\bp_j$, so that either $f_0 \leq f_j \leq f'_j$ or $f_0 \geq f_j \geq f'_j$ are true\footnote{or both in the case that $\ell_j$ is equal to $\gelm$}, then likewise for $f'_{\sjpo}$. Furthermore, it illustrates how we must also interpolate from the points to the center of gravity, which we will discuss in detail Section~\ref{ch4sWM}.
 
@@ -147,7 +147,7 @@ In order to calculate the weighted mean function value at the center of gravity 
 	\check{f} = f_0\,(1 - \check{\ell}) + \frac{(f'_j + f'_{\sjpo})\,\check{\ell}}{2}
 	\label{eq:weightedMeanAtCoGatSector}
 \end{equation}%
-\nomenclature[fa]{$\check{f}$}{the weighted mean function value at $\bc$ of $\bs_i$}%
+\nomenclature[ma]{$\check{f}$}{the weighted mean function value at $\bc$ of $\bs_i$}%
 we obtain the weighted mean function value $\check{f}$, at the center of gravity, representing the entire circle sector.
 
 Figure~\ref{fig:interpolatedFunctionValues} illustrates $\check{f}$ in sand color as a volume over an enhanced view of the circle sector $\bs_1$, continuing with the example introduced in Figure~\ref{fig:geodesicDisc}. The figure also shows details pertaining to the interpolation of the function values $f_j$ and $f_{\sjpo}$, as discussed in detail in Section~\ref{ch4sFVI}.
@@ -157,7 +157,7 @@ Finally, we can compute the one-ring weighted mean function value at $\bp_0$ by 
 	f'_v := \frac{\sum A\check{f}}{\sum A} \quad \forall i \in \{1,\ldots,|\bt_v|\}
 	\label{eq:meanFuncValAtPv}
 \end{equation}%
-\nomenclature[fb]{$f'_v$}{the one-ring weighted mean function value at $\bp_v$}%
+\nomenclature[mb]{$f'_v$}{the one-ring weighted mean function value at $\bp_v$}%
 the one-ring weighted mean\footnote{The one-ring smoothing filter can be modified to use the median operation, instead of the mean, by using all the equations except Equation~\ref{eq:meanFuncValAtP0} and then sorting the results of Equation~\ref{eq:weightedMeanAtCoGatSector}. The details of which can be found by the original publication ~\cite[s.~3.2]{Mara17}, but as it was not implemented in GPGPU for this thesis, we exclude the details here.} function value for $\bp_v$, which is the center point $\bp_0$ of the neighborhood $\bN_v$.
 
 Figure~\ref{fig:weightedMean} illustrates the geodesic disc $\bO$, as introduced in Figure~\ref{fig:geodesicDisc}, with volumes of interpolated function value over each circle sector, which shall be divided by each sector's area in order to obtain the the one-ring weighted mean function value $f'_v$ at $\bp_v$.
