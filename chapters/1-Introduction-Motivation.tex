@@ -1,6 +1,11 @@
 \chapter{Introduction \& Motivation}
-It is no surprise that implementing serial code in a concurrent way, then executing that in parallel with GPGPUs will net speed increases. What may be a surprise however is the complexity and amount of effort it that it make take one in order to implement concurrent code and achieve the correctness required and  efficiency desired from the program. This thesis has three parts: 1. presenting an updated version of the Fast One-Ring smoothing filter for scalar fields on discrete manifolds, 2. a guide to profiling a serial program for opportunities to exploit concurrency, and then implementing those findings on hardware capable for parallel processing, 3. four synthetic mesh generators which can be configured to different size and scalar field combinations.
-%\section{3D Data is important (and big).} 
+\label{ch1}
+It should come as no surprise that if one were to implement an algorithm in a way which was aware of data dependencies, the time required for the computation to complete could significantly decrease when executing that program in parallel on GPGPUs (General Purpose Graphical Processing Units). \todoReword{sounds like whining} What may be a surprise however is the complexity and amount of effort it that it make take one in order to implement concurrent code and achieve the correctness required and efficiency desired from the program. This thesis has three parts: first, the presentation of the updated version of Forf{t}, second, exploring the details of the algorithm as an example for discovering opportunities to exploit concurrency, third, a guide to implementing those findings on hardware capable for parallel processing. As a bonus, also included are the details about the four synthetic mesh generators which we developed during the course of our research.
+ 
+%
+%
+%
+\section{3D Data is important (and big).} 
 
 \section{Filtering techniques for irregular triangle meshes, have not yet been established}
 %

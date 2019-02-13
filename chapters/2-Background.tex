@@ -1,6 +1,6 @@
 \chapter{Background}
 \label{ch2}
-\Forf{T} relies on the research from many fields of study in both mathematics and computer science. In this chapter we will briefly examine the underlying theory, concepts, and frameworks upon which we rely to convey the ideas presented in this thesis and bring to fruition the work invested in designing and developing \forf{t}.
+\Forf{T} relies on the research from many fields of study in both mathematics and computer science. In this chapter we will briefly examine the underlying theory, concepts, and frameworks upon which we rely to convey the ideas presented in this thesis and bring to fruition the work invested in designing and developing \Forf{t}.
 \todoReword{Elaborate like a teasing summary}
 
 %
@@ -58,6 +58,32 @@ Among all the basic binary operations one can perform on a set\footnote{which ar
 \end{equation}
 \todoReword{would look better to have words here}
 As a final note, a ``family of sets'' is very similar to a superset, with only the subtle difference that all the subsets it contains should have some quality in common. For example, in Section~\ref{ch2s3ssNRN} we will define the set of sets of neighbors as a family of sets, with the common quality being that all the subsets are neighborhoods.
+
+%
+%
+%
+\subsection{Linear Algebra}
+\label{ch2sBssLA}
+
+%
+\subsubsection{L2-norm}
+\label{ch2sBssLAsssL2N}
+\todoBackground{find all L2-norm and edge length references, and introduce the concept here}
+The equation for calculating the L2-norm of a position vector is
+\begin{equation}
+	\|\bp\|_2 = \sqrt{\bp_x^2 + \bp_y^2\ + \bp_y^2\|_2}
+	\label{eq:l2norm}
+\end{equation}
+L2-norm is also called the ``Euclidean norm.'' ~\cite{Weisstein19h}
+
+%
+\subsubsection{Subtracting Two Vectors}
+\label{ch2sBssLAsssS2V}
+\todoBackground{vector subtraction}
+\begin{equation}
+	A - B = \{A_x - B_x, A_y - B_y, A_z - B_z\}
+	\label{eq:vectorSubtraction}
+\end{equation}
 
 %
 %
@@ -122,17 +148,18 @@ because the area of the sector can be obtained by multiplying the circle's total
 
 %
 \subsubsection{Center of Gravity}
-\label{ch2sBssGsssCS}
+\label{ch2sBssGsssCG}
 Along with area, the other important characteristic of a circle sector for \forf{t} is the centroid, or center of gravity. So named, because it is the point where the sector would balance on a pin\footnote{given that it had been bestowed a volume with uniform density}. The center of gravity $\bc$ is calculated as the distance from the center point $\bp_a$, along the line which bisects the central angle $\alpha$, or is given by
 %
 \begin{equation}
 	\check{\ell} := \frac{4\:\gelm\:\sin(\frac{\alpha_i}{2})}{3\,\alpha_i}
 	\label{eq:ch2distToCoG}
-\end{equation}%
-\nomenclature[ca]{$\check{\ell}$}{the distance from $\bp_0$ to $\bc$}%
+\end{equation}%%
+\nomenclature[ca]{$\bc$}{the center of gravity of circle sector $\bs_i$}%
+\nomenclature[cb]{$\check{\ell}$}{the distance from $\bp_0$ to $\bc$}%
 
 This line which bisects the center angle of a circle sector, while not used explicitly in calculations, is an important concept for much of the computations used by \forf{t}, as will be seen in Chapter~\ref{ch4}. Therefore, we make a special note here that the abbreviated, "bisecting line," indeed refers to this line which splits the circle sector, and its central angle $\alpha$, into two equivalent halves.%
-\nomenclature[cb]{``bisecting line''}{the line which bisects the center angle of a circle sector}%
+\nomenclature[cc]{``bisecting line''}{the line which bisects the center angle of a circle sector}%
 
 In the Figure~\ref{fig:circleSector}, a circle sector is produced by the points $\bp_a$, $\bp_b$, and $\bp_c$, has the central angle $\alpha$, which is bisected by a dotted line, and $\ell_{a,b}$\footnote{$\ell_{a,b}$ was chosen to represent the radius instead of the much more common $r$, because in \tdd{}, edges are not stored, yet distances between points can be calculated as shown in Section~\ref{ch2s3ssEL}} representing the length between points $\bp_a$ and $\bp_b$, which is equal radius of the circle. Also shown, is the center of gravity $\bc$, as well as $\check{\ell}$, the distance to $\bc$ from the center point $\bp_a$.
 
@@ -246,7 +273,7 @@ When in the context of a particular face $\bt_k$, we will use a single index to 
 	\ell_a := |\bp_b - \bp_c| \enspace:\enspace \left \{\,\bp_a,\,\bp_b,\,\bp_c\right \} = \bt_k
 	\label{eq:defineEdgeLengthFace}
 \end{equation}%
-\nomenclature[ga]{$\ell_i$}{the length of edge $\ell_i$ of a specific face}%
+\nomenclature[ga]{$\ell_i$}{the length of the edge opposite the point $\bp_i$ of a specific face}%
 %
 and double indices when an edge length is referenced in relation to a specific point $\bp_v$ and its neighbor $\bp_i$
 %
@@ -254,7 +281,7 @@ and double indices when an edge length is referenced in relation to a specific p
 	\ell_{\sv{i}} := |\bp_i - \bp_v|
 	\label{eq:defineEdgeLengthPoint}
 \end{equation}%
-\nomenclature[gb]{$\ell_{\sv{i}}$}{the length of distance from point $\bp_v$ to $\bp_i$}%
+\nomenclature[gb]{$\ell_{\sv{i}}$}{the length of the edge between points $\bp_v$ and $\bp_i$}%
 
 Please note the similar notation for the cardinality of a set $|\bP|$, to that for the calculation for the length of the edge $|\bp_i - \bp_v|$ as defined in Equation~\ref{eq:defineEdgeLengthPoint}. While cardinality is simply the count of elements in the set, the length is calculated as the L2-norm of the referenced vector.~\cite[p.~26]{Mara12}
 
@@ -284,7 +311,7 @@ In \tdd{}, a mesh $\bM$ is the digital representation of a discrete manifold emb
 %
 with the set $\bP$ consisting of points, and the set $\bT$ consisting of triangular faces.
 
-Many 3D-scanners produce point clouds\todoCitation{}{}, which as the name suggests, are comprised soley of a set of points $\bP$ and do not provide the set $\bT$. However, it is possible, and necessary for the production of a mesh, to perform a point set triangulation\todoCitation{}{} in order to connect $\bP$ into a set of triangle faces, enabling one to combine the two sets into a mesh~\cite[p.~26]{Mara12}. For example, during our experiments, we perform the well-known Delaunay triangulation\todoCitation{} in order to produce a mesh from a randomly generated point cloud\todoReword{add ref to experiments}.
+Many 3D-scanners produce point clouds\todoCitation{}{}, which as the name suggests, are comprised soley of a set of points $\bP$ and do not provide the set $\bT$. However, it is possible, and necessary for the production of a mesh, to perform a point set triangulation\todoCitation{} in order to connect $\bP$ into a set of triangle faces, enabling one to combine the two sets into a mesh~\cite[p.~26]{Mara12}. For example, during our experiments, we perform the well-known Delaunay triangulation\todoCitation{} in order to produce a mesh from a randomly generated point cloud\todoReword{add ref to experiments}.
 
 %
 %
@@ -298,7 +325,7 @@ It was mentioned in Section~\ref{ch2sBssT}, that determining the neighborhood of
 	\label{eq:defineNeighborhood}
 \end{equation}%
 \nomenclature[ha]{$\bN_v$}{the set of points comprising the one-ring neighborhood about $\bP_v$}%
-\nomenclature[hb]{$\bp_i$}{a one-ring neighbor of $\bP_v$}%
+\nomenclature[hb]{$\bp_i$}{a one-ring neighbor of $\bp_v$}%
 \todoStyle{consider changing font of N to imply FAMILY of sets, not just a set}
 \todoBackground{add $\subseteq$}
 %
@@ -354,6 +381,25 @@ because function values are only stored alongside the Cartesian coordinates, 1-f
 %
 %
 \section{Architectures of Concurrency}
+
+%
+%
+%
+\section{Control \& Data Dependencies}
+The concept of control and data dependencies is not a new one, and can be dated back to the invention of multi-pass compilers\todoCitation{Data Dependencies and multi-pass compilers}. The field of study regarding the details of these limitations is called dependence analysis\todoCitation{dependence analysis}. In general, the basic concept behind control and data dependencies is that some procedure A is called dependent on another procedure B, if A requires B to be executed first. 
+
+A simple example of a control dependency is the ubiquitous if-then statement: if A, then do B. In this case B is control dependent on A, because A must execute before it can be determined wether or not to execute B.
+
+An example of a data dependency which have already seen, and will see often in this thesis, can be found in Equation~\ref{eq:l2norm}, calculating the L2-norm of a position vector in $\mathbb{R}^{3}$. 
+There are six individual procedures involved with calculating the L2-norm: three squarings, two additions, and one square root. The three squarings procedures are totally independent of each other and can be performed in any order in relation to one another. However, the two additions, while also being independent of each other, are dependent on their respective addends' squaring procedures. As the final square root procedure is dependent on the execution of both additions, it also inherits their dependencies on the squaring procedures, and must wait until the very end before executing last.
+
+Figure~\ref{fig:dataDependencyOfL2Norm} illustrates the details of the data dependencies inherent to computing the L2-norm on a position vector in $\mathbb{R}^{3}$.
+
+\begin{figure}
+\ffigbox
+	{\includegraphics[width=1.0\linewidth]{figures/dataDependencyOfL2Norm.png}}
+	{\caption[dataDependencyOfL2Norm]{The data dependencies inherent to computing Equation~\ref{eq:l2norm}, the L2-norm on a position vector in $\mathbb{R}^{3}$, .}\label{fig:dataDependencyOfL2Norm}}
+\end{figure}
 
 %
 %

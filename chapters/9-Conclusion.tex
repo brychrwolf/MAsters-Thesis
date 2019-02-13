@@ -3,16 +3,17 @@
 \section{Summary}
 %
 \section{Future Work}
-%What they are and why I did not.
-%\begin{itemize}
-%	\item Implement in OpenCL to include all GPUs
-%	\item Implement in OpenMP to use multiple machines
-%	\item Implement in PThreads to exploit MIMP
-%	\item Pipelining memory reads/calculations exploit more concurrency
-%	\item Edge case handling: max mesh size in memory, Derive calculation for compute time per iteration by mesh size. Maybe find when load time is greater than iteration time
-%	\item support other file types
-%	\item Calculating edge length takes longest, so DO NOT DOUBLE EFFORT HERE
-%	\item Determine is using $\elm$ vs $\bar{\elm}$ has any effect, especially on one-ring neighborhood with a relatively large $\elm$ on mesh with a very small $\bar{\elm}$ 
-%	\item More analysis on \forf. it is my intuition that the un-isotropic nature of the filter is due to the speed at which information travels along longer edges.
-%	\item Apply the filter to multi-channel vector fields like RGB, however color-wheel based methods may be better
-%\end{itemize}
+What they are and why I did not.
+\begin{itemize}
+	\item Implement in OpenCL to include all GPUs
+	\item Implement in OpenMP to use multiple machines
+	\item Implement in PThreads to exploit MIMP
+	\item Pipelining memory reads/calculations exploit more concurrency
+	\item Edge case handling: max mesh size in memory, Derive calculation for compute time per iteration by mesh size. Maybe find when load time is greater than iteration time
+	\item support other file types
+	\item Calculating edge length takes longest, so DO NOT DOUBLE EFFORT HERE
+	\item Determine is using $\elm$ vs $\bar{\elm}$ has any effect, especially on one-ring neighborhood with a relatively large $\elm$ on mesh with a very small $\bar{\elm}$ 
+	\item More analysis on \forf. it is my intuition that the un-isotropic nature of the filter is due to the speed at which information travels along longer edges.
+	\item Apply the filter to multi-channel vector fields like RGB, however color-wheel based methods may be better
+	\item Implement Median and Mode version of filter (others based on what's foudn in 2d filter results)
+\end{itemize}

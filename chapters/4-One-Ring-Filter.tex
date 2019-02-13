@@ -39,7 +39,7 @@ Figure~\ref{fig:geodesicDisc} shows a typical configuration of a one-ring neighb
 %
 %
 %
-\section{Angles}
+\section{Interior Angles}
 \label{ch4sIA}
 Before we can calculate the area of the circle sectors in $\bO_v$, we must first compute the inner angle $\alpha$ for each triangle $\bt$ in the neighborhood $\bN_v$. That is possible using the using the Law of Cosines~\cite{Weisstein19e}
 %
@@ -99,13 +99,13 @@ Figure~\ref{fig:anglesAndCenterOfGravity} extends Figure~\ref{fig:geodesicDisc} 
 %
 \section{Interpolation}
 \label{ch4sI}
-Given the scalar field\footnote{\forf{T} is agnostic to the meaning of information represented by the data stored as function values in scalar fields, therefore, it can similarly convolve any such data. However, because the filter was designed to only convolve scalar fields, any multi-dimensional data, such as RGB color, must be processed individually as independent scalar fields.} of function values $\bF$, and having now calculated $\beta$, and $\gelm$, both values which are constant between halves of the circle sector, we can next use the Law of Sines~\cite{Weisstein19g} to obtain the constant ratio
+Given the scalar field\footnote{\forf{T} is agnostic to the meaning of information represented by the data stored as function values in scalar fields, therefore, it can similarly convolve any such data. However, because the filter was designed to only convolve scalar fields, any multi-dimensional data, such as RGB color, must be processed individually as independent scalar fields.} of function values $\bF$, and having now calculated $\beta$, and $\gelm$, both values which are constant between the two halves of the circle sector, we can next use the Law of Sines~\cite{Weisstein19g} to obtain the pairwise constant ratio
 %
 \begin{equation}
 	\zeta = \frac{\gelm}{\sin(\beta)}
 	\label{eq:zeta}
 \end{equation}%
-\nomenclature[la]{$\zeta$}{constant ratio for interpolation derived from Law of Sines}%
+\nomenclature[la]{$\zeta$}{pairwise constant ratio for interpolation derived from Law of Sines}%
 
 It should be noted, that because the points $\bp_j$ and $\bp_{\sjpo}$ are likely\footnote{One need only to look at Figures~\ref{fig:geodesicDisc} or~\ref{fig:anglesAndCenterOfGravity} for an example of why that may be.} at different distances from the center point $\bp_0$, we must now begin calculating for each half of the circular sector individually. Therefore, while the index for $\zeta$ remains the match for the index of the circle sector $\bs$, we will now use the index $j$ to denote the side of the sector defined by its point $\bp_j$ or $\bp_{\sjpo}$.
 
@@ -169,4 +169,4 @@ Figure~\ref{fig:weightedMean} illustrates the geodesic disc $\bO$, as introduced
 %
 \section{Summary}
 \label{ch4sS}
-In this chapter we presented an updated version of \Forf{t}, which since its original publication~\cite[s.~3.2]{Mara17}, now utilizes the entire area of the geodesic discs $\bO$ centered at each point in the mesh $\bp_v$, in order to calculate the weighted average of all the function values in its one-ring neighborhood. First, we illustrated in detail how one can calculate the globally shortest edge length $\gelm$, interior angles $\alpha$ and $\beta$, the area $A$, and the distance $\check{\ell}$ from the center point to the center of gravity $\bc$, for any given of a sector $\bs$ of a geodesic disc $\bO$ in a one-ring neighborhood $\bN$ of mesh $\bM$. Next, we provided the equations for interpolating the three function values $f_0$, $f_j$, and $f_{\sjpo}$, using the pairwise constant ratio $\zeta$, in order to obtain the weighted mean function value for each $\bs$, and finally the weighted mean function value $\bar{f_0}$ at point ${\bp_0}$ for the entire one-ring neighborhood $\bN$. Convolving this filter with the scalar field of function values at each vertex in a mesh, for any number of iterations, thus produces a smoothing effect with increasing intensity in relation to the number of iterations.
+In this chapter we presented an updated version of \Forf{t}, which since its original publication~\cite[s.~3.2]{Mara17}, now utilizes the entire area of each sector $\bs$ of the geodesic disc $\bO$ centered at each point $\bp_v$ in the mesh $\bM$, in order to calculate the weighted average of all the function values in its one-ring neighborhood. First, we illustrated in detail how one can calculate the globally shortest edge length $\gelm$, interior angles $\alpha$ and $\beta$, the area $A$, and the distance $\check{\ell}$ from the center point to the center of gravity $\bc$, for any given of circle sector in a one-ring neighborhood $\bN$. Next, we provided the equations for interpolating the three function values $f_0$, $f_j$, and $f_{\sjpo}$, using the pairwise constant ratio $\zeta$ in order to obtain the weighted mean function value $\tilde{f}$ for each $\bs$, and finally the weighted mean function value $f'_v$ at point $\bp_v$, representing the entire one-ring neighborhood $\bN$. Convolving this filter at each vertex in the mesh, with the scalar field of function values $\bF$, for any number of iterations, thus produces a smoothing effect with increasing intensity in relation to the number of iterations.

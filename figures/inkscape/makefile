@@ -5,7 +5,8 @@ SVGS_OUTPUTS =  ../geodesicDisc.png \
 				../circleSector.png \
 				../neighborhoods.png \
 				../triangularFaces.png \
-				../interpolatedFunctionValues.png
+				../interpolatedFunctionValues.png \
+				../dataDependencyOfL2Norm.png
 
 
 
