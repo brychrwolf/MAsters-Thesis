@@ -351,20 +351,35 @@ because function values are only stored alongside the Cartesian coordinates, 1-f
 \section{Architectures of Concurrency}
 
 %
+%
+%
 \subsection{Serial Computation \& Threads}
 %thread can be identified using a one-dimensional, two-dimensional, or three-dimensional thread index, forming a one-dimensional, two-dimensional, or three- dimensional block of thread, called a thread block. This provides a natural way to invoke computation across the elements in a domain such as a vector, matrix, or volume. However, a kernel can be executed by multiple equally-shaped thread blocks, so that the total number of thread is equal to the number of thread per block times the number of blocks. thread blocks are required to execute independently: It must be possible to execute them in any order, in parallel or in series. This independence requirement allows thread blocks to be scheduled in any order across any number of cores as illustrated by Figure 5, enabling programmers to write code that scales with the number of cores. [7, p. 2.2]
 \todoReword{found elsewhere in thesis}
+
+%
+%
 %
 \subsection{Multi-threaded Computation}
 %Processors through Supercomputers and Data Centers
+
+%
+%
 %
 \subsection{Concurrency vs Parallelism}
+\label{ch2sACssCVP}
+
+%
+%
 %
 \subsection{Flynn's taxonomy}
 1.1	Single instruction stream single data stream (SISD)
 1.2	Single instruction stream, multiple data streams (SIMD)
 1.3	Multiple instruction streams, single data stream (MISD)
 1.4	Multiple instruction streams, multiple data streams (MIMD)
+
+%
+%
 %
 \section{CUDA: An interface for GPGPU implementation}
 \subsection{CUDA C Runtime}%3.2. CUDA C Runtime}
