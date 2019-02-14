@@ -41,7 +41,7 @@ Figure~\ref{fig:geodesicDisc} shows a typical configuration of a one-ring neighb
 %
 \section{Interior Angles}
 \label{ch4sIA}
-Before we can calculate the area of the circle sectors in $\bO_v$, we must first compute the inner angle $\alpha$ for each triangle $\bt$ in the neighborhood $\bN_v$. That is possible using the using the Law of Cosines~\cite{Weisstein19e}
+Before we can calculate the area of the circle sectors in $\bO_v$, we must first compute the inner angle $\alpha_i$ for each triangle $\bt_i$ in the neighborhood $\bN_v$. That is possible using the using the Law of Cosines~\cite{Weisstein19e}
 %
 \begin{equation}
 	\alpha_i = cos^{-1}(\frac{|\bp_0 - \bp_{i}|^2 + |\bp_0 - \bp_{\sipo}|^2 - |\bp_i - \bp_{\sipo}|^2}{2\cdot|\bp_0 - \bp_{i}|\cdot|\bp_0 - \bp_{\sipo}|})
@@ -120,21 +120,22 @@ Next, using $\zeta$, we can interpolate the offset from the original function va
 
 Then, applying the offset distances $\tilde{\ell}_j$ and $\tilde{\ell}_{\sjpo}$, to the original function values $f_0$, $f_j$, and $f_{\sjpo}$, we can now interpolate the function values at $\bp_j$ and $\bp_{\sjpo}$ as
 \begin{align}
-	f'_j & = f_0(1 - \tilde{\ell}_j) + f_j\tilde{\ell}_j
+	f'_j & = f_0\,(1 - \tilde{\ell}_j) + f_j\,\tilde{\ell}_j
 	\label{eq:interpolatedFi} \\
-	f'_{\sjpo} & = f_0(1 - \tilde{\ell}_{\sjpo}) + f_{\sjpo}\tilde{\ell}_{\sjpo}
+	f'_{\sjpo} & = f_0\,(1 - \tilde{\ell}_{\sjpo}) + f_{\sjpo}\tilde{\ell}_{\sjpo}
 	\label{eq:interpolatedFip1}
 \end{align}%
 \nomenclature[lc]{$f'_j$}{also $f'_{\sjpo}$, the interpolated values of $f_j$ and $f_{\sjpo}$ toward $f_0$}%
 
 Figure~\ref{fig:interpolatedFunctionValues} illustrates an enhanced view of the circle sector $\bs_1$, continuing with the example introduced in Figure~\ref{fig:geodesicDisc}. It shows how, as a result of \tdd{} being composed of a discrete manifold, therefore, all function values must be stored 1-for-1 at the location of each point, instead of simply interpolating the function values at the corners of the geodesic disc, which are at the distance $\gelm$ between $\bp_0$ and $\bp_j$ or $\bp_{\sjpo}$, we must\todoAsk{but must we? we aren't ever going to save these values since they are unique to every neighborhood} instead interpolate as if $f_j$ were at $\gelm$, then calculate the $f'_j$ at the point $\bp_j$, so that either $f_0 \leq f_j \leq f'_j$ or $f_0 \geq f_j \geq f'_j$ are true\footnote{or both in the case that $\ell_j$ is equal to $\gelm$}, then likewise for $f'_{\sjpo}$. Furthermore, it illustrates how we must also interpolate from the points to the center of gravity, which we will discuss in detail Section~\ref{ch4sWM}.
+\todoReword{update after change to fig}
 
 \begin{figure}[ht]
 \ffigbox
 	{\includegraphics[width=1.0\linewidth]{figures/interpolatedFunctionValues}}
 	{\caption[Interpolation of Function Values toward the Center of Gravity]{An enhanced view of the circle sector $\bs_1$, continuing with the example introduced in Figure~\ref{fig:geodesicDisc}, labeled in black are the function values $f_0$, $f_1$, and $f_2$, with the height of the line indicating magnitude of the value. Drawn in coral color, are the interpolated function values $f'_1$ and $f'_2$, along with the dotted lines illustrating how they were determined. In sand color is $\check{f}_1$, the weighted mean function value for the entire sector.}\label{fig:interpolatedFunctionValues}}
 \end{figure}
-\todoStyle{the fs need to match $f$}
+\todoReword{after update to figure}
 
 %
 %
@@ -150,21 +151,23 @@ In order to calculate the weighted mean function value at the center of gravity 
 \nomenclature[ma]{$\check{f}$}{the weighted mean function value at $\bc$ of $\bs_i$}%
 we obtain the weighted mean function value $\check{f}$, at the center of gravity, representing the entire circle sector.
 
-Figure~\ref{fig:interpolatedFunctionValues} illustrates $\check{f}$ in sand color as a volume over an enhanced view of the circle sector $\bs_1$, continuing with the example introduced in Figure~\ref{fig:geodesicDisc}. The figure also shows details pertaining to the interpolation of the function values $f_j$ and $f_{\sjpo}$, as discussed in detail in Section~\ref{ch4sFVI}.
+Figure~\ref{fig:interpolatedFunctionValues} illustrates $\check{f}_1$ in sand color as a volume over an enhanced view of the circle sector $\bs_1$, continuing with the example introduced in Figure~\ref{fig:geodesicDisc}. The figure also shows details pertaining to the interpolation of the function values $f_j$ and $f_{\sjpo}$, as discussed in detail in Section~\ref{ch4sI}.
+\todoReword{update after changes to figure}
 
-Finally, we can compute the one-ring weighted mean function value at $\bp_0$ by first multiplying each interpolated function value located at each circle sector's center of gravity $\check{f}$, by each sector's area $A$, to obtain a volume of function value over the entire circle sector. Then by dividing the sum of all the function value volumes, by the total area of the geodesic disc $\bO_v$, we can compute
+
+Finally, we can multiply each interpolated function value located at each circle sector's center of gravity $\check{f}_i$, by each sector's area $A_i$, to obtain a volume of function value over the entire circle sector. Then by dividing the sum of all those sector-wise function value volumes by the total area of the geodesic disc $\bO_v$, we can compute
 \begin{equation}
-	f'_v := \frac{\sum A\check{f}}{\sum A} \quad \forall i \in \{1,\ldots,|\bt_v|\}
+	f'_v := \frac{\sum A_i\check{f}_i}{\sum A_i} \quad \forall i \in \{1,\ldots,\,|\bN_v|\}
 	\label{eq:meanFuncValAtPv}
 \end{equation}%
 \nomenclature[mb]{$f'_v$}{the one-ring weighted mean function value at $\bp_v$}%
-the one-ring weighted mean\footnote{The one-ring smoothing filter can be modified to use the median operation, instead of the mean, by using all the equations except Equation~\ref{eq:meanFuncValAtP0} and then sorting the results of Equation~\ref{eq:weightedMeanAtCoGatSector}. The details of which can be found by the original publication ~\cite[s.~3.2]{Mara17}, but as it was not implemented in GPGPU for this thesis, we exclude the details here.} function value for $\bp_v$, which is the center point $\bp_0$ of the neighborhood $\bN_v$.
+the one-ring weighted mean\footnote{\forf{T} can be modified to use the median operation, instead of the mean, by using all the equations except Equation~\ref{eq:meanFuncValAtP0} and then sorting the results of Equation~\ref{eq:weightedMeanAtCoGatSector}. The details of which can be found by the original publication ~\cite[s.~3.2]{Mara17}, but as it was not implemented in GPGPU for this thesis, we exclude the details here.} function value for $\bp_v$, which is the center point $\bp_0$ of the neighborhood $\bN_v$.
 
-Figure~\ref{fig:weightedMean} illustrates the geodesic disc $\bO$, as introduced in Figure~\ref{fig:geodesicDisc}, with volumes of interpolated function value over each circle sector, which shall be divided by each sector's area in order to obtain the the one-ring weighted mean function value $f'_v$ at $\bp_v$.
+Figure~\ref{fig:funcValVolumes} illustrates the geodesic disc $\bO$, as introduced in Figure~\ref{fig:geodesicDisc}, with volumes of interpolated function value over each circle sector, which shall be divided by each sector's area in order to obtain the the one-ring weighted mean function value $f'_v$ at $\bp_v$.
 \begin{figure}[ht]
 \ffigbox
 	{\includegraphics[width=1.0\linewidth]{figures/funcValVolumes.png}}
-	{\caption[Weighted Mean Function Value $f'_v$at $\bp_v$]{The geodesic disc $\bO$, as introduced in Figure~\ref{fig:geodesicDisc}, with volumes of interpolated function values over each circle sector $\bs$, which shall be divided by each sector's area $A$ in order to obtain the the one-ring weighted mean function value $f'_v$ at $\bp_v$.}\label{fig:funcValVolumes}}
+	{\caption[Weighted Mean Function Value $f'_v$at $\bp_v$]{The geodesic disc $\bO$, as introduced in Figure~\ref{fig:geodesicDisc}, with volumes of interpolated function values over each circle sector $\bs_i$, which shall be divided by each sector's area $A$ in order to obtain the the one-ring weighted mean function value $f'_v$ at $\bp_v$.}\label{fig:funcValVolumes}}
 \end{figure}
 %
 \section{Summary}

@@ -191,9 +191,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.49288105"
-     inkscape:cx="584.56101"
-     inkscape:cy="-51.236031"
+     inkscape:zoom="3.4655699"
+     inkscape:cx="550.66536"
+     inkscape:cy="91.702482"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -288,7 +288,7 @@
          x="69.9151"
          y="245.60941"
          style="font-weight:normal;fill:#007f7f;fill-opacity:1;stroke:none;stroke-width:0.66145837;stroke-opacity:1"><tspan
-           style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif Bold Italic';stroke-width:0.66145837"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Allura;-inkscape-font-specification:Allura;stroke-width:0.66145837"
            id="tspan1988">l</tspan><tspan
            style="font-size:9.17222309px;baseline-shift:sub;stroke-width:0.66145837"
            id="tspan1986">a</tspan></tspan></text>
@@ -303,8 +303,10 @@
          x="-11.04132"
          y="324.37665"
          style="font-weight:normal;fill:#007f7f;fill-opacity:1;stroke:none;stroke-width:0.66145837;stroke-opacity:1"><tspan
-           style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif Bold Italic';stroke-width:0.66145837"
-           id="tspan1980">l</tspan><tspan
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Allura;-inkscape-font-specification:Allura;stroke-width:0.66145837"
+           id="tspan1980">l<tspan
+   style="font-size:7.05555655px"
+   id="tspan1025"> </tspan></tspan><tspan
            style="font-size:9.17222309px;baseline-shift:sub;stroke:none;stroke-width:0.66145837"
            id="tspan1978">b</tspan></tspan></text>
     <text
@@ -318,7 +320,7 @@
          x="-10.69423"
          y="245.60941"
          style="font-weight:normal;fill:#007f7f;fill-opacity:1;stroke:none;stroke-width:0.66145837;stroke-opacity:1"><tspan
-           style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif Bold Italic';stroke-width:0.66145837"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Allura;-inkscape-font-specification:Allura;stroke-width:0.66145837"
            id="tspan1984">l</tspan><tspan
            style="font-size:9.17222309px;baseline-shift:sub;stroke-width:0.66145837"
            id="tspan1982">c</tspan></tspan></text>
@@ -453,7 +455,7 @@
          x="168.07884"
          y="168.47945"
          style="font-weight:normal;fill:#007f7f;fill-opacity:1;stroke:none;stroke-width:0.66145837;stroke-opacity:1"><tspan
-           style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif Bold Italic';stroke-width:0.66145837"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Allura;-inkscape-font-specification:Allura;stroke-width:0.66145837"
            id="tspan1988-6">l</tspan><tspan
            style="font-size:9.17222309px;baseline-shift:sub;stroke-width:0.66145837"
            id="tspan1986-4">a</tspan></tspan></text>
@@ -468,7 +470,7 @@
          x="87.281914"
          y="245.60941"
          style="font-weight:normal;fill:#007f7f;fill-opacity:1;stroke:none;stroke-width:0.66145837;stroke-opacity:1"><tspan
-           style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif Bold Italic';stroke-width:0.66145837"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Allura;-inkscape-font-specification:Allura;stroke-width:0.66145837"
            id="tspan1984-0">l</tspan><tspan
            style="font-size:9.17222309px;baseline-shift:sub;stroke-width:0.66145837"
            id="tspan1982-4">c</tspan></tspan></text>
@@ -483,8 +485,10 @@
          x="167.97809"
          y="245.60941"
          style="font-weight:normal;fill:#007f7f;fill-opacity:1;stroke:none;stroke-width:0.66145837;stroke-opacity:1"><tspan
-           style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif Bold Italic';stroke-width:0.66145837"
-           id="tspan1980-1">l</tspan><tspan
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Allura;-inkscape-font-specification:Allura;stroke-width:0.66145837"
+           id="tspan1980-1">l<tspan
+   style="font-size:7.05555655px"
+   id="tspan1023"> </tspan></tspan><tspan
            style="font-size:9.17222309px;baseline-shift:sub;stroke:none;stroke-width:0.66145837"
            id="tspan1978-7">b</tspan></tspan></text>
   </g>
