@@ -12,10 +12,14 @@ once:
 	pdflatex thesis
 
 cleanThesis:
-	rm -f thesis.aux thesis.bbl thesis.blg thesis.dvi thesis.idx thesis.ilg thesis.ind thesis.lof thesis.log thesis.lot thesis.out thesis.pdf thesis.toc thesis.loa thesis.nlo thesis.nls thesis.tdo thesis.xdv chapters/*.aux
+	rm -f thesis.aux thesis.bbl thesis.blg thesis.dvi thesis.idx thesis.ilg thesis.ind thesis.lof thesis.log thesis.lot thesis.out thesis.pdf thesis.toc thesis.loa thesis.nlo thesis.nls thesis.tdo thesis.xdv
+
+cleanChapters:
+	rm -f chapters/*.aux
 
 cleanNom:
 	rm -f thesis.nl*
+
 
 
 .PHONY: svgs
@@ -38,5 +42,5 @@ cleanPlots:
 
 clean: cleanThesis
 
-cleanAll: cleanThesis cleanPlots cleanSvgs
+cleanAll: cleanThesis cleanChapters cleanPlots cleanSvgs
 
