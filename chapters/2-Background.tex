@@ -386,20 +386,59 @@ because function values are only stored alongside the Cartesian coordinates, 1-f
 %
 %
 \section{Control \& Data Dependencies}
-The concept of control and data dependencies is not a new one, and can be dated back to the invention of multi-pass compilers\todoCitation{Data Dependencies and multi-pass compilers}. The field of study regarding the details of these limitations is called dependence analysis\todoCitation{dependence analysis}. In general, the basic concept behind control and data dependencies is that some procedure A is called dependent on another procedure B, if A requires B to be executed first. 
+The concept of control and data dependencies is not a new one, and can be dated back to the invention of multi-pass compilers\todoCitation{Data Dependencies and multi-pass compilers}. The field of study regarding the details of these limitations is called dependence analysis\todoCitation{dependence analysis}. In general, the basic concept behind control and data dependencies is that some procedure A is said to be dependent on another procedure B, if A requires B to be executed first.
 
-A simple example of a control dependency is the ubiquitous if-then statement: if A, then do B. In this case B is control dependent on A, because A must execute before it can be determined wether or not to execute B.
+A simple example of a control dependency is the ubiquitous if-then statement: if B, then do A. In this case A is control dependent on B, because B must execute before it can be determined wether or not to execute A.
 
-An example of a data dependency which have already seen, and will see often in this thesis, can be found in Equation~\ref{eq:l2norm}, calculating the L2-norm of a position vector in $\mathbb{R}^{3}$. 
-There are six individual procedures involved with calculating the L2-norm: three squarings, two additions, and one square root. The three squarings procedures are totally independent of each other and can be performed in any order in relation to one another. However, the two additions, while also being independent of each other, are dependent on their respective addends' squaring procedures. As the final square root procedure is dependent on the execution of both additions, it also inherits their dependencies on the squaring procedures, and must wait until the very end before executing last.
+A less-than-simple example of a data dependency which have already seen, and will see often in this thesis, can be found in Equation~\ref{eq:l2norm}, calculating the L2-norm of a position vector in $\mathbb{R}^{3}$. There are six individual procedures involved with calculating the L2-norm: three squarings, two additions, and one square root. The three squarings procedures are totally independent of each other and can be performed in any order, or even concurrently in relation to one another. In contrast, the two additions are totally dependent on their addends. While the order in which of the three addends are used is inconsequential, the first addition is always dependent on the completion of two squarings, and the second addition is always dependent on the first addition, as well as the third squaring. Finally, because the square root procedure is dependent on the execution of both additions, it also inherits their dependencies on the squaring procedures, and must wait until the very end before executing last.\todoResearch{name of this inheritance, associative?}
 
 Figure~\ref{fig:dataDependencyOfL2Norm} illustrates the details of the data dependencies inherent to computing the L2-norm on a position vector in $\mathbb{R}^{3}$.
 
+\tikzset{%
+	>={Latex[width=2mm,length=2mm]},
+	base/.style = {rectangle, rounded corners, draw=MyTeal, thick, minimum width=1cm, minimum height=1cm, text centered, font=\sffamily},
+	operation/.style = {base, fill=MyLtTeal},
+	bigBlock/.style = {base, fill=MyLtSand, font=\ttfamily},
+		smallOr/.style = {fill=MyLtSand, font=\ttfamily},
+}
 \begin{figure}
-\ffigbox
-	{\includegraphics[width=1.0\linewidth]{figures/dataDependencyOfL2Norm.png}}
-	{\caption[dataDependencyOfL2Norm]{The data dependencies inherent to computing Equation~\ref{eq:l2norm}, the L2-norm on a position vector in $\mathbb{R}^{3}$, .}\label{fig:dataDependencyOfL2Norm}}
+\ffigbox{
+	\begin{tikzpicture}[node distance=1.25cm, every node/.style={fill=white, font=\sffamily}, align=center]
+		\node (xx1) [operation] {$x\cdot x$};
+		\node (yy1) [operation, below of=xx1] {$y\cdot y$};
+		\node (zz1) [operation, below of=yy1] {$z\cdot z$};
+		\node (adds) [bigBlock, right of=yy1, xshift=4cm, minimum width=3.5cm, minimum height=4.725cm] {};
+			\node (xxpyy) [operation, below=(.125cm of adds.north), xshift=-.85cm] {$x^2 + y^2$};
+			\node (zz2) [operation, right=(.75cm of xxpyy)] {$+\,z^2$};
+
+			\node (or1) [smallOr, below=(.125cm of xxpyy), xshift=1cm] {-or-};
+
+			\node (yypzz) [operation, below=(.125cm of or1), xshift=-1cm] {$y^2 + z^2$};
+			\node (xx2) [operation, right=(.75cm of yypzz)] {$+\,x^2$};
+
+			\node (or2) [smallOr, below=(.125cm of yypzz), xshift=1cm] {-or-};
+
+			\node (zzpxx) [operation, below=(.125cm of or2), xshift=-1cm] {$z^2 + x^2$};
+			\node (yy2) [operation, right=(.75cm of zzpxx)] {$+\,y^2$};
+		\node (sqrtAll) [operation, right of=adds, xshift=4cm] {$\sqrt{x^2+y^2+z^2}$};
+
+		\draw[->] (xx1) -- (adds);
+		\draw[->] (yy1) -- (adds);
+		\draw[->] (zz1) -- (adds);
+		\draw[->] (xxpyy) -- (zz2);
+		\draw[->] (yypzz) -- (xx2);
+		\draw[->] (zzpxx) -- (yy2);
+		\draw[->] (adds) -- (sqrtAll);
+	\end{tikzpicture}}
+	{\caption[Data Dependencies in the L2-norm Calculation]{The data dependencies in the L2-norm calculation, with each distinct operation colored in blue, and data dependencies marked with arrows.}\label{fig:dataDependencyOfL2Norm}}
 \end{figure}
+
+
+%\begin{figure}
+%\ffigbox
+%	{\includegraphics[width=1.0\linewidth]{figures/dataDependencyOfL2Norm.png}}
+%	{\caption[dataDependencyOfL2Norm]{The data dependencies inherent to computing Equation~\ref{eq:l2norm}, the L2-norm on a position vector in $\mathbb{R}^{3}$, .}\label{fig:dataDependencyOfL2Norm}}
+%\end{figure}
 
 %
 %

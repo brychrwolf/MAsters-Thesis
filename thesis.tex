@@ -9,18 +9,6 @@
 \usepackage{amsfonts}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta}
-\tikzset{%
-  >={Latex[width=2mm,length=2mm]},
-  % Specifications for style of nodes:
-            base/.style = {rectangle, rounded corners, draw=black,
-                           minimum width=4cm, minimum height=1cm,
-                           text centered, font=\sffamily},
-  activityStarts/.style = {base, fill=blue!30},
-       startstop/.style = {base, fill=red!30},
-    activityRuns/.style = {base, fill=green!30},
-         process/.style = {base, minimum width=2.5cm, fill=orange!15,
-                           font=\ttfamily},
-}
 \usepackage{graphicx,txfonts}
 %\usepackage[lofdepth,lotdepth]{subfig}
 \usepackage[colorinlistoftodos]{todonotes}
@@ -111,6 +99,11 @@
 %%%	violet
 %	white
 %%%	yellow
+\definecolor{MyTeal}{rgb}{0.0, 0.5, 0.5}
+\definecolor{MyLtTeal}{rgb}{0.5, 0.75, 0.75}
+\definecolor{MySand}{rgb}{1.0, 0.625, 0.0}
+\definecolor{MyLtSand}{rgb}{1.0, 0.977, 0.875}
+
 %
 %	teal = 0,127,127
 %	lt.teal = 207,239,239
