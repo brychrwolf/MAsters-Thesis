@@ -64,12 +64,28 @@ As a final note, a ``family of sets'' is very similar to a superset, with only t
 %
 \subsection{Linear Algebra}
 \label{ch2sBssLA}
+Nearly as fundamental as set theory, linear algebra is the  mathematical field which studies the different methods and representations which may concern a line, including equations, matrices, vector arrays,  norming functions, etc. It also provides the symbols and concepts for performing blocks of operations in parallel.\todoCitation{linear algebra}
+\todoReword{move references to Euclidean things up here}
+
+%
+\subsubsection{Position Vectors}
+\label{ch2sBssLAsssPV}
+A position vector is represented by a set of Euclidean coordinates with cardinality matching that of the dimensions of the space in which it is embedded.\todoCitation{position vector} For example, in Section~\ref{ch2sBss3sssP}\todoReword{add back reference for this section} we say that a point can also be called a position vector, so if we are given a point in $\mathbb{R}^3$, it is defined by the three Cartesian coordinates $x$, $y$, and $z$.
+
+Figure~\ref{fig:definePositionVector} provides an example of why it is called a vector. Any set of coordinates have an implied direction pointing away from the origin which is located at \{0, 0, 0\}.
+
+\begin{figure}[h]
+\ffigbox
+	{\includegraphics[width=1.0\linewidth]{figures/definePositionVector.png}}
+	{\caption[Example of a Position Vector]{An example of a position vector in $\mathbb{R}^3$. The origin in coral color is located at $\{0, 0\}$. The point $A$ in teal color is located at $\{16, 9\}$. The arrow in sand color pointed from the origin to the point is the reason for the name position vector.}\label{fig:definePositionVector}}
+\end{figure}
+\todoReword{reason for the name sounds dumb}
 
 %
 \subsubsection{L2-norm}
 \label{ch2sBssLAsssL2N}
 \todoBackground{find all L2-norm and edge length references, and introduce the concept here}
-The equation for calculating the L2-norm of a position vector in $-k\mathbb{R}^3$ is
+The equation for calculating the L2-norm of a position vector in $\mathbb{R}^3$ is
 \begin{equation}
 	|\bp| \quad=\quad \|\bp\|_2 \quad=\quad \sqrt{\bp_x^2 + \bp_y^2 + \bp_y^2}
 	\label{eq:l2norm}
@@ -385,13 +401,13 @@ because function values are only stored alongside the Cartesian coordinates, 1-f
 \section{Control \& Data Dependencies}
 The concepts of control and data dependencies are not new ones, and can be dated back to the invention of multi-pass compilers\todoCitation{Data Dependencies and multi-pass compilers}. The field of study regarding the details is called dependence analysis and has far-reaching consequences from business management, economics, as well as software optimization\todoCitation{dependence analysis}. In general, the basic concept behind both control and data dependencies is that some procedure A is said to be dependent on another procedure B, if A requires B to be executed first.
 
-Figure~\ref{fig:simpleControlDependency} shows the ubiquitous if-then control structure as a simple example of a control dependency. It reads, ``if B, then do A''. In this case A is control dependent on B, because B must execute before it can be determined wether or not to execute A.
+Figure~\ref{fig:simpleControlDependency} shows the ubiquitous if-then control structure as a simple example of a control dependency. It reads, ``if B is true, then do A''. In this case A is control dependent on B, because B must execute before it can be determined wether or not to execute A.
 
 \tikzset{%
 	>={Latex[width=2mm,length=2mm]},
-	base/.style = {rectangle, rounded corners, 
-		draw=black, thick, 
-		minimum width=1cm, minimum height=1cm, 
+	base/.style = {rectangle, rounded corners,
+		draw=black, thick,
+		minimum width=1cm, minimum height=1cm,
 		text centered, font=\sffamily},
 	operation/.style = {base, draw=MyTeal, fill=MyLtTeal},
 	halt/.style = {base, draw=MyCoral, fill=MyLtCoral}
@@ -410,13 +426,13 @@ Figure~\ref{fig:simpleControlDependency} shows the ubiquitous if-then control st
 	{\caption[If-Then Control Dependency]{A simple example of control dependency using the if-then control structure, with each distinct operation colored in teal, and control dependency marked with an arrow.}\label{fig:simpleControlDependency}}
 \end{figure}
 
-Figure~\ref{fig:dataDependencyOfL2Norm} illustrates the less-than-simple example of data dependencies, calculating the L2-norm of a position vector in $\mathbb{R}^{3}$, which has already been seen, and will be seen often in this thesis, found in Equation~\ref{eq:l2norm}. There are six individual procedures involved with calculating the L2-norm: three squarings, two additions, and one square root. The three squaring procedures are totally independent of each other and can be performed in any order, or even concurrently, in relation to one another. In contrast, the two additions are totally dependent on their addends. While the order in which the first two of the three addends are used is inconsequential, the first addition is always dependent on the completion of two squarings, and the second addition is always dependent on the first addition, as well as the third squaring. Finally, because the square root procedure is dependent on the execution of both additions, it also inherits their dependencies on the squaring procedures, and must wait until the very end before executing last.\todoResearch{name of this inheritance, associative?}
+Figure~\ref{fig:dataDependencyOfL2Norm} illustrates the less-than-simple example of data dependencies inherent to calculating the L2-norm of a position vector in $\mathbb{R}^{3}$, which has already been seen in Equation~\ref{eq:l2norm}, and will be seen often in this thesis. There are six individual procedures involved with calculating the L2-norm: three squarings, two additions, and one square root. The three squaring procedures are totally independent of each other and can be performed in any order, indeed even concurrently, in relation to one another. In contrast, the two additions are totally dependent on their addends. While the order in which the first two of the three addends are used is inconsequential, the first addition is always dependent on the completion of two squarings, and the second addition is dependent on not only the sum from the first addition, but the product of the third squaring as well. Finally, because the square root procedure is dependent on the execution of both additions, it also inherits their dependencies on the squaring procedures, and therefore must wait until the very end before executing last.\todoResearch{name of this inheritance, associative?}
 
 \tikzset{%
 	>={Latex[width=2mm,length=2mm]},
-	base/.style = {rectangle, rounded corners, 
-		draw=black, thick, 
-		minimum width=1cm, minimum height=1cm, 
+	base/.style = {rectangle, rounded corners,
+		draw=black, thick,
+		minimum width=1cm, minimum height=1cm,
 		text centered, font=\sffamily},
 	operation/.style = {base, draw=MyTeal, fill=MyLtTeal},
 	bigBlock/.style = {base, draw=MySand, fill=MyLtSand},
@@ -456,7 +472,7 @@ Figure~\ref{fig:dataDependencyOfL2Norm} illustrates the less-than-simple example
 		\draw[->] (zzpxx) -- (yy2);
 		\draw[->] (adds) -- (sqrtAll);
 	\end{tikzpicture}}
-	{\caption[Data Dependencies in the L2-norm Calculation]{The data dependencies in the L2-norm calculation, with each distinct operation colored in teal, and data dependencies marked with arrows. The centered black in sand color, represents an exclusive-or situation, where one, and one only set of operations shall execute.}\label{fig:dataDependencyOfL2Norm}}
+	{\caption[Data Dependencies in the L2-norm Calculation]{The data dependencies inherent to calculation of the L2-norm of a position vector in $\mathbb{R}^3$, with each distinct operation colored in teal, and data dependencies marked with arrows. The centered block in sand color represents an exclusive-or situation, abbreviated as xor, where one, and only one pair of operations shall execute.}\label{fig:dataDependencyOfL2Norm}}
 \end{figure}
 
 %

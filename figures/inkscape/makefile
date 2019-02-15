@@ -6,7 +6,8 @@ SVGS_OUTPUTS =  ../geodesicDisc.png \
 				../neighborhoods.png \
 				../triangularFaces.png \
 				../interpolatedFunctionValues.png \
-				../dataDependencyOfL2Norm.png
+				../dataDependencyOfL2Norm.png \
+				../definePositionVector.png
 
 
 
