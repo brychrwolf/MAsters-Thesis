@@ -57,6 +57,8 @@ Among all the basic binary operations one can perform on a set\footnote{which ar
 	\left \{0,\,1,\,2\right \} \cup \left \{2,\,3,\,4\right \} = \left \{0,\,1,\,2,\,3,\,4\right \}
 \end{equation}
 \todoReword{would look better to have words here}
+Also importantly, as in addition of scalar values, the associative property for a union of sets says that how the sets are grouped does not change the result.\todoCitation{associate property of unions}
+
 As a final note, a ``family of sets'' is very similar to a superset, with only the subtle difference that all the subsets it contains should have some quality in common. For example, in Section~\ref{ch2s3ssNRN} we will define the set of sets of neighbors as a family of sets, with the common quality being that all the subsets are neighborhoods.
 
 %
@@ -64,42 +66,45 @@ As a final note, a ``family of sets'' is very similar to a superset, with only t
 %
 \subsection{Linear Algebra}
 \label{ch2sBssLA}
-Nearly as fundamental as set theory, linear algebra is the  mathematical field which studies the different methods and representations which may concern a line, including equations, matrices, vector arrays,  norming functions, etc. It also provides the symbols and concepts for performing blocks of operations in parallel.\todoCitation{linear algebra}
-\todoReword{move references to Euclidean things up here}
+Nearly as fundamental as set theory, linear algebra is the branch of mathematics which studies the different methods and representations which may concern a line, including: sets of equations, matrices, transformations, vector spaces, norming functions, etc. It is used in almost all scientific domains that use mathematics, including geometry and scientific computing, as well as provides the symbols and concepts for performing blocks of operations in parallel.~\cite{Weisstein19i} \todoCitation{position vector} 
 
 %
 \subsubsection{Position Vectors}
 \label{ch2sBssLAsssPV}
-A position vector is represented by a set of Euclidean coordinates with cardinality matching that of the dimensions of the space in which it is embedded.\todoCitation{position vector} For example, in Section~\ref{ch2sBss3sssP}\todoReword{add back reference for this section} we say that a point can also be called a position vector, so if we are given a point in $\mathbb{R}^3$, it is defined by the three Cartesian coordinates $x$, $y$, and $z$.
+A position vector is represented by a set of Cartesian coordinates with cardinality matching that of the dimensionality of the Euclidean space in which it is embedded. For example, in Section~\ref{ch2s3ssP}\todoReword{add back reference for this section} we say that a point can also be called a position vector, so if we are given a point in $\bR{3}$, it is defined by the three Cartesian coordinates $x$, $y$, and $z$. ``Cartesian'' refers to the French scholar René Descartes~\cite{EB1}, and ``Euclidean'' refers to Euclid of Alexandria, the Ancient Greek mathematician~\cite{EB2}.
 
-Figure~\ref{fig:definePositionVector} provides an example of why it is called a vector. Any set of coordinates have an implied direction pointing away from the origin which is located at \{0, 0, 0\}.
+Figure~\ref{fig:definePositionVector} provides three examples of why a point may be called a position vector. Any set of coordinates have an implied direction pointing away from the origin, which in $\bR{3}$ is located at $(0, 0, 0)$. In (a) the point $\bp_a$ is in $\bR{1}$ and located at at coordinate $(4)$ which is at a distance of $4$ units away from the origin. In (b) the point $\bp_b$ is in $\bR{2}$ and located at at coordinates $(4,\,4)$ which is at a distance of $4\sqrt{2}$ units away from the origin. In (c) the point $\bp_c$ is in $\bR{3}$ and located at at coordinates $(4,\,4,\,4)$ which is at a distance of $4\sqrt{3}$ units away from the origin. This concept extends to any Euclidean space $\bR{n}$.
 
 \begin{figure}[h]
 \ffigbox
 	{\includegraphics[width=1.0\linewidth]{figures/definePositionVector.png}}
-	{\caption[Example of a Position Vector]{An example of a position vector in $\mathbb{R}^3$. The origin in coral color is located at $\{0, 0\}$. The point $A$ in teal color is located at $\{16, 9\}$. The arrow in sand color pointed from the origin to the point is the reason for the name position vector.}\label{fig:definePositionVector}}
+	{\caption[Examples of Position Vector]{Three examples of position vectors shown as arrows in sand color pointed from the origin in teal color to the points in coral color: (a) $\bp_a$ in $\bR{1}$ at coordinate $(4)$ with length 4, (b) $\bp_b$ in $\bR{2}$ at coordinates $(4,\,4)$ with length $4\sqrt{2}$, (c) $\bp_c$ in $\bR{3}$ at coordinates $(4,\,4,\,4)$ with length $4\sqrt{3}$. The origins are located at $(0)$, $(0,\,0)$, and $(0,\,0,\,0)$ respectively.}\label{fig:definePositionVector}}
 \end{figure}
-\todoReword{reason for the name sounds dumb}
-
-%
-\subsubsection{L2-norm}
-\label{ch2sBssLAsssL2N}
-\todoBackground{find all L2-norm and edge length references, and introduce the concept here}
-The equation for calculating the L2-norm of a position vector in $\mathbb{R}^3$ is
-\begin{equation}
-	|\bp| \quad=\quad \|\bp\|_2 \quad=\quad \sqrt{\bp_x^2 + \bp_y^2 + \bp_y^2}
-	\label{eq:l2norm}
-\end{equation}
-The L2-norm may be seen abbreviated as $L^2$, or perhaps called the ``Euclidean norm'' or ``Euclidean distance'' elsewhere in the literature. It is so named after the Ancient Greek mathematician, Euclid of Alexandria, because it is the ordinary, straight line distance between two points in Euclidean space, in this case the origin at $\{0, 0, 0\}$ and $\bp$. ~\cite{Weisstein19h}
 
 %
 \subsubsection{Subtracting Two Vectors}
 \label{ch2sBssLAsssS2V}
+Among the binary operators with which one could operate on vectors, this thesis is primarily concerned with subtraction. In order to perform subtract of two vectors in the same Euclidean space, one must simply subtract each component element-wise.\~cite{Weisstein19j} For example, given two points in $\bR{3}$, $A$ and $B$
 \todoBackground{vector subtraction}
 \begin{equation}
-	A - B = \{A_x - B_x, A_y - B_y, A_z - B_z\}
+	A - B = (A_x - B_x, A_y - B_y, A_z - B_z)
 	\label{eq:vectorSubtraction}
 \end{equation}
+
+%
+\subsubsection{L2-norm}
+\label{ch2sBssLAsssL2N}
+The L2-norm may be seen abbreviated as $L^2$ or $\ell^2$, or perhaps called the ``Euclidean norm'' or ``Euclidean distance'' elsewhere in the literature. It is so named because it is the ordinary, straight line distance between two points in Euclidean space, and in the case of a position vector in $\bR{3}$, the two points are the origin at $(0, 0, 0)$ and $\bp$.~\cite{Weisstein19h}\todoBackground{find all L2-norm and edge length references, and introduce the concept here} 
+
+The purpose for calculating the L2-norm of a vector is to determine the ordinary, single-dimension length of the vector, regardless of the dimensionality of Euclidean space in which it is embedded. For three examples, see in Figure~\ref{fig:definePositionVector} how despite having all coordinates exclusively set to $4$, the position vector on (a) is of length $4$, in (b) it is of length $4\sqrt{2} \approx 5.657$, and in (c) it is of length $4\sqrt{3} \approx 6.928$.
+
+To determine the length of a vector, one can use the equation for the L2-norm 
+\begin{equation}
+	|\bp| \enspace=\enspace \|\bp\|_2 \enspace=\enspace \sqrt{x^2 + y^2 + z^2 + \ldots + n^2} \enspace:\enspace \bp \in \bR{n}
+	\label{eq:l2norm}
+\end{equation}
+
+In this thesis, the L2-norm is denoted using the symbols $\|\bp\|_2$, or abbreviated as $|\bp|$. Please note the similar notation for the cardinality of a set $|\bP|$. While the matching symbols do represent somewhat similar concepts, cardinality is the count of elements in the set, but the L2-norm of a vector is calculated as in Equation~\ref{eq:l2norm}.~\cite[p.~26]{Mara12}
 
 %
 %
@@ -113,7 +118,7 @@ As vast and encompassing is geometry as a field of study, of paramount importanc
 \todoBackground{add text and figure for extrapolation}
 Simply stated, interpolation is a method of constructing new data points within the range of a discrete set of known data points, such as those points used in \tdd{}. There exist a large variety of methods for interpolating different kinds of data\todoCitation{different kinds of interpolation}, but as an introduction, let us first consider linear interpolation, which is simple to calculate\footnote{however can become imprecise in relation to the square of the distance between the data points.}\todoCitation{footnote:error of linear interpolation} and can be extended for n-dimensions\todoCitation{n-dimensional linear interpolation}.
 
-Given the two data points in $\mathbb{R}^2$, $(x_a, y_a)$ and $(x_b, y_b)$, the so called interpolant of a point located at\todoReword{interpolant is wrong, don't use point located at, maybe value sampled at instead?} $x_c$ can be calculated as
+Given the two data points in $\bR{2}$, $(x_a, y_a)$ and $(x_b, y_b)$, the so called interpolant of a point located at\todoReword{interpolant is wrong, don't use point located at, maybe value sampled at instead?} $x_c$ can be calculated as
 %
 \begin{equation}
 	y_c = y_a + (y_b - y_a) \frac{x_c - x_a}{x_b - x_a}
@@ -133,7 +138,7 @@ So the value halfway between the two given points is interpolated to be $(2,\,2.
 \begin{figure}
 \ffigbox
 	{\includegraphics[width=1.0\linewidth]{figures/interpolation.png}}
-	{\caption[Interpolation between two points in $\mathbb{R}^2$]{$\bp_c$ is interpolated as a value between $\bp_a$ and $\bp_b$}\label{fig:interpolation}}
+	{\caption[Interpolation between two points in $\bR{2}$]{$\bp_c$ is interpolated as a value between $\bp_a$ and $\bp_b$}\label{fig:interpolation}}
 \end{figure}
 
 %
@@ -222,7 +227,7 @@ The data upon which one convolves \forf{t} is called \tdd\todoCitation{\tdd{} na
 %
 \subsection{Points}
 \label{ch2s3ssP}
-A point $\bp$ is the most primitive element of \tdd{}. ``Point'' is the abbreviated form of ``measuring point'', and is also known in other fields of study as a vertex, or a position vector $\in \mathbb{R}^3$\todoCitation{other names for a point}. A point is defined by the 3-dimensional Cartesian coordinates $x$, $y$, and $z$, and in \tdd{}, points are generally unique and not required to be in any particular order. In this thesis, a point is addressed using several different subscripts, depending on the context.
+A point $\bp$ is the most primitive element of \tdd{}. ``Point'' is the abbreviated form of ``measuring point'', and is also known in other fields of study as a vertex, or a position vector $\bR{3}$\todoCitation{other names for a point}. A point is defined by the 3-dimensional Cartesian coordinates $x$, $y$, and $z$, and in \tdd{}, points are generally unique and not required to be in any particular order. In this thesis, a point is addressed using several different subscripts, depending on the context.
 
 Index $v$ is the globally unique index, with which we can define the set
 %
@@ -262,7 +267,7 @@ The Figure~\ref{fig:triangularFaces} shows two adjacent triangular faces $\bt_1$
 	{\caption[Two Triangular Faces]{Two adjacent triangular faces $\bt_1$ and $\bt_2$, showing the relationship between their points $\bp_a$, $\bp_b$, and $\bp_c$, their edge lengths $\ell_a$, $\ell_b$, and $\ell_c$, and their clockwise orientation.}\label{fig:triangularFaces}}
 \end{figure}
 
-Each distinct triangular face is addressed using the global index $k$, and when taken together, comprise the set
+Each distinct triangular face is addressed using the global index $k$, and when taken together, comprise the family of sets
 %
 \begin{equation}
 	\bT := \left \{\:\bt_k \mid k \in \mathbb{N}, \;\text{and}\; 1\leq k \leq k_{max}\:\right \}
@@ -316,7 +321,7 @@ Please note the similar notation for the cardinality of a set $|\bP|$, to that f
 %
 \subsection{Meshes}
 \label{ch2s3ssM}
-In \tdd{}, a mesh $\bM$ is the digital representation of a discrete manifold embedded in $\mathbb{R}^3$, and is typically\footnote{except in the case of specifically designed synthetic data~\ref{ch7sSD}} 2D-non-planar\todoStyle{in 2D, the 2 looks small} and comprised of non-regular, triangular faces composed of connected points.~\cite[p.~25]{Mara12} A mesh is the superset defined as
+In \tdd{}, a mesh $\bM$ is the digital representation of a discrete manifold embedded in $\bR{3}$, and is typically\footnote{except in the case of specifically designed synthetic data~\ref{ch7sSD}} 2D-non-planar\todoStyle{in 2D, the 2 looks small} and comprised of non-regular, triangular faces composed of connected points.~\cite[p.~25]{Mara12} A mesh is the superset defined as
 %
 \begin{equation}
 	\bM := \left \{\bP,\:\bT\right \}
@@ -393,12 +398,30 @@ because function values are only stored alongside the Cartesian coordinates, 1-f
 %
 %
 %
-\section{Architectures of Concurrency}
+\section{Parallel Processing}
+\label{ch2sPP}
 
 %
+\subsection{Architectures of Concurrency}
+Hardware consists of memory and processors. Memory is divided into a hierarchy which starting at the registers on the processors themselves, increases in capacity, but decreases in speed.\todoReword{moves away from} Of particular interest to this thesis...\todoReword{continue}
+
 %
+\subsection{Concurrency vs Parallelism}
+\label{ch2sACssCVP}
+
 %
-\section{Control \& Data Dependencies}
+\subsection{Flynn's taxonomy}
+1.1	Single instruction stream single data stream (SISD)
+1.2	Single instruction stream, multiple data streams (SIMD)
+1.3	Multiple instruction streams, single data stream (MISD)
+1.4	Multiple instruction streams, multiple data streams (MIMD)
+
+%
+\subsection{Critical Sections}
+
+
+%
+\subsection{Control \& Data Dependencies}
 The concepts of control and data dependencies are not new ones, and can be dated back to the invention of multi-pass compilers\todoCitation{Data Dependencies and multi-pass compilers}. The field of study regarding the details is called dependence analysis and has far-reaching consequences from business management, economics, as well as software optimization\todoCitation{dependence analysis}. In general, the basic concept behind both control and data dependencies is that some procedure A is said to be dependent on another procedure B, if A requires B to be executed first.
 
 Figure~\ref{fig:simpleControlDependency} shows the ubiquitous if-then control structure as a simple example of a control dependency. It reads, ``if B is true, then do A''. In this case A is control dependent on B, because B must execute before it can be determined wether or not to execute A.
@@ -472,41 +495,35 @@ Figure~\ref{fig:dataDependencyOfL2Norm} illustrates the less-than-simple example
 		\draw[->] (zzpxx) -- (yy2);
 		\draw[->] (adds) -- (sqrtAll);
 	\end{tikzpicture}}
-	{\caption[Data Dependencies in the L2-norm Calculation]{The data dependencies inherent to calculation of the L2-norm of a position vector in $\mathbb{R}^3$, with each distinct operation colored in teal, and data dependencies marked with arrows. The centered block in sand color represents an exclusive-or situation, abbreviated as xor, where one, and only one pair of operations shall execute.}\label{fig:dataDependencyOfL2Norm}}
+	{\caption[Data Dependencies in the L2-norm Calculation]{The data dependencies inherent to calculation of the L2-norm of a position vector in $\bR{3}$, with each distinct operation colored in teal, and data dependencies marked with arrows. The centered block in sand color represents an exclusive-or situation, abbreviated as xor, where one, and only one pair of operations shall execute.}\label{fig:dataDependencyOfL2Norm}}
 \end{figure}
 
 %
-%
-%
 \subsection{Serial Computation \& Threads}
-%thread can be identified using a one-dimensional, two-dimensional, or three-dimensional thread index, forming a one-dimensional, two-dimensional, or three- dimensional block of thread, called a thread block. This provides a natural way to invoke computation across the elements in a domain such as a vector, matrix, or volume. However, a kernel can be executed by multiple equally-shaped thread blocks, so that the total number of thread is equal to the number of thread per block times the number of blocks. thread blocks are required to execute independently: It must be possible to execute them in any order, in parallel or in series. This independence requirement allows thread blocks to be scheduled in any order across any number of cores as illustrated by Figure 5, enabling programmers to write code that scales with the number of cores. [7, p. 2.2]
-\todoReword{found elsewhere in thesis}
+In a very general sense, when a computer executes a serial program, it proceeds one instruction at a time, sequentially in the order that it is written, reading and writing to memory as required. Individually, these are called threads of execution, and a single processing core can only process a single such thread at a time, however, it can rapidly perform context switching\todoCitation{context switching} among a multitude of self-contained threads, each with their own unique ids and memory addresses, in order to give the illusion of parallel processing. 
 
-%
-%
+As memory to be processed by a thread is stored somewhere in a hierarchy which increases in size, but decreases in speed as one moves from the processor's registers, it is likely that a context switch will cause what is known as a cache miss\todoCitation{cache hit or miss, check Lang}, which incurs a time penalty while the processing stalls and the required memory is read from slower hardware sources.
+
 %
 \subsection{Multi-threaded Computation}
-%Processors through Supercomputers and Data Centers
+All modern computers implement some form of parallelism, be it multi-core or multi-threaded processors, stream processors as found in GPUs, or networks of supercomputers or data centers. This thesis will focus on implementing \forf{t} in a way which can utilize the parallelism provided by the array of stream processors found in a commercially available GPGPU.
 
 %
 %
 %
-\subsection{Concurrency vs Parallelism}
-\label{ch2sACssCVP}
+%
+\section{CUDA extended C++: An interface for GPGPU implementation}
 
 %
 %
 %
-\subsection{Flynn's taxonomy}
-1.1	Single instruction stream single data stream (SISD)
-1.2	Single instruction stream, multiple data streams (SIMD)
-1.3	Multiple instruction streams, single data stream (MISD)
-1.4	Multiple instruction streams, multiple data streams (MIMD)
+\subsection{The C++ Standard Library}
 
 %
-%
-%
-\section{CUDA: An interface for GPGPU implementation}
+\subsubsection{Set}
+\label{ch2sCECssCSLsssS}
+\todoCitation{https://en.cppreference.com/w/cpp/container/set}
+
 \subsection{CUDA C Runtime}%3.2. CUDA C Runtime}
 \subsubsection{Explicit Synchronization}%3.2.5.5.3. Explicit Synchronization}
 \subsection{Versioning and Compatibility}%3.3. Versioning and Compatibility}
