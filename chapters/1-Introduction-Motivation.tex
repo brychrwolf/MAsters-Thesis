@@ -1,11 +1,13 @@
 \chapter{Introduction \& Motivation}
 \label{ch1}
 It should come as no surprise that if one were to implement an algorithm in a way which was aware of data dependencies, the time required for the computation to complete could significantly decrease when executing that program in parallel on GPGPUs (General Purpose Graphical Processing Units). \todoReword{sounds like whining} What may be a surprise however is the complexity and amount of effort it that it make take one in order to implement concurrent code and achieve the correctness required and efficiency desired from the program. This thesis has three parts: first, the presentation of the updated version of Forf{t}, second, exploring the details of the algorithm as an example for discovering opportunities to exploit concurrency, third, a guide to implementing those findings on hardware capable for parallel processing. As a bonus, also included are the details about the four synthetic mesh generators which we developed during the course of our research.
- 
+
+\todoReword{ith the goal of improving the overall performance and scalability of \forf{t} when it is implemented on a system capable of parallel computation.}
+
 %
 %
 %
-\section{3D Data is important (and big).} 
+\section{3D Data is important (and big).}
 
 \section{Filtering techniques for irregular triangle meshes, have not yet been established}
 Even when ignoring the third dimension present in \tdd{}, in contrast to regular square meshes, as is standard pixels for digital imaging, the one-ring neighborhoods found in irregular triangle meshes have completely arbitrary shapes and sizes, and in fact, even the number of neighbors vary widely. From this observation is where the motivation behind \forf{t} came.
@@ -16,10 +18,10 @@ Even when ignoring the third dimension present in \tdd{}, in contrast to regular
 
 %In dense, high-resolution meshes, which can feature several hundred points per mm$^2$\todoCitation{}, one can see noise propagating within the results of the MSII filter as jagged outlines.~\cite[s.~3.2]{Mara17}
 %
-%The design principles for filtering of function 
-%values in irregular grids are the same as for those well-known algorithms used 
-%for raster images. However, they require adaptation as there is no fixed 
-%distance between the points and no fixed number of neighboring points in 
+%The design principles for filtering of function
+%values in irregular grids are the same as for those well-known algorithms used
+%for raster images. However, they require adaptation as there is no fixed
+%distance between the points and no fixed number of neighboring points in
 %1-rings of irregular grids.~\cite[s.~3.2]{Mara17}
 %
 \section{Serial is slow. Concurrency is fast.}
