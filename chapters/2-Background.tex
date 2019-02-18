@@ -75,7 +75,7 @@ A position vector is represented by a set of Cartesian coordinates with cardinal
 
 Figure~\ref{fig:definePositionVector} provides three examples of why a point may be called a position vector. Any set of coordinates have an implied direction pointing away from the origin, which in $\bR{3}$ is located at $(0, 0, 0)$. In (a) the point $\bp_a$ is in $\bR{1}$ and located at at coordinate $(4)$ which is at a distance of $4$ units away from the origin. In (b) the point $\bp_b$ is in $\bR{2}$ and located at at coordinates $(4,\,4)$ which is at a distance of $4\sqrt{2}$ units away from the origin. In (c) the point $\bp_c$ is in $\bR{3}$ and located at at coordinates $(4,\,4,\,4)$ which is at a distance of $4\sqrt{3}$ units away from the origin. This concept extends to any Euclidean space $\bR{n}$.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \ffigbox
 	{\includegraphics[width=1.0\linewidth]{figures/definePositionVector.png}}
 	{\caption[Examples of Position Vector]{Three examples of position vectors shown as arrows in sand color pointed from the origin in teal color to the points in coral color: (a) $\bp_a$ in $\bR{1}$ at coordinate $(4)$ with length 4, (b) $\bp_b$ in $\bR{2}$ at coordinates $(4,\,4)$ with length $4\sqrt{2}$, (c) $\bp_c$ in $\bR{3}$ at coordinates $(4,\,4,\,4)$ with length $4\sqrt{3}$. The origins are located at $(0)$, $(0,\,0)$, and $(0,\,0,\,0)$ respectively.}\label{fig:definePositionVector}}
@@ -418,14 +418,22 @@ Hardware consists of memory and processors. Memory is divided into a hierarchy w
 
 %
 \subsection{Critical Sections}
+\label{ch2sPPssCS}
 Thread Safety. C++ STL is not thread safe!
 
 %
 \subsection{Mutexes and semaphores (binary semaphore}
+\label{ch2sPPssMS}
+While it is true that any locking mechanism can be expensive to both compute time and memory, \todoResearch{how expensive are locking mechanisms} typically, with acquired \tdd{}, the ratio of points in $\bP$ to the average neighborhood size \todoReword{add symbol for average neighborhood size} approaches $|\bP|$, therefore the speedup gained by exploiting the concurrency is definitely\todoResearch{quantify the cost} worth the cost of the added synchronization overhead when computing with even moderately sized meshes on a SIMP or SIMT modeled architecture.
 starts at ~\cite[~p.20]{Lang17}
 
 %
 \subsection{Control \& Data Dependencies}
+\todoResearch{https://en.wikipedia.org/wiki/Loop-level\_parallelism}
+%True (Flow) Dependence	S1 ->T S2	A true dependence between S1 and S2 means that S1 writes to a location later read from by S2
+%Anti Dependence	S1 ->A S2	An anti-dependence between S1 and S2 means that S1 reads from a location later written to by S2.
+%Output Dependence	S1 ->O S2	An output dependence between S1 and S2 means that S1 and S2 write to the same location.
+%Input Dependence	S1 ->I S2	An input dependence between S1 and S2 means that S1 and S2 read from the same location.
 The concepts of control and data dependencies are not new ones, and can be dated back to the invention of multi-pass compilers\todoCitation{Data Dependencies and multi-pass compilers}. The field of study regarding the details is called dependence analysis and has far-reaching consequences from business management, economics, as well as software optimization\todoCitation{dependence analysis}. In general, the basic concept behind both control and data dependencies is that some procedure A is said to be dependent on another procedure B, if A requires B to be executed first.
 
 Figure~\ref{fig:simpleControlDependency} shows the ubiquitous if-then control structure as a simple example of a control dependency. It reads, ``if B is true, then do A''. In this case A is control dependent on B, because B must execute before it can be determined wether or not to execute A.
@@ -439,7 +447,7 @@ Figure~\ref{fig:simpleControlDependency} shows the ubiquitous if-then control st
 	operation/.style = {base, draw=MyTeal, fill=MyLtTeal},
 	halt/.style = {base, draw=MyCoral, fill=MyLtCoral}
 }
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \ffigbox{
 	\begin{tikzpicture}[node distance=1.2cm, every node/.style={fill=white, font=\sffamily}, align=center]
@@ -465,7 +473,7 @@ Figure~\ref{fig:dataDependencyOfL2Norm} illustrates the less-than-simple example
 	bigBlock/.style = {base, draw=MySand, fill=MyLtSand},
 		smOr/.style = {fill=MyLtSand},
 }
-\begin{figure}[h]
+\begin{figure}[ht]
 \ffigbox{
 	\begin{tikzpicture}[node distance=1.25cm, every node/.style={fill=white, font=\sffamily}, align=center]
 		\node (xx1) [operation] {$x\cdot x$};
