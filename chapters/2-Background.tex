@@ -516,9 +516,12 @@ In a very general sense, when a computer executes a serial program, it proceeds 
 
 As memory to be processed by a thread is stored somewhere in a hierarchy which increases in size, but decreases in speed as one moves from the processor's registers, it is likely that a context switch will cause what is known as a cache miss\todoCitation{cache hit or miss, check Lang}, which incurs a time penalty while the processing stalls and the required memory is read from slower hardware sources.
 
+\todoBackground{"spawning a thread"}
+
 %
 \subsection{Multi-threaded Computation}
 All modern computers implement some form of parallelism, be it multi-core or multi-threaded processors, stream processors as found in GPUs, or networks of supercomputers or data centers. This thesis will focus on implementing \forf{t} in a way which can utilize the parallelism provided by the array of stream processors found in a commercially available GPGPU.
+\todoBackground{synchronizeThreads()}
 
 %
 %
