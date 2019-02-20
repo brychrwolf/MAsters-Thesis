@@ -1,0 +1,224 @@
+\chapter{Fast One-Ring Smoothing: Serial Algorithms}
+\label{ch5}
+In the previous chapter we presented the mathematical grounding for an improved version of \Forf{t} as it is currently implemented within the GigaMesh framework. Now, in this chapter, we will combine all of the equations from Chapter~\ref{ch4}, Equations~\ref{eq:localMinimumEdgeLength} through~\ref{eq:meanFuncValAtPv}, into a serial algorithm using mathematical pseudo-code, with the goal of having the basis from which we will subsequently design the parallel algorithm presented in Chapter~\ref{ch6}. 
+
+To that end, before one is even able to begin convolving the filter, the serial algorithm requires that the membership of all one-ring neighborhoods already be known. Also, \forf{t} uses all edge lengths at least once per convolution, and twice for all non-border pairs of adjacent points, whose relationships are duplicated in adjacent neighborhoods. Therefore, it is beneficial to split the algorithm into three distinct parts, then save the results of the first two parts, so that they may be used during the iterative convolutions of the third part. The result will be a massive increase in efficiency by greatly reducing the number of operations-per-convolutions required by the filter.
+\todoBackground{add convolution and convolve to background}
+\todoBackground{memory vs speed cost compromise}
+
+%
+%
+%
+%
+\section{Discovering Neighborhoods}
+\label{ch5sDN}
+Initially, one must discover all the points $\bp_i$ which comprise each neighborhood $\bN_v$ in the entire mesh $\bM$, which is the purpose of Algorithm~\ref{alg:serialBuildNeighborhoods}. Although building this family of sets outside of the principle loop adds an additional $2\cdot |\bT|^3$ operations in total, doing so enables Alogrithm~\ref{alg:serialCalculateEdgeLengths} to exploit this family of sets to vastly reduce its complexity from $|\bP|^{|\bT|}$ to approximately\footnote{depending on the average size of all neighborhoods, assumed here to be about 6}\todoResearch{find good average for average neighborhood size} $|\bP|^6$. Also, as we will see in Algorithm~\ref{alg:serialConvolveFilter}, when $\tau$ is the user-defined number of convolutions to perform, the complexity of the main procedure can be meaningfully reduced to only $\tau^{|\bP|^{6*3}}$, down from the $\tau^{|\bP|^{(|\bF|*3)}}$ that would have been necessary had the neighborhoods not already been discovered and the procedure been otherwise required to discover the members of $\bN_v$ in each iteration.%
+\nomenclature[na]{$\tau$}{the user-defined number of convolutions to perform}%
+\todoBackground{complexity, big O notation}
+
+Figure~\ref{fig:serialBuildNeighborhoods} describes a very simple mesh consisting of just four points and two faces, similar to what is seen in Figure~\ref{fig:triangularFaces}. The two faces, $\bt_1$ and $\bt_2$, are colored in sand and coral color respectively. The arrows represent the union operation of a point and a neighborhood, and are colored to match the face from where the point had come. The two pairs of arrows pointing from $\bp_2$ to $\bN_3$ and $\bp_3$ to $\bN_2$ are specifically colored teal to highlight the fact that these union operations occur twice, originating one each from each of the faces, but because of the uniqueness property of a set, the duplicated operations are wholly inconsequential to the the final membership of either neighborhood. Also notice that for every face which contains its center point, the union operation is called twice on neighborhood. This realization will eventually influence the design of the parallel variant of the algorithm.
+
+\tikzset{%
+	>={Latex[width=2mm,length=2mm]},
+	baseNode/.style = {rectangle, rounded corners,
+		draw=black, fill=white, thick,
+		minimum width=1cm, minimum height=1cm,
+		text centered, font=\sffamily},
+	baseLine/.style = {double, thick},
+	tealStyle/.style = {draw=MyTeal, fill=MyLtTeal},
+	coralStyle/.style = {draw=MyCoral, fill=MyLtCoral},
+	sandStyle/.style = {draw=MySand, fill=MyLtSand},
+	faceL/.style = {baseNode, sandStyle},
+	lineL/.style = {baseLine, sandStyle},
+	faceR/.style = {baseNode, coralStyle},
+	lineR/.style = {baseLine, coralStyle},
+	lineC/.style = {baseLine, tealStyle},
+	point/.style = {baseNode},
+	nbhd/.style = {baseNode, minimum width=2cm}
+}
+\begin{figure}[ht]
+	\begin{tikzpicture}[node distance=0cm]
+		\coordinate (center1) at (0cm,0cm);
+		\node (t1) [faceL, anchor=east, xshift=-.5cm] {$\bt_1 = \{\bp_1,\,\bp_2,\,\bp_3\}$};
+		\node (t2) [faceR, anchor=west, xshift= .5cm] {$\bt_2 = \{\bp_3,\,\bp_2,\,\bp_4\}$};
+		\coordinate (center2) at (0cm,-1.5cm);
+		\node (p1) [point, left of=center2, xshift=-3cm] {$\bp_1$};
+		\node (p2) [point, left of=center2, xshift=-1cm] {$\bp_2$};
+		\node (p3) [point, right of=center2, xshift=1cm] {$\bp_3$};
+		\node (p4) [point, right of=center2, xshift=3cm] {$\bp_4$};
+		\coordinate (center3) at (0cm,-4.5cm);
+		\node (n1) [nbhd, left of=center3, xshift=-5cm] {$\bN_1$};
+		\node (n2) [nbhd, left of=center3, xshift=-1.75cm] {$\bN_2$};
+		\node (n3) [nbhd, right of=center3, xshift=1.75cm] {$\bN_3$};
+		\node (n4) [nbhd, right of=center3, xshift=5cm] {$\bN_4$};
+
+		\draw[-, lineL] (t1) -- (p1);
+		\draw[-, lineL] (t1) -- (p2);
+		\draw[-, lineL] (t1) -- (p3);
+
+		\draw[->, lineL] (p1) -- (n2);
+		\draw[->, lineL] (p1) -- (n3);
+		\draw[->, lineL] (p2) -- (n1);
+		\draw[->, lineC] (p2) -- (n3.180);
+		\draw[->, lineL] (p3) -- (n1);
+		\draw[->, lineC] (p3) -- (n2);
+
+		\draw[-, lineR] (t2) -- (p2);
+		\draw[-, lineR] (t2) -- (p3);
+		\draw[-, lineR] (t2) -- (p4);
+
+		\draw[->, lineC] (p3) -- (n2.0);
+		\draw[->, lineR] (p3) -- (n4);
+		\draw[->, lineR] (p2) -- (n4);
+		\draw[->, lineC] (p2) -- (n3);
+		\draw[->, lineR] (p4) -- (n3);
+		\draw[->, lineR] (p4) -- (n2);
+	\end{tikzpicture}
+	{\caption[Serial Build Neighborhoods]{A very simple mesh consisting of just four points and two faces, similar to what is seen in Figure~\ref{fig:triangularFaces}. $\bt_1$ is in sand color, and $\bt_2$ is in coral color. The arrows represent the union operation of a point into a neighborhood, and are colored to match the face from where the point had come. The two pairs of arrows pointing from $\bp_2$ to $\bN_3$ and $\bp_3$ to $\bN_2$ are colored in teal to highlight the fact that these union operations occur twice.
+}\label{fig:serialBuildNeighborhoods}}
+\end{figure}
+
+In Algorithm~\ref{alg:serialBuildNeighborhoods}, the function \textit{serialBuildNeighborhoods} describes iterating over every triangular face $\bt$ in $\bT$, then for each of the face's three corner points, union into its neighborhood the other two points which are adjacent to it. The result is a fully populated family of sets $\bN$, storing references to every neighbor of every neighborhood in the mesh.
+
+\begin{algorithm}[ht]
+	\DontPrintSemicolon
+	\SetCommentSty{small}
+	\SetKwFor{For}{for}{:}{}
+	\SetKwProg{Func}{Function}{}{}
+	\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
+
+	\Input{the set of all triangular faces $\bT$}
+	\Output{the family of sets of discovered neighborhoods $\bN$}
+
+	\bigskip
+\nl	\Func{serialBuildNeighborhoods($\bT$)}{\label{sbn1}
+\nl		\For(\tcc*[f]{$\bt = \left \{\bp_a, \bp_b, \bp_c\right \}$}){$\bt \in \bT$}{\label{sbn2}
+\nl			\ProgSty{union($\bN$, $\bp_a$, $\bp_b$, $\bp_c$)}\;\label{sbn3}
+\nl			\ProgSty{union($\bN$, $\bp_b$, $\bp_a$, $\bp_c$)}\;\label{sbn4}
+\nl			\ProgSty{union($\bN$, $\bp_c$, $\bp_a$, $\bp_b$)}\;\label{sbn5}
+		}
+	}
+
+	\bigskip
+\nl	\Func{union($\bN$, $a$, $b$, $c$)}{\label{sbn7}
+\nl		$\bN_a \leftarrow \bN_a \cup \{b,\,c\}$\;\label{sbn8}
+	}
+	\caption{Serial algorithm for building the family of sets of all discovered members of each neighborhood in the mesh\label{alg:serialBuildNeighborhoods}}
+\end{algorithm}%
+
+The function ``union'' is separated here for two reasons: the first reason is that this way, it becomes very clear that the union operation behaves similarly for all three permutations\footnote{In general, a set of three numbers has six permutations, however, here only the first index is important, and the order of the second two parameters are arbitrary due to the commutative property of the union operation, resulting in only 3 distinct possibilities} of corners, and indeed it is only the order of the indices which changes; and the second reason is that this signature matches more closely that of the parallel version, Algorithm~\ref{alg:parallelBuildNeighborhoods}, which requires the union operation to remain separate.
+\todoBackground{Commutative property of union operation}
+
+%
+%
+%
+%
+\section{Calculating Edge Lengths}
+\label{ch5sCEL}
+Having now built in the previous section the family of sets of neighborhoods $\bN$, we can advance to the next step, Algorithm~\ref{alg:parallelCalculateEdgeLengths}, which iterates over each pair of neighbors comprising $\bN$, with the goal of building a set of pre-calculated edge lengths $\bE$, as well as determining the global minimum edge length $\gelm$; both being essential parameters of Algorithm~\ref{alg:serialConvolveFilter}.
+
+As shown in Equation~\ref{eq:defineEdgeLengthPoint}, the calculation of an edge's length requires taking the L2-norm of the difference between two points, which itself involves using the square root operation. In modern software, the square root operation is performed by computing ``Newton's Iteration'', or ``Newton's method''\todoCitation{software uses Newton's iteration for sqrt}, which is essentially multiple iterations of the so-called, ``recurrence equation''.~\cite{Weisstein19b}\todoCitation{Newton's iteration uses recurrence equation} The impact for \forf{t} is that the computation of a square root typically\todoReword{add footnote with desc and citation}\todoCitation{how slow is Newton's iteration compared to others} takes many more compute cycles than  any other binary or unary operation, thus taking more time to complete overall. In fact, because of the slowness of the square root operation, computing the L2-norm in order to calculate an edge's length is empirically the most costly operation performed by the filter\todoResearch{qualify, do experiment to prove how slow sqrt is, maybe make appendix entry about what it is and why it is so slow}. Therefore, it is imperative that we pay special attention to avoid unnecessary instructions to calculate an edge's length. For that reason, we define the symbol $\ellstar$ to represent the calculation of an edge's length using ``Newton's Iteration'', so as to draw focus to its importance while designing an efficient implementation of \forf{t}.%
+\nomenclature[oa]{$\ellstar$}{the procedure of calculating an edge's length using ``Newton's Iteration'', the most costly operation in the Fast One-Ring filter, due to use of $\sqrt{(\cdot)}$}
+
+\begin{algorithm}[ht]
+	\DontPrintSemicolon
+	\SetCommentSty{small}
+	\SetKwFor{For}{for}{:}{}
+	\SetKwProg{Func}{Function}{}{}
+	\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
+
+	\Input{the set of all points $\bP$, \\
+		the family of sets of discovered neighborhoods $\bN$}
+	\Output{the set of pre-calculated edge lengths $\bE$, \\
+		the global minimum edge length $\gelm$}
+
+	\bigskip
+	\Func{serialCalculateEdgeLengths($\bP$, $\bN$)}{
+\nl		\For{$\bp_v \in \bP$}{\label{scel1}
+\nl			\For{$\bp_i \in \bN_v$}{\label{scel2}
+				\linespread{1.5}\selectfont
+\nl				$\bE_{\sv{i}} \leftarrow |\bp_i - \bp_v|$\tcc*[r]{This is $\ellstar$ as in Eq:~\ref{eq:localMinimumEdgeLength}}\label{scel3}
+\nl				$\gelm \leftarrow \min\left \{\gelm,\,\ell_{\sv{i}}\right \}$\tcc*[r]{Eq:~\ref{eq:globalMinimumEdgeLength}}\label{scel5}
+			}
+		}
+	}
+	\caption{Serial algorithm for calculating all the edge lengths between each pair of adjacent points in the mesh\label{alg:serialCalculateEdgeLengths}}
+\end{algorithm}
+
+Given the substantial impact of computing ${\ellstar}$ and the enormous number of times\todoReword{how many times} an edge length is required in the computation of the weighted mean function values per iteration of the filter on a mesh, pre-calculating the set all edge lengths outside of the principle loop becomes critical to the overall efficiency of the algorithm, despite the fact that it requires ${\ellstar}$ to be calculated and stored about $|\bP|^6$ times\footnote{depending on the average size of all neighborhoods, but assumed here to be about 6.}. It is of paramount importance for two reasons: the first reason is that without pre-calcuating each edge length, it would be otherwise impossible to calculate the global minimum  edge length $\gelm$, which is used in every iteration of the principle loop; and the second reason is that by recording the results of each edge length calculation in the set $\bE$, we are then able to completely exclude any further calculations of $\ellstar$ from the principle loop, and as can be seen in Algorithm~\ref{alg:serialConvolveFilter}, that reduces the total count of $\ellstar$ calculations performed by the filter down from the $(2\,\ell_{\sv{i}}^{\,border} + 4\,\ell_{\sv{i}}^{\,non-border})\cdot\tau^{|\bP|}$ had the procedure been required to calculate an edge length each time it was used during computation, to only the initial $1\cdot |\bP|^6$ pre-calculations; having become completely independent of $\tau$ and significantly more efficient overall.%
+\nomenclature[ob]{$\bE$}{a set of pre-calculated edge lengths}%
+\todoBackground{memory vs speed cost compromise}
+\todoBackground{border vs non-border edge lengths}
+\todoReword{three big paragraphs in a row is not pretty}
+
+%
+%
+%
+%
+\subsection{Convolving the Filter}
+\label{ch5sCF}
+In the third and final part, we present Algorithm~\ref{alg:serialConvolveFilter}, which describes the remaining steps required to convolve \Forf{t}. After having completed the discovery and pre-calculations of Algorithms~\ref{alg:serialBuildNeighborhoods} and~\ref{alg:serialCalculateEdgeLengths}, each convolution is performed for a user-defined number of convolutions $\tau$, by convolving over each point $\bp_v$ in the set $\bP$. At each point, the neighboring points $\bp_i$ from set $\bN_v$ are then iterated over, in order to calculate each weighted mean function value $\check{f}$ at the center of gravity of the circle sector defined by $\bp_v$ and $\bp_i$. Next, the weighted mean $f'_v$ is evaluated with all the mean function values from the circle sectors comprising the geodesic disc centered on $\bp_v$,  and is then recorded in set $\bF'$, before \forf{t} finally moves to the next point in the mesh and its corresponding one-ring neighborhood.
+
+\begin{algorithm}[ht]
+	\DontPrintSemicolon
+	\SetCommentSty{small}
+	\SetKwFor{For}{for}{:}{}
+	\SetKwProg{Func}{Function}{}{}
+	\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
+
+	\Input{the set of all points $\bP$, \\
+		the family of sets of discovered neighborhoods $\bN$, \\
+		the set of pre-calculated edge lengths $\bE$, \\
+		the global minimum edge length $\gelm$, \\
+		the set of function values $\bF$, \\
+		the user-defined number of convolutions $\tau$}
+	\Output{the set of one-ring weighted mean function values $\bF'$}
+
+	\bigskip
+	\linespread{1}\selectfont
+	\Func{convolveFilter($\bP$, $\bN$, $\bE$, $\gelm$, $\bF$, $\tau$)}{
+\nl		\For{$t\leftarrow 1\;\KwTo\;\tau$}{
+\nl			\For{$\bp_v \in \bP$}{
+\nl				\For{$\bp_i \in \bN_v$}{
+					\linespread{1.5}\selectfont
+\nl					$\kern-0.5pt\alpha \leftarrow cos^{-1}$
+					\begin{Large}
+						$\kern-6pt\left (\frac{\bE_c^2\,+\,\bE_b^2\,-\,\bE_a^2}{2\,\cdot\,\bE_c\,\cdot\,\bE_b}\right )$\tcc*[r]{Eq:~\ref{eq:alphaFromEdgeLengths}}
+					\end{Large}\label{algSCFalpha}
+					\linespread{1.2}\selectfont
+\nl					$\kern0.00pt\beta \leftarrow (\pi - \alpha)\mathbin{/}2$\tcc*[r]{Eq:~\ref{eq:betaFromHalfAlpha}}\label{algSCFbeta}
+\nl					$\kern-1.5ptA \leftarrow \Big(\gelm\,\Big)^2\kern-4pt\cdot\alpha\mathbin{/}2$\tcc*[r]{Eq:~\ref{eq:circularSectorArea}}\label{algSCFarea}
+\nl					$\kern1.00pt\check{\ell} \leftarrow \big(4\cdot\gelm\cdot\sin(\alpha\mathbin{/}2)\big)\mathbin{/}3\,\alpha$\tcc*[r]{Eq:~\ref{eq:distToCoG}}\label{algSCFcog}
+\nl					$\kern1.00pt\zeta \leftarrow \gelm\mathbin{/}\sin(\beta)$\tcc*[r]{Eq:~\ref{eq:zeta}}\label{algSCFzeta}
+\nl					\For{$j \in {1,2}$}{\label{algSCFjloop}
+\nl						$\tilde{\ell}_j \leftarrow \zeta\mathbin{/}\bE_j$\tcc*[r]{Eq:~\ref{eq:distanceIForInterpolation},~\ref{eq:distanceIp1ForInterpolation}}
+\nl						$f'_j \leftarrow f_0\cdot(1 - \tilde{\ell}_j) + f_j\cdot\tilde{\ell}_j$\tcc*[r]{Eq:~\ref{eq:interpolatedFi},~\ref{eq:interpolatedFip1}}
+					}
+\nl					$\check{f} \leftarrow f_0\cdot(1 - \check{\ell}) + \big((f'_1 + f'_2)\cdot\check{\ell}\big)\mathbin{/}2$\tcc*[r]{Eq:~\ref{eq:weightedMeanAtCoGatSector}}\label{algSCFcheckf}
+\nl					$\kern-2.0pt\tilde{f}_v \leftarrow \tilde{f}_v + A\cdot\check{f}$\tcc*[r]{Eq:~\ref{eq:meanFuncValAtPv}}\label{algSCFarea}tildef
+\nl					$\kern-4.0pt\tilde{A}_v \leftarrow \tilde{A}_v + A$\tcc*[r]{Eq:~\ref{eq:meanFuncValAtPv}}\label{algSCFtildearea}
+				}
+\nl				$f'_v \leftarrow \tilde{f}_v\mathbin{/}\tilde{A}_v$\tcc*[r]{Eq:~\ref{eq:meanFuncValAtPv}}\label{algSCFfprimev}
+			}
+\nl		$\bF' \leftarrow \left \{f'_1,\ldots,\,f'_{|\bP|}\right \}$\;\label{algSCF2ndlastLine}
+\nl 	$\bF \leftarrow \bF'$\tcc*{smooth newest values every iteration}\label{algSCFlastLine}
+		}
+	}
+	\caption{Serial algorithm for convolving \Forf{t}\label{alg:serialConvolveFilter}}
+\end{algorithm}%
+\nomenclature[pa]{$\tilde{f}$}{the total volume of function values over $\bO_v$}%
+\nomenclature[pb]{$\tilde{A}$}{the area of $\bO_v$}%
+\nomenclature[]{$\bF'$}{the set of one-ring weighted mean function values}%
+
+While the performance of Algorithm~\ref{alg:serialConvolveFilter} is much improved with the pre-calculations performed in Algorithms~\ref{alg:serialBuildNeighborhoods} and~\ref{alg:serialCalculateEdgeLengths}, its strictly serial design prevents it from scaling in performance appropriately for the sizes of real-world, acquired \tdd{}, performing especially sluggishly for high numbers of iterations on meshes with large amounts of triangulated points\todoReference{a specific experiment} the very targets for which the filter is primarily intended.
+
+In this section, we presented an improved version of \Forf{t}, as implemented within the GigaMesh framework. Unfortunately, it is still yet entirely serial in design, therefore, we will in the next section, endeavor to explore this as-yet-unpublished algorithm in order to discover possible occurrences of independent procedures worthy of exploiting with parallel processing, with the goal of improving the overall performance and scalability of \forf{t} when it is implemented on a system capable of parallel computation.
+
+%
+%
+%
+%
+\section{Summary}
+\ldots
+%then calculate all the edge lengths $\ell_{vk}$, as well as the global minimum edge length $\gelm$. Afterwards, one may efficiently convolve the filter, for as many number of iterations as required to achieve the desired smoothing effect.
+
