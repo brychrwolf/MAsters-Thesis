@@ -10,6 +10,11 @@ It should come as no surprise that if one were to implement an algorithm in a wa
 \section{3D Data is important (and big).}
 
 \section{Filtering techniques for irregular triangle meshes, have not yet been established}
+
+
+
+A core principle for any convolutional filter, as discussed in Section\todoReference{convolutional filter static window size} is that the  window size of the filter must remain static for the duration of the convolution. While it is trivial define a static-sized filter for convolving regular meshes, it is a complex and complicated task to create the same for convolving acquired \tdd{}, whose one-ring neighborhoods are uniformly irregular, as illustrated in Figure~\ref{fig:neighborhoods}.
+
 Even when ignoring the third dimension present in \tdd{}, in contrast to regular square meshes, as is standard pixels for digital imaging, the one-ring neighborhoods found in irregular triangle meshes have completely arbitrary shapes and sizes, and in fact, even the number of neighbors vary widely. From this observation is where the motivation behind \fors{t} came.
 %
 \section{Noise propagates when processing dense meshes}
