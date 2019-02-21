@@ -1,6 +1,6 @@
 \chapter{Fast One-Ring Smoothing: Mathematical Grounding}
 \label{ch4}
-In this one, and the next two chapters, we present an updated version of \Fors{t}, based on the ideas initially proposed by H. Mara and S. Krömker at the EUROGRAPHICS Workshop on Graphics and Cultural Heritage (2017) ~\cite[s.~3.2]{Mara17}. Since publication, further research has been conducted by the authors, and it was determined that improvments to the weighting methods were possible, therefore, modifications to the algorithm were implemented directly within the GigaMesh \todoCitation{GigaMesh} framework. This chapter presents the mathematical grounding for the as-yet-unpublished version of \fors{t}, as it exists now in GigaMesh, with more accurate weighting methods based on the interpolation and extrapolation of function values to the center of gravity of each circular sector comprising the geodesic disc centered upon each point in a triangle mesh of \tdd{}.
+In this and the next two chapters, we present an updated version of \Fors{t}, based on the ideas initially proposed by H. Mara and S. Krömker at the EUROGRAPHICS Workshop on Graphics and Cultural Heritage (2017) ~\cite[s.~3.2]{Mara17}. Since publication, further research has been conducted by the authors, and it was determined that improvements to the weighting methods were possible, therefore, modifications to the algorithm were implemented directly within the GigaMesh \todoCitation{GigaMesh} framework. This chapter presents the mathematical grounding for the as-yet-unpublished version of \fors{t}, as it exists now in GigaMesh, with more accurate weighting methods based on the interpolation and extrapolation of function values to the center of gravity of each circular sector comprising the geodesic disc centered upon each point in a triangle mesh of \tdd{}.
 
 The procedure for designing any convolutional filter must begin by defining the size of the filter window,\todoCitation{convolutional filter, jaehne} and when designing for acquired \tdd{}, as covered in Section~\ref{ch4sSEL}, that entails the complex tasks of calculating each edge length, and determining the global minimum edge length for the entire triangular mesh.\todoCitation{global minimum edge length, mara} Next, because one-ring neighborhoods in acquired \tdd{} uniformly have irregular shapes and sizes, the typical characteristics of which can can be seen clearly in Figure~\ref{fig:neighborhoods}, each function value must be scaled appropriately in regards to the distance from it to all of its neighboring points, as discussed in detail in Sections~\ref{ch2sIA},~\ref{ch2sACG}, and~\ref{ch2sIE}. Then as presented in Section~\ref{ch4sWM}, the next steps for \fors{t} involve the computation of the \wmfv{s} for each circle sector of the geodesic disc, then the \wmfv{} for the entire disc, then finally, the convolutions of the filter over the entire mesh.
 \todoBackground{convolutional filter static window size}
@@ -75,7 +75,7 @@ Figure~\ref{fig:anglesAndCenterOfGravity} (a) extends Figure~\ref{fig:geodesicDi
 %
 %
 \section{Area \& Center of Gravity}
-\label{ch4sIACG}
+\label{ch4sACG}
 The next step towards the goal of computing the \wmfv{s} of the circle sectors $\bs_i$, is to calculate for each sector, the area $A$ and the distance $\check{\ell}$ from the center point $\bp_0$ along the bisecting line to the center of gravity $\bc$. Because a circle sector may be defined entirely by its radius and central angle~\cite{Weisstein19d}, having now calculated the radius as $\gelm$ in Section~\ref{ch4sSEL} and the central angle $\alpha$ in Section~\ref{ch4sIA}, the area of a sector can be calculated using the formula
 %
 \begin{equation}
@@ -114,7 +114,8 @@ With the goal of computing the \wmfv{s} of the circle sectors $\bs_i$ by interpo
 
 For the next few steps in the process of interpolating and extrapolating the function values, we must begin calculating for each half of the circular sector individually, because the points $\bp_j$ and $\bp_{\sjpo}$ are likely\footnote{One need only to look at Figures~\ref{fig:geodesicDisc} or~\ref{fig:anglesAndCenterOfGravity} for an example of why that may be.} at different distances from the center point $\bp_0$. Therefore, while the index $i$ will remain the index of the circle sector $\bs_i$, we will now use the index $j$ to denote the side of the bisecting line, defined by its point $\bp_j$ or $\bp_{\sjpo}$. 
 
-Next, by dividing the sector-wise constant ratio $\zeta$ by the distances to the original points $\ell_j$ and $\ell_{\sjpo}$, we can determine the scalar values with which we can multiply the function values $f_j$ and $f_{\sjpo}$ in order to interpolate or extrapolate them to the corners of the circumscribing isosceles triangle at points $\bp'_j$ and $\bp'_{\sjpo}$. Therefore, these two scalar values are defined as 
+Next, by dividing the sector-wise constant ratio $\zeta$ by the distances to the original points $\ell_j$ and $\ell_{\sjpo}$, we can determine the scalar values with which we can multiply the function values $f_j$ and $f_{\sjpo}$ in order to interpolate or extrapolate them to the corners of the circumscribing isosceles triangle at points $\bp'_j$ and $\bp'_{\sjpo}$. Therefore, these two scalar values are defined as
+%
 \begin{align}
 	\tilde{\ell}_j & := \kern2pt\frac{\zeta}{\kern2pt\ell_j\kern2pt}\kern1pt = \kern3pt\frac{\zeta}{|\bp_j - \bp_0|}
 	\label{eq:distanceIForInterpolation}\\
@@ -124,8 +125,7 @@ Next, by dividing the sector-wise constant ratio $\zeta$ by the distances to the
 \nomenclature[lb]{$\tilde{\ell}_j$}{also $\tilde{\ell}_{\sjpo}$, the distances for interpolation of $f_j$ and of $f_{\sjpo}$ towards $f_0$}%
 
 Then, by taking the function values\footnote{\fors{T} is agnostic to the meaning of information represented by the data stored as function values in scalar fields, therefore, it can similarly convolve any such data. However, because the filter was designed to only convolve scalar fields, any multi-dimensional data, such as RGB color, must be processed individually as independent scalar fields.} from the scalar field $\bF$, and summing the products of the multiplications between the function values $f_j$, and $f_{\sjpo}$ and their scalar values $\tilde{\ell}_j$ and $\tilde{\ell}_{\sjpo}$, plus the product of the multiplication between the function value at the central point $f_0$ and the complement of each side's scalar value, we can now interpolate and extrapolate the function values at $\bp'_j$ and $\bp'_{\sjpo}$ as
-
-
+%
 \begin{align}
 	f'_j & := f_0\,(1 - \tilde{\ell}_j) + f_j\,\tilde{\ell}_j
 	\label{eq:interpolatedFi} \\
@@ -134,7 +134,7 @@ Then, by taking the function values\footnote{\fors{T} is agnostic to the meaning
 \end{align}%
 \nomenclature[lc]{$f'_j$}{also $f'_{\sjpo}$, the interpolated values of $f_j$ and $f_{\sjpo}$ toward $f_0$}%
 
-Figure~\ref{fig:interpolatedFunctionValues} illustrates a 3D-projected, enhanced view of the circle sector $\bs_1$, continuing with the example introduced in Figure~\ref{fig:geodesicDisc}. Drawn above the points $bp_0$, $bp_1$, and $bp_2$ are the three function values $f_0$, $f_1$, and $f_2$ from the scalar field $\bF$, with the heights indicative of each function value's magnitude. Also shown are the extrapolated function values $f'_0$, and $f'_1$ above the corners of the isosceles triangle $\bp`_1$, and $\bp`_1$, as well as the dotted lines illustrating the vectors on which the extrapolated values were calculated. Furthermore, it illustrates the process of interpolating of the extrapolated function values towards each other, and then again towards the center of gravity, which is the topic of the next section.
+Figure~\ref{fig:interpolatedFunctionValues} illustrates a 3D-projected, enhanced view of the circle sector $\bs_1$, continuing with the example introduced in Figure~\ref{fig:geodesicDisc}. Drawn above the points $\bp_0$, $\bp_1$, and $\bp_2$ are the three function values $f_0$, $f_1$, and $f_2$ from the scalar field $\bF$, with the heights indicative of each function value's magnitude. Also shown are the extrapolated function values $f'_0$, and $f'_1$ above the corners of the isosceles triangle $\bp'_1$, and $\bp'_1$, as well as the dotted lines illustrating the vectors on which the extrapolated values were calculated. Furthermore, it illustrates the process of interpolating the extrapolated function values towards each other, and then again towards the center of gravity, which is a topic covered in the next section.
 
 \begin{figure}[ht]
 \ffigbox
@@ -148,40 +148,55 @@ Figure~\ref{fig:interpolatedFunctionValues} illustrates a 3D-projected, enhanced
 %
 \section{Weighted Means}
 \label{ch4sWM}
-Now that we have, in Section~\ref{ch4sACG}, calculated the distance to the center of gravity of each circle sector $\check{\ell}$, and then in Section~\ref{ch4sIE}, computed the two function values interpolated or extrapolated to the corners of the isosceles triangle circumscribing the circle sector, $f'_j$ and $f'_{\sjpo}$, we are now poised to begin the computation of the \wmfv{s}, first for each circle sector $\bs_i$, then for the entire geodesic disc $\bO_v$, and finally iteratively convolving \Fors{t} over the entire mesh to generate the smoothed, scalar field of \wmfv{s} $\bF'$.
+Now that we have, in Section~\ref{ch4sACG}, calculated the distance to the center of gravity of each circle sector as $\check{\ell}$, and then in Section~\ref{ch4sIE}, computed the two function values interpolated or extrapolated to the corners of the isosceles triangle circumscribing the circle sector, $f'_j$ and $f'_{\sjpo}$, we are now poised to begin the computation of the \wmfv{s}, first for each circle sector $\bs_i$, then for the entire geodesic disc $\bO_v$, and finally iteratively convolving \Fors{t} over the entire mesh to generate the smoothed, scalar field of \wmfv{s} $\bF'$.
 
-In order to calculate the weighted mean function value at the center of gravity $\bc$, of the circle sector $\bs_i$, we must combine the original function value at the center point $f_0$, and both interpolated function values, $f'_j$ and $f'_{\sjpo}$. Then using the distance to the center of gravity $\check{\ell}$, and the formula
+The next step then, is to calculate the \wmfv{} at the center of gravity $\bc$, of a circle sector $\bs_i$. That entails first interpolating the extrapolated function values towards each other, to the point where the tangent line intersects the arc of the circle sector, which is exactly the distance of $\gelm$ away from $\bp_0$. It is also always exactly half way between the two proxy points $\bp'_j$ and $\bp'_{\sjpo}$, so that interpolation always coincides with calculating the mean of the two function values. Therefore, by taking the equation for interpolation as was defined in Section~\ref{ch2sBTssGsssIE}, and used in Algorithms~\ref{interpolatedFi}, and~\ref{interpolatedFip1}, then applying $\gelm$ as the domain, and the difference between the original function value at the central point $\bp_0$ and the mean of the interpolated and extrapolated function values as the range, we obtain the formula
+%
 \begin{equation}
-	\check{f} = f_0\,(1 - \check{\ell}) + \frac{(f'_j + f'_{\sjpo})\,\check{\ell}}{2}
+	\check{f} := f_0\,(1 - \check{\ell}) + \frac{(f'_j + f'_{\sjpo})\,\check{\ell}}{2}
 	\label{eq:weightedMeanAtCoGatSector}
 \end{equation}%
-\nomenclature[ma]{$\check{f}$}{the weighted mean function value at $\bc$ of $\bs_i$}%
-we obtain the weighted mean function value $\check{f}$, at the center of gravity, representing the entire circle sector.
+\nomenclature[ma]{$\check{f}$}{the weighted mean function value at $\bc$ of $\bs_i$}
+%
+which is used to calculate the \wmfv{} at the center of gravity $\check{f}$, and therefore represents the \wmfv{} over the entire circle sector.
 
-Figure~\ref{fig:interpolatedFunctionValues} illustrates $\check{f}_1$ in sand color as a volume over an enhanced view of the circle sector $\bs_1$, continuing with the example introduced in Figure~\ref{fig:geodesicDisc}. The figure also shows details pertaining to the interpolation of the function values $f_j$ and $f_{\sjpo}$, as discussed in detail in Section~\ref{ch4sI}.
-\todoReword{update after changes to figure}
+Figure~\ref{fig:interpolatedFunctionValues} illustrates a 3D-projected, enhanced view of the circle sector $\bs_1$, continuing with the example introduced in Figure~\ref{fig:geodesicDisc}. The \wmfv{} $\check{f}_1$, which represents the entire circle sector, is drawn at its interpolated value above the center of gravity $\bc$. The figure also shows the dotted lines illustrating the interpolation from the extrapolated function values $f'_1$ and $f'_2$, as well as the details pertaining to their own computations, as discussed in detail in Section~\ref{ch4sIE}.
 
-
-Finally, we can multiply each interpolated function value located at each circle sector's center of gravity $\check{f}_i$, by each sector's area $A_i$, to obtain a volume of function value over the entire circle sector. Then by dividing the sum of all those sector-wise function value volumes by the total area of the geodesic disc $\bO_v$, we can compute
+Finally, we can multiply each \wmfv{} located at each circle sector's center of gravity $\check{f}_i$, by each sector's area $A_i$, to obtain the volume of function value over the entire circle sector. Then by dividing the sum of all those volumes by the total area of the geodesic disc $\bO_v$, we can compute
+%
 \begin{equation}
 	f'_v := \frac{\sum A_i\check{f}_i}{\sum A_i} \quad \forall i \in \{1,\ldots,\,|\bN_v|\}
 	\label{eq:meanFuncValAtPv}
 \end{equation}%
-\nomenclature[mb]{$f'_v$}{the one-ring weighted mean function value at $\bp_v$}%
+\nomenclature[mb]{$f'_v$}{the one-ring weighted mean function value at $\bp_v$}
+%
 the one-ring weighted mean\footnote{\fors{T} can be modified to use the median operation, instead of the mean, by using all the equations except Equation~\ref{eq:meanFuncValAtP0} and then sorting the results of Equation~\ref{eq:weightedMeanAtCoGatSector}. The details of which can be found by the original publication ~\cite[s.~3.2]{Mara17}, but as it was not implemented in GPGPU for this thesis, we exclude the details here.} function value for $\bp_v$, which is the center point $\bp_0$ of the neighborhood $\bN_v$.
 
-Figure~\ref{fig:funcValVolumes} illustrates the geodesic disc $\bO$, as introduced in Figure~\ref{fig:geodesicDisc}, with volumes of interpolated function value over each circle sector, which shall be divided by each sector's area in order to obtain the the one-ring weighted mean function value $f'_v$ at $\bp_v$.
+Figure~\ref{fig:funcValVolumes} illustrates a 3D-projected view of the geodesic disc $\bO$, as introduced in Figure~\ref{fig:geodesicDisc}, with volumes of interpolated function value over each circle sector, which shall be summed together, then divided by the total area of the geodesic disc in order to obtain the the one-ring \wmfv{} $f'_v$ at point $\bp_v$.
+
 \begin{figure}[ht]
 \ffigbox
 	{\includegraphics[width=1.0\linewidth]{figures/funcValVolumes.png}}
 	{\caption[Weighted Mean Function Value $f'_v$at $\bp_v$]{The geodesic disc $\bO$, as introduced in Figure~\ref{fig:geodesicDisc}, with volumes of interpolated function values over each circle sector $\bs_i$, which shall be divided by each sector's area $A$ in order to obtain the the one-ring weighted mean function value $f'_v$ at $\bp_v$.}\label{fig:funcValVolumes}}
 \end{figure}
 
-As with any smoothing filter, there is no upper limit to the count of iterations one can convolve, however, the function values will all eventually converge at the global mean average function value. More details can be found in Section~\ref{ch3s2}.\todoCitation{mara on iteration count vs filter size}.\todoReword{elaborate}
+All that remains for \Fors{t}, is to convolve the filter over the entire set of points comprising the mesh $\bP$, then to collect the computed one-ring \wmfv{s} in the ordered set
+%
+\begin{equation}
+	\bF' :=  \left \{\:f'_v \mid v \in \mathbb{N}, \;\text{and}\; 1\leq v \leq |\bP|\:\right \}
+	\label{eq:zeta}
+\end{equation}%
+\nomenclature[]{$\bF'$}{}%
+\todoReword{all mentions of set, change to ordered set}
+%
+which can be either be used in lieu of $\bF$ in subsequent convolutions, or simply taken as the final product of all the processes described in this chapter. As with any smoothing filter, one can convolve \fors{t} for any number of iterations, thus producing a smoothing effect with increasing intensity in relation to the number of convolutions. But while there is no upper limit to the number of convolutions one may apply, the function values will all eventually converge at the global mean average function value. More details can be found in Section~\ref{ch3s2}.\todoCitation{mara on iteration count vs filter size}.\todoReword{choosing convolution counts}
 
+%
 %
 %
 %
 \section{Summary}
 \label{ch4sS}
-In this chapter we presented an updated version of \Fors{t}, which since its original publication~\cite[s.~3.2]{Mara17}, now utilizes the entire area of each sector $\bs$ of the geodesic disc $\bO$ centered at each point $\bp_v$ in the mesh $\bM$, in order to calculate the weighted average of all the function values in its one-ring neighborhood. First, we illustrated in detail how one can calculate the globally shortest edge length $\gelm$, interior angles $\alpha$ and $\beta$, the area $A$, and the distance $\check{\ell}$ from the center point to the center of gravity $\bc$, for any given of circle sector in a one-ring neighborhood $\bN$. Next, we provided the equations for interpolating the three function values $f_0$, $f_j$, and $f_{\sjpo}$, using the pairwise constant ratio $\zeta$ in order to obtain the weighted mean function value $\tilde{f}$ for each $\bs$, and finally the weighted mean function value $f'_v$ at point $\bp_v$, representing the entire one-ring neighborhood $\bN$. Convolving this filter at each vertex in the mesh, with the scalar field of function values $\bF$, for any number of iterations, thus produces a smoothing effect with increasing intensity in relation to the number of iterations.
+In this chapter we presented the mathematical grounding for the as-yet-unpublished, updated version of \Fors{t}, which since its original publication~\cite[s.~3.2]{Mara17}, now utilizes the entire area of each sector $\bs$ of the geodesic disc $\bO$ centered at each point $\bp_v$ in the mesh $\bM$, in order to calculate the weighted average of all the function values in its one-ring neighborhood. First, we illustrated in detail how one can calculate the global minimum edge length $\gelm$, and for each circle sector in the one-ring neighborhood $\bN$, the interior angles $\alpha$ and $\beta$, the area $A$, and the distance $\check{\ell}$ from the center point to the center of gravity $\bc$. Next, we provided the equations for interpolating and extrapolating the three function values $f_0$, $f_j$, and $f_{\sjpo}$ to the center of gravity, using the sector-wise constant ratio $\zeta$ in order to obtain the \wmfv{} $\tilde{f}$ for each sector. Finally, we computed the \wmfv{} $f'_v$ at the central point $\bp_v$, which is collected into the ordered set $\bF'$. Convolving this filter at each point in the mesh, with the scalar field of function values $\bF$, for any number of iterations, thus produces a smoothing effect with increasing intensity in relation to the number of iterations.
+
+In the next chapter, we will develop the serial algorithms required for implementing \Fors{t}, to be utilized as the foundation for the parallel algorithms to described in detail in Chapter~\ref{6}.

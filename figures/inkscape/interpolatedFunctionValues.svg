@@ -386,10 +386,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.7578126"
-     inkscape:cx="1320.1729"
-     inkscape:cy="312.86347"
+     inkscape:cx="569.23957"
+     inkscape:cy="335.61903"
      inkscape:document-units="px"
-     inkscape:current-layer="layer3"
+     inkscape:current-layer="layer2"
      showgrid="true"
      units="px"
      inkscape:pagecheckerboard="false"
@@ -699,6 +699,18 @@
          id="path1582-2-9-6-5"
          inkscape:connector-curvature="0"
          sodipodi:nodetypes="cc" />
+      <text
+         id="text1478-5-7"
+         y="149.48376"
+         x="126.87508"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15.53709412px;line-height:1.25;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;display:inline;fill:#ff6060;fill-opacity:1;stroke:none;stroke-width:1.41395676"
+         xml:space="preserve"
+         transform="scale(1.0005709,0.99942942)"><tspan
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:12.82778549px;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;fill:#ff6060;fill-opacity:1;stroke-width:1.41395676"
+           y="149.48376"
+           x="126.87508"
+           id="tspan1476-9-0"
+           sodipodi:role="line">c</tspan></text>
     </g>
     <g
        inkscape:groupmode="layer"
