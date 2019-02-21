@@ -104,11 +104,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.47327784"
-     inkscape:cx="377.79543"
-     inkscape:cy="161.5779"
+     inkscape:zoom="0.66931594"
+     inkscape:cx="1173.1275"
+     inkscape:cy="74.991097"
      inkscape:document-units="px"
-     inkscape:current-layer="layer2"
+     inkscape:current-layer="layer1"
      showgrid="true"
      units="px"
      inkscape:pagecheckerboard="false"
@@ -116,9 +116,9 @@
      objecttolerance="10"
      inkscape:snap-path-clip="true"
      inkscape:window-width="1865"
-     inkscape:window-height="1106"
-     inkscape:window-x="1975"
-     inkscape:window-y="30"
+     inkscape:window-height="1021"
+     inkscape:window-x="55"
+     inkscape:window-y="25"
      inkscape:window-maximized="1"
      fit-margin-top="0"
      fit-margin-left="0"
@@ -637,6 +637,28 @@
          cx="-22.038248"
          cy="260.17642"
          r="66.356834" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.51910114px;line-height:1.25;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;display:inline;fill:#007f7f;fill-opacity:1;stroke:none;stroke-width:0.68058294"
+         x="39.974003"
+         y="295.71906"
+         id="text851-2-9"><tspan
+           sodipodi:role="line"
+           id="tspan849-5-22"
+           x="39.974003"
+           y="295.71906"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.51910114px;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;fill:#007f7f;fill-opacity:1;stroke-width:0.68058294">Ω</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.51910114px;line-height:1.25;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;display:inline;fill:#007f7f;fill-opacity:1;stroke:none;stroke-width:0.68058294"
+         x="255.08006"
+         y="295.71906"
+         id="text851-2-9-4"><tspan
+           sodipodi:role="line"
+           id="tspan849-5-22-7"
+           x="255.08006"
+           y="295.71906"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.51910114px;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;fill:#007f7f;fill-opacity:1;stroke-width:0.68058294">Ω</tspan></text>
     </g>
     <g
        inkscape:groupmode="layer"

@@ -347,7 +347,7 @@ It was mentioned in Section~\ref{ch2sBssT}, that determining the neighborhood of
 \nomenclature[ha]{$\bN_v$}{the set of points comprising the one-ring neighborhood about $\bP_v$}%
 \nomenclature[hb]{$\bp_i$}{a one-ring neighbor of $\bp_v$}%
 %
-which in words, means that the neighborhood $\bN_v$ is defined as the set of points $\bp_i$ such that both $\bp_i$ and $\bp_v$ are two points of a triangular face $\bt$, for all faces in the mesh.
+which in words, means that the neighborhood $\bN_v$ is defined as the set of points $\bp_i$ such that both $\bp_i$ and $\bp_v$ are two points of a triangular face $\bt$, for all faces in the mesh. Therefore, the adjacency of points is defined by the co-membership within a face $\bt$, from the set of faces $\bT$.
 
 When taken together, all the neighborhoods $\bN_v$ comprise a set of sets of neighbors; the family of sets $\bN$, with the common quality being that all the subsets are neighborhoods. The cardinality of each neighborhood $|\bN_v|$ will likely vary among other neighborhoods in $\bM$, however, the value and must always be $\geq 2$, and though there is no upper limit, $|\bN_v|$ is typically $\leq 12$. Furthermore, the neighboring points are always indexed in a clockwise direction for the same reasons as discussed in Section~\ref{ch2s3ssF}.
 \nomenclature[hc]{$\bN$}{a family of sets of neighborhoods}%
