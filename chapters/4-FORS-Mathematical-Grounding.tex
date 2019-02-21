@@ -45,31 +45,30 @@ and then use $\gelm$, the shortest edge length between any pair of adjacent poin
 %
 \section{Interior Angles}
 \label{ch4sIA}
-Having now determined in the previous section, the global minimum edge length $\gelm$, we may now consider the next step in calculating \Fors{t}. Because we intend to use the area of each circle sector $\bs_i$ comprising the geodesic disc $\bO_v$ as weights upon the scalar field for averaging the function values per sector and per neighborhood, we must first calculate the inner angles $\alpha_i$ of each triangular face $\bt_i$ in the neighborhood $\bN_v$, for use in those later computations. These inner angles may be obtained by applying the Law of Cosines~\cite{Weisstein19e}
+Having determined the global minimum edge length $\gelm$ in the previous section, we may now consider the next steps in calculating \Fors{t}. Because we intend to use the area of each circle sector $\bs_i$ comprising the geodesic disc $\bO_v$ as weights upon the scalar field $\bF$ for averaging the function values first per sector, and then per neighborhood, we must initially calculate for use in those later computations, the central angles $\alpha_i$ of each triangular face $\bt_i$ in the neighborhood $\bN_v$. These central angles may be obtained by applying the Law of Cosines~\cite{Weisstein19e}, which would yield
 %
 \begin{equation}
-	\alpha_i = cos^{-1}(\frac{|\bp_0 - \bp_{i}|^2 + |\bp_0 - \bp_{\sipo}|^2 - |\bp_i - \bp_{\sipo}|^2}{2\cdot|\bp_0 - \bp_{i}|\cdot|\bp_0 - \bp_{\sipo}|})
+	\alpha_i := cos^{-1}\left (\frac{|\bp_0 - \bp_{i}|^2 + |\bp_0 - \bp_{\sipo}|^2 - |\bp_i - \bp_{\sipo}|^2}{2\cdot|\bp_0 - \bp_{i}|\cdot|\bp_0 - \bp_{\sipo}|}\right )
 \end{equation}
 %
 or more compactly:
 %
 \begin{equation}
-	\alpha = cos^{-1}\left (\frac{\ell_c^2 + \ell_b^2 - \ell_a^2}{2\cdot\ell_c\cdot\ell_b}\right )
+	\alpha := cos^{-1}\left (\frac{\ell_c^2 + \ell_b^2 - \ell_a^2}{2\cdot\ell_c\cdot\ell_b}\right )
 	\label{eq:alphaFromEdgeLengths}
 \end{equation}%
 \nomenclature[ka]{$\alpha$}{the central angle of circle sector $\bs_i$}%
 
- the function values . For those computations, we will require the value of the other inner angles $\beta_i$, which may be obtained by applying the
-
-Also, it is our intention to interpolate and extrapolate the function values in relation to the distances between them and each of their adjacent points, thus we will be required to interpolate the values one side of the sector bisecting line at a time, as will be discussed in detail in Section~\ref{ch4sWM}. Having now obtained the first inner angles $\alpha_i$, we can now calculate the other inner angles $\beta_i$ using a proxy right triangle and the third angle theorem\footnote{otherwise known as the Angle-Angle-Angle Theorem, abbreviated as AAA}~\cite{Weisstein19f} as
+Also, as it is our intention to interpolate and extrapolate the function values in relation to the distances between them and each of their adjacent points in the current neighborhood, we will be required to perform some calculations one side of the sector-bisecting line at a time, as will be discussed in detail later, in Section~\ref{ch4sWM}. But now, having computed the central angles $\alpha$, we can calculate the other interior angles $\beta$, in relation to $\gelm$ and opposite the bisecting line, using the line tangent to the circle sector at the bisecting line, to create two proxy right triangles, which together comprise the larger isosceles triangle which circumscribes the sector $\bs_i$. Next, we can to apply the third angle theorem\footnote{otherwise known as the Angle-Angle-Angle Theorem, abbreviated as AAA}~\cite{Weisstein19f} with $\alpha/2$, to calculate $\beta$ as defined in the formula
 %
 \begin{equation}
-	\beta = \Big(\frac{\pi}{2} - \frac{\alpha}{2}\Big) = \frac{(\pi - \alpha)}{2}
+	\beta := \Big(\frac{\pi}{2} - \frac{\alpha}{2}\Big) = \frac{(\pi - \alpha)}{2}
 	\label{eq:betaFromHalfAlpha}
 \end{equation}%
 \nomenclature[kb]{$\beta$}{the third angle with $\frac{\alpha}{2}$ and $\frac{\pi}{2}$}%
+\nomenclature[]{$\bp'_j$}{also $\bp'_{\sjpo}$, the corners of the isosceles triangle circumscribing the circle sector, the intermediate location to where $f_j$ is first interpolated or extrapolated}%
 
-Figure~\ref{fig:anglesAndCenterOfGravity} extends Figure~\ref{fig:geodesicDisc} by enhancing the circle sector $\bs_1$ to show an example of the angles $\alpha/2$ and $\beta$, with the proxy right triangles used to calculate it, as well as the center of gravity which is discussed in detail in Section~\ref{ch4sIACG}.
+Figure~\ref{fig:anglesAndCenterOfGravity} (a) extends Figure~\ref{fig:geodesicDisc} by focusing on the circle sector $\bs_1$, showing the triangular face $\bt_1$, angles $\alpha$ and $\alpha/2$, the bisecting line, the two angles $\beta$ with the tangent line, proxy right triangles defined by the points $\bp'_1$ and $\bp'_2$ used in their calculation, and additionally, the center of gravity which is discussed in detail in the next section.
 
 %
 %
@@ -77,26 +76,26 @@ Figure~\ref{fig:anglesAndCenterOfGravity} extends Figure~\ref{fig:geodesicDisc} 
 %
 \section{Area \& Center of Gravity}
 \label{ch4sIACG}
-Because a circle sector may be described entirely by its radius and central angle~\cite{Weisstein19d}, having now calculated $\gelm$ and $\alpha$, the area of the sector can be obtained using the formula
+The next step towards the goal of computing the \wmfv{s} of the circle sectors $\bs_i$, is to calculate for each sector, the area $A$ and the distance $\check{\ell}$ from the center point $\bp_0$ along the bisecting line to the center of gravity $\bc$. Because a circle sector may be defined entirely by its radius and central angle~\cite{Weisstein19d}, having now calculated the radius as $\gelm$ in Section~\ref{ch4sSEL} and the central angle $\alpha$ in Section~\ref{ch4sIA}, the area of a sector can be calculated using the formula
 %
 \begin{equation}
-	A = \frac{(\gelm)^2\alpha}{2}
+	A := \frac{\left (\,\gelm\,\right )^2\alpha}{2}
 	\label{eq:circularSectorArea}
 \end{equation}
-%
-and similarly $\check{\ell}$, the distance from the center point $\bp_0$ along the bisecting line to the center of gravity $\bc$ can be calculated directly using the formula
+
+Similarly $\check{\ell}$, the distance from the center point $\bp_0$ along the bisecting line to the center of gravity $\bc$, can be calculated directly using the formula
 %
 \begin{equation}
 	\check{\ell} := \frac{4\:\gelm\:\sin(\frac{\alpha}{2})}{3\,\alpha}
 	\label{eq:distToCoG}
 \end{equation}%
 
-Figure~\ref{fig:anglesAndCenterOfGravity} extends Figure~\ref{fig:geodesicDisc} by enhancing the circle sector $\bs_1$ to illustrate the center of gravity $\bc$ and its distance from the center point $\bp_0$. In general, while holding the radius constant, the smaller the angle $\alpha$ becomes, the longer the distance $\check{\ell}$ becomes.
+Figure~\ref{fig:anglesAndCenterOfGravity} (a) extends Figure~\ref{fig:geodesicDisc} by enhancing the circle sector $\bs_1$ to illustrate the center of gravity $\bc$ and $\check{\ell}$, the distance along the bisecting line from $\bp_0$ to $\bc$. In general, while holding the radius constant, the closer to $\pi/2$ the central angle $\alpha$ becomes, the longer the distance $\check{\ell}$ will be.
 
 \begin{figure}[ht]
 \ffigbox
 	{\includegraphics[width=0.8\linewidth]{figures/anglesAndCenterOfGravity.png}}
-	{\caption[Angles and Center of Gravity]{An enhanced view of Figure~\ref{fig:geodesicDisc}, focusing on the circle sector $\bs_1$, showing $\alpha$ and the bisecting line in gray dots. In sand color is the center of gravity $\bc$ and $\check{\ell}$, the distance to it from $\bp_0$ along the bisecting line. Also shown in coral color, are the angles $\beta$, with the proxy right triangles used to calculate them.}\label{fig:anglesAndCenterOfGravity}}
+	{\caption[Angles and Center of Gravity]{An enhanced view of Figure~\ref{fig:geodesicDisc}, focusing on (a) the circle sector $\bs_1$, showing the triangular face $\bt_1$ and points $\bp_1$ and $\bp_2$ in gray, with $\alpha$ and the bisecting line in gray dots. In coral color is the center of gravity $\bc$ and $\check{\ell}$, the distance to it from $\bp_0$ along the bisecting line. Shown in sand color are the angles $\beta$, with the proxy right triangles defined by the points $\bp'_1$ and $\bp'_2$ used in their calculation (b) an example of a face and sector requiring both interpolation and extrapolation of its function values}\label{fig:anglesAndCenterOfGravity}}
 \end{figure}%
 
 %
@@ -105,51 +104,53 @@ Figure~\ref{fig:anglesAndCenterOfGravity} extends Figure~\ref{fig:geodesicDisc} 
 %
 \section{Interpolation \& Extrapolation}
 \label{ch4sIE}
-Given the scalar field\footnote{\fors{T} is agnostic to the meaning of information represented by the data stored as function values in scalar fields, therefore, it can similarly convolve any such data. However, because the filter was designed to only convolve scalar fields, any multi-dimensional data, such as RGB color, must be processed individually as independent scalar fields.} of function values $\bF$, and having now calculated $\beta$, and $\gelm$, both values which are constant between the two halves of the circle sector, we can next use the Law of Sines~\cite{Weisstein19g} to obtain the pairwise constant ratio
+With the goal of computing the \wmfv{s} of the circle sectors $\bs_i$ by interpolating and extrapolating the function values from their points towards the center of gravity of each sector $\bc$, in Section~\ref{ch4sSEL} we calculated the global minimum edge length $\gelm$, then in Section~\ref{ch4sIA} we calculated the interior angle $\beta$; both of which are constant between the two halves of the circle sector. So now, given that information, we can obtain the sector-wise constant ratio $\zeta$, which will be used to scale the function values at the points $\bp_i$, to the interpolated or extrapolated values at the corners of the circumscribing isosceles triangle $\bp'_i$, by applying the Law of Sines~\cite{Weisstein19g} and ascribing
 %
 \begin{equation}
-	\zeta = \frac{\gelm}{\sin(\beta)}
+	\zeta := \frac{\gelm}{\sin\left (\beta\right )} = \frac{|\bp'_i - \bp_0|}{\sin\left (\pi/2\right )} = |\bp'_i - \bp_0|
 	\label{eq:zeta}
 \end{equation}%
-\nomenclature[la]{$\zeta$}{pairwise constant ratio for interpolation derived from Law of Sines}%
+\nomenclature[la]{$\zeta$}{sector-wise constant ratio for interpolation derived from Law of Sines}%
 
-It should be noted, that because the points $\bp_j$ and $\bp_{\sjpo}$ are likely\footnote{One need only to look at Figures~\ref{fig:geodesicDisc} or~\ref{fig:anglesAndCenterOfGravity} for an example of why that may be.} at different distances from the center point $\bp_0$, we must now begin calculating for each half of the circular sector individually. Therefore, while the index for $\zeta$ remains the match for the index of the circle sector $\bs$, we will now use the index $j$ to denote the side of the sector defined by its point $\bp_j$ or $\bp_{\sjpo}$.
+For the next few steps in the process of interpolating and extrapolating the function values, we must begin calculating for each half of the circular sector individually, because the points $\bp_j$ and $\bp_{\sjpo}$ are likely\footnote{One need only to look at Figures~\ref{fig:geodesicDisc} or~\ref{fig:anglesAndCenterOfGravity} for an example of why that may be.} at different distances from the center point $\bp_0$. Therefore, while the index $i$ will remain the index of the circle sector $\bs_i$, we will now use the index $j$ to denote the side of the bisecting line, defined by its point $\bp_j$ or $\bp_{\sjpo}$. 
 
-Next, using $\zeta$, we can interpolate the offset from the original function values $f_j$ and $f_{\sjpo}$ at the points $\bp_j$ and $\bp_{\sjpo}$.
+Next, by dividing the sector-wise constant ratio $\zeta$ by the distances to the original points $\ell_j$ and $\ell_{\sjpo}$, we can determine the scalar values with which we can multiply the function values $f_j$ and $f_{\sjpo}$ in order to interpolate or extrapolate them to the corners of the circumscribing isosceles triangle at points $\bp'_j$ and $\bp'_{\sjpo}$. Therefore, these two scalar values are defined as 
 \begin{align}
-	\tilde{\ell}_j & = \kern2pt\frac{\zeta}{\kern2pt\ell_j\kern2pt}\kern1pt = \kern3pt\frac{\zeta}{|\bp_j - \bp_0|}
+	\tilde{\ell}_j & := \kern2pt\frac{\zeta}{\kern2pt\ell_j\kern2pt}\kern1pt = \kern3pt\frac{\zeta}{|\bp_j - \bp_0|}
 	\label{eq:distanceIForInterpolation}\\
-	\tilde{\ell}_{\sjpo} & = \frac{\zeta}{\ell_{\sjpo}} = \frac{\zeta}{|\bp_{\sjpo} - \bp_0|}
+	\tilde{\ell}_{\sjpo} & := \frac{\zeta}{\ell_{\sjpo}} = \frac{\zeta}{|\bp_{\sjpo} - \bp_0|}
 	\label{eq:distanceIp1ForInterpolation}
 \end{align}%
 \nomenclature[lb]{$\tilde{\ell}_j$}{also $\tilde{\ell}_{\sjpo}$, the distances for interpolation of $f_j$ and of $f_{\sjpo}$ towards $f_0$}%
 
-Then, applying the offset distances $\tilde{\ell}_j$ and $\tilde{\ell}_{\sjpo}$, to the original function values $f_0$, $f_j$, and $f_{\sjpo}$, we can now interpolate the function values at $\bp_j$ and $\bp_{\sjpo}$ as
+Then, by taking the function values\footnote{\fors{T} is agnostic to the meaning of information represented by the data stored as function values in scalar fields, therefore, it can similarly convolve any such data. However, because the filter was designed to only convolve scalar fields, any multi-dimensional data, such as RGB color, must be processed individually as independent scalar fields.} from the scalar field $\bF$, and summing the products of the multiplications between the function values $f_j$, and $f_{\sjpo}$ and their scalar values $\tilde{\ell}_j$ and $\tilde{\ell}_{\sjpo}$, plus the product of the multiplication between the function value at the central point $f_0$ and the complement of each side's scalar value, we can now interpolate and extrapolate the function values at $\bp'_j$ and $\bp'_{\sjpo}$ as
+
+
 \begin{align}
-	f'_j & = f_0\,(1 - \tilde{\ell}_j) + f_j\,\tilde{\ell}_j
+	f'_j & := f_0\,(1 - \tilde{\ell}_j) + f_j\,\tilde{\ell}_j
 	\label{eq:interpolatedFi} \\
-	f'_{\sjpo} & = f_0\,(1 - \tilde{\ell}_{\sjpo}) + f_{\sjpo}\tilde{\ell}_{\sjpo}
+	f'_{\sjpo} & := f_0\,(1 - \tilde{\ell}_{\sjpo}) + f_{\sjpo}\tilde{\ell}_{\sjpo}
 	\label{eq:interpolatedFip1}
 \end{align}%
 \nomenclature[lc]{$f'_j$}{also $f'_{\sjpo}$, the interpolated values of $f_j$ and $f_{\sjpo}$ toward $f_0$}%
 \todoStyle{should I be using the $\bff$ macro?}
 
-Figure~\ref{fig:interpolatedFunctionValues} illustrates an enhanced view of the circle sector $\bs_1$, continuing with the example introduced in Figure~\ref{fig:geodesicDisc}. It shows how, as a result of \tdd{} being composed of a discrete manifold, therefore, all function values must be stored 1-for-1 at the location of each point, instead of simply interpolating the function values at the corners of the geodesic disc, which are at the distance $\gelm$ between $\bp_0$ and $\bp_j$ or $\bp_{\sjpo}$, we must\todoAsk{but must we? we aren't ever going to save these values since they are unique to every neighborhood} instead interpolate as if $f_j$ were at $\gelm$, then calculate the $f'_j$ at the point $\bp_j$, so that either $f_0 \leq f_j \leq f'_j$ or $f_0 \geq f_j \geq f'_j$ are true\footnote{or both in the case that $\ell_j$ is equal to $\gelm$}, then likewise for $f'_{\sjpo}$. Furthermore, it illustrates how we must also interpolate from the points to the center of gravity, which we will discuss in detail Section~\ref{ch4sWM}.
-\todoReword{update after change to fig}
+Figure~\ref{fig:interpolatedFunctionValues} illustrates a 3D-projected, enhanced view of the circle sector $\bs_1$, continuing with the example introduced in Figure~\ref{fig:geodesicDisc}. Drawn above the points $bp_0$, $bp_1$, and $bp_2$ are the three function values $f_0$, $f_1$, and $f_2$ from the scalar field $\bF$, with the heights indicative of each function value's magnitude. Also shown are the extrapolated function values $f'_0$, and $f'_1$ above the corners of the isosceles triangle $\bp`_1$, and $\bp`_1$, as well as the dotted lines illustrating the vectors on which the extrapolated values were calculated. Furthermore, it illustrates the process of interpolating of the extrapolated function values towards each other, and then again towards the center of gravity, which is the topic of the next section.
 
 \begin{figure}[ht]
 \ffigbox
 	{\includegraphics[width=1.0\linewidth]{figures/interpolatedFunctionValues}}
-	{\caption[Interpolation of Function Values toward the Center of Gravity]{An enhanced view of the circle sector $\bs_1$, continuing with the example introduced in Figure~\ref{fig:geodesicDisc}, labeled in black are the function values $f_0$, $f_1$, and $f_2$, with the height of the line indicating magnitude of the value. Drawn in coral color, are the interpolated function values $f'_1$ and $f'_2$, along with the dotted lines illustrating how they were determined. In sand color is $\check{f}_1$, the weighted mean function value for the entire sector.}\label{fig:interpolatedFunctionValues}}
+	{\caption[Interpolation of Function Values toward the Center of Gravity]{An enhanced view...}\label{fig:interpolatedFunctionValues}}
 \end{figure}
-\todoReword{after update to figure}
 
 %
 %
 %
 %
-\section{Weighted Mean}
+\section{Weighted Means}
 \label{ch4sWM}
+Now that we have, in Section~\ref{ch4sACG}, calculated the distance to the center of gravity of each circle sector $\check{\ell}$, and then in Section~\ref{ch4sIE}, computed the two function values interpolated or extrapolated to the corners of the isosceles triangle circumscribing the circle sector, $f'_j$ and $f'_{\sjpo}$, we are now poised to begin the computation of the \wmfv{s}, first for each circle sector $\bs_i$, then for the entire geodesic disc $\bO_v$, and finally iteratively convolving \Fors{t} over the entire mesh to generate the smoothed, scalar field of \wmfv{s} $\bF'$.
+
 In order to calculate the weighted mean function value at the center of gravity $\bc$, of the circle sector $\bs_i$, we must combine the original function value at the center point $f_0$, and both interpolated function values, $f'_j$ and $f'_{\sjpo}$. Then using the distance to the center of gravity $\check{\ell}$, and the formula
 \begin{equation}
 	\check{f} = f_0\,(1 - \check{\ell}) + \frac{(f'_j + f'_{\sjpo})\,\check{\ell}}{2}
