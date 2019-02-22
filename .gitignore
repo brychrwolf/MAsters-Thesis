@@ -18,4 +18,7 @@ thesis.nlo
 thesis.loa
 thesis.xdv
 figures/*.png
+figures/tikz/*.aux
+figures/tikz/*.log
+figures/tikz/*.pdf
 chapters/*.aux

@@ -1,4 +1,4 @@
-all: svgs plots thesis
+all: svgs tikzs plots thesis
 
 thesis: plots
 	pdflatex --no-pdf thesis
@@ -35,7 +35,7 @@ cleanSvgs:
 tikzs:
 	cd figures/tikz && $(MAKE)
 
-cleanTIKZs:
+cleanTikzs:
 	cd figures/tikz && make clean
 
 

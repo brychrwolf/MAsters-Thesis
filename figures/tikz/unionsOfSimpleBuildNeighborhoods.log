@@ -1,9 +1,8 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018/Arch Linux) (preloaded format=pdflatex 2019.1.28)  22 FEB 2019 13:23
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018/Arch Linux) (preloaded format=pdflatex 2019.1.28)  22 FEB 2019 21:50
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**unionsOfSimpleBuildNeighborhoods.tex -e ../unionsOfSimpleBuildNeighborhoods.p
-df
+**unionsOfSimpleBuildNeighborhoods.tex
 (./unionsOfSimpleBuildNeighborhoods.tex
 LaTeX2e <2018-04-01> patch level 5
 (/usr/share/texmf-dist/tex/latex/standalone/standalone.cls
@@ -339,7 +338,8 @@ File: pgflibraryarrows.meta.code.tex 2015/05/13 v3.0.1a (rcs-revision 1.13)
 \pgfarrowlength=\dimen152
 \pgfarrowwidth=\dimen153
 \pgfarrowlinewidth=\dimen154
-) (./unionsOfSimpleBuildNeighborhoods.aux)
+)
+No file unionsOfSimpleBuildNeighborhoods.aux.
 \openout1 = `unionsOfSimpleBuildNeighborhoods.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 16.
@@ -354,7 +354,6 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 16.
 LaTeX Font Info:    ... okay on input line 16.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 16.
 LaTeX Font Info:    ... okay on input line 16.
-
 ABD: EveryShipout initializing macros
 (/usr/share/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
@@ -425,13 +424,13 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] (./unionsOfSimpleBuildNeig
 hborhoods.aux) ) 
 Here is how much of TeX's memory you used:
- 12209 strings out of 492639
- 249206 string characters out of 6135497
+ 12207 strings out of 492639
+ 249132 string characters out of 6135497
  295540 words of memory out of 5000000
  15881 multiletter control sequences out of 15000+600000
  4872 words of font info for 18 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 55i,7n,67p,484b,741s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 55i,7n,67p,441b,741s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pf
 b></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/
 texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-dist/font
