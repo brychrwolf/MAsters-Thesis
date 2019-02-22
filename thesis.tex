@@ -13,6 +13,7 @@
 %\usepackage{titlesec}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta}
+\usepackage{standalone}
 \usepackage{graphicx,txfonts}
 %\usepackage[lofdepth,lotdepth]{subfig}
 \usepackage[colorinlistoftodos]{todonotes}
@@ -101,20 +102,22 @@
 %%%	violet
 %	white
 %%%	yellow
-\definecolor{MyTeal}{rgb}{0, .5, .5} %teal = 0,127,127
-\definecolor{MyLtTeal}{rgb}{.8125, .9375, .9375}%lt.teal = 207,239,239
-\definecolor{MySand}{rgb}{1, .625, 0}%sand = 255,159,0
-\definecolor{MyLtSand}{rgb}{1, .9766, .875}%lt.sand = 255,249,223
-\definecolor{MyCoral}{rgb}{1, .375, .375}%coral = 255,96,96
-\definecolor{MyLtCoral}{rgb}{1, .875, .875}%lt.coral = 255,223,223
+
+\definecolor{MyTeal}{rgb}	{0, 	.5, 	.5}		%teal = 0,127,127
+\definecolor{MyLtTeal}{rgb}	{.8125, .9375, 	.9375}	%lt.teal = 207,239,239
+\definecolor{MySand}{rgb}	{1, 	.625, 	0}		%sand = 255,159,0
+\definecolor{MyLtSand}{rgb}	{1, 	.9766, 	.875}	%lt.sand = 255,249,223
+\definecolor{MyCoral}{rgb}	{1, 	.375, 	.375}	%coral = 255,96,96
+\definecolor{MyLtCoral}{rgb}{1, 	.875, 	.875}	%lt.coral = 255,223,223
+
 %
 \includeonly{
 %	chapters/0-Front-matter,
 %	chapters/1-Introduction-Motivation,
 %	chapters/2-Background,
 %	chapters/3-Related-Work,
-	chapters/4-FORS-Mathematical-Grounding,
-%	chapters/5-FORS-Serial-Algorithms,
+%	chapters/4-FORS-Mathematical-Grounding,
+	chapters/5-FORS-Serial-Algorithms,
 %	chapters/6-FORS-Parallel-Algorithms,
 %	chapters/7-Experiments-Evaluation,
 %	chapters/8-Distribution,

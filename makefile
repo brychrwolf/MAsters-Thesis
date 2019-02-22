@@ -31,6 +31,15 @@ cleanSvgs:
 
 
 
+.PHONY: tikzs
+tikzs:
+	cd figures/tikz && $(MAKE)
+
+cleanTIKZs:
+	cd figures/tikz && make clean
+
+
+
 .PHONY: plots
 plots:
 	cd figures/gnuplot && $(MAKE)

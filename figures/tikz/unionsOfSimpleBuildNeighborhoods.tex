@@ -1,0 +1,74 @@
+\documentclass{standalone}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+
+\definecolor{MyTeal}{rgb}	{0, 	.5, 	.5}		%teal = 0,127,127
+\definecolor{MyLtTeal}{rgb}	{.8125, .9375, 	.9375}	%lt.teal = 207,239,239
+\definecolor{MySand}{rgb}	{1, 	.625, 	0}		%sand = 255,159,0
+\definecolor{MyLtSand}{rgb}	{1, 	.9766, 	.875}	%lt.sand = 255,249,223
+\definecolor{MyCoral}{rgb}	{1, 	.375, 	.375}	%coral = 255,96,96
+\definecolor{MyLtCoral}{rgb}{1, 	.875, 	.875}	%lt.coral = 255,223,223
+
+\newcommand{\bN}{\mathcal{N}} %one-ring 
+\newcommand{\bp}{\mathbf{p}}
+\newcommand{\bt}{\mathbf{t}}
+
+\begin{document}
+
+\tikzset{%
+	>={Latex[width=2mm,length=2mm]},
+	baseNode/.style = {rectangle, rounded corners,
+		draw=black, fill=white, thick,
+		minimum width=1cm, minimum height=1cm,
+		text centered, font=\sffamily},
+	baseLine/.style = {double, thick},
+	tealStyle/.style = {draw=MyTeal, fill=MyLtTeal},
+	coralStyle/.style = {draw=MyCoral, fill=MyLtCoral},
+	sandStyle/.style = {draw=MySand, fill=MyLtSand},
+	faceL/.style = {baseNode, sandStyle},
+	lineL/.style = {baseLine, sandStyle},
+	faceR/.style = {baseNode, coralStyle},
+	lineR/.style = {baseLine, coralStyle},
+	lineC/.style = {baseLine, tealStyle},
+	point/.style = {baseNode},
+	nbhd/.style = {baseNode, minimum width=2cm}
+}
+
+\begin{tikzpicture}[node distance=0cm]
+	\coordinate (center1) at (0cm,0cm);
+	\node (t1) [faceL, anchor=east, xshift=-.5cm] {$\bt_1 = \{\bp_1,\,\bp_2,\,\bp_3\}$};
+	\node (t2) [faceR, anchor=west, xshift= .5cm] {$\bt_2 = \{\bp_3,\,\bp_2,\,\bp_4\}$};
+	\coordinate (center2) at (0cm,-1.5cm);
+	\node (p1) [point, left of=center2, xshift=-3cm] {$\bp_1$};
+	\node (p2) [point, left of=center2, xshift=-1cm] {$\bp_2$};
+	\node (p3) [point, right of=center2, xshift=1cm] {$\bp_3$};
+	\node (p4) [point, right of=center2, xshift=3cm] {$\bp_4$};
+	\coordinate (center3) at (0cm,-4.5cm);
+	\node (n1) [nbhd, left of=center3, xshift=-5cm] {$\bN_1$};
+	\node (n2) [nbhd, left of=center3, xshift=-1.75cm] {$\bN_2$};
+	\node (n3) [nbhd, right of=center3, xshift=1.75cm] {$\bN_3$};
+	\node (n4) [nbhd, right of=center3, xshift=5cm] {$\bN_4$};
+
+	\draw[-, lineL] (t1) -- (p1);
+	\draw[-, lineL] (t1) -- (p2);
+	\draw[-, lineL] (t1) -- (p3);
+
+	\draw[->, lineL] (p1) -- (n2);
+	\draw[->, lineL] (p1) -- (n3);
+	\draw[->, lineL] (p2) -- (n1);
+	\draw[->, lineC] (p2) -- (n3.180);
+	\draw[->, lineL] (p3) -- (n1);
+	\draw[->, lineC] (p3) -- (n2);
+
+	\draw[-, lineR] (t2) -- (p2);
+	\draw[-, lineR] (t2) -- (p3);
+	\draw[-, lineR] (t2) -- (p4);
+
+	\draw[->, lineC] (p3) -- (n2.0);
+	\draw[->, lineR] (p3) -- (n4);
+	\draw[->, lineR] (p2) -- (n4);
+	\draw[->, lineC] (p2) -- (n3);
+	\draw[->, lineR] (p4) -- (n3);
+	\draw[->, lineR] (p4) -- (n2);
+\end{tikzpicture}
+\end{document}
