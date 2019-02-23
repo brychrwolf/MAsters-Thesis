@@ -1,5 +1,7 @@
 OUTPUTS = unionsOfSimpleBuildNeighborhoods.pdf \
-		  sabnDataDependencies.pdf
+		  sabnDataDependencies.pdf \
+		  sacelDataDependencies.pdf \
+		  sacfDataDependencies.pdf
 
 
 
