@@ -1,11 +1,20 @@
 \documentclass{standalone}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta}
+\usepackage{amsmath}
 
+\newcommand{\bE}{\mathcal{E}}
 \newcommand{\bN}{\mathcal{N}}
+\newcommand{\bP}{\mathcal{P}}
 \newcommand{\bT}{\mathcal{T}}
-\newcommand{\bt}{\mathbf{t}}
 \newcommand{\bp}{\mathbf{p}}
+\newcommand{\bt}{\mathbf{t}}
+%
+\newcommand{\elm}{\ell_\text{min}}
+\newcommand{\gelm}{\overline{\elm}}
+\newcommand{\ellstar}{\ell_\ast}
+%
+\newcommand{\sv}[1]{v,\kern.75pt #1}
 
 \definecolor{MyTeal}{rgb}	{0, 	.5, 	.5}		%teal = 0,127,127
 \definecolor{MyLtTeal}{rgb}	{.8125, .9375, 	.9375}	%lt.teal = 207,239,239
@@ -27,44 +36,48 @@
 	sandStyle/.style = {draw=MySand, fill=MyLtSand},
 	%
 	commentNode/.style = {text=darkgray, fill=white},
-	indNode/.style = {baseNode, tealStyle},
-	indLine/.style = {baseLine, draw=MyTeal},
 	depNode/.style = {baseNode, coralStyle},
 	depLine/.style = {baseLine, draw=MyCoral},
-	mixNode/.style = {baseNode, sandStyle},
-	mixLine/.style = {baseLine, draw=MySand},
+	indNode/.style = {baseNode, tealStyle},
+	indLine/.style = {baseLine, draw=MyTeal},
+	mutNode/.style = {baseNode, sandStyle},
+	mutLine/.style = {baseLine, draw=MySand},
 }
 
 \begin{tikzpicture}[node distance=0cm]
 	\coordinate (center1) at (0cm,0cm);
-	\node (sm) [indNode, xshift=-2.25cm] {$\bT$ in static memory};
-	\node (vm) [depNode, anchor=west, xshift= 1.25cm] {$\bN$ in volatile memory};
+	\node (sm) [indNode, xshift=-4.5cm] {$\bP$ and $\bN$ in static memory};
+	\node (mm) [mutNode, xshift= 0.2cm] {$\bE$ in mutable memory};
+	\node (vm) [depNode, xshift= 4.5cm] {$\gelm$ in volatile memory};
 
-	\coordinate (center2) at (0cm,-2cm);
-	\node (bt) [commentNode, left of=center2, xshift=-4.25cm, yshift=.80cm] {/* $\bt = \{$};
-	\node (pc) [indNode, left of=center2, xshift=-3.50cm] {$\bp_c$};
-	\node (pb) [indNode, left of=center2, xshift=-2.25cm] {$\bp_b$};
-	\node (pa) [indNode, left of=center2, xshift=-1.00cm] {$\bp_a$};
-	\node (bt) [commentNode, left of=center2, xshift=-0.5cm, yshift=.80cm] {$\}$ */};
+	\coordinate (center2) at (0cm,-1.5cm);
+	\node (pv) [indNode, left of=center2, xshift=-5.50cm] {$\bp_v$};
+	\node (Evi) [mutNode, left of=center2, xshift=0.2cm] {$\bE_{\sv{i}}$};
 
-	\node (Na) [depNode, right of=center2, xshift=1.00cm, yshift=-.5cm] {$\bN_a$};
+	\coordinate (center3) at (0cm,-3cm);
+	\node (Nv) [indNode, left of=center3, xshift=-3.5cm] {$\bN_v$};
+	\node (min) [depNode, right of=center3, xshift=2.5cm, yshift=-.5cm] {$\min\left \{\gelm,\,\bE_{\sv{i}}\right \}$};
 
-	\node (union1) at (0cm,-4cm) [mixNode] {$\bN_a \cup \{\bp_b\}$};
+	\coordinate (center4) at (0cm,-4.5cm);
+	\node (pi) [indNode, left of=center4, xshift=-3.5cm] {$\bp_i$};
 
-	\node (union2) at (0cm,-5.5cm) [mixNode] {$\bN_a \cup \{\bp_c\}$};
+	\coordinate (center5) at (0cm,-6cm);
+	\node (ls) [indNode, left of=center5, xshift=-4.5cm] {$\ellstar$};
 
-	%
-	\draw[->, indLine] (sm) -- (pa);
-	\draw[->, indLine] (sm) -- (pb);
-	\draw[->, indLine] (sm) -- (pc);
-	\draw[->, depLine] (vm.220) -- (Na);
-	\draw[->, indLine] (pa.east) -- (Na.west);
 
-	\draw[->, indLine] (pb.south) .. controls (-1.75cm,-3.5cm) .. (union1.west);
-	\draw[->, mixLine] (Na) -- (union1.north);
 
-	\draw[->, indLine] (pc.south) .. controls (-2cm,-5cm) .. (union2.west);
-	\draw[->, mixLine] (union1) -- (union2);
-	\draw[->, depLine, double] (union2.east) .. controls (2cm,-5cm) .. (vm);
+	\draw[->, indLine] (sm) -- (pv);
+	\draw[->, indLine] (pv) -- (Nv);
+	\draw[->, indLine] (sm) -- (Nv);
+	\draw[->, indLine] (Nv) -- (pi);
+	\draw[->, indLine] (pv) -- (ls);
+	\draw[->, indLine] (pi) -- (ls);
+
+	\draw[->, mutLine, double] (ls.east) .. controls (0cm,-6cm) and (0cm,-3.5cm).. (Evi);
+	\draw[->, mutLine, double] (Evi) -- (mm);
+	\draw[->, mutLine] (Evi) -- (min);
+
+	\draw[->, depLine] (vm) -- (min);
+	\draw[->, depLine, double] (min.east) .. controls (4.5cm,-3.5cm) and (5cm,-2cm).. (vm.315);
 \end{tikzpicture}
 \end{document}
