@@ -38,6 +38,7 @@ Figure~\ref{fig:unionsOfSimpleBuildNeighborhoods} describes a very simple mesh c
 In Algorithm~\ref{alg:serialBuildNeighborhoods}, the function \textit{serialBuildNeighborhoods} describes iterating over every triangular face $\bt$ in $\bT$, then for each face's three corner points, perform the union operation between the neighborhood centered at the point, and the other two points which are adjacent to the central point. After processing every face, the result becomes a fully populated family of sets $\bN$, storing the connections between every neighbor of every neighborhood in the mesh $\bM$.
 
 \begin{algorithm}[ht]
+	\algotitle{Serial Algorithm for Building Neighborhoods}{saBN.title}
 	\DontPrintSemicolon
 	\SetCommentSty{small}
 	\SetKwFor{For}{for}{:}{}
@@ -80,6 +81,7 @@ As shown in Equation~\ref{eq:defineEdgeLengthPoint}, the calculation of an edge'
 In Algorithm~\ref{alg:serialCalculateEdgeLengths}, the function \textit{serialCalculateEdgeLengths} iterates over a set of nested loops which considers each neighbor $\bp_i$ of each neighborhood $\bN_v$, in order to calculate the edge lengths between the center point $\bp_v$ and its neighboring points $\bp_i$. The result is then stored in the set $\bE$ using the pair of indices $v, i$ to reflect the structure of the family of sets of neighborhoods $\bN$. Finally, in each iteration, the value of the global minimum edge length $\gelm$ is updated to become the minimum between $\bE_{\sv{i}}$ and the current $\gelm$, ensuring that at the conclusion of the procedure, that no other edge length in $\bE$ will be shorter than $\gelm$.
 
 \begin{algorithm}[ht]
+	\algotitle{Serial Algorithm for Calculating Edge Lengths}{saCEL.title}
 	\DontPrintSemicolon
 	\SetCommentSty{small}
 	\SetKwFor{For}{for}{:}{}
@@ -120,6 +122,7 @@ After having discussed in Section~\ref{ch5sBN}, the discovery and subsequent con
 In Algorithm~\ref{alg:serialConvolveFilter}, the function \textit{convolveFilter} outlines how the convolutions of \fors{t} are performed for a user-defined number of times $\tau$, by convolving over each and every point $\bp_v$ in the set $\bP$. Then at each point, each neighboring point $\bp_i$ in the one-ring neighborhood $\bN_v$ is examined, in order to calculate the \wmfv{} $\check{f}$, as described in detail in Sections~\ref{ch4sIA} -~\ref{ch4sWM}, at the center of gravity of the circle sector defined by $\bp_v$ and $\bp_i$. Next, the \wmfv{} $f'_v$ is evaluated as the average of all the \wmfv{s} from each circle sector comprising the geodesic disc $\bO_v$, and is stored  in set $\bF'$, before the filter finally progresses to the next point in the mesh and its corresponding one-ring neighborhood.  Afterwards, one may efficiently convolve the filter, for as many number of convolutions as required to achieve the desired smoothing effect.
 
 \begin{algorithm}[ht]
+	\algotitle{Serial Algorithm for Convolving the Filter}{saCF.title}
 	\DontPrintSemicolon
 	\SetCommentSty{small}
 	\SetKwFor{For}{for}{:}{}

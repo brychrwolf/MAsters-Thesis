@@ -112,12 +112,12 @@
 
 %
 \includeonly{
-%	chapters/0-Front-matter,
+	chapters/0-Front-matter,
 %	chapters/1-Introduction-Motivation,
 %	chapters/2-Background,
 %	chapters/3-Related-Work,
 %	chapters/4-FORS-Mathematical-Grounding,
-%	chapters/5-FORS-Serial-Algorithms,
+	chapters/5-FORS-Serial-Algorithms,
 	chapters/6-FORS-Parallel-Algorithms,
 %	chapters/7-Experiments-Evaluation,
 %	chapters/8-Distribution,
@@ -127,6 +127,15 @@
 %	chapters/Z1-Back-Matter
 }
 %
+\makeatletter
+\newcommand*{\algotitle}[2]{%
+  \stepcounter{algocf}%
+  \hypertarget{algocf.title.\theHalgocf}{}%
+  \NR@gettitle{#1}%
+  \label{#2}%
+  \addtocounter{algocf}{-1}%
+}
+\makeatother
 \makeindex
 \makenomenclature
 \begin{document}
