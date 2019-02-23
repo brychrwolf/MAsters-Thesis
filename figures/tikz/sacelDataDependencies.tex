@@ -1,27 +1,8 @@
 \documentclass{standalone}
+\usepackage{amsmath}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta}
-\usepackage{amsmath}
-
-\newcommand{\bE}{\mathcal{E}}
-\newcommand{\bN}{\mathcal{N}}
-\newcommand{\bP}{\mathcal{P}}
-\newcommand{\bT}{\mathcal{T}}
-\newcommand{\bp}{\mathbf{p}}
-\newcommand{\bt}{\mathbf{t}}
-%
-\newcommand{\elm}{\ell_\text{min}}
-\newcommand{\gelm}{\overline{\elm}}
-\newcommand{\ellstar}{\ell_\ast}
-%
-\newcommand{\sv}[1]{v,\kern.75pt #1}
-
-\definecolor{MyTeal}{rgb}	{0, 	.5, 	.5}		%teal = 0,127,127
-\definecolor{MyLtTeal}{rgb}	{.8125, .9375, 	.9375}	%lt.teal = 207,239,239
-\definecolor{MySand}{rgb}	{1, 	.625, 	0}		%sand = 255,159,0
-\definecolor{MyLtSand}{rgb}	{1, 	.9766, 	.875}	%lt.sand = 255,249,223
-\definecolor{MyCoral}{rgb}	{1, 	.375, 	.375}	%coral = 255,96,96
-\definecolor{MyLtCoral}{rgb}{1, 	.875, 	.875}	%lt.coral = 255,223,223
+\input{../../myCommands.tex}
 
 \begin{document}
 \tikzset{%
@@ -36,14 +17,13 @@
 	sandStyle/.style = {draw=MySand, fill=MyLtSand},
 	%
 	commentNode/.style = {text=darkgray, fill=white},
-	depNode/.style = {baseNode, coralStyle},
-	depLine/.style = {baseLine, draw=MyCoral},
 	indNode/.style = {baseNode, tealStyle},
 	indLine/.style = {baseLine, draw=MyTeal},
+	depNode/.style = {baseNode, coralStyle},
+	depLine/.style = {baseLine, draw=MyCoral},
 	mutNode/.style = {baseNode, sandStyle},
 	mutLine/.style = {baseLine, draw=MySand},
 }
-
 \begin{tikzpicture}[node distance=0cm]
 	\coordinate (center1) at (0cm,0cm);
 	\node (sm) [indNode, xshift=-4.5cm] {$\bP$ and $\bN$ in static memory};
