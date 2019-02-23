@@ -35,6 +35,9 @@ Figure~\ref{fig:unionsOfSimpleBuildNeighborhoods} describes a very simple mesh c
 }\label{fig:unionsOfSimpleBuildNeighborhoods}}
 \end{figure}
 
+Also notice in Figure~\ref{fig:serialBuildNeighborhoods}, that the union operation is performed exactly twice per point per face; that is, once each between the neighborhood of the center point and a neighboring point, for a total of six times per face. For example: the triangular face $\bt_2$ contains the point $\bp_4$, therefore the union operation is performed on $\bN_4$ at least two times, once for each of the other members of point $\bt_2$: $\bp_2$, and $\bp_3$. This realization will influence the design of the parallel variant of the algorithm, as described in Section~\ref{ch6sBNPssABN}.
+
+
 In Algorithm~\ref{alg:serialBuildNeighborhoods}, the function \textit{serialBuildNeighborhoods} describes iterating over every triangular face $\bt$ in $\bT$, then for each face's three corner points, perform the union operation between the neighborhood centered at the point, and the other two points which are adjacent to the central point. After processing every face, the result becomes a fully populated family of sets $\bN$, storing the connections between every neighbor of every neighborhood in the mesh $\bM$.
 
 \begin{algorithm}[ht]

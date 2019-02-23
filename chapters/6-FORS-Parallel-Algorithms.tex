@@ -21,32 +21,36 @@ The sole purpose of Algorithm~\ref{alg:serialBuildNeighborhoods}, as discussed i
 %
 \subsection{Analysis of Serial Algorithm~\ref{alg:serialBuildNeighborhoods}: Build Neighborhoods}
 \label{ch6sBNPssASABN}
-In this section, we analyze the~\nameref{saBN.title} through the lens of parallel programing.
+In this section, we analyze through the lens of parallel programing, the~\nameref{saBN.title} as presented in Section~\ref{ch5sBN}. The strategy we employ involves reading the serial algorithm line by line, building a dependency graph, and as opportunities for exploiting parallelism are discovered, a strategy\todoReword{strategy twice is bad} for maximizing efficiency is devised.
+\todoBackground{Dependency Graph}
 
-As presented in Section~\ref{ch5sBN}, the first line of the first function in Algorithm~\ref{alg:serialBuildNeighborhoods}, line~\ref{sbn2}, we encounter a loop over each face $\bt$ in $\bT$. In general, concurrency found in the structure of a loop may be totally exploited by parallel systems, but only in the absence of loop-carried dependence. So, in order to determine if the iterations of the loop may be computed in parallel, an analysis of every operation in the loop block is required.\todoResearch{Amdahl's Law}
+Starting in line~\ref{sbn1} of Algorithm~\ref{alg:serialBuildNeighborhoods}, we read the declaration of the function \textit{serialBuildNeighborhoods} requiring the entire set of triangular faces $\bT$ as an input, then already in line~\ref{sbn2}, we encounter a loop over each face $\bt$ in $\bT$. In general, concurrency found in the structure of a loop may be completely exploited by a parallel implementation of the same procedure, but only in the absence of loop-carried dependence. So, in order to determine if the iterations of this loop may be computed in parallel, an analysis of every operation in the loop block is required.\todoResearch{Amdahl's Law}
 \todoBackground{loop level parallelism, loop-carried and loop-independent}
 \todoBackground{static vs volatile memory}
 
-Figure~\ref{fig:paraBNDataDep} illustrates the data dependencies inherent to each iteration of the loop over the faces $\bt$ in $\bT$, as found from Algorithm~\ref{alg:serialBuildNeighborhoods}. First the triangular face $\bt$ is loaded, as denoted by the teal colored node, from the set $\bT$ in static memory which will never be modified by this, or any other procedure. Also, despite the fact that faces can be adjacent to one another, each face is distinctly defined in the set $\bT$, therefore, each face $\bt$ can be considered independent of each other face. Thus, this first instruction of the loop block is free from any control or data dependencies. The next line in the algorithm is a complex instruction, though, so it must be analyzed in parts.
+Figure~\ref{fig:sabnDataDependencies} illustrates the data dependencies inherent to each iteration of the loop over the faces $\bt$ in $\bT$, as found in lines~\ref{sbn2}~-~\ref{sbn5} of Algorithm~\ref{alg:serialBuildNeighborhoods}. As denoted by the first three teal colored lines, the first operations are to read the three points $\bp_a$, $\bp_b$, $\bp_c$ from the triangular face $\bt$, stored is the set $\bT$ in static memory, which will never be modified by this, or any other procedure. Also, despite the fact that faces can be adjacent to one another, each face is distinctly defined in the set $\bT$, therefore, each face $\bt$ can be considered independent of each other face. Thus, this first instruction of the loop block is totally free from any control or data dependencies. The next line in the algorithm is a complex instruction, though, so it must be analyzed in parts.
 
-Also notice in Figure~\ref{fig:serialBuildNeighborhoods}, that the union operation is performed exactly twice with each neighborhood, for every face which contains its center point. For example: the triangular face $\bt_2$ contains the point $\bp_4$, therefore the union operation is performed on $\bN_4$ at least two times, once for each of the other members of point $\bt_2$: $\bp_2$, and $\bp_3$. This realization will eventually influence the design of the parallel variant of the algorithm.
-
-The first part of the instruction on line~\ref{sbn3}, as denoted by the first three teal colored lines, is to read from face $\bt$ stored in static memory, the indices of the three points $\bp_a$, $\bp_b$, $\bp_c$. Because the face $\bt$ is independent, reading the indices of its three points is also free of dependencies. Next, $\bp_a$ is referenced in order to read the state of $\bN_a$ from volatile memory, as denoted as teal and coral colored lines, respectively. $\bN_a$ is stored in volatile memory, which may potentially be modified by other threads, because it is not known a priori which thread will discover the points which belong to that neighborhood, thus it must be accessible to any and all threads. Next, drawn in sand color, are the two union operations performed in succession on $\bN_a$ with the points $\bp_b$, then $\bp_c$. While these two operations are themselves independent, being performed only on values currently immutable by other procedures, they do rely on having already read the status of $\bN_a$, which indeed does have its own data dependence, hence the sand coloring. Finally illustrated as a double, coral colored arrow, the  the updated set $\bN_a$ is saved back into $\bN$ in volatile memory.
+The first part of the instruction on line~\ref{sbn3} uses the point $\bp_a$ as a reference to read the state of $\bN_a$ from the set $\bN$ in volatile memory, as denoted as teal and coral colored lines, respectively. $\bN_a$ is stored in volatile memory, which may potentially be modified by other threads, because it is not known a priori which thread will discover the points which belong to that neighborhood, thus it must be accessible to any and all threads. Next, drawn in sand color, are the two union operations performed in succession between $\bN_a$ and the point $\bp_b$, then $\bp_c$. While these two operations are themselves independent, being performed only on values currently immutable by other procedures, they do rely on having already read the status of $\bN_a$, which indeed does have its own data dependence, hence the indicative coloring. Finally, illustrated as a coral colored double arrow, the updated set $\bN_a$ is stored back into $\bN$, replacing the original set in volatile memory.
 
 \begin{figure}[ht]
-	\includestandalone[width=0.8\textwidth]{figures/tikz/sABNdataDependencies}
-	{\caption[Data Dependencies in Serial Algorithm~\ref{alg:serialBuildNeighborhoods}: Build Neighborhoods]{illustration of the data dependencies found in Algorithm~\ref{alg:serialBuildNeighborhoods}. Operations with data dependencies are in coral color, independent operations are in teal color, and independent operations which reply on operations which have dependencies are in sand color.}\label{fig:sABNdataDependencies}}
+	\includestandalone[width=0.8\textwidth]{figures/tikz/sabnDataDependencies}
+	{\caption[Data Dependencies in Serial Algorithm~\ref{alg:serialBuildNeighborhoods}: Build Neighborhoods]{illustration of the data dependencies found in Algorithm~\ref{alg:serialBuildNeighborhoods}. Operations with data dependencies are in coral color, independent operations are in teal color, and independent operations which reply on operations which have dependencies are in sand color.}\label{fig:sabnDataDependencies}}
 \end{figure}
 
-Both reading from, and writing to $\bN_a$ in volatile memory constitutes a critical section in the algorithm, which must be accounted for in the design of the parallel variant. Furthermore, both dependencies lie in a single path of dependence, which means that the entire group of operations must be protected by a guarding mechanism as described in Section~\ref{ch2sPPssMS}. Fortunately, because both dependencies revolve around the same set $\bN_a$, a simple mutex per neighborhood will be sufficient. Lines~\ref{sbn4} and~\ref{sbn5} behave similarly to line~\ref{sbn3}, except they concern other neighborhoods, which in turn, need their own mutexes.\todoBackground{path of dependence} Fortunately, by exploiting the fact that the union operation is called exactly twice per each neighborhood for every face which contains its center point, by executing these two operations sequentially within a single mutex, one can mitigate exactly half of the possible collisions in the $\mathit{buildNeighborhoods}$ procedure.
+Both reading from, and writing to $\bN_a$ in volatile memory constitutes a critical section in the algorithm, which must be accounted for in the design of the parallel variant of this part of the algorithm. Furthermore, both dependencies lie in a single path of dependence, which means that the entire group of operations must be protected by a guarding mechanism as described in Section~\ref{ch2sPPssMS}. Fortunately, because both dependencies revolve around the same set $\bN_a$, a simple mutex per neighborhood will be sufficient. 
+
+Lines~\ref{sbn4}~and~\ref{sbn5} behave similarly to line~\ref{sbn3}, except they concern other neighborhoods, which in turn, need their own mutexes.\todoBackground{path of dependence} Fortunately, as is modeled with a simple mesh in Figure~\ref{fig:unionsOfSimpleBuildNeighborhoods}, the union operation is performed exactly twice per point per face; that is, once each between the neighborhood of the center point and a neighboring point, for a total of six times per face. By exploiting this pattern and executing the two union operations sequentially within a single mutex, one can mitigate exactly half of the possible collisions in the $\mathit{buildNeighborhoods}$ procedure.
 
 %
 %
 \subsection{Parallel Variant of Build Neighborhoods}
 \label{ch6sBNPssPVBN}
-Algorithm~\ref{alg:parallelBuildNeighborhoods} defines the structure and instructions required to implement a parallel variant of the serial procedure, $\mathit{buildNeighborhoods}$, and ensuring correctness by using a set of mutexes. The main function requires only the number of available processors $\rho$, the set of all triangular faces $\bT$, and the cardinality of the set of points $|\bP|$. First, the stride is calculated as the problem size with the unit of work being a single face $\bt$, divided by the number of available processors. Next, a set of mutexes is defined, containing the $|\bP|$ amount of mutexes to be used one each for each neighborhood. \todoReword{remove if no longer setting $\bM$} Then begins the loop to spawn a ``build'' thread for a quarter of the available processors in the system, with the scalar 4 being a result of each build thread's need to spawn 3 additional ``union'' threads. Finally, all the working threads must first synchronize before the family of sets $\bN$ can be realized.
+Algorithm~\ref{alg:parallelBuildNeighborhoods} defines the structure and procedures required to implement a parallel variant of the serial function $\mathit{buildNeighborhoods}$, while ensuring correctness by using a set of mutexes to guard critical sections. The main function $\mathit{parallelBuildNeighborhoods}$ requires only the number of available processors $\rho$, the set of all triangular faces $\bT$, and the cardinality of the set of points $|\bP|$ in order to complete its task. Initially, the ``stride'' is calculated in line~\ref{algPBN.stride} as the portion of the total work load, to which a single processor will be instructed to compute, equal to the problem size divided by the number of available processors; here, the unit of work being an entire triangular face $\bt$. Next, a set of mutexes are created, containing an equal amount of elements as the cardinality of points in $\bP$, to be used individually for each neighborhood. \todoReword{remove if no longer setting $\bM$} Then begins the loop to spawn a ``build'' thread for a quarter of the available processors in the system, with the scalar four being a result of each build thread's need to spawn three additional ``union'' threads. Then all the working threads must synchronize first, before the family of sets of neighborhoods $\bN$ can be finally realized.
 
-Along with access to the set of triangular face $\bT|$ and set of mutexes $\bM$, each build thread in Algorithm~\ref{alg:parallelBuildNeighborhoods} also requires an index $\Pi$, which it uses along with the stride size $sigma$, to calculate the lower and upper boundaries, $\check{\sigma}$ and $\hat{\sigma}$, for the stride of the problem on which it should compute. Next, it iterates over each face $\bt$ within those stride boundaries, and spawns three union threads; one each for the three points comprising the corners of the current triangular face. Each union thread requires access to not only the family of sets of neighborhoods $\bN$ and the set of mutexes $\bM$, but also the index of the point which it will consider to be central, and two indices of the points which are neighboring it. With those inputs, each union thread then attempts to lock the mutex with the matching index of the central point, blocking until it is able to do so, in order to safely perform the union operation with the currently known neighborhood of the central point, and the set of its two newly discovered neighbors; finally, saving the updated neighborhood to shared memory, then unlocking the mutex.
+In line~\ref{algPBN.build}, we read that along with access to the set of triangular faces $\bT$ and set of mutexes $\fM$, each build thread in Algorithm~\ref{alg:parallelBuildNeighborhoods} also requires an index $\Pi$, which it uses along with the stride $sigma$, to calculate the lower and upper boundaries, $\check{\sigma}$ and $\hat{\sigma}$, for the portion of the work load on which it should compute. Next, it iterates over each face $\bt$ within those stride boundaries, and spawns three union threads; one each for the three points comprising the corners of the current triangular face.
+
+Line~\ref{algPBN.safeUnion} shows that each union thread requires not only the family of sets of neighborhoods $\bN$ and the set of mutexes $\fM$, but also the point which it will consider to be central, and the two points which are the central point's neighbors. With those inputs, each union thread then attempts to lock the mutex which shares the index of both the central point and its corresponding neighborhood, blocking if necessary, in order to safely perform the union operation between the currently known set of neighbors for the central point, and the set of its two newly discovered neighbors; finally, saving the updated neighborhood to volatile shared memory while still protected by the mutex, then unlocking the mutex.
+\todoBackground{blocking mutex}
 
 \begin{algorithm}[ht]
 	\DontPrintSemicolon
@@ -74,8 +78,8 @@ Along with access to the set of triangular face $\bT|$ and set of mutexes $\bM$,
 	}
 
 	\bigskip
-\nl	\Func{build($\Pi$, $\sigma$, $\fM$, $\bT$)}{
-\nl		$\check{\sigma} \leftarrow (\Pi-1)\,\sigma+1$\tcc*{works through its stride}
+\nl	\Func{build($\Pi$, $\sigma$, $\fM$, $\bT$)}{\label{algPBN.build}
+\nl		$\check{\sigma} \leftarrow (\Pi-1)\,\sigma+1$\tcc*{works through its stride}\label{algPBN.stride}
 \nl		$\hat{\sigma} \leftarrow \Pi\,\sigma$\;
 \nl		\For(\tcc*[f]{$\bt = \left \{\bp_a, \bp_b, \bp_c\right \}$}){$\bt \in \{\bt_{\check{\sigma}},\ldots,\,\bt_{\hat{\sigma}}\}$}{
 \nl			\ProgSty{$\sim$safeUnion($\fM$, $\bN$, $\bp_a$, $\bp_b$, $\bp_c$)}\;
@@ -85,7 +89,7 @@ Along with access to the set of triangular face $\bT|$ and set of mutexes $\bM$,
 	}
 
 	\bigskip
-\nl	\Func{safeUnion($\fM$, $\bN$, $a$, $b$, $c$)}{
+\nl	\Func{safeUnion($\fM$, $\bN$, $a$, $b$, $c$)}{\label{algPBN.safeUnion}
 \nl		$\ProcSty{lock}(\mu_a)$\;
 \nl		$\bN_a \leftarrow \bN_a \cup \{b,\,c\}$\;
 \nl		$\ProcSty{unlock}(\mu_a)$\;
@@ -100,9 +104,6 @@ Along with access to the set of triangular face $\bT|$ and set of mutexes $\bM$,
 \nomenclature[]{$\fM$}{a set of mutexes}%
 \nomenclature[]{$\mu_v$}{a specific mutex}%
 \nomenclature[]{$\sim process()$}{a process to be run in a new thread}%
-\todoAsk{use KwTo or \{...\}?}
-\todoAsk{remove the "main" function in each algorithm (except the 5)?}
-\todoAsk{define $\bM$, set it as an input, or just use it?}
 
 %
 %
@@ -169,7 +170,7 @@ As Algorithm~\ref{alg:parallelRecursiveCensusNeighborhoods} is a recursive algor
 \nomenclature[]{$\widetilde{\bN}$}{a subset of $\bN$ used temporarily in Algorithm~\ref{alg:parallelRecursiveCensusNeighborhoods}}%
 \todoReword{mention that non-existent neighborhoods should be treated as having a cardinality of 0}
 
-It is important to notice in line~\ref{algPRCNbNdistinction}, the distinction between the family of sets $\bN$ in the first call of \textit{parallelRecursiveCensusNeighborhoods}, with that of the set of integers accumulating in the subset $\widetilde{\bN}$ in subsequent calls.
+It is important to notice in line~\ref{algPRCNbNdistinction}, the distinction between the family of sets of neighborhoods $\bN$ in the first call of \textit{parallelRecursiveCensusNeighborhoods}, with that of the set of integers accumulating in the subset $\widetilde{\bN}$ in subsequent calls.
 
 %
 %
@@ -193,7 +194,7 @@ Line~\ref{scel3} of Algorithm~\ref{alg:serialCalculateEdgeLengths} is the $\ells
 %
 \subsection{Parallel Variant of Calculate Edge Lengths}
 \label{ch6sCELPssPVCEL}
-Algorithm~\ref{alg:parallelCalculateEdgeLengths} is the parallel algorithm for calculating all the edge lengths between each pair of adjacent points in the mesh. It requires the knowledge of and access to the number of available processors in the system $\rho$, the set of all points $\bP$, the family of sets of discovered neighborhoods $\bN$, the average size of every neighborhood in $\bar{n}$, and the count of all neighbors in all neighborhoods $\hat{n}$, and produces as an output, the set of pre-calculated edge lengths $\bE$, and the global minimum edge length $\gelm$; both instrumental to the calculation of \Fors{t}. This algorithm has been split further into three subroutines in order to maximize efficiency by facilitating the balance of work loaded in parallel onto each processor.
+Algorithm~\ref{alg:parallelCalculateEdgeLengths} is the parallel algorithm for calculating all the edge lengths between each pair of adjacent points in the mesh. It requires the knowledge of and access to the number of available processors in the system $\rho$, the set of all points $\bP$, the family of sets of neighborhoods $\bN$, the average size of every neighborhood in $\bar{n}$, and the count of all neighbors in all neighborhoods $\hat{n}$, and produces as an output, the set of pre-calculated edge lengths $\bE$, and the global minimum edge length $\gelm$; both instrumental to the calculation of \Fors{t}. This algorithm has been split further into three subroutines in order to maximize efficiency by facilitating the balance of work loaded in parallel onto each processor.
 
 \begin{algorithm}[ht]
 	\DontPrintSemicolon
@@ -204,7 +205,7 @@ Algorithm~\ref{alg:parallelCalculateEdgeLengths} is the parallel algorithm for c
 
 	\Input{the number of available processors $\rho$, \\
 		the set of all points $\bP$, \\
-		the family of sets of discovered neighborhoods $\bN$, \\
+		the family of sets of neighborhoods $\bN$, \\
 		the average size of every neighborhood in $\bar{n}$, \\
 		the count of all neighbors in all neighborhoods $\hat{n}$}
 	\Output{the set of pre-calculated edge lengths $\bE$, \\
@@ -287,7 +288,7 @@ Now that we have analyzed, the serial Algorithm~\ref{alg:serialConvolveFilter}, 
 %
 \subsection{Parallel Variant of Convolve Filter}
 \label{ch6sCFPssPRCN}
-Algorith~\ref{alg:parallelConvolveFilter}, is split into three functions. The first function \textit{parallelConvolveFilter} requires several inputs which include: the number of available processors $\rho$, the set of all points $\bP$, the family of sets of discovered neighborhoods $\bN$, the count of all neighbors in all neighborhoods $\hat{n}$, the set of pre-calculated edge lengths $\bE$, the global minimum edge length $\gelm$, the set of function values $\bF$, and the user-defined number of convolutions $\tau$.
+Algorith~\ref{alg:parallelConvolveFilter}, is split into three functions. The first function \textit{parallelConvolveFilter} requires several inputs which include: the number of available processors $\rho$, the set of all points $\bP$, the family of sets of neighborhoods $\bN$, the count of all neighbors in all neighborhoods $\hat{n}$, the set of pre-calculated edge lengths $\bE$, the global minimum edge length $\gelm$, the set of function values $\bF$, and the user-defined number of convolutions $\tau$.
 
 In the first line, line~\ref{algPCFtauloop}, begins the loop iterating for the user-defined number of times $\tau$. Initially, the stride size $\sigma$ is calculated with the work load computed as one for each point defining a geodesic disc $\bO$, which is equal to the cardinality of points in the mesh $|\bP|$, plus one for each neighboring point in every neighborhood $\hat{n}$. Next, another loop is begun, which iterates over a portion of the available processors in the system, as we did in Algorithm~\ref{alg:parallelCalculateEdgeLengths}, reserving resources for the rest of the threads that must be spawned in order to compute in parallel, the \wmfv{} over an entire neighborhood $f'_v$. In each iteration of this loop, a new thread is spawned to execute the function \textit{safeAccumulateGeoDiscMean}, passing to it as parameters: a processor's index $\Pi$, the stride length $\sigma$, the new scalar field which is to be populated with calculated \wmfv{s} from each neighborhood $\bF'$, and the other general information defining and describing the mesh, $\bP$, $\bN$, $\bE$, $\gelm$, $\bF$. At the conclusion of the loop block, all threads are synchronized before either the new scalar field of \wmfv{s} $\bF'$ are used as the function values upon which the next convolution of the filter is based, or the convolutions end and $\bF'$ is returned as the final result.
 
@@ -304,7 +305,7 @@ In line~\ref{algPCFsasmCall}, a new thread is spawned to execute an instance of 
 
 	\Input{the number of available processors $\rho$, \\
 		the set of all points $\bP$, \\
-		the family of sets of discovered neighborhoods $\bN$, \\
+		the family of sets of neighborhoods $\bN$, \\
 		the count of all neighbors in all neighborhoods $\hat{n}$, \\
 		the average size of every neighborhood in $\bar{n}$, \\
 		the set of pre-calculated edge lengths $\bE$, \\

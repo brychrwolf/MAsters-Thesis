@@ -3,6 +3,7 @@
 \usetikzlibrary{arrows.meta}
 
 \newcommand{\bN}{\mathcal{N}}
+\newcommand{\bT}{\mathcal{T}}
 \newcommand{\bt}{\mathbf{t}}
 \newcommand{\bp}{\mathbf{p}}
 
@@ -25,6 +26,7 @@
 	coralStyle/.style = {draw=MyCoral, fill=MyLtCoral},
 	sandStyle/.style = {draw=MySand, fill=MyLtSand},
 	%
+	commentNode/.style = {text=darkgray, fill=white},
 	indNode/.style = {baseNode, tealStyle},
 	indLine/.style = {baseLine, draw=MyTeal},
 	depNode/.style = {baseNode, coralStyle},
@@ -35,13 +37,15 @@
 
 \begin{tikzpicture}[node distance=0cm]
 	\coordinate (center1) at (0cm,0cm);
-	\node (sm) [indNode, xshift=-2.25cm] {$\bt$ in static memory};
+	\node (sm) [indNode, xshift=-2.25cm] {$\bT$ in static memory};
 	\node (vm) [depNode, anchor=west, xshift= 1.25cm] {$\bN$ in volatile memory};
 
 	\coordinate (center2) at (0cm,-2cm);
+	\node (bt) [commentNode, left of=center2, xshift=-4.25cm, yshift=.80cm] {/* $\bt = \{$};
 	\node (pc) [indNode, left of=center2, xshift=-3.50cm] {$\bp_c$};
 	\node (pb) [indNode, left of=center2, xshift=-2.25cm] {$\bp_b$};
 	\node (pa) [indNode, left of=center2, xshift=-1.00cm] {$\bp_a$};
+	\node (bt) [commentNode, left of=center2, xshift=-0.5cm, yshift=.80cm] {$\}$ */};
 
 	\node (Na) [depNode, right of=center2, xshift=1.00cm, yshift=-.5cm] {$\bN_a$};
 
