@@ -511,6 +511,13 @@ Figure~\ref{fig:dataDependencyOfL2Norm} illustrates the less-than-simple example
 	{\caption[Data Dependencies in the L2-norm Calculation]{The data dependencies inherent to calculation of the L2-norm of a position vector in $\bR{3}$, with each distinct operation colored in teal, and data dependencies marked with arrows. The centered block in sand color represents an exclusive-or situation, abbreviated as xor, where one, and only one pair of operations shall execute.}\label{fig:dataDependencyOfL2Norm}}
 \end{figure}
 
+
+sand color to highlight the fact that the values stored in memory will change throughout the life of the total procedure, and without the protection of a guarding mechanism, therefore, extra care must be taken so that the implementation of the parallel variant of the serial algorithm will maintain correctness.
+
+\todoBackground{guarding mechanisms}
+
+\todoBackground{correctness}
+
 %
 %Data Partitioning:
 %Calculations depend on specific data structures.~\cite[p.~357]{Lang17}

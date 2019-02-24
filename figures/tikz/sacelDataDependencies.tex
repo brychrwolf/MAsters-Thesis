@@ -41,25 +41,28 @@
 	\node (vm) [depVar, xshift= 4.5cm] {$\gelm$ in volatile memory};
 
 	\coordinate (center2) at (0cm,-1.5cm);
-	\node (pv) [indVar, left of=center2, xshift=-5.50cm] {$\bp_v$};
+	\node (pv) [indVar, left of=center2, xshift=-5.75cm] {$\bp_v$};
 	\node (Evi) [mutVar, left of=center2, xshift=0.2cm] {$\bE_{\sv{i}}$};
 
 	\coordinate (center3) at (0cm,-3cm);
-	\node (Nv) [indVar, left of=center3, xshift=-3.5cm] {$\bN_v$};
+	\node (Nv) [indVar, left of=center3, xshift=-4.5cm] {$\bN_v$};
 	\node (min) [depOp, right of=center3, xshift=2.5cm, yshift=-.5cm] {$\min\left \{\gelm,\,\bE_{\sv{i}}\right \}$};
 
 	\coordinate (center4) at (0cm,-4.5cm);
-	\node (pi) [indVar, left of=center4, xshift=-3.5cm] {$\bp_i$};
+	\node (pi) [indVar, left of=center4, xshift=-3.25cm] {$\bp_i$};
 
 	\coordinate (center5) at (0cm,-6cm);
 	\node (ls) [indOp, left of=center5, xshift=-4.5cm] {$|\bp_i - \bp_v| \text{ is } \ellstar$};
 
 
 
-	\draw[->, indLine] (sm) -- (pv);
-	\draw[->, indLine] (pv) -- (Nv);
+	\draw[->, indLine] (sm.225) -- (pv);
 	\draw[->, indLine] (sm) -- (Nv);
+	\draw[->, indLine] (sm.315) -- (pi);
+
+	\draw[->, indLine] (pv) -- (Nv);
 	\draw[->, indLine] (Nv) -- (pi);
+
 	\draw[->, indLine] (pv) -- (ls);
 	\draw[->, indLine] (pi) -- (ls);
 

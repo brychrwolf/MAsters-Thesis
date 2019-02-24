@@ -43,8 +43,8 @@
 		\node (pv)		[indVar, left of=center2, xshift=-6.5cm] {$\bp_v$};
 	\coordinate (center3) at (0cm,-2.25cm);
 		\node (Nv)		[indVar, left of=center3, xshift=-4.5cm] {$\bN_v$};
-		\node (fprimev)	[depOp, left of=center3, xshift=5.0cm] {$f'_v$};
 	\coordinate (center4) at (0cm,-3cm);
+		\node (fprimev)	[mutOp, left of=center4, xshift=2.5cm] {$f'_v$};
 	\coordinate (center5) at (0cm,-3.75cm);
 		\node (pi) 		[indVar, left of=center5, xshift=-7.5cm] {$\bp_i$};
 		\node (pip1) 	[indVar, left of=center5, xshift=-3.5cm] {$\bp_{\sipo}$};
@@ -98,11 +98,11 @@
 	\draw[->, indLine] (sm.270) .. controls (-5.5cm,-4.0cm) .. (Ea);
 	\draw[->, indLine] (sm.270) .. controls (-5.5cm,-4.0cm) .. (Eb);
 	\draw[->, indLine] (sm.270) .. controls (-5.5cm,-4.0cm) .. (Ec);
-	\draw[->, indLine] (pv) (Eb);
-	\draw[->, indLine] (pv) (Ec);
+	\draw[->, indLine] (pv) -- (Eb);
+	\draw[->, indLine] (pv) -- (Ec);
 	\draw[->, indLine] (pi) -- (Ea);
 	\draw[->, indLine] (pi) -- (Eb);
-	\draw[->, indLine] (pip1) -- (Ea);
+	\draw[->, indLine] (pip1.180) .. controls (-5.0cm,-3.75cm) .. (Ea.15);
 	\draw[->, indLine] (pip1) -- (Ec);
 
 	\draw[->, indLine] (Ea) -- (alpha);
@@ -138,8 +138,8 @@
 	\draw[->, mutLine] (fprimej2) -- (fcheck);
 	\draw[->, mutLine] (f0) -- (fcheck);
 
-	\draw[->, depLine] (vm) .. controls (4cm,-1.5cm) .. (ftildev);
-	\draw[->, depLine] (vm) .. controls (6cm,-1.5cm) .. (Atildev);
+	\draw[->, depLine] (vm) -- (ftildev);
+	\draw[->, depLine] (vm) -- (Atildev);
 
 	\draw[->, depLine] (ftildev) -- (acftilde.90);
 	\draw[->, depLine] (Atildev) -- (acAtilde.90);
@@ -151,17 +151,9 @@
 	\draw[->, depLine, double] (acftilde.30) -- (ftildev);
 	\draw[->, depLine, double] (acAtilde.30) -- (Atildev);
 
-	\draw[->, depLine, double] (ftildev) -- (fprimev);
-	\draw[->, depLine, double] (Atildev) -- (fprimev);
+	\draw[->, mutLine, double] (ftildev) -- (fprimev);
+	\draw[->, mutLine, double] (Atildev) -- (fprimev);
 
-	\draw[->, depLine, double] (fprimev) -- (vm);
-
-
-	%\draw[->, mutLine, double] (ls.east) .. controls (0cm,-6cm) and (0cm,-3.5cm).. (Evi);
-	%\draw[->, mutLine, double] (Evi) -- (mm);
-	%\draw[->, mutLine] (Evi) -- (min);
-
-	%\draw[->, depLine] (vm) -- (min);
-	%\draw[->, depLine, double] (min.east) .. controls (4.5cm,-3.5cm) and (5cm,-2cm).. (vm.315);
+	\draw[->, mutLine, double] (fprimev) -- (mm);
 \end{tikzpicture}
 \end{document}

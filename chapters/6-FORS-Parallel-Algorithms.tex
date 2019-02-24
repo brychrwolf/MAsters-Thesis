@@ -2,7 +2,7 @@
 \label{ch6}
 In the previous two chapters we presented the mathematical grounding and serial algorithms for an improved version of \Fors{t}, as it is currently implemented within the GigaMesh framework, and while it has improved accuracy in regards to the method of weighting the mean function values, it is still yet entirely serial in design, so that unfortunately, its performance suffers greatly under the complexity of modern mesh sizes, which with the current high resolution scanners in use, can grow to be MESH\_SIZES\todoResearch{mesh sizes}.
 
-In this chapter, we will now explore the parallel version of this as-yet-unpublished algorithm, in order to negotiate any instances of control or data dependency, hopefully discovering manifestations of independent procedures worthy of exploiting with parallel processing, with the goal of improving the performance of the filter when implemented on a system capable of parallel computation.
+In this chapter, we will now explore the serial version of this as-yet-unpublished algorithm, in order to negotiate any instances of control or data dependency, hopefully discovering manifestations of independent procedures worthy of exploiting with parallel processing, with the goal of improving the performance of the filter when implemented on a system capable of parallel computation.
 \todoBackground{Data dependencies}
 
 Following the pattern set by the serial algorithm in Chapter~\ref{ch5}, the parallel algorithm for \Fors{t} also has three main parts. In contrast however, the parallel variant of each of the three serial parts are split further into subroutines, in order to delegate blocks of instructions to separate threads of execution, while protecting critical sections, and avoiding data and control dependencies, so that the threads can be safely executed in parallel.
@@ -28,14 +28,17 @@ Starting in line~\ref{sbn1} of Algorithm~\ref{alg:serialBuildNeighborhoods}, we 
 \todoBackground{loop level parallelism, loop-carried and loop-independent}
 \todoBackground{static vs volatile memory}
 
-Figure~\ref{fig:sabnDataDependencies} illustrates the data dependencies inherent to each iteration of the loop over the faces $\bt$ in $\bT$, as found in lines~\ref{sbn2}~-~\ref{sbn5} of Algorithm~\ref{alg:serialBuildNeighborhoods}. As denoted by the first three teal colored lines, the first operations are to read the three points $\bp_a$, $\bp_b$, $\bp_c$ from the triangular face $\bt$, stored is the set $\bT$ in static memory, which will never be modified by this, or any other procedure. Also, despite the fact that faces can be adjacent to one another, each face is distinctly defined in the set $\bT$, therefore, each face $\bt$ can be considered independent of each other face. Thus, this first instruction of the loop block is totally free from any control or data dependencies. The next line in the algorithm is a complex instruction, though, so it must be analyzed in parts.
+Figure~\ref{fig:sabnDataDependencies} illustrates the data dependencies inherent to each iteration of the loop over the faces $\bt$ in $\bT$, as found in lines~\ref{sbn2}~-~\ref{sbn5} of Algorithm~\ref{alg:serialBuildNeighborhoods}.
 
-The first part of the instruction on line~\ref{sbn3} uses the point $\bp_a$ as a reference to read the state of $\bN_a$ from the set $\bN$ in volatile memory, as denoted as teal and coral colored lines, respectively. $\bN_a$ is stored in volatile memory, which may potentially be modified by other threads, because it is not known a priori which thread will discover the points which belong to that neighborhood, thus it must be accessible to any and all threads. Next, also drawn in coral color, are the two union operations performed in succession between $\bN_a$ and the point $\bp_b$, then $\bp_c$. While these two operations are themselves independent, being performed only on values currently immutable by other procedures, they do rely on having already read the status of $\bN_a$, which indeed does have its own data dependence, hence the indicative coloring. Finally, illustrated as a coral colored double arrow, the updated set $\bN_a$ is stored back into $\bN$, replacing the original set in volatile memory.
 
 \begin{figure}[ht]
 	\includestandalone[width=0.8\textwidth]{figures/tikz/sabnDataDependencies}
-	{\caption[Data Dependencies in Serial Algorithm~\ref{alg:serialBuildNeighborhoods}: Build Neighborhoods]{An Illustration of the data dependencies found in Algorithm~\ref{alg:serialBuildNeighborhoods}. Reading and writing values to volatile memory,  with data dependencies are in coral color, independent operations are in teal color}\label{fig:sabnDataDependencies}}
+	{\caption[Data Dependencies in Serial Algorithm~\ref{alg:serialBuildNeighborhoods}: Build Neighborhoods]{An illustration of the data dependencies found in Algorithm~\ref{alg:serialBuildNeighborhoods}. Square nodes indicate a values stored in memory, oval nodes indicate operations. Single arrows indicate reading values, double arrows indicate writing values to memory. Drawn in teal color are static memory, and the values and operations which are independent and free of data dependencies. Drawn in coral color, are volatile memory, the values stored there, which may be modified at anytime during a procedure, and the operations which rely on those volatile values.}\label{fig:sabnDataDependencies}}
 \end{figure}
+
+As denoted by the first three teal colored lines, the first operations are to read the three points $\bp_a$, $\bp_b$, $\bp_c$ from the triangular face $\bt$, stored is the set $\bT$ in static memory, which will never be modified by this, or any other procedure. Also, despite the fact that faces can be adjacent to one another, each face is distinctly defined in the set $\bT$, therefore, each face $\bt$ can be considered independent of each other face. Thus, this first instruction of the loop block is totally free from any control or data dependencies. The next line in the algorithm is a complex instruction, though, so it must be analyzed in parts.
+
+The first part of the instruction on line~\ref{sbn3} uses the point $\bp_a$ as a reference to read the state of $\bN_a$ from the set $\bN$ in volatile memory, as denoted as teal and coral colored lines, respectively. $\bN_a$ is stored in volatile memory, which may potentially be modified by other threads, because it is not known a priori which thread will discover the points which belong to that neighborhood, thus it must be accessible to any and all threads. Next, also drawn in coral color, are the two union operations performed in succession between $\bN_a$ and the point $\bp_b$, then $\bp_c$. While these two operations are themselves independent, being performed only on values currently immutable by other procedures, they do rely on having already read the status of $\bN_a$, which indeed does have its own data dependence, hence the indicative coloring. Finally, illustrated as a coral colored double arrow, the updated set $\bN_a$ is stored back into $\bN$, replacing the original set in volatile memory.
 
 Both reading from, and writing to $\bN_a$ in volatile memory constitutes a critical section in the algorithm, which must be accounted for in the design of the parallel variant of this part of the algorithm. Furthermore, both dependencies lie in a single path of dependence, which means that the entire group of operations must be protected by a guarding mechanism as described in Section~\ref{ch2sPPssMS}. Fortunately, because both dependencies revolve around the same set $\bN_a$, a simple mutex per neighborhood will be sufficient.
 
@@ -72,10 +75,7 @@ Line~\ref{algPBN.safeUnion} shows that each union thread requires not only the f
 \nl		\For{$\Pi \leftarrow 1$ \KwTo $\rho\mathbin{/}4$}{
 \nl			\ProgSty{$\sim$build($\Pi$, $\sigma$, $\fM$, $\bT$)}\;
 		}
-
-		\medskip
 \nl		\ProgSty{synchronizeThreads()}\;
-		\medskip
 	}
 
 	\bigskip
@@ -157,9 +157,7 @@ In the third and final part, ``the recursive call'', the function \textit{parall
 \nl			\For{$\Pi \in \{1,\ldots,\rho\}$}{
 \nl				\ProgSty{$\sim$parallelSum($\Pi$, $\sigma$, $\bN$)}\;
 			}
-			\medskip
 \nl			\ProgSty{synchronizeThreads()}\;
-			\medskip
 \nl			\ProgSty{parallelRecursiveCensusNeighborhoods($\rho$, $\widetilde{\bN}$)}\;
 		}
 	}
@@ -189,7 +187,7 @@ In the third and final part, ``the recursive call'', the function \textit{parall
 %
 \section{Calculating Edge Lengths in Parallel}
 \label{ch6sCELP}
-In this section we will focus on producing the parallel variant of  Algorithm~\ref{alg:serialCalculateEdgeLengths}, as presented in Chapter~\ref{ch5}, which has the goal of building a set of pre-calculated edge lengths $\bE$, as well as determining the global minimum edge length $\gelm$; both essential parameters of Algorithm~\ref{alg:serialConvolveFilter}. First we will analyze the serial algorithm through the lens of parallel programing, to be followed by defining the strategy behind the design of the parallel variant, then finally providing the pseudo code definitions to implement Algorithm~\ref{alg:parallelCalculateEdgeLengths}.
+The goal of this section is to produce the parallel variant of  Algorithm~\ref{alg:serialCalculateEdgeLengths}, as presented in Chapter~\ref{ch5}, which has the goal of building a set of pre-calculated edge lengths $\bE$, as well as determining the global minimum edge length $\gelm$; both essential parameters of Algorithm~\ref{alg:serialConvolveFilter}. First we will analyze the serial algorithm through the lens of parallel programing, to be followed by defining the strategy behind the design of the parallel variant, then finally providing the pseudo code definitions to implement Algorithm~\ref{alg:parallelCalculateEdgeLengths}.
 
 
 %
@@ -198,20 +196,36 @@ In this section we will focus on producing the parallel variant of  Algorithm~\r
 \label{ch6sCELPssASACEL}
 In this section, we analyze the~\nameref{saCEL.title} as presented in Section~\ref{ch5sCEL}, through the lens of parallel programing. The strategy we employ involves reading the serial algorithm line by line, building a dependency graph, and as opportunities for exploiting parallelism are discovered, a strategy\todoReword{strategy twice is bad} for maximizing efficiency is devised.
 
-Already in line~\ref{scel1} of Algorithm~\ref{alg:serialCalculateEdgeLengths}, we encounter a loop over each point $\bp_v$ in $\bP$. In order to determine if the iterations of the loop may instead be computed in parallel, an analysis of every operation in the loop block is required, which in this case, includes lines~\ref{scel2}-~\ref{scel5}. The first internal line,~\ref{scel2}, starts another loop over each point $\bp_i$ in $\bN_v$. \todoReword{why important to know ?} As we have seen very clearly in Figure~\ref{fig:neighborhoods}, the cardinality of each individual neighborhood can not be predicted for irregular, triangle meshes, like those typical of acquired \tdd{}. However, that becomes less important because it is possible to know the total count of neighbors of in all neighborhoods $\hat{n}$, by counting the size of each neighborhood a posteriori, as is done in Algorithm~\ref{alg:parallelRecursiveCensusNeighborhoods}. With $\hat{n}$, we may unroll this pair of loops and instruct a calculable number of threads to process the loop block in parallel. If the average number of neighbors per point is six\todoResearch{average number of neighbors}, then the number of edge lengths to be calculated and stored will be six times as large as the cardinality of $\bP$.
+Starting in line~\ref{scel1} of Algorithm~\ref{alg:serialCalculateEdgeLengths}, we read the declaration of the function \textit{serialCalculateEdgeLengths} requiring the set of points $\bP$, as well as the family of sets of neighborhoods $\bN$ as inputs. Then, in line~\ref{scel2}, we encounter a loop over each point $\bp_v$ in $\bP$. In order to determine if the iterations of the loop may instead be computed in parallel, an analysis of every operation in the loop block for loop-carried dependencies is required, which in this case, includes lines~\ref{scel3}-~\ref{scel5}.
+
+The first operation in the loop block, line~\ref{scel3}, starts another loop over each point $\bp_i$ in the neighborhood $\bN_v$. Because there are no operations in the first loop which starts on line~\ref{scel2}, that are not also in the nested loop starting at line~\ref{scel3}, we may consider them together as a single multi-dimensional loop; one which iterates over the entirety of the unpredictable dimensions of the nondeterministic family of sets of neighborhoods $\bN$. We will see this pattern again in Algorithm~\ref{alg:parallelConvolveFilter}, and indeed, one can be unroll both loops together in order to compute the loop block in parallel by utilizing the total count of neighbors and the average size of all neighborhoods, barring any occurrences of loop-carried dependencies, of course.
+
+As can be clearly seen in Figure~\ref{fig:neighborhoods}, the cardinality of each individual neighborhood, indeed can not be predicted for irregular, triangle meshes, like those typical of acquired \tdd{}. However, that becomes less important because it is possible to know the total census count of neighbors in all neighborhoods of $\bN$, by actually counting the size of each neighborhood a posteriori, which is is done in Algorithm~\ref{alg:parallelRecursiveCensusNeighborhoods}. With $\hat{n}$, we will in the next chapter, unroll this pair of loops and instruct a calculable number of threads to efficiently process the loop block in parallel.
+
+Figure~\ref{fig:sacelDataDependencies} illustrates the data dependencies inherent to each iteration of the pair of loops over the points $\bp_v$ in $\bP$, and then $\bp_i$ in $\bN_v$, as found in lines~\ref{scel2}~-~\ref{sbn5} of Algorithm~\ref{alg:serialCalculateEdgeLengths}.
 
 \begin{figure}[ht]
 	\includestandalone[width=1.0\textwidth]{figures/tikz/sacelDataDependencies}
-	{\caption[Data Dependencies in Serial Algorithm~\ref{alg:serialCalculateEdgeLengths}: Calculate Edge Lengths]{An Illustration of the data dependencies found in Algorithm~\ref{alg:serialCalculateEdgeLengths}. Operations with data dependencies are in coral color, independent operations are in teal color, and independent operations which reply on operations which have dependencies are in sand color.}\label{fig:sacelDataDependencies}}
+	{\caption[Data Dependencies in Serial Algorithm~\ref{alg:serialCalculateEdgeLengths}: Calculate Edge Lengths]{An illustration of the data dependencies found in Algorithm~\ref{alg:serialCalculateEdgeLengths}. Square nodes indicate a values stored in memory, oval nodes indicate operations. Single arrows indicate reading values, double arrows indicate writing values to memory. Drawn in teal color are static memory, and the values and operations which are independent and free of data dependencies. Drawn in sand color are mutable memory, the values stored there, and the operations which rely on them. These are independent, however may be modified during processing. Drawn in coral color, are volatile memory, the values stored there, which may be modified at anytime during a procedure, and the operations which rely on those volatile values.}\label{fig:sacelDataDependencies}}
 \end{figure}
 
-Line~\ref{scel3} of Algorithm~\ref{alg:serialCalculateEdgeLengths} is the $\ellstar$ operation, the most costly operation performed by \fors{t}, due to use of the $\sqrt{(\cdot)}$ operation. Therefore, unlike with the union operation in Algorithm~\ref{alg:parallelBuildNeighborhoods}, it is of paramount importantance that we avoid any unnecessary duplication of the $\ellstar$ operation. In Algorithm~\ref{alg:serialBuildNeighborhoods}, each pair of adjacent points are represented twice, being indexed once from both directions, and while calculating the length both times is exactly what we want to avoid, it is a design choice related to Section\todoReference{memory vs speed}\todoBackground{memory vs speed} whether to store the length twice. The benefit of storing the set of adjacent points in this way, it that it creates an implicit reverse lookup-table which is well documented\todoCitation{multiples, reverse lookup table} for increasing the speed of computations, and further simplifies the complexity of indexing the values, conversely to save memory, one could store the value only once by implementing the control structures for detecting if an edge length has already been saved \todoReference{more details about this method in future work}, then when retrieving the values, one could search for the edge length required at the cost of compute time. We have user-defined to detail the first, speedier method.
+As denoted by a teal colored lines, the first operation reads the current point $\bp_v$ from $\bP$ in static memory. Next, that point is referenced to read the corresponding neighborhood $\bN_v$ from $\bN$. Then the point $\bp_i$ is determined, and combined with $\bp_v$ in order to compute $\ellstar$, the distance between the two points.
+
+Drawn in sand color, is the procedure to store the resulting independent scalar as $\bE_{\sv{i}}$, in its own unique place in mutable memory\footnote{which requires special attention during implementation, because operations involving reading and writing to mutable memory do not require the expensive protection of guarding mechanisms, even though they may be modified concurrently.}. Next, as drawn in coral color, the current global minimum edge length $\gelm$ is read from volatile memory and is compared to $\bE_{\sv{i}}$ from mutable memory, drawn in sand color, finally storing the minimum of the two values as an updated $\gelm$ back into volatile memory.
+
+Line~\ref{scel3} of Algorithm~\ref{alg:serialCalculateEdgeLengths} is the $\ellstar$ operation, the most costly operation performed by \fors{t}, due to the use of the square root operation $\sqrt{(\cdot)}$. Therefore, unlike with the union operation in Algorithm~\ref{alg:parallelBuildNeighborhoods}, it is of paramount importance that we avoid any unnecessary duplication of $\ellstar$.
+%In Algorithm~\ref{alg:serialBuildNeighborhoods}, \nameref{alg:serialBuildNeighborhoods},
+In the family of sets of neighborhoods, each pair of adjacent points are represented exactly twice, as illustrated by the simple example in Figure~\ref{fig:triangularFaces}, being indexed once from both directions, and while calculating the length both times is exactly what we want to avoid, it is but a design choice related to Section ??\todoReference{memory vs speed}\todoBackground{memory vs speed} whether to actually store the length twice.
+
+The benefit of storing the set of adjacent points twice, once in both directions, it that it creates an implicit reverse lookup-table which is well documented\todoCitation{multiples, reverse lookup table} for increasing the speed of computations, and further simplifies the complexity of indexing the values. If the average number of neighbors per point is six\todoResearch{average number of neighbors}, then the number of edge lengths to be calculated and stored will be six times as large as the cardinality of $\bP$. Conversely, in order to save nearly half\footnote{todo me}\todoReference{edges go to two} of that memory, one could store the value only once by implementing the control structures for detecting if an edge length has already been saved \todoReference{more details about this method in future work}, then when retrieving the values, one could search for the edge length required at the cost of compute time. In the next section, we choose to implement the first, speedier method.
 
 %
 %
 \subsection{Parallel Variant of Calculate Edge Lengths}
 \label{ch6sCELPssPVCEL}
-Algorithm~\ref{alg:parallelCalculateEdgeLengths} is the parallel algorithm for calculating all the edge lengths between each pair of adjacent points in the mesh. It requires the knowledge of and access to the number of available processors in the system $\rho$, the set of all points $\bP$, the family of sets of neighborhoods $\bN$, the average size of every neighborhood in $\bar{n}$, and the count of all neighbors in all neighborhoods $\hat{n}$, and produces as an output, the set of pre-calculated edge lengths $\bE$, and the global minimum edge length $\gelm$; both instrumental to the calculation of \Fors{t}. This algorithm has been split further into three subroutines in order to maximize efficiency by facilitating the balance of work loaded in parallel onto each processor.
+In this section, we apply the knowledge gained from the analysis of Algorithm~\ref{alg:serialCalculateEdgeLengths} conducted in Section~\ref{ch6sCELPssASACEL}, in order to provide the pseudo code definitions with which one may implement a parallel variant of the function \textit{serialCalculateEdgeLengths}.
+
+The mathematical pseudo code for the parallel algorithm for calculating all the edge lengths between each pair of adjacent points in the mesh is presented in Algorithm~\ref{alg:parallelCalculateEdgeLengths}. It requires the knowledge of and access to the number of available processors in the system $\rho$, the set of all points $\bP$, the family of sets of neighborhoods $\bN$, and the count of all neighbors in all neighborhoods $\hat{n}$, and produces as an output, the set of pre-calculated edge lengths $\bE$, and the global minimum edge length $\gelm$; both instrumental to the calculation of \Fors{t}. This algorithm has been split further into three subroutines in order to maximize efficiency by facilitating the balance of work loaded onto each processor in parallel.
 
 \begin{algorithm}[ht]
 	\algotitle{Parallel Algorithm for Calculating Edge Lengths}{paCEL.title}
@@ -225,27 +239,25 @@ Algorithm~\ref{alg:parallelCalculateEdgeLengths} is the parallel algorithm for c
 	\Input{the number of available processors $\rho$, \\
 		the set of all points $\bP$, \\
 		the family of sets of neighborhoods $\bN$, \\
-		the average size of every neighborhood in $\bar{n}$, \\
 		the count of all neighbors in all neighborhoods $\hat{n}$}
 	\Output{the set of pre-calculated edge lengths $\bE$, \\
 		the global minimum edge length $\gelm$}
 
 	\bigskip
 \nl	\Func{parallelCalculateEdgeLengths($\rho$, $\bP$,\,$\bN$,\,$\hat{n}$)}{
-\nl		$\sigma \leftarrow \hat{n}\mathbin{/}\rho$\label{algPCELellstar}\;
+\nl		$\sigma \leftarrow \hat{n}\mathbin{/}\rho$\;
+\nl		$\bar{n} \leftarrow \hat{n}\mathbin{/}|\bP|$\;
 \nl		\For{$\Pi \in \{1,\,\ldots,\,\left \lceil\rho/\bar{n}\right\rceil\}$}{
 \nl			\ProgSty{$\sim$calculateLengths($\Pi$, $\sigma$, $\mu$, $\bP$,\,$\bN$)}\;
 		}
-
-		\medskip
 \nl		\ProgSty{synchronizeThreads()}\;
-		\medskip
 	}
 
 	\bigskip
-\nl	\Sub{calculateLengths($\Pi$, $\sigma$, $\mu$, $\bP$,\,$\bN$)}{
+\nl	\Sub{calculateLengths($\Pi$, $\sigma$, $\bP$,\,$\bN$)}{
 \nl		$\check{\sigma} \leftarrow (\Pi-1)\,\sigma+1$\;
 \nl		$\hat{\sigma} \leftarrow \Pi\,\sigma$\;
+\nl		$\ProcSty{create}(\mu)$\;
 \nl		\For{$\bp_v \in \{\bp_{\check{\sigma}},\ldots,\,\bp_{\hat{\sigma}}\}$}{
 \nl			\For{$\bp_i \in \bN_v$}{
 \nl				\ProgSty{$\sim$safeEdgeLengthCalculation($\mu$, $\bE$, $\gelm$, $\bp_v$, $\bp_i$)}\;
@@ -255,7 +267,7 @@ Algorithm~\ref{alg:parallelCalculateEdgeLengths} is the parallel algorithm for c
 
 	\bigskip
 \nl	\Sub{safeEdgeLengthCalculation($\mu$, $\bE$, $\gelm$, $\bp_v$, $\bp_i$)}{
-\nl		$\bE_{\sv{i}} \leftarrow |\bp_i - \bp_v|$\tcc*[r]{$\ellstar$, Eq:~\ref{eq:localMinimumEdgeLength}}
+\nl		$\bE_{\sv{i}} \leftarrow |\bp_i - \bp_v|$\tcc*[r]{$\ellstar$, Eq:~\ref{eq:localMinimumEdgeLength}}\label{algPCELellstar}
 \nl		\If(\tcc*[f]{heuristic only\footnotemark}){$\bE_{\sv{i}} < \gelm$}{\label{algPCELhcs}
 \nl			$\ProcSty{lock}(\mu)$\;
 \nl			$\gelm \leftarrow \min\left \{\gelm,\,\bE_{\sv{i}}\right \}$\label{algPCELgelm}\tcc*[r]{Eq:~\ref{eq:globalMinimumEdgeLength}}
@@ -269,13 +281,15 @@ Algorithm~\ref{alg:parallelCalculateEdgeLengths} is the parallel algorithm for c
 \todoReword{$\bE_{\sv{i}}$ is a unique address, so no mutex required}
 \todoBackground{future work, can calculate average neighborhood size in alg.1 or 4}
 
-The initial function, \textit{parallelCalculateEdgeLengths}, requires all of the inputs listed in the previous paragraph, then calculates the stride with the problem size equating to the count of all neighbors in all neighborhoods $\hat{n}$. Next, the set of mutexes is prepared, and the loop iterating over a portion of the count of processors is encountered, calling the subroutine \textit{calculateLengths} in each iteration. Because each thread will be expected to spawn an additional thread for each pair of adjacent points found in every neighborhood in its designated stride of the work load, the greater portion of processors, scaled to the average neighborhood size of the mesh $\bar{n}$, is held in reserve for those spawned threads to be able to run in parallel. Finally, all the working threads must synchronized before the set of pre-calculated edge lengths $\bE$ before the final value of $\gelm$ may be used.
+The initial function, \textit{parallelCalculateEdgeLengths}, requires all of the inputs listed in the previous paragraph, then calculates the stride with the problem size equating to the count of all neighbors in all neighborhoods $\hat{n}$. Next, the average size of all neighborhoods in $\bN$ is calculated as $\bar{n}$, and the single mutex $\mu$ is created to be used in protecting reads and writes to to $\gelm$. Then, the loop iterating over a portion of the total number of processors, scaled by the average neighborhood size, is begun, calling in each iteration, the subroutine \textit{calculateLengths}. Because each thread will be expected to spawn additional threads\footnote{the greater portion of the total thread count, overall.} for each pair of adjacent points found in each neighborhood in its designated stride of the work load, the greater portion of processors are held in reserve for those spawned threads to be able to run in parallel. Notice the ``ceiling'' operator $\left\lceil\cdot\right\rceil$, which ensures that at least instance of \textit{calculateLengths} will be executed. Finally, all the working threads must be synchronized before the set of pre-calculated edge lengths $\bE$, or the final value of global minimum edge length $\gelm$, may be used.
 
-The subroutin \textit{calculateLengths}e requires an index $\Pi$, which it uses along with the stride size $sigma$, to calculate the lower and upper boundaries, $\check{\sigma}$ and $\hat{\sigma}$, for the stride of the total problem which it should compute. Next, the function iterates over each point $\bp_v$ within its stride boundaries, as well as each neighbor $\bp_i$ in the current center point's neighborhood $\bN_v$, spawning new threads to execute instances of the \textit{safeEdgeLengthCalculation} procedure in each iteration.
+The subroutine \textit{calculateLengths} requires an index $\Pi$, which it uses along with the stride $sigma$, to calculate the lower and upper boundaries, $\check{\sigma}$ and $\hat{\sigma}$, for the stride of the total problem size which it should compute. Next, the function iterates over each point $\bp_v$ within its stride boundaries, as well as each neighbor $\bp_i$ in the current center point's neighborhood $\bN_v$, spawning new threads in each iteration to execute instances of the \textit{safeEdgeLengthCalculation} subroutine.
 
-The subroutine, \textit{safeEdgeLengthCalculation}, requires access to the set of edge lengths $\bE$ being collaboratively populated by each other instance of itself, as well as the single mutex $mu$ used to guard the final reading of and writing to the shared value of $\gelm$. Naturally, also required are the coordinates of the two points, between which the distance is being calculated. In line~\ref{algPCELellstar}, the first line of the function, the L2-norm of the difference between the two points is already calculated; this is the $\ellstar$ operation. There are two race conditions in line~\ref{algPCELgelm} which must be avoided, however it would be incredibly inefficient to have all $(\bar{n}-\rho)\mathbin{/}\bar{n}$ threads attempt to lock the same, single mutex $\mu$. The solution is the heuristic conditional statement in line~\ref{algPCELhcs}, testing the worthiness of incurring the cost of attempting to lock the shared mutex guarding the reads and writes to $\gelm$. We call this conditional statement heuristic, in order to call attention to the fact that it may give an inaccurate result due to race conditions between the threads operating in parallel. \todoResearch{just how much time can be saved with this heuristic?}
+The \textit{safeEdgeLengthCalculation} subroutine requires the set of edge lengths $\bE$, which is being collaboratively populated by each other instance of the subroutine, as well as the single mutex $mu$, used to guard the final reading of and writing to the shared value of $\gelm$. Naturally, also required are the coordinates of the two points, between which the distance is being calculated. In line~\ref{algPCELellstar}, the first line of the function, the L2-norm of the difference between the two points is already calculated; this is the $\ellstar$ operation. There are two race conditions in line~\ref{algPCELgelm} which must be avoided, however it would be incredibly inefficient to have all $(\bar{n}-\rho)\mathbin{/}\bar{n}$ threads attempt to lock the same, single mutex $\mu$. The solution is the heuristic conditional statement in line~\ref{algPCELhcs}, testing the worthiness of incurring the cost of attempting to lock the shared mutex guarding the reads and writes to $\gelm$. We describe this conditional statement heuristic, in order to call attention to the fact that it may give an inaccurate result due to race conditions between the threads operating in parallel. \todoResearch{just how much time can be saved with this heuristic?}
 
-In the next section, we will see how the pre-calculations of Algorithms~\ref{alg:parallelBuildNeighborhoods}, ~\ref{alg:parallelRecursiveCensusNeighborhoods}, and ~\ref{alg:parallelCalculateEdgeLengths} contribute to the speed and scalability of the main procedure, alongside the modifications to exploit the concurrency inherent to the filter.
+Algorithm~\ref{alg:parallelCalculateEdgeLengths} produces as an output, the set of pre-calculated edge lengths $\bE$, and the global minimum edge length $\gelm$; both instrumental to the calculation of \Fors{t}, by calculating in parallel, each pair of adjacent points, in each neighborhood, comprising the family of sets of neighborhoods $\bN$. This algorithm has been split further into three subroutines in order to maximize efficiency by facilitating the balance of work loaded onto each processor in parallel.
+
+In the next section, we will see how the pre-calculations of Algorithms~\ref{alg:parallelBuildNeighborhoods}, \ref{alg:parallelRecursiveCensusNeighborhoods}, and \ref{alg:parallelCalculateEdgeLengths} contribute, alongside the modifications to exploit the concurrency inherent to the filter, to the speed and scalability of the main procedure, defined in Algorithm~\ref{alg:parallelConvolveFilter}.
 
 %
 %
@@ -283,28 +297,42 @@ In the next section, we will see how the pre-calculations of Algorithms~\ref{alg
 %
 \section{Convolving the Filter in Parallel}
 \label{ch6sCFP}
-Finally, we examine the serial Algorithm~\ref{alg:serialConvolveFilter}, which includes the principle loop to convolve \Fors{t}. As a prerequisite, one must have already run the previous three parallel algorithms, as detailed in Sections~\ref{ch5sPAssBN} and~\ref{ch5sPAssCEL}, in order to generate the input parameters which will be used in the parallel variant of this algorithm.
+Finally, in this section, we examine the serial Algorithm~\ref{alg:serialConvolveFilter}, which includes the principle loop to convolve \Fors{t}. As a prerequisite, one must have successfully executed the previous three parallel algorithms, as detailed in Sections~\ref{ch6sBNP} and~\ref{ch6sCELP}, in order to generate the input parameters which will be used in the parallel variant of this algorithm. First we will analyze the serial algorithm through the lens of parallel programing, to be followed by defining the strategy behind the design of the parallel variant, then finally providing the pseudo code definitions to implement Algorithm~\ref{alg:parallelCalculateEdgeLengths}.
 
 %
 %
 \subsection{Analysis of Serial Algorithm~\ref{alg:serialConvolveFilter}: Convolve Filter}
 \label{ch6sCFPssASACF}
-In this section, we analyze the~\nameref{saCF.title} through the lens of parallel programing.
+In this section, we analyze through the lens of parallel programing, the~\nameref{saCF.title} as presented in Section~\ref{ch5sCF}. The strategy we employ will match that of the previous three algorithms, which involves the reading of the serial algorithm line by line, building a dependency graph, and as opportunities for exploiting parallelism are discovered, devising a strategy\todoReword{strategy twice is bad} for maximizing efficiency using parallel techniques.
 
-In the first line of the serial Algorithm~\ref{alg:serialConvolveFilter}, we encounter a loop which runs for a user-defined number of convolutions. In order to determine if one can parallelize the entire loop, once must closely analyze each operation within the loop block; searching for loop-carried control or data dependencies. In line~\ref{algSCFlastLine}, the last line of the loop block, the set of function values $\bF$ is replaced by the newly computed set of \wmfv{s} $\bF'$, before starting the next convolution. This models exactly the definition of a loop-carried data dependency, therefore it would be impossible to calculate this loop entirely\footnote{What may be possible, would be to pipeline calculations for selected points between convolutions, since calculation only actually require the new function values of its neighbors, not the entire set. However, given the effort required to compute a single convolution of \fors{t} on typical acquired \tdd{}, it is unlikely that any additional speedup will be realized using such a technique, computing with the GPGPUs commercially available today.} in parallel.
+Starting in line~\ref{scf1} of Algorithm~\ref{alg:serialConvolveFilter}, we read the declaration of the function \textit{serialConvolveFilter} requiring as inputs: the set of points $\bP$, the set of function values $\bF$, the user-defined number of convolutions to perform $\tau$, as well as the information generated in the previous three algorithms, the family of sets of neighborhoods $\bN$, the set of pre-calculated edge lengths $\bE$, and the global minimum edge length $\gelm$. Then, in the first line of the function \textit{serialConvolveFilter}, we encounter a loop which runs for the user-defined number of convolutions $\tau$. In order to determine if one can parallelize the entire loop, once must closely analyze each operation within the loop block; searching for loop-carried control or data dependencies.
 
-In the second and third lines of Algorithm~\ref{alg:serialConvolveFilter}, we encounter two more loops iterating over each point in $\bP$, and then each neighborhood $\bN_v$ associated with those points. We have seen this pattern before;\todoReword{talk about pattern when we see it first}together, these two loops iterate over the family of sets of neighborhoods $\bN$, and indeed can be unrolled and computed in parallel barring any occurrences of dependicies within the loop block. Lines~\ref{algSCFalpha} -~\ref{algSCFcheckf} only  generate new terms which are unique to the current iteration, using only original values which are not changed by any other thread, therefore are all prime candidates for exploiting concurrency in the loop. Line~\ref{algSCFjloop} starts a new loop over just two values, and while it would be possible to compute both halves of the values the loop in parallel, at this point in the computation, we would expect all processors to already be in use calculating the other iterations, so dedicating the resources to spawn new threads here would likely net a loss in efficiency, so we will simply unroll the loop and compute the four new terms in serial, per thread.
+So, skipping ahead to the last line of the loop block, line~\ref{algSCFlastLine}, we read that the set of function values $\bF$ is replaced by the newly computed set of \wmfv{s} $\bF'$, before starting the next convolution. This models exactly the definition of a loop-carried data dependency, therefore it would be impossible to efficiently calculate this loop entirely\footnote{What may be possible, would be to pipeline calculations for selected points between convolutions, since each calculation only actually requires the new function values of its neighbors, not the entire set. However, given the effort required to compute a single convolution of \fors{t} on typical acquired \tdd{}, it is unlikely that any additional speedup will be realized using such a technique, computing with the GPGPUs commercially available today.} in parallel.
 
-Lines~\ref{algSCFtildef} and~\ref{algSCFtildea} both accumulate values in shared memory which will be accessed in parallel, on average $\bar{n}$ times, setting up race conditions and threatening the correctness of the algorithm. Because of the limited number of possible collisions, we will treat these two lines as a single critical section, protecting each pair with a shared mutex as we did for the paired union operations in Algorithm~\ref{parallelBuildNeighborhoods}. However, in contrast, these mutexes will have a limited scope, not being shared globally, but only shared within a local neighborhood.
+In the second and third lines of function \textit{serialConvolveFilter}, we encounter two more loops iterating over each point in $\bP$, and then each neighborhood $\bN_v$ associated with those points. We have seen this pattern before in Section~\ref{ch6sCELPssASACEL}; together, these two loops iterate over the non-deterministic membership of the family of sets of neighborhoods $\bN$, and indeed can be unrolled and computed in parallel by utilizing the total count of neighbors and the average size of all neighborhoods, barring any occurrences of loop-carried dependencies within the loop block.
+
+Figure~\ref{fig:sacfDataDependencies} illustrates the data dependencies inherent to each iteration of the pair of loops over the points $\bp_v$ in $\bP$, and then $\bp_i$ in $\bN_v$, as found in lines~\ref{scf1}~-~\ref{algSCFlastLine} of Algorithm~\ref{alg:serialConvolveFilter}.
+
+\begin{figure}[ht]
+	\includestandalone[width=1.0\textwidth]{figures/tikz/sacfDataDependencies}
+	{\caption[Data Dependencies in Serial Algorithm~\ref{alg:serialConvolveFilter}: Calculate Edge Lengths]{An illustration of the data dependencies found in Algorithm~\ref{alg:serialConvolveFilter}. Square nodes indicate a values stored in memory, oval nodes indicate operations. Single arrows indicate reading values, double arrows indicate writing values to memory. Drawn in teal color are static memory, and the values and operations which are independent and free of data dependencies. Drawn in sand color are mutable memory, the values stored there, and the operations which rely on them. These are independent, however may be modified during processing. Drawn in coral color, are volatile memory, the values stored there, which may be modified at anytime during a procedure, and the operations which rely on those volatile values.}\label{fig:sacfDataDependencies}}
+\end{figure}
+
+The first several operations exclusively require values stored in static memory, a fact which exposes an opportunity for exploiting the independence of these operations by computing them in parallel. As denoted by the teal colored lines and nodes, the current point $\bp_v$ is read from $\bP$ in static memory. Next, that point is referenced to read the corresponding neighborhood $\bN_v$ from $\bN$ in static memory. Then the points $\bp_i$ and $\bp_{\sipo}$ are determined, and combined with $\bp_v$ in order to reference the precomputed edge lengths $\bE_a$, $\bE_b$, and $\bE_c$, stored in $\bE$, also in static memory. The three edge lengths are then used in the operation to calculate $\alpha$, which is subsequently used to calculate $\beta$, then combined with $\gelm$ from static memory to calculate $A$ and $\check{\ell}$. Next, $\beta$ combines with $\gelm$ in an operation to calculate $\zeta$, which is then used with the edge lengths $\bE_b$ and $\bE_c$ in order to compute $\tilde{\ell}_j$ and $\tilde{\ell}_{\sjpo}$.
+
+Then, drawn in sand color to highlight the fact that the values stored in mutable memory may change between iterations, we see that the function value in $\bN_v$, of each point already in consideration, is read from mutable memory as the values $f_0$, $f_j$, and $f_{\sjpo}$. Next, $\tilde{\ell}_j$ and $\tilde{\ell}_{\sjpo}$ combine with $f_j$, and $f_{\sjpo}$ in two operations which separately calculate the values $f'_j$, and $f'_{\sjpo}$, which are then combined with $\check{\ell}$ and $f_0$ to eventually calculate $\check{f}$.
+
+Next, drawn in coral color to highlight the fact that the correctness of the values stored in volatile memory cannot be guaranteed without the protection of a guarding mechanism, the current values of $\tilde{f}_v$ and $\tilde{A}_v$ are read from volatile memory, so that $\tilde{f}_v$ may combine with $A$ and $\check{f}$ in order to accumulate the value of $\tilde{f}_v$, while $\tilde{A}_v$ combines with $A$ in order to accumulate the value of $\tilde{A}_v$. Once $\tilde{f}_v$ and $\tilde{A}_v$ have totally accumulated, and their threads have been synchronized, drawn in sand color, we see that $\tilde{f}_v$ and $\tilde{A}_v$ combine to finally calculate the value $f'_v$, which is stored in mutable memory to be utilized in subsequent computations.
+
+Having now considered the dependency graph in Figure~\ref{fig:sacfDataDependencies}, we shall continue analyzing, line by line, the Serial Algorithm~\ref{alg:serialConvolveFilter}, returning to the beginning of the loop block of the inner most nested loop.
+
+The Lines~\ref{algSCFalpha}~-~\ref{algSCFcheckf} only generate new terms which are unique to the current iteration, using only original values which are not changed by any other thread, therefore every operation in the block is a prime candidate for exploiting concurrency in the loop. Line~\ref{algSCFjloop} starts a new loop over just two values, and while it would be possible to compute both halves of the values the loop in parallel, at this point in the computation, we would expect all processors to already be in use calculating the other iterations, so dedicating the resources to spawn new threads here would likely net a loss in efficiency, so we will simply unroll the loop and compute the four new terms in serial, per thread.
+
+Lines~\ref{algSCFtildef}~and~\ref{algSCFtildeA} both accumulate values in shared memory which will be accessed in parallel, on average $\bar{n}$ times, setting up race conditions and threatening the correctness of the algorithm. Because of the limited number of possible collisions, we will treat these two lines as a single critical section, protecting each pair with a shared mutex as we did for the paired union operations in Algorithm~\ref{alg:parallelBuildNeighborhoods}. However, in contrast, these mutexes will have a limited scope, not being shared globally, but only shared within a local neighborhood.
 
 In line~\ref{algSCFfprimev}, the values $\tilde{f_v}$ and $\tilde{A_v}$, having been accumulated for each neighbor in $\bN_V$, are used to calculate the \wmfv{} for the entire geodesic disc $f'_v$, but before their values are read, all threads working on that neighborhood must be synchronized to ensure the correct values are used. As thread synchronization is quite expensive to computation time\todoReference{syncing is expensive}, it is imperative that only those threads working on the neighborhood are synchronized, and not all threads, as is necessary in most other parts of this algorithm, including between the next two lines.
 
-In lines~\ref{algSCF2ndlastline} and~\ref{algSCFlastline}, all the values of $f'_v$ from each neighborhood in $\bN$ are collected into the new set $\bF'$,  then either returned as the final result of the filter's convolutions, or used as the scalar field of function values in the next iteration of the filter. Saving the values to the new set may be done in parallel, because each value will remain unique in the set, however, before the new set may be used in either way all threads of execution must have time to synchronize in order to ensure that only the correct values are used.
-
-\begin{figure}[ht]
-	\includestandalone[width=0.8\textwidth]{figures/tikz/sacfDataDependencies}
-	{\caption[Data Dependencies in Serial Algorithm~\ref{alg:serialConvolvefilter}: Calculate Edge Lengths]{An Illustration of the data dependencies found in Algorithm~\ref{alg:serialConvolvefilter}. Operations with data dependencies are in coral color, independent operations are in teal color, and independent operations which reply on operations which have dependencies are in sand color.}\label{fig:sacfDataDependencies}}
-\end{figure}
+In lines~\ref{algSCF2ndlastLine}~and~\ref{algSCFlastLine}, all the values of $f'_v$ from each neighborhood in $\bN$ are collected into the new set $\bF'$, then either returned as the final result of the filter's convolutions, or used as the scalar field of function values in the next iteration of the filter. Storing the values in the new set may be done in parallel, because each value will remain unique in the set, however, before the new set may be used in either of those two ways, all threads of execution must have time to synchronize in order to ensure that all values have had time to populate the set, thus avoiding the use of incorrect values.
 
 Now that we have analyzed, the serial Algorithm~\ref{alg:serialConvolveFilter}, and discovered opportunities where exploiting the loop-level concurrency will benefit the efficiency of \fors{t}, let us not hesitate to create the parallel variant.
 
@@ -312,13 +340,17 @@ Now that we have analyzed, the serial Algorithm~\ref{alg:serialConvolveFilter}, 
 %
 \subsection{Parallel Variant of Convolve Filter}
 \label{ch6sCFPssPRCN}
-Algorith~\ref{alg:parallelConvolveFilter}, is split into three functions. The first function \textit{parallelConvolveFilter} requires several inputs which include: the number of available processors $\rho$, the set of all points $\bP$, the family of sets of neighborhoods $\bN$, the count of all neighbors in all neighborhoods $\hat{n}$, the set of pre-calculated edge lengths $\bE$, the global minimum edge length $\gelm$, the set of function values $\bF$, and the user-defined number of convolutions $\tau$.
+In this section, we apply the knowledge gained from the analysis of Algorithm~\ref{alg:serialConvolveFilter} conducted in Section~\ref{ch6sCFPssASACF}, in order to provide the pseudo code definitions with which one may implement a parallel variant of the function \textit{serialConvolveFilter}.
 
-In the first line, line~\ref{algPCFtauloop}, begins the loop iterating for the user-defined number of times $\tau$. Initially, the stride size $\sigma$ is calculated with the work load computed as one for each point defining a geodesic disc $\bO$, which is equal to the cardinality of points in the mesh $|\bP|$, plus one for each neighboring point in every neighborhood $\hat{n}$. Next, another loop is begun, which iterates over a portion of the available processors in the system, as we did in Algorithm~\ref{alg:parallelCalculateEdgeLengths}, reserving resources for the rest of the threads that must be spawned in order to compute in parallel, the \wmfv{} over an entire neighborhood $f'_v$. In each iteration of this loop, a new thread is spawned to execute the function \textit{safeAccumulateGeoDiscMean}, passing to it as parameters: a processor's index $\Pi$, the stride length $\sigma$, the new scalar field which is to be populated with calculated \wmfv{s} from each neighborhood $\bF'$, and the other general information defining and describing the mesh, $\bP$, $\bN$, $\bE$, $\gelm$, $\bF$. At the conclusion of the loop block, all threads are synchronized before either the new scalar field of \wmfv{s} $\bF'$ are used as the function values upon which the next convolution of the filter is based, or the convolutions end and $\bF'$ is returned as the final result.
+Algorithm~\ref{alg:parallelConvolveFilter} is split into three parts, the main function \textit{parallelConvolveFilter}, and two subroutines \textit{safeAccumulateGeoDiscMean} and \textit{safeAccumulateSectorMean}, in order to facilitate the delegation of portions of the total work load to separate threads of execution, while protecting critical sections, and avoiding data and control dependencies, so that the threads can be safely executed in parallel. The main function \textit{parallelConvolveFilter} requires several inputs, as did its serial counterpart, which include: the set of points $\bP$, the set of function values $\bF$, the user-defined number of convolutions to perform $\tau$, as well as the information generated in the previous three algorithms, the family of sets of neighborhoods $\bN$, the set of pre-calculated edge lengths $\bE$, and the global minimum edge length $\gelm$. In addition, it also requires the number of available processors $\rho$, and the count of all neighbors in all neighborhoods $\hat{n}$, specifically for this parallel variant of the algorithm.
 
-In line~\ref{algPCFsagdmCall}, the function \textit{safeAccumulateGeoDiscMean} is called for each processor, not reserved for sector-wise computations. That function begins by using its designated index $\Pi$, to compute the lower and upper boundaries, $\check{\sigma}$ and $\hat{\sigma}$, for the stride of the problem on which it should compute. Next, the function iterates over each point $\bp_v$ within its stride boundaries, creating a new set of mutexes $\bM$, containing one $\mu$ per neighbor in currently neighborhood $\bN_v$, before beginning another loop. This inner loop iterates over each neighbor $\bp_i$ in the neighborhood $\bN_v$, and spawns new threads to execute instances of the \textit{safeAccumulateSectorMean} subroutine. After the loop of $\bN_v$ finishes, the threads which were used to calculate the \wmfv{s} for each circle sector are synchronized, before their values are used in the calculation of $f'_v$, the \wmfv{} at point $\bp_v$. While $\bF'$ is a set shared among all the threads, the assignment of $f'_v$ does not require a mutex to guard against race conditions, because during any given convolution of the filter, only one single thread will ever compute and attempt to store the value of $f'_v$ at the location $\bF'_v$.
+In line~\ref{algPCFtauloop}, the first line of the function, the loop which iterates for the user-defined number of times $\tau$ begins. Initially, the stride $\sigma$ is calculated with the work load computed as one for each point defining a geodesic disc $\bO$, which is equal to the cardinality of points in the mesh $|\bP|$, plus one for each neighboring point in every neighborhood $\hat{n}$. Next, another loop is begun, which iterates over a portion of the available processors in the system, as we did in Algorithm~\ref{alg:parallelCalculateEdgeLengths}, reserving resources for the rest of the threads that must be spawned in order to compute in parallel, the \wmfv{} over an entire neighborhood $f'_v$. In each iteration of this loop, a new thread is spawned to execute i  parallel the subroutine \textit{safeAccumulateGeoDiscMean}. At the conclusion of the loop block, all threads are synchronized before either the new scalar field of \wmfv{s} $\bF'$ is used as the function values upon which the next convolution of the filter is based, or the convolutions end and $\bF'$ is returned as the final result.
 
-In line~\ref{algPCFsasmCall}, a new thread is spawned to execute an instance of the function \textit{safeAccumulateSectorMean} for each sector in the current neighborhood. In the first nine lines of \textit{safeAccumulateSectorMean} culminate in the computation of $\check{f}$, the \wmfv{}, for the current circle sector being processed. Because the goal is to accumulate these new values, as well as the area for each sector, in order to be used in the calculation of the weighted mean over the entire geodesic disc, we chose to guard the shared memory values $\tilde{f}_v$ and $\tilde{A}_v$ using mutexes, risking on average a small number of collisions, only $\bar{n}$ per neighborhood. An alternative solution, which we choose not to implement here because it would cost $2\cdot\hat{n}$ more floating point values worth of memory, is to save each intermediate value separately, then perform the averaging calculation on those values after having synchronized all the threads.
+The subroutine \textit{safeAccumulateGeoDiscMean}, whose definition begins in line~\ref{algPCFsagdmCall}, is called for each processor not reserved for sector-wise computations, being passing to it as parameters: a process index $\Pi$, the stride length $\sigma$, the new scalar field which is to be populated with calculated \wmfv{s} from each neighborhood $\bF'$, and the other general information defining and describing the mesh, $\bP$, $\bN$, $\bE$, $\gelm$, $\bF$. This subroutine begins by using its designated index $\Pi$, to compute the lower and upper boundaries, $\check{\sigma}$ and $\hat{\sigma}$, for the stride of the total problem size on which it should compute. Next, the subroutine iterates over each point $\bp_v$ within its stride boundaries, creating a new set of mutexes $\fM$, containing one $\mu$ per neighbor in currently neighborhood $\bN_v$, before beginning another loop. This nested loop iterates over each neighbor $\bp_i$ in the current neighborhood $\bN_v$, and spawns new threads to execute instances of the \textit{safeAccumulateSectorMean} subroutine. After the loop over each point in $\bN_v$ is complete, the threads which were used to calculate the \wmfv{s} for each circle sector are synchronized, before their values are used in the calculation of $f'_v$, the \wmfv{} at point $\bp_v$, which is collected in the set $\bF'$. While $\bF'$ is a set shared among all the threads, the assignment of $f'_v$ does not require the protection of a guarding mechanism against race conditions, because during any given convolution of the filter, only one single thread will ever compute and attempt to store the value of $f'_v$ at the location $\bF'_v$.
+
+In line~\ref{algPCFsasmCall}, a new thread is spawned to execute an instance of the function \textit{safeAccumulateSectorMean} for each sector in the current neighborhood. The first nine lines of \textit{safeAccumulateSectorMean} culminate in the computation of $\check{f}$, the \wmfv{}, for the current circle sector being processed. As seen in Figure~\ref{fig:sacfDataDependencies}, because each of these operations are free of data and control dependence, besides the dependence of the results of the other operations in this block, these nine instructions may all be computed in serial by individual threads, without requiring the expensive protection of a guarding mechanism.
+
+Furthermore, because the goal of this block is to accumulate these \wmfv{s} in line~\ref{pcf.tildefv}, as well as the area for each sector in line~\ref{pcf.tildeAv}, so that both may be used in the calculation of the weighted mean over the entire geodesic disc in line~\ref{pcf.Fprimev}, we chose to guard the shared memory values $\tilde{f}_v$ and $\tilde{A}_v$ using mutexes, risking on average a small number of collisions, only $\bar{n}$ per neighborhood. An alternative solution, which we choose not to implement here because it would cost $2\cdot\hat{n}$ more floating point values worth of memory, is to save each intermediate value separately, then perform the averaging calculation on those values after having synchronized all the threads.
 
 \begin{algorithm}[ht]
 	\algotitle{Parallel Algorithm for Convolving the Filter}{paCF.title}
@@ -326,13 +358,13 @@ In line~\ref{algPCFsasmCall}, a new thread is spawned to execute an instance of 
 	\SetCommentSty{small}
 	\SetKwFor{For}{for}{:}{}
 	\SetKwProg{Func}{Function}{}{}
+	\SetKwProg{Sub}{Subroutine}{}{}
 	\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
 
 	\Input{the number of available processors $\rho$, \\
 		the set of all points $\bP$, \\
 		the family of sets of neighborhoods $\bN$, \\
 		the count of all neighbors in all neighborhoods $\hat{n}$, \\
-		the average size of every neighborhood in $\bar{n}$, \\
 		the set of pre-calculated edge lengths $\bE$, \\
 		the global minimum edge length $\gelm$, \\
 		the set of function values $\bF$, \\
@@ -341,22 +373,21 @@ In line~\ref{algPCFsasmCall}, a new thread is spawned to execute an instance of 
 
 	\bigskip
 	\linespread{1}\selectfont
-\nl	\Func{parallelConvolveFilter($\rho$, $\bP$, $\bN$, $\hat{n}$, $\bar{n}$, $\bE$, $\gelm$, $\bF$, $\tau$)}{
+\nl	\Func{parallelConvolveFilter($\rho$, $\bP$, $\bN$, $\hat{n}$, $\bE$, $\gelm$, $\bF$, $\tau$)}{
 \nl		\For{$t\leftarrow 1\;\KwTo\;\tau$}{\label{algPCFtauloop}
 \nl			$\sigma \leftarrow (|\bP|+\hat{n})\mathbin{/}\rho$\;
+\nl			$\bar{n} \leftarrow \tilde{n}\mathbin{/}|\bP|$\;
 \nl			\For{$\Pi \in \{1,\ldots,\left \lceil\rho/\bar{n}\right\rceil\}$}{
 \nl				\ProgSty{$\sim$safeAccumulatesGeoDiscMean($\Pi$, $\sigma$, $\bP$, $\bN$, $\bE$, $\gelm$, $\bF$, $\bF'$)}\;\label{algPCFsagdmCall}
 			}
 \nl			\ProgSty{synchronizeThreads()}\;
-			\medskip
-
 \nl 		\If(\tcc*[f]{smooth newest values every convolution}){$t < \tau$}{$\bF \leftarrow \bF'$}
 		}
 \nl 	\KwRet $\bF'$\;
 	}
 
 	\bigskip
-\nl	\Func{safeAccumulatesGeoDiscMean($\Pi$, $\sigma$, $\bP$, $\bN$, $\bE$, $\gelm$, $\bF$, $\bF'$)}{
+\nl	\Sub{safeAccumulatesGeoDiscMean($\Pi$, $\sigma$, $\bP$, $\bN$, $\bE$, $\gelm$, $\bF$, $\bF'$)}{
 \nl		$\check{\sigma} \leftarrow (\Pi-1)\,\sigma+1$\;
 \nl		$\hat{\sigma} \leftarrow \Pi\,\sigma$\;
 \nl		\For{$\bp_v \in \{\bp_{\check{\sigma}},\ldots,\,\bp_{\hat{\sigma}}\}$}{
@@ -366,14 +397,12 @@ In line~\ref{algPCFsasmCall}, a new thread is spawned to execute an instance of 
 \nl				\ProgSty{$\sim$safeAccumulateSectorMean($\fM$, $\bE$, $\gelm$, $\bp_v$, $\bp_i$, $\bF$, $\tilde{f}_v$, $\tilde{A}_v$)}\;\label{algPCFsasmCall}
 			}
 \nl			\ProgSty{synchronizeThreads(\{$\check{\sigma}$, \ldots, $\hat{\sigma}$\})}\;
-
-			\medskip
-\nl			$\bF'_v \leftarrow \tilde{f}_v\mathbin{/}\tilde{A}_v$\tcc*[r]{as $f'_v$, Eq:~\ref{eq:meanFuncValAtPv}}
+\nl			$\bF'_v \leftarrow \tilde{f}_v\mathbin{/}\tilde{A}_v$\tcc*[r]{as $f'_v$, Eq:~\ref{eq:meanFuncValAtPv}}\label{pcf.Fprimev}
 		}
 	}
 
 	\bigskip
-\nl	\Func{safeAccumulateSectorMean($\fM$, $\bE$, $\gelm$, $\bp_v$, $\bp_i$, $\bF$, $\tilde{f}_v$, $\tilde{A}_v$)}{
+\nl	\Sub{safeAccumulateSectorMean($\fM$, $\bE$, $\gelm$, $\bp_v$, $\bp_i$, $\bF$, $\tilde{f}_v$, $\tilde{A}_v$)}{
 		\linespread{1.5}\selectfont
 \nl		$\kern-0.5pt\alpha \leftarrow cos^{-1}$
 		\begin{Large}
@@ -391,8 +420,8 @@ In line~\ref{algPCFsasmCall}, a new thread is spawned to execute an instance of 
 \nl		$\check{f} \leftarrow f_0\cdot(1 - \check{\ell}) + \big((f'_1 + f'_2)\cdot\check{\ell}\big)\mathbin{/}2$\tcc*[r]{Eq:~\ref{eq:weightedMeanAtCoGatSector}}
 		\linespread{1.0}\selectfont
 \nl		$\ProcSty{lock}(\mu)$\;
-\nl		$\kern2.0pt\tilde{f}_v \leftarrow \tilde{f}_v + A\cdot\check{f}$\tcc*[r]{Eq:~\ref{eq:meanFuncValAtPv}}
-\nl		$\kern0.0pt\tilde{A}_v \leftarrow \tilde{A}_v + A$\tcc*[r]{Eq:~\ref{eq:meanFuncValAtPv}}
+\nl		$\kern2.0pt\tilde{f}_v \leftarrow \tilde{f}_v + A\cdot\check{f}$\tcc*[r]{Eq:~\ref{eq:meanFuncValAtPv}}\label{pcf.tildefv}
+\nl		$\kern0.0pt\tilde{A}_v \leftarrow \tilde{A}_v + A$\tcc*[r]{Eq:~\ref{eq:meanFuncValAtPv}}\label{pcf.tildeAv}
 \nl		$\ProcSty{lock}(\mu)$\;
 	}
 
@@ -409,4 +438,5 @@ The final result is that the \wmfv{s} $\tilde{f'}_v$ and areas $\tilde{A}_v$ of 
 %
 %
 \section{Summary}
-\ldots
+In this chapter, we explored the serial version of this as-yet-unpublished algorithm, in order to negotiate any instances of control or data dependency, and were able to discover several manifestations of independent procedures worthy of exploiting with parallel processing, which when implemented on a system capable of parallel computation, significantly improves the performance of \Fors{t}. The parallel algorithm presented in this chapter has three main parts, each split further into subroutines, to facilitate the simultaneous execution of blocks of instructions by threads in parallel. This algorithm was developed by first by analyzing the corresponding serial algorithm through the lens of parallel programing, defining the strategy behind the design of the parallel variant with the aid of data dependency diagrams, then finally providing the pseudo code definitions to implement each part of the algorithm.
+
