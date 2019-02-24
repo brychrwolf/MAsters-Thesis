@@ -1,46 +1,56 @@
 \documentclass{standalone}
 \usepackage{amsmath}
 \usepackage{tikz}
-\usetikzlibrary{arrows.meta}
+\usetikzlibrary{shapes,arrows.meta}
 \input{../../myCommands.tex}
 
 \begin{document}
 \tikzset{%
 	>={Latex[width=2mm,length=2mm]},
-	baseNode/.style = {rectangle, rounded corners,
+	base/.style = {
 		draw=black, fill=white, thick,
-		minimum width=1cm, minimum height=1cm,
 		text centered, font=\sffamily, inner sep=.2cm},
-	baseLine/.style = {thick},%double},
+	%Variable
+	baseVar/.style = {base, rectangle, rounded corners,
+		minimum width=1cm, minimum height=1cm},
+	%Operations
+	baseOp/.style = {base, ellipse,
+		minimum width=1cm, minimum height=1cm},
+	%Lines
+	baseLine/.style = {thick},
+	%Colors
 	tealStyle/.style = {draw=MyTeal, fill=MyLtTeal},
 	coralStyle/.style = {draw=MyCoral, fill=MyLtCoral},
 	sandStyle/.style = {draw=MySand, fill=MyLtSand},
 	%
 	commentNode/.style = {text=darkgray, fill=white},
-	indNode/.style = {baseNode, tealStyle},
+	indVar/.style = {baseVar, tealStyle},
+	indOp/.style = {baseOp, tealStyle},
 	indLine/.style = {baseLine, draw=MyTeal},
-	depNode/.style = {baseNode, coralStyle},
+	depVar/.style = {baseVar, coralStyle},
+	depOp/.style = {baseOp, coralStyle},
 	depLine/.style = {baseLine, draw=MyCoral},
-	mutNode/.style = {baseNode, sandStyle},
+	mutVar/.style = {baseVar, sandStyle},
+	mutOp/.style = {baseOp, sandStyle},
 	mutLine/.style = {baseLine, draw=MySand},
 }
 \begin{tikzpicture}[node distance=0cm]
 	\coordinate (center1) at (0cm,0cm);
-	\node (sm) [indNode, xshift=-2.25cm] {$\bT$ in static memory};
-	\node (vm) [depNode, anchor=west, xshift= 1.25cm] {$\bN$ in volatile memory};
+	\node (sm) [indVar, xshift=-2.25cm] {$\bT$ in static memory};
+	\node (vm) [depVar, anchor=west, xshift= 1.25cm] {$\bN$ in volatile memory};
 
 	\coordinate (center2) at (0cm,-2cm);
 	\node (bt) [commentNode, left of=center2, xshift=-4.25cm, yshift=.80cm] {/* $\bt = \{$};
-	\node (pc) [indNode, left of=center2, xshift=-3.50cm] {$\bp_c$};
-	\node (pb) [indNode, left of=center2, xshift=-2.25cm] {$\bp_b$};
-	\node (pa) [indNode, left of=center2, xshift=-1.00cm] {$\bp_a$};
 	\node (bt) [commentNode, left of=center2, xshift=-0.5cm, yshift=.80cm] {$\}$ */};
+	\node (pc) [indVar, left of=center2, xshift=-3.50cm] {$\bp_c$};
+	\node (pb) [indVar, left of=center2, xshift=-2.25cm] {$\bp_b$};
+	\node (pa) [indVar, left of=center2, xshift=-1.00cm] {$\bp_a$};
 
-	\node (Na) [depNode, right of=center2, xshift=2.00cm, yshift=-.5cm] {$\bN_a$};
+	\node (Na) [depVar, right of=center2, xshift=2.00cm, yshift=-.5cm] {$\bN_a$};
 
-	\node (union1) at (0cm,-4cm) [depNode] {$\bN_a \cup \{\bp_b\}$};
+	\node (union1) at (0cm,-4cm) [depOp] {$\bN_a \cup \{\bp_b\}$};
 
-	\node (union2) at (0cm,-5.5cm) [depNode] {$\bN_a \cup \{\bp_c\}$};
+	\node (union2) at (0cm,-5.5cm) [depOp] {$\bN_a \cup \{\bp_c\}$};
 
 
 
@@ -50,12 +60,12 @@
 	\draw[->, depLine] (vm.220) -- (Na);
 	\draw[->, indLine] (pa.east) -- (Na.west);
 
-	\draw[->, indLine] (pb.south) .. controls (-1.75cm,-3.5cm) .. (union1.west);
-	\draw[->, depLine] (Na) .. controls (1.75cm,-3.5cm) .. (union1.east);
+	\draw[->, indLine] (pb.south) .. controls (-1.875cm,-3.5cm) .. (union1.west);
+	\draw[->, depLine] (Na.257) .. controls (1.875cm,-3.5cm) .. (union1.east);
 
-	\draw[->, indLine] (pc.south) .. controls (-2cm,-5cm) .. (union2.west);
+	\draw[->, indLine] (pc.south) .. controls (-2.125cm,-5cm) .. (union2.west);
 	\draw[->, depLine] (union1) -- (union2);
-	\draw[->, depLine, double] (union2.east) .. controls (2cm,-5cm) .. (Na.285);
-	\draw[->, depLine, double] (Na.east) .. controls (3.25cm,-2cm) .. (vm.300);
+	\draw[->, depLine, double] (union2.5) .. controls (2.125cm,-5cm) .. (Na.285);
+	\draw[->, depLine, double] (Na.east) .. controls (3.325cm,-2cm) .. (vm.300);
 \end{tikzpicture}
 \end{document}

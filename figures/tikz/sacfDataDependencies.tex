@@ -1,48 +1,80 @@
 \documentclass{standalone}
 \usepackage{amsmath}
 \usepackage{tikz}
-\usetikzlibrary{arrows.meta}
+\usetikzlibrary{shapes,arrows.meta}
 \input{../../myCommands.tex}
 
 \begin{document}
 \tikzset{%
 	>={Latex[width=2mm,length=2mm]},
-	baseNode/.style = {rectangle, rounded corners,
+	base/.style = {
 		draw=black, fill=white, thick,
-		minimum width=1cm, minimum height=1cm,
 		text centered, font=\sffamily, inner sep=.2cm},
-	baseLine/.style = {thick},%double},
+	%Variable
+	baseVar/.style = {base, rectangle, rounded corners,
+		minimum width=1cm, minimum height=1cm},
+	%Operations
+	baseOp/.style = {base, ellipse,
+		minimum width=1cm, minimum height=1cm},
+	%Lines
+	baseLine/.style = {thick},
+	%Colors
 	tealStyle/.style = {draw=MyTeal, fill=MyLtTeal},
 	coralStyle/.style = {draw=MyCoral, fill=MyLtCoral},
 	sandStyle/.style = {draw=MySand, fill=MyLtSand},
 	%
 	commentNode/.style = {text=darkgray, fill=white},
-	indNode/.style = {baseNode, tealStyle},
+	indVar/.style = {baseVar, tealStyle},
+	indOp/.style = {baseOp, tealStyle},
 	indLine/.style = {baseLine, draw=MyTeal},
-	depNode/.style = {baseNode, coralStyle},
+	depVar/.style = {baseVar, coralStyle},
+	depOp/.style = {baseOp, coralStyle},
 	depLine/.style = {baseLine, draw=MyCoral},
-	mutNode/.style = {baseNode, sandStyle},
+	mutVar/.style = {baseVar, sandStyle},
+	mutOp/.style = {baseOp, sandStyle},
 	mutLine/.style = {baseLine, draw=MySand},
 }
 \begin{tikzpicture}[node distance=0cm]
 	\coordinate (center1) at (0cm,0cm);
-	\node (sm) [indNode, xshift=-4.5cm] {$\bP$ and $\bN$ in static memory};
-	\node (mm) [mutNode, xshift= 0.2cm] {$\bE$ in mutable memory};
-	\node (vm) [depNode, xshift= 4.5cm] {$\gelm$ in volatile memory};
-
+		\node (sm)		[indVar, xshift=-5.5cm] {$\bP$, $\bN$, $\bE$ and $\gelm$ in static memory};
+		\node (mm)		[mutVar, xshift= 0cm] {$\bF$ and $\bF'$ in mutable memory};
+		\node (vm)		[depVar, xshift= 5.0cm] {$\tilde{f}_v$ and $\tilde{A}_v$ in volatile memory};
 	\coordinate (center2) at (0cm,-1.5cm);
-	\node (pv) [indNode, left of=center2, xshift=-5.50cm] {$\bp_v$};
-	\node (Evi) [mutNode, left of=center2, xshift=0.2cm] {$\bE_{\sv{i}}$};
-
-	\coordinate (center3) at (0cm,-3cm);
-	\node (Nv) [indNode, left of=center3, xshift=-3.5cm] {$\bN_v$};
-	\node (min) [depNode, right of=center3, xshift=2.5cm, yshift=-.5cm] {$\min\left \{\gelm,\,\bE_{\sv{i}}\right \}$};
-
-	\coordinate (center4) at (0cm,-4.5cm);
-	\node (pi) [indNode, left of=center4, xshift=-3.5cm] {$\bp_i$};
-
-	\coordinate (center5) at (0cm,-6cm);
-	\node (ls) [indNode, left of=center5, xshift=-4.5cm] {$\ellstar$};
+		\node (pv)		[indVar, left of=center2, xshift=-6.5cm] {$\bp_v$};
+	\coordinate (center3) at (0cm,-2.25cm);
+		\node (Nv)		[indVar, left of=center3, xshift=-3.5cm] {$\bN_v$};
+	\coordinate (center4) at (0cm,-3cm);
+		\node (pi) 		[indVar, left of=center4, xshift=-5.0cm] {$\bp_i$};
+	\coordinate (center5) at (0cm,-3.75cm);
+		\node (pip1) 	[indVar, left of=center5, xshift=-3.5cm] {$\bp_{\sipo}$};
+	\coordinate (center6) at (0cm,-4.5cm);
+	\coordinate (center7) at (0cm,-5.25cm);
+		\node (Ea)		[indVar, left of=center7, xshift=-7.5cm] {$\bE_a$};
+		\node (Eb)		[indVar, left of=center7, xshift=-5.5cm] {$\bE_b$};
+		\node (Ec)		[indVar, left of=center7, xshift=-3.5cm] {$\bE_c$};
+	\coordinate (center8) at (0cm,-6cm);
+	\coordinate (center9) at (0cm,-6.75cm);
+		\node (alpha)	[indOp, inner sep=.025cm, left of=center9, xshift=-5.50cm] {$\alpha \leftarrow cos^{\kern-2pt-1}$\enspace\begin{Large}$\kern-6pt\left (\frac{\bE_c^2\,+\,\bE_b^2\,-\,\bE_a^2}{2\,\cdot\,\bE_c\,\cdot\,\bE_b}\right )$\end{Large}};
+	\coordinate (center10) at (0cm,-7.5cm);
+	\coordinate (center11) at (0cm,-8.25cm);
+		\node (beta)	[indOp, left of=center11, xshift=-5.50cm] {$\beta \leftarrow (\pi - \alpha)\mathbin{/}2$};
+	\coordinate (center12) at (0cm,-9cm);
+		\node (A)		[indOp, left of=center12, xshift=-5.50cm] {$A \leftarrow \Big(\gelm\,\Big)^2\kern-4pt\cdot\alpha\mathbin{/}2$};
+		\node (lcheck)	[indOp, left of=center12, xshift=-5.50cm] {$\check{\ell} \leftarrow \big(4\cdot\gelm\cdot\sin(\alpha\mathbin{/}2)\big)\mathbin{/}3\,\alpha$};
+		\node (zeta)	[indOp, left of=center12, xshift=-5.50cm] {$\zeta \leftarrow \gelm\mathbin{/}\sin(\beta)$};
+	\coordinate (center14) at (0cm,-10.5cm);
+		\node (ltildej1)[indOp, left of=center14, xshift=-5.50cm] {$\tilde{\ell}_j \leftarrow \zeta\mathbin{/}\bE_{\sjpo}$};
+		\node (ltildej2)[indOp, left of=center14, xshift=-5.50cm] {$\tilde{\ell}_{\sjpo} \leftarrow \zeta\mathbin{/}\bE_{\sjpo}$};
+		\node (f0)		[mutVar, left of=center14, xshift=-5.50cm] {$f_0$};
+		\node (fj1)		[mutVar, left of=center14, xshift=-5.50cm] {$f_j$};
+		\node (fj2)		[mutVar, left of=center14, xshift=-5.50cm] {$f_{\sjpo}$};
+	\coordinate (center16) at (0cm,-12cm);
+		\node (fprimej1)[indOp, left of=center16, xshift=-5.50cm] {$f'_j \leftarrow f_0\cdot(1 - \tilde{\ell}_j) + f_j\cdot\tilde{\ell}_j$};
+		\node (fprimej2)[indOp, left of=center16, xshift=-5.50cm] {$f'_{\sjpo} \leftarrow f_0\cdot(1 - \tilde{\ell}_{\sjpo}) + f_{\sjpo}\cdot\tilde{\ell}_{\sjpo}$};
+	\coordinate (center18) at (0cm,-13.5cm);
+		\node (fcheck)	[indOp, left of=center18, xshift=-5.50cm] {$\check{f} \leftarrow f_0\cdot(1 - \check{\ell}) + \big((f'_1 + f'_2)\cdot\check{\ell}\big)\mathbin{/}2$};
+		\node (acftilde)[depOp, left of=center18, xshift=-5.50cm] {$\tilde{f}_v + A\cdot\check{f}$};
+		\node (acAtilde)[depOp, left of=center18, xshift=-5.50cm] {$\tilde{A}_v + A$};
 
 
 
@@ -50,14 +82,28 @@
 	\draw[->, indLine] (pv) -- (Nv);
 	\draw[->, indLine] (sm) -- (Nv);
 	\draw[->, indLine] (Nv) -- (pi);
-	\draw[->, indLine] (pv) -- (ls);
-	\draw[->, indLine] (pi) -- (ls);
+	\draw[->, indLine] (pi) -- (pip1);
+	\draw[->, indLine] (Nv) -- (pip1);
 
-	\draw[->, mutLine, double] (ls.east) .. controls (0cm,-6cm) and (0cm,-3.5cm).. (Evi);
-	\draw[->, mutLine, double] (Evi) -- (mm);
-	\draw[->, mutLine] (Evi) -- (min);
+	\draw[->, indLine] (sm.195) .. controls (-8cm,-2.25cm) .. (Ea);
+	\draw[->, indLine] (sm.195) .. controls (-8cm,-2.25cm) .. (Eb);
+	\draw[->, indLine] (sm.195) .. controls (-8cm,-2.25cm) .. (Ec);
+	\draw[->, indLine] (pv) .. controls (-6.5cm,-3cm) .. (Eb);
+	\draw[->, indLine] (pv) .. controls (-6.5cm,-3cm) .. (Ec);
+	\draw[->, indLine] (pi) -- (Ea);
+	\draw[->, indLine] (pi) -- (Eb);
+	\draw[->, indLine] (pip1) -- (Ea);
+	\draw[->, indLine] (pip1) -- (Ec);
 
-	\draw[->, depLine] (vm) -- (min);
-	\draw[->, depLine, double] (min.east) .. controls (4.5cm,-3.5cm) and (5cm,-2cm).. (vm.315);
+	\draw[->, indLine] (Ea) -- (alpha);
+	\draw[->, indLine] (Eb) -- (alpha);
+	\draw[->, indLine] (Ec) -- (alpha);
+
+	%\draw[->, mutLine, double] (ls.east) .. controls (0cm,-6cm) and (0cm,-3.5cm).. (Evi);
+	%\draw[->, mutLine, double] (Evi) -- (mm);
+	%\draw[->, mutLine] (Evi) -- (min);
+
+	%\draw[->, depLine] (vm) -- (min);
+	%\draw[->, depLine, double] (min.east) .. controls (4.5cm,-3.5cm) and (5cm,-2cm).. (vm.315);
 \end{tikzpicture}
 \end{document}
