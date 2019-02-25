@@ -53,7 +53,7 @@ There exists some sets which are used in mathematical literature with such frequ
 %
 \subsubsection{Cardinality}
 \label{ch2sETBssSTsssC}
-Many times throughout this thesis, we will reference the cardinality of set, which simply means the total count of its membership, and is denoted by two enclosing bars. For example, if $\bM$ is defined as the set $\left \{\,\bP,\,\bT\right \}$, then $|\bM\,| $, read the cardinality of $\bM$, equals two. Cardinality is a very important metric\footnote{Closely related to cardinality, is the concept of a census, which as used in this thesis, is devoid of any special symbol, but is defined as the total count of all members, of every member, of a multidimensional set or family of sets. An algorithm for computing a census is even presented in Section~\ref{ch6sBNPssPRCN}.} for the research conducted for this thesis, for example, in reasoning about the number of faces in a mesh, or discussing the count of points in a neighborhood. 
+Many times throughout this thesis, we will reference the cardinality of set, which simply means the total count of its membership, and is denoted by two enclosing bars. For example, if $\bM$ is defined as the set $\left \{\,\bP,\,\bT\right \}$, then $|\bM\,| $, read the cardinality of $\bM$, equals two. Cardinality is a very important metric\footnote{Closely related to cardinality, is the concept of a census, which as used in this thesis, is devoid of any special symbol, but is defined as the total count of all members, of every member, of a multidimensional set or family of sets. An algorithm for computing a census is even presented in Section~\ref{ch6sBNPssPRCN}.} for the research conducted for this thesis, for example, in reasoning about the number of faces in a mesh, or discussing the count of points in a neighborhood.
 
 %
 %
@@ -123,7 +123,7 @@ Figure~\ref{fig:definePositionVector} provides three examples of why a point may
 %
 \subsubsection{Subtracting Two Vectors}
 \label{ch2sETBssLAsssS2V}
-Among the various binary operators with which one could operate on vectors, this thesis is primarily concerned with subtraction, because it will be used to not only calculate the distance between each pair of adjacent points in the mesh, but also in order to interpolate and extrapolate the function values during the calculations of the \wmfv{s} described in detail in Sections~\ref{ch4sIE}~and~\ref{ch4sWM}. 
+Among the various binary operators with which one could operate on vectors, this thesis is primarily concerned with subtraction, because it will be used to not only calculate the distance between each pair of adjacent points in the mesh, but also in order to interpolate and extrapolate the function values during the calculations of the \wmfv{s} described in detail in Sections~\ref{ch4sIE}~and~\ref{ch4sWM}.
 
 In order to use the subtraction operator on two vectors in the same Euclidean space, one must simply subtract each component element-wise.~\cite{Weisstein19j} For example, given two points in $\bR{3}$, $A$ and $B$, the difference is calculated as
 %
@@ -222,7 +222,7 @@ The line which bisects the central angle of a circle sector, while not used expl
 %
 \subsubsection{Interpolation \& Extrapolation}
 \label{ch2sETBssGsssIE}
-Simply stated, interpolation is a method of constructing new data points within the range of a discrete set of known data points, such as those points found in the discrete manifolds of in \tdd{}. There exist a large variety of methods for interpolating different kinds of data\todoCitation{different kinds of interpolation}, but in this thesis, we will only consider linear interpolation, which is simple to calculate\footnote{however can become imprecise in relation to the square of the distance between the data points.}\todoCitation{footnote:error of linear interpolation} and can be extended for n-dimensions\todoCitation{n-dimensional linear interpolation}. 
+Simply stated, interpolation is a method of constructing new data points within the range of a discrete set of known data points, such as those points found in the discrete manifolds of in \tdd{}. There exist a large variety of methods for interpolating different kinds of data\todoCitation{different kinds of interpolation}, but in this thesis, we will only consider linear interpolation, which is simple to calculate\footnote{however can become imprecise in relation to the square of the distance between the data points.}\todoCitation{footnote:error of linear interpolation} and can be extended for n-dimensions\todoCitation{n-dimensional linear interpolation}.
 
 Given the two data points in $\bR{2}$, $(x_a, y_a)$ and $(x_b, y_b)$, the $y_c$ coordinate of a third point located along a straight line drawn between the first two points, while also having the coordinate $x_c$, can be calculated as
 %
@@ -241,7 +241,7 @@ To elaborate the concept of interpolation, now consider the two points $(1, 2)$ 
 %
 We therefore interpolate the value halfway between the two given points to be $(3,\,1.5)$, which is halfway between as expected, as illustrated in Figure~\ref{fig:interpolation}.
 
-Conversely, extrapolation is a method for constructing new data points \textit{outside} the range of a discrete set of known data points. The process of linear extrapolation is equivalent\footnote{The difference between interpolation and extrapolation is largely an academic one, owing primarily to the lack of boundaries and increasing error rates associated with extrapolation.} to linear interpolation; namely, first calculating the line between two points, then the $y$ coordinate of a third point at a new value of $x$, either greater than or less than both of the first two points. 
+Conversely, extrapolation is a method for constructing new data points \textit{outside} the range of a discrete set of known data points. The process of linear extrapolation is equivalent\footnote{The difference between interpolation and extrapolation is largely an academic one, owing primarily to the lack of boundaries and increasing error rates associated with extrapolation.} to linear interpolation; namely, first calculating the line between two points, then the $y$ coordinate of a third point at a new value of $x$, either greater than or less than both of the first two points.
 
 As illustrated by Figure~\ref{fig:interpolation}, the similarities and differences between the processes of interpolation and extrapolation, become even more intuitive when seen graphically, where having chosen the two points $\bp_a$ and $\bp_b$, a third point $\bp_c$ is interpolated between the two points, while the fourth point $\bp_d$ is extrapolated outside their domain.
 
@@ -259,7 +259,7 @@ Later in this thesis, we will use both interpolation and extrapolation together,
 %
 \subsection{Topology}
 \label{ch2sETBssT}
-Topology is the mathematical study of the properties of space that are preserved through deformations, twistings, and stretchings of objects\footnote{but not tearing or gluing}, which developed as a field of study from geometry and set theory through analysis of concepts such as space, dimension, and transformation. For example, a circle is topologically equivalent to an ellipse, because it can be deformed by stretching.~\cite{Weisstein19c} 
+Topology is the mathematical study of the properties of space that are preserved through deformations, twistings, and stretchings of objects\footnote{but not tearing or gluing}, which developed as a field of study from geometry and set theory through analysis of concepts such as space, dimension, and transformation. For example, a circle is topologically equivalent to an ellipse, because it can be deformed by stretching.~\cite{Weisstein19c}
 
 Of all the major concepts studied in topology, this thesis is only concerned manifolds, as \tdd{} is composed primarily of two-dimensional discrete manifolds embedded in three-dimensional space, as well as neighborhoods, the general concept from which one-ring neighborhoods are derived, thus the basis upon which \fors{t} is founded.
 
@@ -331,7 +331,7 @@ Faces are the another primitive element of \tdd{}. As we are working exclusively
 
 With the introduction of faces comes the concept of adjacency. A face $\bt_i$ is said to be adjacent to another face $\bt_j$ if, and only if, they share together the same subset of two points. Similarly, a point $\bp_a$ is said to be adjacent to another point $\bp_b$ if, and only if, the set $\{\bp_a, \bp_b\}$ is a subset of at least one face $\bt \in \bT$. A synonym for adjacent is ``neighboring'', and this thesis will use both interchangeably. \todoReword{add equation for these identities}\todoReword{index entry for adjacent}
 
-Figure~\ref{fig:triangularFaces} shows two adjacent triangular faces $\bt_1$ and $\bt_2$, and the relationship between their points $\bp_a$, $\bp_b$, and $\bp_c$, their edge lengths $\ell_a$, $\ell_b$, and $\ell_c$, and their clockwise orientation. Because the concept illustrated in this figure is fundamental to understanding the structure of all \tdd{}, therefore also \Fors{t{, and yet may not be immediately intuitive without proper context, we reference this figure several times throughout the rest of this thesis.
+Figure~\ref{fig:triangularFaces} shows two adjacent triangular faces $\bt_1$ and $\bt_2$, and the relationship between their points $\bp_a$, $\bp_b$, and $\bp_c$, their edge lengths $\ell_a$, $\ell_b$, and $\ell_c$, and their clockwise orientation. Because the concept illustrated in this figure is fundamental to understanding the structure of all \tdd{}, therefore also \Fors{t}, and yet may not be immediately intuitive without proper context, we reference this figure several times throughout the rest of this thesis.
 
 \begin{figure}[ht]
 \ffigbox
@@ -411,7 +411,7 @@ Many 3D-scanners produce point clouds\todoCitation{3D-scanners produce point clo
 %
 \subsection{One-Ring Neighborhoods}
 \label{ch2s3ssORN}
-It was mentioned in Section~\ref{ch2sBssT}, that it is a non-trivial task t determine the neighborhood of a point $\bp_v$, which exists in an irregular triangle mesh embedded in three-dimensions. Having now examined the definitions of points, faces, and meshes, we can now formalize the one-ring neighborhood in \tdd{} as
+It was mentioned in Section~\ref{ch2sETBssTsssN}, that it is a non-trivial task to determine the neighborhood of a point $\bp_v$, which exists in an irregular triangle mesh embedded in three-dimensions. Having now examined the definitions of points, faces, and meshes, we can now formalize the one-ring neighborhood in \tdd{} as
 %
 \begin{equation}
 	\bN_v := \left \{\;\bp_i\;:\;\left \{\,\bp_i,\,\bp_v\right \} \subseteq \bt \quad \forall \bt \in \bT\;\right \}
@@ -422,24 +422,22 @@ It was mentioned in Section~\ref{ch2sBssT}, that it is a non-trivial task t dete
 %
 which in words, means that the neighborhood $\bN_v$ is defined as the set of points $\bp_i$ such that both $\bp_i$ and $\bp_v$ are two points of a triangular face $\bt$, for all faces in the mesh. Therefore, the adjacency of points is defined by the co-membership within a face $\bt$, from the set of faces $\bT$.
 
-When taken together, all the neighborhoods $\bN_v$ comprise a set of sets of neighbors; the family of sets  
+When taken together, all the neighborhoods $\bN_v$ comprise a set of sets of neighbors; the family of sets
 %
 \begin{equation}
-	\bN := \left \{\bN_v,\,\bN_{v+1},\ldts,\,\bN_{v_max}\right \}
+	\bN := \left \{\bN_v,\,\bN_{v+1},\ldots,\,\bN_{v_max}\right \}
 	\label{eq:defineNeighborhood}
 \end{equation}%
 \nomenclature[hc]{$\bN$}{a family of sets of neighbors, the set of neighborhoods}%
-This definition shares the indices $v$ and $v_{max}$ with the definition for a set of points, Equation~\ref{eq:defineSetOfPoints}, to highlight the fact that neighborhoods are defined per point, therefore there must be a correlation in the cardinality between the two sets. 
+This definition shares the indices $v$ and $v_{max}$ with the definition for a set of points, Equation~\ref{eq:defineSetOfPoints}, to highlight the fact that neighborhoods are defined per point, therefore there must be a correlation in the cardinality between the two sets.
 
 Conversely, the cardinality of each individual neighborhood $|\bN_v|$ will likely vary among other neighborhoods in $\bN$, however, the value must always be $\geq 2$, and though there is no upper limit, $|\bN_v|$ is typically $\leq 12$. Furthermore, the neighboring points are always indexed in a clockwise direction for the same reasons as discussed in Section~\ref{ch2s3ssF}.
 \todoResearch{get real upper limit for n}.%
 
-As illustrated in Figure~\ref{fig:neighborhoods}, the set of black points are the neighbors $\bp_i$ which belong to $\bN_v$, what is known as a one-ring neighborhood of $\bp_v$, because they are directly connected with the center point $\bp_v$ drawn in coral color. The moniker originates from graph theory where each adjacent point is said to have a relative distance of 1 within the graph of the mesh. \todoBackground{add a subsection on graph theory in basic theory section}
+As illustrated in Figure~\ref{fig:neighborhoods}, the set of black points are the neighbors $\bp_i$ which belong to $\bN_v$, what is known as a one-ring neighborhood\footnotemark of $\bp_v$, because they are directly connected with the center point $\bp_v$ drawn in coral color. The moniker originates from graph theory where each adjacent point is said to have a relative distance of 1 within the graph of the mesh. \footnotetext{The one-ring can be extended to a 2-ring by taking the union of the neighborhood $\bN_v$ with the neighborhood of each one-ring neighbor $\bp_i$, which adds to the neighborhood, points with the relative distance of 2 within the graph. This iterative concept can be repeated k times and the neighborhood is than referred to as k-ring. Unfortunately, regardless of the fact that the relative distance within the graph can not be assumed equal to the geometric distance nor geodesic distance, it is still used throughout the literature – especially in the field of Computer Graphics.~\cite[p.~29]{Mara12}}
+\todoBackground{add a subsection on graph theory in basic theory section}
 
-The one-ring can be extended to a 2-ring by taking the union of the neighborhood $\bN_v$ with the neighborhood of each one-ring neighbor $\bp_i$, which adds to the neighborhood, points with the relative distance of 2 within the graph. This iterative concept can be repeated k times and the neighborhood is than referred to as k-ring. Unfortunately, regardless of the fact that the relative distance within the graph can not be assumed equal to the geometric distance nor geodesic distance, it is still used throughout the literature – especially in the field of Computer Graphics.~\cite[p.~29]{Mara12}
-
-Our solution for computing \fors{t} in light of these complications is explained in greater detail in Chapter~\ref{ch4}, later in this thesis.
-\todoReword{consider making a footnote}
+Our solution for maintaining a constant filter window size while convolving \fors{t} over neighborhoods of varying shapes and sizes is to determine the global minimum edge length, then use that as the radius of the geodesic disc centered at the central point of a neighborhood, in order calculate the \wmfv{s} of each circle sector, after interpolating each value function value from the neighboring points to the center of gravity, as explained in greater detail in Chapter~\ref{ch4}, later in this thesis.
 
 %
 %
