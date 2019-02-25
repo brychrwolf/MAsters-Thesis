@@ -298,6 +298,7 @@ The data upon which one convolves \fors{t} is called \tdd\todoCitation{\tdd{} na
 %
 %
 %
+%
 \subsection{Points}
 \label{ch2s3ssP}
 A point $\bp$ is the most primitive element of \tdd{}. ``Point'' is the abbreviated form of ``measuring point'', and is also known in other fields of study as a vertex, or a position vector $\bR{3}$\todoCitation{other names for a point}. A point is defined by the 3-dimensional Cartesian coordinates $x$, $y$, and $z$, and in \tdd{}, points are generally unique and not required to be in any particular order. In this thesis, a point is addressed using several different subscripts, depending on the context.
@@ -316,6 +317,7 @@ where $v_{max}$ is the maximum index\footnote{\label{indicesFootnote}Beginning i
 Otherwise, when referencing to a point within a particular face or neighborhood, the three corners can be referenced indirectly\footnote{or even more generally, as $\bp_a$, $\bp_b$, and $\bp_c$ in the case of Equation~\ref{eq:defineEdgeLengthFace}, or in the case of a nested loops: as $\bp_j$ and $\bp_{\sjpo}$ in Algorithms~\ref{alg:serialConvolveFilter}~and~\ref{alg:parallelConvolveFilter}} as $\bp_i$, $\bp_{\sipo}$, and $\bp_{\sipt}$, or directly as $\bp_0$\footref{indicesFootnote}, $\bp_1$, $\bp_2$, etcetera.~\cite[p.~25]{Mara12}%
 \nomenclature[ec]{$\bp_i$}{also $\bp_{\sipo}$, and $\bp_{\sipt}$; one of three indirectly referenced points comprising a face}%
 
+%
 %
 %
 %
@@ -350,6 +352,7 @@ where $k_{max}$ is the maximum index of faces in the data, and is equivalent to 
 \nomenclature[fa]{$\bT$}{the set of faces $\bt$ in $\bM$}%
 \nomenclature[fb]{$\bt_k$}{a specific face in $\bT$}%
 
+%
 %
 %
 %
@@ -442,6 +445,7 @@ Our solution for maintaining a constant filter window size while convolving \for
 %
 %
 %
+%
 \subsection{Acquired vs Synthetic \tdd{}}
 \label{ch2s3ssAVS3}
 The corpus of all \tdd{} exists in two flavors, acquired and synthetic data, with each being handily classifiable by the fashion in which it was generated, and the characteristics innate to those techniques.\todoReword{consider adding a figure here showing difference, or referencing a figure or pair of figures that does}
@@ -479,16 +483,26 @@ because function values are only stored alongside the Cartesian coordinates, 1-f
 %
 %
 %
+%
 \section{Parallel Processing}
 \label{ch2sPP}
 
+%
+%
+%
 %
 \subsection{Architectures of Concurrency}
 Hardware consists of memory and processors. Memory is divided into a hierarchy which starting at the registers on the processors themselves, increases in capacity, but decreases in speed.\todoReword{moves away from} Of particular interest to this thesis...\todoReword{continue}
 
 %
+%
+%
+%
 \subsection{Concurrency vs Parallelism}
 
+%
+%
+%
 %
 \subsection{Flynn's taxonomy}
 1.1	Single instruction stream single data stream (SISD)
@@ -496,18 +510,30 @@ Hardware consists of memory and processors. Memory is divided into a hierarchy w
 1.3	Multiple instruction streams, single data stream (MISD)
 1.4	Multiple instruction streams, multiple data streams (MIMD)
 
+%
+%
 \subsubsection{SIMT Architecture}%4.1. SIMT Architecture}
+
+%
+%
+%
 %
 \subsection{Critical Sections}
 \label{ch2sPPssCS}
 Thread Safety. C++ STL is not thread safe!
 
 %
+%
+%
+%
 \subsection{Mutexes and semaphores (binary semaphore}
 \label{ch2sPPssMS}
 While it is true that any locking mechanism can be expensive to both compute time and memory, \todoResearch{how expensive are locking mechanisms} typically, with acquired \tdd{}, the ratio of points in $\bP$ to the average neighborhood size \todoReword{add symbol for average neighborhood size} approaches $|\bP|$, therefore the speedup gained by exploiting the concurrency is definitely\todoResearch{quantify the cost} worth the cost of the added synchronization overhead when computing with even moderately sized meshes on a SIMP or SIMT modeled architecture.
 starts at ~\cite[~p.20]{Lang17}
 
+%
+%
+%
 %
 \subsection{Control \& Data Dependencies}
 \todoResearch{https://en.wikipedia.org/wiki/Loop-level\_parallelism}
@@ -611,6 +637,9 @@ sand color to highlight the fact that the values stored in memory will change th
 %different operations on the same data
 
 %
+%
+%
+%
 \subsection{Serial Computation \& Threads}
 In a very general sense, when a computer executes a serial program, it proceeds one instruction at a time, sequentially in the order that it is written, reading and writing to memory as required. Individually, these are called threads of execution, and a single processing core can only process a single such thread at a time, however, it can rapidly perform context switching\todoCitation{context switching} among a multitude of self-contained threads, each with their own unique ids and memory addresses, in order to give the illusion of parallel processing.
 
@@ -619,11 +648,22 @@ As memory to be processed by a thread is stored somewhere in a hierarchy which i
 \todoBackground{"spawning a thread"}
 
 %
+%
+%
+%
 \subsection{Multi-threaded Computation}
 All modern computers implement some form of parallelism, be it multi-core or multi-threaded processors, stream processors as found in GPUs, or networks of supercomputers or data centers. This thesis will focus on implementing \fors{t} in a way which can utilize the parallelism provided by the array of stream processors found in a commercially available GPGPU.
 \todoBackground{synchronizeThreads()}
 \todoBackground{memory vs speed}
+
+%
+%
 \subsubsection{Explicit Synchronization}%3.2.5.5.3. Explicit Synchronization}
+
+
+%
+%
+%
 %
 \subsection{Hardware Implementation}%4. Hardware Implementation}
 %
