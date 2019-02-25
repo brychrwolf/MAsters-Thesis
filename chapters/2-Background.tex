@@ -10,19 +10,22 @@ As computational geometry is based on many other fields of study in both mathema
 %
 %
 \section{Elementary Theoretical Basis}
-The following is an abbreviated list of the important theoretical concepts used in the chapters to follow. These include concepts from set theory, geometry, and topology.
+\label{ch2sETB}
+In this section, an abbreviated list of the important theoretical concepts, which are used throughout the rest of this chapter and the remainder of this thesis, are described, including: set theory in Section~\ref{}, linear algebra in Section~\ref{}, geometry in Section~\ref{}, and topology in Section~\ref{}.
 
 %
 %
 %
 %
 \subsection{Set Theory}
-A set is one of the most fundamental concepts in mathematics. Informally, a set is a collection of distinct objects, and is also itself considered to be an object. In this thesis, sets are denoted using capital, calligraphic letters, such as: $\bM$, $\bP$, $\bT$, and $\bF$.
+\label{ch2sETBssST}
+A set is one of the most fundamental concepts in mathematics. Informally, a set is a collection of distinct objects, and is also itself considered to be an object. In this thesis, sets are denoted using capital, calligraphic letters, including: $\bE$, $\bF$, $\bM$, $\fM$, $\bN$, $\bP$, and $\bT$; each of which will be defined and described in detail when introduced individually later in this thesis. In this section, we will introduce the concepts and nomenclature used to define a set, reference special sets, determine the cardinality of a set, as well as apply membership, relational, and binary operators on sets.
 
 %
 %
 \subsubsection{Set Definitions}
-A set may be defined using ``intensional definitions'' or ``extensional definitions''. An intensional definition uses semantic rules and symbols, where each symbol can be translated into words so that the definition may be coherently read aloud. For example:
+\label{ch2sETBssSTsssSD}
+As several different sets are used throughout the remainder of the thesis, we must first discuss how it is one may define a set and its membership, including ``intensional definitions'' and ``extensional definitions''. An intensional definition uses semantic rules and symbols, where each symbol can be translated into words so that the definition may be coherently read aloud. For example:
 %
 \begin{equation}
 	\bP := \left \{\:\bp_v \mid v \in \mathbb{N}, \;\text{and}\; 1\leq v \leq v_{max}\:\right \}
@@ -36,39 +39,58 @@ The other option, extensional definition, is denoted by enclosing the list of me
 	\mathbb{N} = \left \{\:0,\,1,\,2,\,3,\,\ldots\:\right \}
 \end{equation}
 %
-A set member is allowed to be listed two or more times in a definition, for example $\left \{\:4,\,2,\,2\:\right \}$. However, it is identical to the set $\left \{\:4,\,2\:\right \}$ per the axiom of extensionality\todoResearch{Zermelo–Fraenkel set theory., Axiom of extensionality, logical extensionality}, which states that two definitions of sets, which differ only in that one of the definitions lists members multiple times, define the same set.
+which in words, means "the set of natural numbers, is the set which includes every integer from zero\footnote{In some literature, zero is excluded from the set of natural numbers.} until infinity."
+
+It is allowed to list a set member two or more times in a definition, for example $\left \{\:4,\,2,\,2\:\right \}$. However, it is identical to the set $\left \{\:4,\,2\:\right \}$ per the axiom of extensionality\todoResearch{Zermelo–Fraenkel set theory., Axiom of extensionality, logical extensionality}, which states that two definitions of sets, which differ only in that one of the definitions lists members multiple times, define the same set.
 
 %
 %
 \subsubsection{Special Sets}
-There exists some sets which are used in mathematical literature with such frequency as to demand their own standardized symbols. In this thesis\todoReference{defineSetofNaturalNumbers}, we have already encountered $\mathbb{N}$, which denotes the set of all natural numbers.
+\label{ch2sETBssSTsssSS}
+There exists some sets which are used in mathematical literature with such frequency as to demand their own standardized symbols. In this thesis\todoReference{defineSetofNaturalNumbers}, we have already encountered $\mathbb{N}$, which denotes the set of all natural numbers, but more often, we will use the set of all real numbers $\mathbb{R}$, which is defined as "the set of all positive or negative, rational or irrational numbers, including zero; in short, any number which is not imaginary. This special set, is also usually written with a superscript denoting a specific dimensionality, as in $\bR{3}$ for three-dimensional data.
 
 %
 %
 \subsubsection{Cardinality}
-Denoted as $|\bM\,|$, the cardinality of a set is the number of its members, so if $\bM = \left \{\,\bP,\,\bT\right \}$, then $|\bM\,| = 2$.
+\label{ch2sETBssSTsssC}
+Many time throughout this thesis, we will reference the cardinality of set, which simply means the total count of its membership. Denoted with two enclosing bars, for example, if $\bM$ is defined as the set $\left \{\,\bP,\,\bT\right \}$, then $|\bM\,| $, read the cardinality of $\bM$, equals two. It is a very important metric for the research conducted for this thesis, for example, in reasoning about the number of faces in a mesh, or discussing the count of points in a neighborhood\footnote{Closely related to cardinality, we utilize in this thesis the concept of a census, which is devoid of a special symbol, but is defined as the total count of all members, of every member, of a multidimensional set or family of sets. An algorithm for computing a census is even presented in Section~\ref{ch6sBNPssPRCN}.}. 
 
 %
 %
 \subsubsection{Membership \& Relational Operators}
-If an object is said to be a member of a set, it is written with the symbol $\in$ and expressed as either belonging to or being an element of the set. Similarly, a set may be the subset of another set, written with the symbol $\subseteq$, meaning that every member of the first set is also a member of second set. A superset works exactly in reverse, written with the symbol $\subseteq$, it is the identity where every member of the second set is also a member of first set. In mathematical notation, those examples are written as\footnote{The negative operators also exists as $\notin$ and $\nsubseteq$}
+\label{ch2sETBssSTsssMRO}
+If an object is said to be a member of a set, it is written with the symbol $\in$ and expressed as either ``belonging to'', or ``being an element'', or simply being ``in'' the set. Similarly, a set may be the subset of another set, written with the symbol $\subseteq$, meaning that every member of the first set is also a member of second set. A superset works exactly in reverse, written with the symbol $\subseteq$, it is the identity where every member of the second set is also a member of first set. In mathematical notation, those examples are written as\footnote{The negative operators also exists as $\notin$, $\nsubseteq$, and  $\nsupseteq$}
 \begin{align}
 	B & \in \left \{A,\,B,\,C\right \} \\
 	\left \{A,\,B\right \} & \subseteq \left \{A,\,B,\,C\right \} \\
 	\left \{A,\,B,\,C\right \} & \supseteq \left \{A,\,B\right \}
 \end{align}
 
+Furthermore, a ``family of sets'' is defined as a multidimensional set, or rather, a set of sets. In general, each member of a family of sets, is a set which shares some common quality with the other members of the family. For example, in Section~\ref{ch2s3ssORN} we will define the set of sets of neighbors as a family of sets, with each member being a set of points comprising a single neighborhood.
+
 %
 %
 \subsubsection{Binary Operations}
+\label{ch2sETBssSTsssBO}
 Among all the basic binary operations one can perform on a set\footnote{which are the union, intersection, complement, and Cartesian product}, in this thesis, we exclusively use the union operation, denoted as $\cup$, whose output is the set of all objects that are members of either set, or both. For example:
+%
 \begin{equation}
 	\left \{0,\,1,\,2\right \} \cup \left \{2,\,3,\,4\right \} = \left \{0,\,1,\,2,\,3,\,4\right \}
 \end{equation}
-\todoReword{would look better to have words here}
-Also importantly, as in addition of scalar values, the associative property for a union of sets says that how the sets are grouped does not change the result.\todoCitation{associate property of unions}
 
-As a final note, a ``family of sets'' is very similar to a superset, with only the subtle difference that all the subsets it contains should have some quality in common. For example, in Section~\ref{ch2s3ssNRN} we will define the set of sets of neighbors as a family of sets, with the common quality being that all the subsets are neighborhoods.
+Also noteworthy, are the commutative and associative properties of the union\todoCitation{associatePropertyOfUnions} operation, which are analogous to the same properties of the addition operator of scalar values. These properties say that the order of the sets, and how the sets are grouped, do not change the final result of the operation\todoCitation{properties of operations, link in notes}, for example:
+%Halmos, P. R. (2013-11-27). Naive Set Theory. Springer Science & Business Media. ISBN 9781475716450.
+%
+\begin{equation}
+\begin{aligned}
+	\Big( \left \{0,\,1\right \} \cup \left \{1,\,2\right \} \Big) \cup \left \{3,\,4\right \} & = \left \{0,\,1\right \} \cup \Big( \left \{3,\,4\right \} \cup \left \{1,\,2\right \}\Big) \\
+	& = \left \{0,\,1\right \} \cup \left \{1,\,2\right \} \cup \left \{3,\,4\right \} \\
+	& = \left \{0,\,1,\,2,\,3,\,4\right \}
+	\label{eq:associatePropertyOfUnions}
+\end{aligned}
+\end{equation}
+
+The commutative and associative properties of the union operation are exploited in both Algorithm\ref{alg:serialBuildNeighborhoods} and Algorithm\ref{alg:parallelBuildNeighborhoods} in order to reduce the complexity of the computations required to convolve \Fors{t}. In the next section, we will introduce another branch of mathematics which is essential to the research of this theises; that being linear algebra.
 
 %
 %
