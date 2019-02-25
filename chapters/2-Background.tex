@@ -545,75 +545,15 @@ The concepts of control and data dependencies are not new ones, and can be dated
 
 Figure~\ref{fig:simpleControlDependency} shows the ubiquitous if-then control structure as a simple example of a control dependency. It reads, ``if B is true, then do A''. In this case A is control dependent on B, because B must execute before it can be determined wether or not to execute A.
 
-\tikzset{%
-	>={Latex[width=2mm,length=2mm]},
-	base/.style = {rectangle, rounded corners,
-		draw=black, thick,
-		minimum width=1cm, minimum height=1cm,
-		text centered, font=\sffamily},
-	operation/.style = {base, draw=MyTeal, fill=MyLtTeal},
-	halt/.style = {base, draw=MyCoral, fill=MyLtCoral}
-}
 \begin{figure}[ht]
-\centering
-\ffigbox{
-	\begin{tikzpicture}[node distance=1.2cm, every node/.style={fill=white, font=\sffamily}, align=center]
-		\node (ifB) [operation] {if $B$};
-		\node (doA) [operation, right of=ifB, xshift=2cm] {do $A$};
-		\node (stop) [halt, below of=doA] {$stop.$};
-
-		\draw[->] (ifB) -- (doA) node[pos=.5]{true};
-		\draw[->] (ifB) .. controls +(down:1cm) and +(left:1cm) .. (stop) node[pos=.5]{false};
-	\end{tikzpicture}}
+	\includestandalone[width=0.35\textwidth]{figures/tikz/simpleControlDependency}
 	{\caption[If-Then Control Dependency]{A simple example of control dependency using the if-then control structure, with each distinct operation colored in teal, and control dependency marked with an arrow.}\label{fig:simpleControlDependency}}
 \end{figure}
 
 Figure~\ref{fig:dataDependencyOfL2Norm} illustrates the less-than-simple example of data dependencies inherent to calculating the L2-norm of a position vector in $\mathbb{R}^{3}$, which has already been seen in Equation~\ref{eq:l2norm}, and will be seen often in this thesis. There are six individual procedures involved with calculating the L2-norm: three squarings, two additions, and one square root. The three squaring procedures are totally independent of each other and can be performed in any order, indeed even concurrently, in relation to one another. In contrast, the two additions are totally dependent on their addends. While the order in which the first two of the three addends are used is inconsequential, the first addition is always dependent on the completion of two squarings, and the second addition is dependent on not only the sum from the first addition, but the product of the third squaring as well. Finally, because the square root procedure is dependent on the execution of both additions, it also inherits their dependencies on the squaring procedures, and therefore must wait until the very end before executing last.\todoResearch{name of this inheritance, associative?}
 
-\tikzset{%
-	>={Latex[width=2mm,length=2mm]},
-	base/.style = {rectangle, rounded corners,
-		draw=black, thick,
-		minimum width=1cm, minimum height=1cm,
-		text centered, font=\sffamily},
-	operation/.style = {base, draw=MyTeal, fill=MyLtTeal},
-	bigBlock/.style = {base, draw=MySand, fill=MyLtSand},
-		smOr/.style = {fill=MyLtSand},
-}
 \begin{figure}[ht]
-\ffigbox{
-	\begin{tikzpicture}[node distance=1.25cm, every node/.style={fill=white, font=\sffamily}, align=center]
-		\node (xx1) [operation] {$x\cdot x$};
-		\node (yy1) [operation, below of=xx1] {$y\cdot y$};
-		\node (zz1) [operation, below of=yy1] {$z\cdot z$};
-		%\coordinate (join1) at ([xshift=2.0cm]yy1.east);
-		\node (adds) [bigBlock, right of=yy1, xshift=4cm, minimum width=3.5cm, minimum height=4.725cm] {};
-			\node (xxpyy) [operation, below=(.125cm of adds.north), xshift=-.85cm] {$x^2 + y^2$};
-			\node (zz2) [operation, right=(.75cm of xxpyy)] {$+\,z^2$};
-
-			\node (or1) [smOr, below=(.125cm of xxpyy), xshift=1cm] {-xor-};
-
-			\node (yypzz) [operation, below=(.125cm of or1), xshift=-1cm] {$y^2 + z^2$};
-			\node (xx2) [operation, right=(.75cm of yypzz)] {$+\,x^2$};
-
-			\node (or2) [smOr, below=(.125cm of yypzz), xshift=1cm] {-xor-};
-
-			\node (zzpxx) [operation, below=(.125cm of or2), xshift=-1cm] {$z^2 + x^2$};
-			\node (yy2) [operation, right=(.75cm of zzpxx)] {$+\,y^2$};
-		\node (sqrtAll) [operation, right of=adds, xshift=4cm] {$\sqrt{x^2+y^2+z^2}$};
-
-		\draw[->] (xx1) -- (adds);
-		\draw[->] (yy1) -- (adds);
-		\draw[->] (zz1) -- (adds);
-		%\draw[-] (xx1) -- (join1);
-		%\draw[-] (yy1) -- (join1);
-		%\draw[-] (zz1) -- (join1);
-		%\draw[->] (join1) -- (adds);
-		\draw[->] (xxpyy) -- (zz2);
-		\draw[->] (yypzz) -- (xx2);
-		\draw[->] (zzpxx) -- (yy2);
-		\draw[->] (adds) -- (sqrtAll);
-	\end{tikzpicture}}
+	\includestandalone[width=1.0\textwidth]{figures/tikz/dataDependencyOfL2Norm}
 	{\caption[Data Dependencies in the L2-norm Calculation]{The data dependencies inherent to calculation of the L2-norm of a position vector in $\bR{3}$, with each distinct operation colored in teal, and data dependencies marked with arrows. The centered block in sand color represents an exclusive-or situation, abbreviated as xor, where one, and only one pair of operations shall execute.}\label{fig:dataDependencyOfL2Norm}}
 \end{figure}
 

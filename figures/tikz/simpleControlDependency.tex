@@ -1,0 +1,25 @@
+\documentclass{standalone}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows.meta,positioning}
+\input{../../myCommands.tex}
+
+\begin{document}
+\tikzset{%
+	>={Latex[width=2mm,length=2mm]},
+	base/.style = {rectangle, rounded corners,
+		draw=black, thick,
+		minimum width=1cm, minimum height=1cm,
+		text centered, font=\sffamily},
+	operation/.style = {base, draw=MyTeal, fill=MyLtTeal},
+	halt/.style = {base, draw=MyCoral, fill=MyLtCoral}
+}
+\begin{tikzpicture}[node distance=1.2cm, every node/.style={fill=white, font=\sffamily}, align=center]
+	\node (ifB) [operation] {if $B$};
+	\node (doA) [operation, right of=ifB, xshift=2cm] {do $A$};
+	\node (stop) [halt, below of=doA] {$stop.$};
+
+	\draw[->] (ifB) -- (doA) node[pos=.5]{true};
+	\draw[->] (ifB) .. controls +(down:1cm) and +(left:1cm) .. (stop) node[pos=.5]{false};
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,50 @@
+\documentclass{standalone}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows.meta,positioning}
+\input{../../myCommands.tex}
+
+\begin{document}
+\tikzset{%
+	>={Latex[width=2mm,length=2mm]},
+	base/.style = {rectangle, rounded corners,
+		draw=black, thick,
+		minimum width=1cm, minimum height=1cm,
+		text centered, font=\sffamily},
+	operation/.style = {base, draw=MyTeal, fill=MyLtTeal},
+	bigBlock/.style = {base, draw=MySand, fill=MyLtSand},
+		smOr/.style = {fill=MyLtSand},
+}
+\begin{tikzpicture}[node distance=1.25cm, every node/.style={fill=white, font=\sffamily}, align=center]
+	\node (xx1) [operation] {$x\cdot x$};
+	\node (yy1) [operation, below of=xx1] {$y\cdot y$};
+	\node (zz1) [operation, below of=yy1] {$z\cdot z$};
+	%\coordinate (join1) at ([xshift=2.0cm]yy1.east);
+	\node (adds) [bigBlock, right of=yy1, xshift=4cm, minimum width=3.5cm, minimum height=4.725cm] {};
+		\node (xxpyy) [operation, below=(.125cm of adds.north), xshift=-.85cm] {$x^2 + y^2$};
+		\node (zz2) [operation, right=(.75cm of xxpyy)] {$+\,z^2$};
+
+		\node (or1) [smOr, below=(.125cm of xxpyy), xshift=1cm] {-xor-};
+
+		\node (yypzz) [operation, below=(.125cm of or1), xshift=-1cm] {$y^2 + z^2$};
+		\node (xx2) [operation, right=(.75cm of yypzz)] {$+\,x^2$};
+
+		\node (or2) [smOr, below=(.125cm of yypzz), xshift=1cm] {-xor-};
+
+		\node (zzpxx) [operation, below=(.125cm of or2), xshift=-1cm] {$z^2 + x^2$};
+		\node (yy2) [operation, right=(.75cm of zzpxx)] {$+\,y^2$};
+	\node (sqrtAll) [operation, right of=adds, xshift=4cm] {$\sqrt{x^2+y^2+z^2}$};
+
+	\draw[->] (xx1) -- (adds);
+	\draw[->] (yy1) -- (adds);
+	\draw[->] (zz1) -- (adds);
+	%\draw[-] (xx1) -- (join1);
+	%\draw[-] (yy1) -- (join1);
+	%\draw[-] (zz1) -- (join1);
+	%\draw[->] (join1) -- (adds);
+	\draw[->] (xxpyy) -- (zz2);
+	\draw[->] (yypzz) -- (xx2);
+	\draw[->] (zzpxx) -- (yy2);
+	\draw[->] (adds) -- (sqrtAll);
+\end{tikzpicture}
+\end{document}
