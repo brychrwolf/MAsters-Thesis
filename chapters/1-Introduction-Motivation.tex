@@ -9,6 +9,9 @@ It should come as no surprise that if one were to implement an algorithm in a wa
 
 %\Fors{T} was conceived and developed by a research team which focuses on computational geometry
 
+%use paragraph in manifold section....
+%The significance to our research, is that each convolution of \Fors{t} is comprised of calculations of the \wmfv{s} at the central point of a one-ring neighborhood, having weighted the function values in relation to the distance between each neighbor, and because those distances are uniformly dissimilar in acquired \tdd{}\cite{tdd{} is not regular}, maintaining a consistent filter window size is only accomplished by defining the geodesic disc, which exists on the manifold defined by the mesh. Therefore, as discussed in more detail in Chapter~\ref{ch4}, the weights may be calculated sector-wise, as if all sectors were on the same plane, greatly reducing the complexity of the entire procedure.
+
 
 %
 %
@@ -34,6 +37,9 @@ Even when ignoring the third dimension present in \tdd{}, in contrast to regular
 %for raster images. However, they require adaptation as there is no fixed
 %distance between the points and no fixed number of neighboring points in
 %1-rings of irregular grids.~\cite[s.~3.2]{Mara17}
+
+%\ref{ch2s3ssFV} 
+%because function values are only stored alongside the Cartesian coordinates, 1-for-1 with points, due to \tdd{} existing as a discrete manifold. The significance of which is another motivating factor behind the research conducted in this thesis.
 %
 \section{Serial is slow. Concurrency is fast.}
 %
