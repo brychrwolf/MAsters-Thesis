@@ -1,20 +1,25 @@
 \chapter{Background}
 \label{ch2}
-\Fors{T} relies on the research from many fields of study in both mathematics and computer science. In this chapter we will briefly examine the underlying theory, concepts, and frameworks upon which we rely to convey the ideas presented in this thesis and bring to fruition the work invested in designing and developing \Fors{t}.
+As computational geometry is based on many other fields of study in both mathematics and computer science, so does \Fors{t} also rely on their foundation. In this chapter we will briefly examine the underlying theory, concepts, and frameworks upon which the research was founded in order to develop this filter and implement with parallel processing, its convolution over a mesh of acquired \tdd{}, and upon which we will depend to convey the ideas presented in this thesis.
 \todoReword{Elaborate like a teasing summary}
 
 %
 %
 %
 %
-\section{Basic Theory}\todoReword{theoretical foundation}
+%
+%
+\section{Elementary Theoretical Basis}
 The following is an abbreviated list of the important theoretical concepts used in the chapters to follow. These include concepts from set theory, geometry, and topology.
 
+%
+%
 %
 %
 \subsection{Set Theory}
 A set is one of the most fundamental concepts in mathematics. Informally, a set is a collection of distinct objects, and is also itself considered to be an object. In this thesis, sets are denoted using capital, calligraphic letters, such as: $\bM$, $\bP$, $\bT$, and $\bF$.
 
+%
 %
 \subsubsection{Set Definitions}
 A set may be defined using ``intensional definitions'' or ``extensional definitions''. An intensional definition uses semantic rules and symbols, where each symbol can be translated into words so that the definition may be coherently read aloud. For example:
@@ -34,13 +39,16 @@ The other option, extensional definition, is denoted by enclosing the list of me
 A set member is allowed to be listed two or more times in a definition, for example $\left \{\:4,\,2,\,2\:\right \}$. However, it is identical to the set $\left \{\:4,\,2\:\right \}$ per the axiom of extensionality\todoResearch{Zermelo–Fraenkel set theory., Axiom of extensionality, logical extensionality}, which states that two definitions of sets, which differ only in that one of the definitions lists members multiple times, define the same set.
 
 %
+%
 \subsubsection{Special Sets}
 There exists some sets which are used in mathematical literature with such frequency as to demand their own standardized symbols. In this thesis\todoReference{defineSetofNaturalNumbers}, we have already encountered $\mathbb{N}$, which denotes the set of all natural numbers.
 
 %
+%
 \subsubsection{Cardinality}
 Denoted as $|\bM\,|$, the cardinality of a set is the number of its members, so if $\bM = \left \{\,\bP,\,\bT\right \}$, then $|\bM\,| = 2$.
 
+%
 %
 \subsubsection{Membership \& Relational Operators}
 If an object is said to be a member of a set, it is written with the symbol $\in$ and expressed as either belonging to or being an element of the set. Similarly, a set may be the subset of another set, written with the symbol $\subseteq$, meaning that every member of the first set is also a member of second set. A superset works exactly in reverse, written with the symbol $\subseteq$, it is the identity where every member of the second set is also a member of first set. In mathematical notation, those examples are written as\footnote{The negative operators also exists as $\notin$ and $\nsubseteq$}
@@ -50,6 +58,7 @@ If an object is said to be a member of a set, it is written with the symbol $\in
 	\left \{A,\,B,\,C\right \} & \supseteq \left \{A,\,B\right \}
 \end{align}
 
+%
 %
 \subsubsection{Binary Operations}
 Among all the basic binary operations one can perform on a set\footnote{which are the union, intersection, complement, and Cartesian product}, in this thesis, we exclusively use the union operation, denoted as $\cup$, whose output is the set of all objects that are members of either set, or both. For example:
@@ -64,10 +73,12 @@ As a final note, a ``family of sets'' is very similar to a superset, with only t
 %
 %
 %
+%
 \subsection{Linear Algebra}
 \label{ch2sBssLA}
 Nearly as fundamental as set theory, linear algebra is the branch of mathematics which studies the different methods and representations which may concern a line, including: sets of equations, matrices, transformations, vector spaces, norming functions, etc. It is used in almost all scientific domains that use mathematics, including geometry and scientific computing, as well as provides the symbols and concepts for performing blocks of operations in parallel.~\cite{Weisstein19i} \todoCitation{position vector}
 
+%
 %
 \subsubsection{Position Vectors}
 \label{ch2sBssLAsssPV}
@@ -82,6 +93,7 @@ Figure~\ref{fig:definePositionVector} provides three examples of why a point may
 \end{figure}
 
 %
+%
 \subsubsection{Subtracting Two Vectors}
 \label{ch2sBssLAsssS2V}
 Among the binary operators with which one could operate on vectors, this thesis is primarily concerned with subtraction. In order to perform subtract of two vectors in the same Euclidean space, one must simply subtract each component element-wise.\~cite{Weisstein19j} For example, given two points in $\bR{3}$, $A$ and $B$
@@ -91,6 +103,7 @@ Among the binary operators with which one could operate on vectors, this thesis 
 	\label{eq:vectorSubtraction}
 \end{equation}
 
+%
 %
 \subsubsection{L2-norm}
 \label{ch2sBssLAsssL2N}
@@ -109,10 +122,12 @@ In this thesis, the L2-norm is denoted using the symbols $\|\bp\|_2$, or abbrevi
 %
 %
 %
+%
 \subsection{Geometry}
 As vast and encompassing is geometry as a field of study, of paramount importance for \fors{t} are interpolation, the concept of a geodesic disc, and the characteristics of a circle sector.
 \todoResearch{weighted averaging using density}
 
+%
 %
 \subsubsection{Interpolation \& Extrapolation}
 \todoBackground{add text and figure for extrapolation}
@@ -142,6 +157,7 @@ So the value halfway between the two given points is interpolated to be $(2,\,2.
 \end{figure}
 
 %
+%
 \subsubsection{Geodesic Discs}
 \label{ch2sBssGsssGD}
 \todoResearch{geodesic discs}
@@ -149,6 +165,7 @@ Geodesic Disc $\bO$%
 \nomenclature[aa]{$\bO$}{a geodesic disc}%
 \nomenclature[ab]{$\bO_v$}{a specific geodesic disc centered about the point $\bp_v$}%
 
+%
 %
 \subsubsection{Circle Sectors}
 \label{ch2sBssGsssCS}
@@ -167,6 +184,7 @@ As the sector can be described entirely by the central angle $\alpha$ and the ci
 because the area of the sector can be obtained by multiplying the circle's total area by the ratio of the sector's central angle $\alpha$, and $2\pi$, the total angle of the circle in radians.~\cite{Weisstein19d}%
 \nomenclature[bd]{$A$}{an area of a circular sector}%
 
+%
 %
 \subsubsection{Center of Gravity}
 \label{ch2sBssGsssCG}
@@ -193,14 +211,17 @@ In the Figure~\ref{fig:circleSector}, a circle sector is produced by the points 
 %
 %
 %
+%
 \subsection{Topology}
 \label{ch2sBssT}
 Topology is the mathematical study of the properties of space that are preserved through deformations, twistings, and stretchings of objects\footnote{but not tearing or gluing}, which developed as a field of study from geometry and set theory through analysis of concepts such as space, dimension, and transformation. For example, a circle is topologically equivalent to an ellipse, because it can be deformed by stretching.~\cite{Weisstein19c} Of the major concepts, this thesis is most concerned with manifolds and neighborhoods.
 
 %
+%
 \subsubsection{Manifolds}
 A manifold is a topological space that is locally, but possibly not globally, Euclidean; a concept that is central to many parts of geometry because it allows complicated structures, such as the triangle mesh, to be described and understood in terms of the simpler, local topological properties. In general, that means that a manifold is an $n$D-subset of an Euclidean space $\mathbb{R}^{>n}$.~\cite[p.~199]{Mara12} For example, 1-dimensional manifolds in $\mathbb{R}^{2}$ include lines and circles, and 2-dimensional manifolds in $\mathbb{R}^{3}$, also called surfaces, can include commonly-known shapes such as the plane, the sphere, and the torus, but also of prime importance for this thesis, the triangle mesh.
 
+%
 %
 \subsubsection{Neighborhoods}
 A neighborhood is also one of the basic concepts of topology. Intuitively speaking, a neighborhood of a point is a set of points containing that point, where one can move in any direction without leaving the set. While determining the neighborhood is trivial for 1-dimensional manifolds, and relatively simple to regular surfaces, such as a 2D-images whose pixels have at most four neighbors in orthogonal directions with a geometric distance of 1, as well as four neighbors at the diagonal directions with a geometric distance of $\sqrt{2}$, determining the neighborhood becomes more complicated for irregular surfaces like those found in \tdd{}. With those surfaces, one must determine the set of neighbors using the associations that define the triangular faces; the details of which are covered in detail in Section:~\ref{ch2s3ssNRN}, after the necessary topics regarding \tdd{} have already been discussed.
@@ -213,6 +234,8 @@ Figure~\ref{fig:neighborhoods} illustrates in (a) and (b) the differences among 
 	{\caption[One-ring neighborhoods in regular and irregular meshes]{One-ring neighborhoods in (a) a regular square mesh, as in pixels of a digital image (b) a regular triangle mesh, as in a hexagonal tessellation (c) an irregular triangle mesh, typical of acquired \tdd{}}\label{fig:neighborhoods}}
 \end{figure}
 
+%
+%
 %
 %
 %

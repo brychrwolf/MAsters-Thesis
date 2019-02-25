@@ -4,10 +4,8 @@ In the previous chapter we presented the mathematical grounding for an improved 
 
 %
 %
-%
-%
-\section{An Algorithm in Three Parts}
-\label{ch5sATP}
+\subsubsection{An Algorithm in Three Parts}
+\label{ch5sssATP}
 The serial algorithm defined in this chapter requires that the membership of all one-ring neighborhoods first be discovered before one is ever able to begin convolving the filter, because the total efficiency of the algorithm relies on iterating over the family of sets of neighborhoods $\bN$, as will be made clear in Sections~\ref{ch5sCEL}, and~\ref{ch5sCF}, while the underlying data structure of \tdd{} typically only stores a mesh $\bM$ as the superset of the two separate sets, $\bP$ of points, and $\bT$ of triangular faces, completely ignorant of the adjacency between faces or even the concept of neighborhoods.
 
 Also critical to the total efficiency of the filter, is the pre-calculation of the edge lengths between all pairs of adjacent points, whose magnitudes never change, regardless of the number of convolutions being applied. This importance stems from how all edge lengths are used in computation during the loop for convolving the filter, which we will refer to as the principle filter going forward, at least five times per convolution, and tens times per convolution for the majority of points, which are non-border pairs, whose relationships are duplicated in adjacent neighborhoods.\todoReference{appendix on mesh face to point ratio goto2}%
@@ -174,7 +172,6 @@ In Algorithm~\ref{alg:serialConvolveFilter}, the function \textit{convolveFilter
 \end{algorithm}%
 \nomenclature[pa]{$\tilde{f}$}{the total volume of function values over $\bO_v$}%
 \nomenclature[pb]{$\tilde{A}$}{the area of $\bO_v$}%
-\nomenclature[]{$\bF'$}{the set of one-ring \wmfv{s}}%
 
 While the performance of Algorithm~\ref{alg:serialConvolveFilter} is much improved by the neighborhood building and pre-calculations performed in Algorithms~\ref{alg:serialBuildNeighborhoods} and~\ref{alg:serialCalculateEdgeLengths}, its strictly serial design prevents it from scaling in performance appropriately for the sizes of real-world, acquired \tdd{}, performing especially sluggishly for high numbers of convolutions on meshes with large amounts of triangulated points\todoReference{a specific experiment}; the very targets for which \Fors{t} is primarily intended.
 

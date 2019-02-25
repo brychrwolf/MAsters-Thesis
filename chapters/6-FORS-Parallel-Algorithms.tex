@@ -28,6 +28,7 @@ Starting in line~\ref{sbn1} of Algorithm~\ref{alg:serialBuildNeighborhoods}, we 
 \todoBackground{loop level parallelism, loop-carried and loop-independent}
 \todoBackground{static vs volatile memory}
 
+\todoReword{add subsubsections for initial loop, dependency graph, loop block, parallel algorithm}
 Figure~\ref{fig:sabnDataDependencies} illustrates the data dependencies inherent to each iteration of the loop over the faces $\bt$ in $\bT$, as found in lines~\ref{sbn2}~-~\ref{sbn5} of Algorithm~\ref{alg:serialBuildNeighborhoods}.
 
 
@@ -48,7 +49,7 @@ Lines~\ref{sbn4}~and~\ref{sbn5} behave similarly to line~\ref{sbn3}, except they
 %
 \subsection{Parallel Variant of Build Neighborhoods}
 \label{ch6sBNPssPVBN}
-Algorithm~\ref{alg:parallelBuildNeighborhoods} defines the structure and procedures required to implement a parallel variant of the function $\mathit{serialBuildNeighborhoods}$, while ensuring correctness by using a set of mutexes to guard critical sections. The main function $\mathit{parallelBuildNeighborhoods}$ requires only the number of available processors $\rho$, the set of all triangular faces $\bT$, and the cardinality of the set of points $|\bP|$ in order to complete its task. Initially, the ``stride'' is calculated in line~\ref{algPBN.stride} as the portion of the total work load, to which a single processor will be instructed to compute, equal to the problem size divided by the number of available processors; here, the unit of work being an entire triangular face $\bt$. Next, a set of mutexes are created, containing an equal amount of elements as the cardinality of points in $\bP$, to be used individually for each neighborhood. \todoReword{remove if no longer setting $\bM$} Then begins the loop to spawn a ``build'' thread for a quarter of the available processors in the system, with the scalar four being a result of each build thread's need to spawn three additional ``union'' threads. Then all the working threads must synchronize first, before the family of sets of neighborhoods $\bN$ can be finally realized.
+Algorithm~\ref{alg:parallelBuildNeighborhoods} defines the structure and procedures required to implement a parallel variant of the function $\mathit{serialBuildNeighborhoods}$, while ensuring correctness by using a set of mutexes to guard critical sections. The main function $\mathit{parallelBuildNeighborhoods}$ requires only the number of available processors $\rho$, the set of all triangular faces $\bT$, and the cardinality of the set of points $|\bP|$ in order to complete its task. Initially, the ``stride'' is calculated in line~\ref{algPBN.stride} as the portion of the total work load, to which a single processor will be instructed to compute, equal to the problem size divided by the number of available processors; here, the unit of work being an entire triangular face $\bt$. Next, a set of mutexes are created, containing an equal amount of elements as the cardinality of points in $\bP$, to be used individually for each neighborhood. \todoReword{remove if no longer setting $\fM$} Then begins the loop to spawn a ``build'' thread for a quarter of the available processors in the system, with the scalar four being a result of each build thread's need to spawn three additional ``union'' threads. Then all the working threads must synchronize first, before the family of sets of neighborhoods $\bN$ can be finally realized.
 
 In line~\ref{algPBN.build}, we read that along with access to the set of triangular faces $\bT$ and set of mutexes $\fM$, each build thread in Algorithm~\ref{alg:parallelBuildNeighborhoods} also requires an index $\Pi$, which it uses along with the stride $sigma$, to calculate the lower and upper boundaries, $\check{\sigma}$ and $\hat{\sigma}$, for the portion of the work load on which it should compute. Next, it iterates over each face $\bt$ within those stride boundaries, and spawns three union threads; one each for the three points comprising the corners of the current triangular face.
 
@@ -104,7 +105,7 @@ Line~\ref{algPBN.safeUnion} shows that each union thread requires not only the f
 \nomenclature[]{$\Pi$}{the index representing a single processor}%
 \nomenclature[]{$\fM$}{a set of mutexes}%
 \nomenclature[]{$\mu_v$}{a specific mutex}%
-\nomenclature[]{$\sim process()$}{a process to be run in a new thread}%
+\nomenclature[]{$\sim$\textit{process}}{a process to be run in parallel by a new thread}%
 
 %
 %
@@ -116,7 +117,7 @@ The motivation behind Algorithm~\ref{alg:parallelRecursiveCensusNeighborhoods} i
 	\hat{n} := \sum\limits_{v=1}^{|\bN|}{|\bN_v|}
 	\label{eq:censusNeighborhoods}
 \end{equation}%
-\nomenclature[]{\hat{n}}{}%
+\nomenclature[]{$\hat{n}$}{census total of all neighbors in all neighborhoods in $\bN$}%
 
 While a sum of all cardinalities could be accumulated by each thread in  Algorithm~\ref{alg:parallelBuildNeighborhoods}, unlike in the serial version, it would very inefficient\footnote{It is possible that in some programming languages, the underlying data structure may automatically keep a record of the size of membership in $\bN$. In that case, one would simply ignore Algorithm~\ref{alg:parallelRecursiveCensusNeighborhoods} and instead assign that generated value to $\hat{n}$.} due to the added overhead of collisions with the guarding mechanism required to protect the shared value of the total sum.  Alternatively, algorithm~\ref{alg:parallelRecursiveCensusNeighborhoods} only requires as inputs, the family of sets of neighborhoods $\bN$, and the number of processors available in the system, but is highly parallel and performs at the quick rate of $O(log_2(n))$, so when using a system with multiple processors, it is a much more efficient alternative to calculating the sum implicitly while building $\bN$.
 
@@ -176,8 +177,7 @@ In the third and final part, ``the recursive call'', the function \textit{parall
 	}
 	\caption{Parallel algorithm for recursively counting a census of all neighbors in all neighborhoods \label{alg:parallelRecursiveCensusNeighborhoods}}
 \end{algorithm}%
-\nomenclature[]{$\hat{n}$}{a census, the count of all neighbors in all neighborhoods}%
-\nomenclature[]{$\widetilde{\bN}$}{a subset of $\bN$ used temporarily in Algorithm~\ref{alg:parallelRecursiveCensusNeighborhoods}}%
+\nomenclature[]{$\widetilde{\bN}$}{a subset of $\bN$}%
 \todoReword{mention that non-existent neighborhoods should be treated as having a cardinality of 0}
 \footnotetext{It is important to notice in line~\ref{algPRCN.onlyFirstCall}, the distinction between the family of sets of neighborhoods $\bN$ in the first call of \textit{parallelRecursiveCensusNeighborhoods}, with that of the set of integers accumulating in the subset $\widetilde{\bN}$ in subsequent calls.}
 
@@ -426,10 +426,7 @@ Furthermore, because the goal of this block is to accumulate these \wmfv{s} in l
 	}
 
 	\caption{Parallel algorithm for convolving \Fors{t}\label{alg:parallelConvolveFilter}}
-\end{algorithm}%
-%\todoReword{ensure counter is real value}
-\todoReword{make sure sigmas include control htereads too}
-\todoReword{Alg3,6 output}
+\end{algorithm}
 
 The final result is that the \wmfv{s} $\tilde{f'}_v$ and areas $\tilde{A}_v$ of each circle sector are calculated in parallel, then those values are averaged, also in parallel, over the total area of the geodesic disc centered at each $\bp_v$, and collected in the set $\bF'$, completing a single convolution of \Fors{t}.
 
