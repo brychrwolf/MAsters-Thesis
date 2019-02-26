@@ -512,6 +512,10 @@ GPGPU stands fo General Use Graphics Processing unit, as coined by Mark Harris, 
 
 The technology
 
+%\subsection{Host Memory and Device Memory}
+\todoBackground{memory vs speed}
+Hardware consists of memory and processors. Memory is divided into a hierarchy which starting at the registers on the processors themselves, increases in capacity, but decreases in speed.\todoReword{moves away from} Of particular interest to this thesis...\todoReword{continue}
+
 
 
 %
@@ -523,6 +527,43 @@ The technology
 In a very general sense, when a computer executes a serial program, it proceeds one instruction at a time, sequentially in the order that it is written, reading and writing to memory as required. Individually, these are called threads of execution, and a single processing core can only process a single such thread at a time, however, it can rapidly perform context switching\todoCitation{context switching} among a multitude of self-contained threads, each with their own unique ids and memory addresses, in order to give the illusion of parallel processing.
 
 As memory to be processed by a thread is stored somewhere in a hierarchy which increases in size, but decreases in speed as one moves from the processor's registers, it is likely that a context switch will cause what is known as a cache miss\todoCitation{cache hit or miss, check Lang}, which incurs a time penalty while the processing stalls and the required memory is read from slower hardware sources.
+
+
+
+%
+%
+%
+%
+\subsection{Program Correctness}
+
+%
+%
+\subsubsection{Critical Sections}
+
+%
+%
+\subsubsection{Mutexes}
+%Mutexes and semaphores (binary semaphore}
+While it is true that any locking mechanism can be expensive to both compute time and memory, \todoResearch{how expensive are locking mechanisms} typically, with acquired \tdd{}, the ratio of points in $\bP$ to the average neighborhood size \todoReword{add symbol for average neighborhood size} approaches $|\bP|$, therefore the speedup gained by exploiting the concurrency is definitely\todoResearch{quantify the cost} worth the cost of the added synchronization overhead when computing with even moderately sized meshes on a SIMP or SIMT modeled architecture.
+starts at ~\cite[~p.20]{Lang17}
+
+%
+%
+\subsection{Control \& Data Dependencies}
+\label{ch2sPPssCS}
+%Data Dependencies: ~\cite[p.~358]{Lang17}
+%Section~\ref{ch2sACssCVP}
+%Data Partitioning:
+%Calculations depend on specific data structures.~\cite[p.~357]{Lang17}
+%As in edge lengths depend on the neighborhoods.
+\todoResearch{https://en.wikipedia.org/wiki/Loop-level\_parallelism}
+%True (Flow) Dependence	S1 ->T S2	A true dependence between S1 and S2 means that S1 writes to a location later read from by S2
+%Anti Dependence	S1 ->A S2	An anti-dependence between S1 and S2 means that S1 reads from a location later written to by S2.
+%Output Dependence	S1 ->O S2	An output dependence between S1 and S2 means that S1 and S2 write to the same location.
+%Input Dependence	S1 ->I S2	An input dependence between S1 and S2 means that S1 and S2 read from the same location.
+The concepts of control and data dependencies are not new ones, and can be dated back to the invention of multi-pass compilers\todoCitation{Data Dependencies and multi-pass compilers}. The field of study regarding the details is called dependence analysis and has far-reaching consequences from business management, economics, as well as software optimization\todoCitation{dependence analysis}. In general, the basic concept behind both control and data dependencies is that some procedure A is said to be dependent on another procedure B, if A requires B to be executed first.
+
+Figure~\ref{fig:simpleControlDependency} shows the ubiquitous if-then control structure as a simple example of a control dependency. It reads, ``if B is true, then do A''. In this case A is control dependent on B, because B must execute before it can be determined wether or not to execute A.
 
 %
 %
@@ -551,28 +592,6 @@ C(N, P) = PTP(N, P)
 	0 < q < 1 is the sequential part
 	1-q = is the parallelizable part
 
-
-%
-%
-%
-%
-\subsection{Control \& Data Dependencies}
-\subsection{Critical Sections}
-\label{ch2sPPssCS}
-%Data Dependencies: ~\cite[p.~358]{Lang17}
-%Section~\ref{ch2sACssCVP}
-%Data Partitioning:
-%Calculations depend on specific data structures.~\cite[p.~357]{Lang17}
-%As in edge lengths depend on the neighborhoods.
-\todoResearch{https://en.wikipedia.org/wiki/Loop-level\_parallelism}
-%True (Flow) Dependence	S1 ->T S2	A true dependence between S1 and S2 means that S1 writes to a location later read from by S2
-%Anti Dependence	S1 ->A S2	An anti-dependence between S1 and S2 means that S1 reads from a location later written to by S2.
-%Output Dependence	S1 ->O S2	An output dependence between S1 and S2 means that S1 and S2 write to the same location.
-%Input Dependence	S1 ->I S2	An input dependence between S1 and S2 means that S1 and S2 read from the same location.
-The concepts of control and data dependencies are not new ones, and can be dated back to the invention of multi-pass compilers\todoCitation{Data Dependencies and multi-pass compilers}. The field of study regarding the details is called dependence analysis and has far-reaching consequences from business management, economics, as well as software optimization\todoCitation{dependence analysis}. In general, the basic concept behind both control and data dependencies is that some procedure A is said to be dependent on another procedure B, if A requires B to be executed first.
-
-Figure~\ref{fig:simpleControlDependency} shows the ubiquitous if-then control structure as a simple example of a control dependency. It reads, ``if B is true, then do A''. In this case A is control dependent on B, because B must execute before it can be determined wether or not to execute A.
-
 \begin{figure}[ht]
 	\includestandalone[width=0.35\textwidth]{figures/tikz/simpleControlDependency}
 	{\caption[If-Then Control Dependency]{A simple example of control dependency using the if-then control structure, with each distinct operation colored in teal, and control dependency marked with an arrow.}\label{fig:simpleControlDependency}}
@@ -585,26 +604,11 @@ Figure~\ref{fig:dataDependencyOfL2Norm} illustrates the less-than-simple example
 	{\caption[Data Dependencies in the L2-norm Calculation]{The data dependencies inherent to calculation of the L2-norm of a position vector in $\bR{3}$, with each distinct operation colored in teal, and data dependencies marked with arrows. The centered block in sand color represents an exclusive-or situation, abbreviated as xor, where one, and only one pair of operations shall execute.}\label{fig:dataDependencyOfL2Norm}}
 \end{figure}
 
-%
-%
-%
-%
-\subsection{Mutexes and semaphores (binary semaphore}
-\todoBackground{guarding mechanisms}
-\label{ch2sPPssMS}
-While it is true that any locking mechanism can be expensive to both compute time and memory, \todoResearch{how expensive are locking mechanisms} typically, with acquired \tdd{}, the ratio of points in $\bP$ to the average neighborhood size \todoReword{add symbol for average neighborhood size} approaches $|\bP|$, therefore the speedup gained by exploiting the concurrency is definitely\todoResearch{quantify the cost} worth the cost of the added synchronization overhead when computing with even moderately sized meshes on a SIMP or SIMT modeled architecture.
-starts at ~\cite[~p.20]{Lang17}
-
-
-%\subsection{Host Memory and Device Memory}
-\todoBackground{memory vs speed}
-Hardware consists of memory and processors. Memory is divided into a hierarchy which starting at the registers on the processors themselves, increases in capacity, but decreases in speed.\todoReword{moves away from} Of particular interest to this thesis...\todoReword{continue}
-
 
 \subsubsection{Explicit Synchronization}%3.2.5.5.3. Explicit Synchronization}
 \todoBackground{synchronizeThreads()}
 \todoBackground{correctness}
-sand color to highlight the fact that the values stored in memory will change throughout the life of the total procedure, and without the protection of a guarding mechanism, therefore, extra care must be taken so that the implementation of the parallel variant of the serial algorithm will maintain correctness.
+sand color to highlight the fact that the values stored in memory will change throughout the life of the total procedure, and without the protection of a locking mechanism, therefore, extra care must be taken so that the implementation of the parallel variant of the serial algorithm will maintain correctness.
 
 
 %\subsection{Hardware Implementation}%4. Hardware Implementation}
