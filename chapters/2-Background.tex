@@ -486,23 +486,24 @@ because function values are only stored alongside the Cartesian coordinates, 1-f
 %
 \section{Parallel Processing}
 \label{ch2sPP}
+\ldots
 
 %
 %
 %
 %
 \subsection{Architecture of Concurrency} %Hardware
-Of the 4 classifications of the architectures of concurrency\todoCitation{Flynn, 1966 doi:10.1109/TC.1972.5009071.}, this thesis is primarily concerned with SIMD\footnote{or SIMT as is branded by NVIDIA}\todoCitation{NVIDIA SIMT 4.1. SIMT Architecture}, single instruction, multiple data streams, which is the architecture of commercial workstations in use today. The SIMD classification is characterized by single instructions being executed in parallel on multiple data, which means simultaneously, typically requiring synchronization before the results may be further processed.
+Of the 4 classifications\footnote{SISD, SIMD, MISD, MIMD} of architectures of concurrency, this thesis is primarily concerned with SIMD\footnote{or SIMT as is branded by NVIDIA}\todoCitation{NVIDIA SIMT 4.1. SIMT Architecture}, which is the acronym for Single Instruction Multiple Data, as originally defined by\todoCitation{Flynn, 1966 doi:10.1109/TC.1972.5009071.}, which describes the architecture of nearly every commercially available computer today. As the name implies, the SIMD classification is characterized by systems which are able to take a single instruction, otherwise known as a kernel, and execute it in parallel, which means simultaneously, on multiple elements from a pool of data, then typically requiring synchronization before the results may be further processed.
 
 Figure~\ref{fig:simdArchitecture}, illustrates a simplified impression of system which employs SIMD architecture.
 
 \begin{figure}[ht]
 \ffigbox
-	{\includegraphics[width=1.0\linewidth]{figures/simdArchitecture.png}}
+	{\includegraphics[width=1.0\linewidth]{figures/tikz/simdArchitecture.pdf}}
 	{\caption[SIMD Architecture]{The architecture characterized as SIMD by Flynn's Taxonomy of systems, where a single instruction is executed simultaneously, in parallel, on }\label{fig:simdArchitecture}}
 \end{figure}\todoCitation{Flynn, 1966 doi:10.1109/TC.1972.5009071.}
 
-The major advantage obtained by implementing software in SIMD system is the speedup gained when repetitive tasks which would otherwise be executed serially in a loop, one after another, can instead be computed simultaneously, incurring only minor synchronization overhead. Any operation performed in linear algebra, such as the multiplication of an entire vector by a scalar, is thus made much more scalable in regards to the time required to complete the computation for growing sizes of vectors.
+The major advantage obtained by implementing software in SIMD system is the quantifiable speedup gained, as disscussed in detail in Section~\ref{xxxxxx} when repetitive tasks which would otherwise be executed serially in a loop, one after another, can instead be computed simultaneously, incurring only minor synchronization overhead. Any operation performed in linear algebra, such as the multiplication of an entire vector by a scalar, is thus made much more scalable in regards to the time required to complete the computation for growing sizes of vectors.
 
 This concept can be extended to more complex programs, and indeed, the topic of the research presented in this thesis is implementing the convolutions of the complex algorithm for \Fors{t} to be executed for every point in a mesh, simultaneously, in parallel, on a SIMD system.
 
