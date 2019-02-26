@@ -535,21 +535,11 @@ As memory to be processed by a thread is stored somewhere in a hierarchy which i
 %
 %
 \subsection{Program Correctness}
+\ldots
 
 %
 %
-\subsubsection{Critical Sections}
-
-%
-%
-\subsubsection{Mutexes}
-%Mutexes and semaphores (binary semaphore}
-While it is true that any locking mechanism can be expensive to both compute time and memory, \todoResearch{how expensive are locking mechanisms} typically, with acquired \tdd{}, the ratio of points in $\bP$ to the average neighborhood size \todoReword{add symbol for average neighborhood size} approaches $|\bP|$, therefore the speedup gained by exploiting the concurrency is definitely\todoResearch{quantify the cost} worth the cost of the added synchronization overhead when computing with even moderately sized meshes on a SIMP or SIMT modeled architecture.
-starts at ~\cite[~p.20]{Lang17}
-
-%
-%
-\subsection{Control \& Data Dependencies}
+\subsubsection{Control \& Data Dependencies}
 \label{ch2sPPssCS}
 %Data Dependencies: ~\cite[p.~358]{Lang17}
 %Section~\ref{ch2sACssCVP}
@@ -564,6 +554,35 @@ starts at ~\cite[~p.20]{Lang17}
 The concepts of control and data dependencies are not new ones, and can be dated back to the invention of multi-pass compilers\todoCitation{Data Dependencies and multi-pass compilers}. The field of study regarding the details is called dependence analysis and has far-reaching consequences from business management, economics, as well as software optimization\todoCitation{dependence analysis}. In general, the basic concept behind both control and data dependencies is that some procedure A is said to be dependent on another procedure B, if A requires B to be executed first.
 
 Figure~\ref{fig:simpleControlDependency} shows the ubiquitous if-then control structure as a simple example of a control dependency. It reads, ``if B is true, then do A''. In this case A is control dependent on B, because B must execute before it can be determined wether or not to execute A.
+
+\begin{figure}[ht]
+	\includestandalone[width=0.35\textwidth]{figures/tikz/simpleControlDependency}
+	{\caption[If-Then Control Dependency]{A simple example of control dependency using the if-then control structure, with each distinct operation colored in teal, and control dependency marked with an arrow.}\label{fig:simpleControlDependency}}
+\end{figure}
+
+Figure~\ref{fig:dataDependencyOfL2Norm} illustrates the less-than-simple example of data dependencies inherent to calculating the L2-norm of a position vector in $\mathbb{R}^{3}$, which has already been seen in Equation~\ref{eq:l2norm}, and will be seen often in this thesis. There are six individual procedures involved with calculating the L2-norm: three squarings, two additions, and one square root. The three squaring procedures are totally independent of each other and can be performed in any order, indeed even concurrently, in relation to one another. In contrast, the two additions are totally dependent on their addends. While the order in which the first two of the three addends are used is inconsequential, the first addition is always dependent on the completion of two squarings, and the second addition is dependent on not only the sum from the first addition, but the product of the third squaring as well. Finally, because the square root procedure is dependent on the execution of both additions, it also inherits their dependencies on the squaring procedures, and therefore must wait until the very end before executing last.\todoResearch{name of this inheritance, associative?}
+
+\begin{figure}[ht]
+	\includestandalone[width=1.0\textwidth]{figures/tikz/dataDependencyOfL2Norm}
+	{\caption[Data Dependencies in the L2-norm Calculation]{The data dependencies inherent to calculation of the L2-norm of a position vector in $\bR{3}$, with each distinct operation colored in teal, and data dependencies marked with arrows. The centered block in sand color represents an exclusive-or situation, abbreviated as xor, where one, and only one pair of operations shall execute.}\label{fig:dataDependencyOfL2Norm}}
+\end{figure}
+
+%
+%
+\subsubsection{Critical Sections}
+
+%
+%
+\subsubsection{Mutexes}
+%Mutexes and semaphores (binary semaphore}
+While it is true that any locking mechanism can be expensive to both compute time and memory, \todoResearch{how expensive are locking mechanisms} typically, with acquired \tdd{}, the ratio of points in $\bP$ to the average neighborhood size \todoReword{add symbol for average neighborhood size} approaches $|\bP|$, therefore the speedup gained by exploiting the concurrency is definitely\todoResearch{quantify the cost} worth the cost of the added synchronization overhead when computing with even moderately sized meshes on a SIMP or SIMT modeled architecture.
+starts at ~\cite[~p.20]{Lang17}
+
+%
+%
+\subsubsection{Explicit Synchronization}%3.2.5.5.3. Explicit Synchronization}
+\todoBackground{synchronizeThreads()}
+sand color to highlight the fact that the values stored in memory will change throughout the life of the total procedure, and without the protection of a locking mechanism, therefore, extra care must be taken so that the implementation of the parallel variant of the serial algorithm will maintain correctness.
 
 %
 %
@@ -591,24 +610,6 @@ C(N, P) = PTP(N, P)
 \subsubsection{Degree of Parallelism}
 	0 < q < 1 is the sequential part
 	1-q = is the parallelizable part
-
-\begin{figure}[ht]
-	\includestandalone[width=0.35\textwidth]{figures/tikz/simpleControlDependency}
-	{\caption[If-Then Control Dependency]{A simple example of control dependency using the if-then control structure, with each distinct operation colored in teal, and control dependency marked with an arrow.}\label{fig:simpleControlDependency}}
-\end{figure}
-
-Figure~\ref{fig:dataDependencyOfL2Norm} illustrates the less-than-simple example of data dependencies inherent to calculating the L2-norm of a position vector in $\mathbb{R}^{3}$, which has already been seen in Equation~\ref{eq:l2norm}, and will be seen often in this thesis. There are six individual procedures involved with calculating the L2-norm: three squarings, two additions, and one square root. The three squaring procedures are totally independent of each other and can be performed in any order, indeed even concurrently, in relation to one another. In contrast, the two additions are totally dependent on their addends. While the order in which the first two of the three addends are used is inconsequential, the first addition is always dependent on the completion of two squarings, and the second addition is dependent on not only the sum from the first addition, but the product of the third squaring as well. Finally, because the square root procedure is dependent on the execution of both additions, it also inherits their dependencies on the squaring procedures, and therefore must wait until the very end before executing last.\todoResearch{name of this inheritance, associative?}
-
-\begin{figure}[ht]
-	\includestandalone[width=1.0\textwidth]{figures/tikz/dataDependencyOfL2Norm}
-	{\caption[Data Dependencies in the L2-norm Calculation]{The data dependencies inherent to calculation of the L2-norm of a position vector in $\bR{3}$, with each distinct operation colored in teal, and data dependencies marked with arrows. The centered block in sand color represents an exclusive-or situation, abbreviated as xor, where one, and only one pair of operations shall execute.}\label{fig:dataDependencyOfL2Norm}}
-\end{figure}
-
-
-\subsubsection{Explicit Synchronization}%3.2.5.5.3. Explicit Synchronization}
-\todoBackground{synchronizeThreads()}
-\todoBackground{correctness}
-sand color to highlight the fact that the values stored in memory will change throughout the life of the total procedure, and without the protection of a locking mechanism, therefore, extra care must be taken so that the implementation of the parallel variant of the serial algorithm will maintain correctness.
 
 
 %\subsection{Hardware Implementation}%4. Hardware Implementation}
