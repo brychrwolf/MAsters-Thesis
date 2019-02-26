@@ -577,14 +577,12 @@ The three squaring procedures are totally independent of each other and can be p
 %
 %
 \subsubsection{Critical Sections}
-One consequence of processing in parallel is that
-
-often one will require that information be shared among threads, however it cannot be determined in what order
+One major consequence of processing in parallel is that, due to the independence enjoyed by threads, the sequence in which operations are performed can no longer always be guaranteed. That is not intrinsically a problem, however it becomes a critical issue once information must be shared among threads by reading from and writing to volatile memory, which is memory that may be changed by any thread. Sections of code containing instructions to read from or write to volatile memory are aptly named ``critical sections'', and special care must be taken in their regard, in order to ensure program correctness, despite not being able to determine in what order the operations may occur.
 
 race-conditions
 example: sum vector of integers
 
-For an illustrative example, consider Algorithm~\ref{alg:critialSection}, the very simple parallel program to compute the sum of a set of integers. Given the set $\{1,\,2,\,3,\,4\}$, the function \textit{parallelSum} instantiates the value $s$ as zero, in order to accumulate the sum calculated in each thread, then spawns two threads, which each execute the kernel \textit{parallelSum} with a unique subset of the work to be done. Each kernel then simultaneously adds the two integers, naively reads the current value of $s$, adds the sum to that value, then stores the result back into $s$.
+For an illustrative example, consider Algorithm~\ref{alg:critialSection}, the very simple parallel program to compute the sum of a set of integers. Given the set $\{1,\,2,\,3,\,4\}$, the function \textit{parallelSum} instantiates the value $s$ as zero, in order to later accumulate the sum calculated in each thread, then spawns two threads, which each execute the kernel \textit{accumulateSums} with a unique subset of the work to be done. Each kernel then simultaneously adds the two integers, naively reads the current value of $s$, adds the sum to that value, then stores the result back into $s$.
 
 \begin{algorithm}[ht]
 	\DontPrintSemicolon
@@ -605,16 +603,16 @@ For an illustrative example, consider Algorithm~\ref{alg:critialSection}, the ve
 	}
 
 	\bigskip
-\nl	\Kernel{sum($s$, $a$, $b$)}{
+\nl	\Kernel{accumulateSums($s$, $a$, $b$)}{
 \nl		$s' \leftarrow a + b$\;
 \nl		$s \leftarrow s + s'$\tcc*{Danger!}\label{algCritSec.danger}
 	}
 	\caption{Simple parallel algorithm, exhibiting an unprotected critical section \label{alg:critialSection}}
 \end{algorithm}%
 
-Unfortunately, the final result of the execution of function \textit{parallelSum} can not be accurately predicted, because the order of operations between each thread are not guaranteed. Closer evaluation of line~\ref{algCritSec.danger} will reveal the danger of the race condition inherent to the critical section implemented into this algorithm.
+Unfortunately, the final result of the execution of function \textit{parallelSum} can not be accurately predicted, because the order of operations between each thread are not guaranteed. Closer evaluation of line~\ref{algCritSec.danger} will reveal the danger of the race condition inherent to the critical section which exists in line~\ref{algCritSec.danger} of this algorithm.
 
-The high level code in line~\ref{algCritSec.danger} will translated by the compiler to the low level assembly instructions
+The high level code in line~\ref{algCritSec.danger} will translated by a compiler into the low level assembly instructions
 %
 \begin{algorithm}[ht]
 	\DontPrintSemicolon
@@ -626,8 +624,13 @@ The high level code in line~\ref{algCritSec.danger} will translated by the compi
 	\caption{Low level translation of critical section in Algorithm~\ref{alg:critialSection} \label{alg:critialSectionLowLevel}}
 \end{algorithm}%
 %
-which is then executed in parallel by both threads. Because the value $s$ is shared between both threads, while each thread remains independent therefore the order of operations between each thread are not guaranteed, therefore all the possible execution sequences would be %$\{1_a, 4_a, 1_b, 4_b\}$
+which is then executed in parallel by both threads. Because the value $s$ is in volatile memory, which is shared by both threads, and because each thread remains independent, performing their instructions sequentially at their own speeds, the total order of operations can not be guaranteed, and will fall within the range of limited permutations illustrated in Figure~\ref{fig:raceCondition}.
 
+\begin{figure}[ht]
+\ffigbox
+	{\includegraphics[width=0.8\linewidth]{figures/tikz/raceCondition.pdf}}
+	{\caption[SIMD Architecture]{A simplified impression of a system characterized as SIMD by Flynn's Taxonomy of concurrent architecture. The array of processors each receive the same kernel from a pool of instructions, then load a different portion of the data pool in order to process the combination in parallel.}\label{fig:raceCondition}}
+\end{figure}
 
 
   LANG pg 25

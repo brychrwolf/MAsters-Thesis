@@ -4,7 +4,8 @@ OUTPUTS = unionsOfSimpleBuildNeighborhoods.pdf \
 		  sacfDataDependencies.pdf \
 		  dataDependencyOfL2Norm.pdf \
 		  simpleControlDependency.pdf \
-		  simdArchitecture.pdf
+		  simdArchitecture.pdf \
+		  raceCondition.pdf
 
 
 
