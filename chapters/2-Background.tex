@@ -491,51 +491,79 @@ because function values are only stored alongside the Cartesian coordinates, 1-f
 %
 %
 %
-\subsection{Architectures of Concurrency}
-Hardware consists of memory and processors. Memory is divided into a hierarchy which starting at the registers on the processors themselves, increases in capacity, but decreases in speed.\todoReword{moves away from} Of particular interest to this thesis...\todoReword{continue}
+\subsection{Architecture of Concurrency} %Hardware
+Of the 4 classifications of the architectures of concurrency\todoCitation{Flynn, 1966 doi:10.1109/TC.1972.5009071.}, this thesis is primarily concerned with SIMD\footnote{or SIMT as is branded by NVIDIA}\todocitation{NVIDIA SIMT 4.1. SIMT Architecture}, single instruction, multiple data streams, which is the architecture of commercial workstations in use today. The SIMD classification is characterized by single instructions being executed in parallel on multiple data, which means simultaneously, typically requiring synchronization before the results may be further processed.
+
+Figure~\ref{fig:simdArchitecture}, illustrates a simplified impression of system which employs SIMD architecture.
+
+\begin{figure}[ht]
+\ffigbox
+	{\includegraphics[width=1.0\linewidth]{figures/triangularFaces.png}}
+	{\caption[SIMD Architecture]{The architecture characterized as SIMD by Flynn's Taxonomy\todoCitation{Flynn, 1966 doi:10.1109/TC.1972.5009071.} of systems, where a single instruction is executed simultaneously, in parallel, on }\label{fig:simdArchitecture}}
+\end{figure}
+
+The major advantage obtained by implementing software in SIMD system is the speedup gained when repetitive tasks which would otherwise be executed serially in a loop, one after another, can instead be computed simultaneously, incurring only minor synchronization overhead. Any operation performed in linear algebra, such as the multiplication of an entire vector by a scalar, is thus made much more scalable in regards to the time required to complete the computation for growing sizes of vectors.
+
+This concept can be extended to more complex programs, and indeed, the topic of the research presented in this thesis is implementing the convolutions of the complex algorithm for \Fors{t} to be executed for every point in a mesh, simultaneously, in parallel, on a SIMD system.
+
+All modern computers implement some form of parallelism, be it multi-core or multi-threaded processors, stream processors as found in GPUs, or networks of supercomputers or data centers. This thesis will focus on implementing \fors{t} in a way which can utilize the parallelism provided by the array of stream processors found in a commercially available GPGPU.
+
+GPGPU stands fo General Use Graphics Processing unit, as coined by Mark Harris, the founder of GPGPU.org\todoCitation{Mark Harris}, coined the term GPGPU.and it describes the hardware
+
+The technology
+
+
 
 %
 %
 %
 %
-\subsection{Concurrency vs Parallelism}
+\subsection{Serial Computation \& Threads}
+\todoBackground{"spawning a thread"}
+In a very general sense, when a computer executes a serial program, it proceeds one instruction at a time, sequentially in the order that it is written, reading and writing to memory as required. Individually, these are called threads of execution, and a single processing core can only process a single such thread at a time, however, it can rapidly perform context switching\todoCitation{context switching} among a multitude of self-contained threads, each with their own unique ids and memory addresses, in order to give the illusion of parallel processing.
+
+As memory to be processed by a thread is stored somewhere in a hierarchy which increases in size, but decreases in speed as one moves from the processor's registers, it is likely that a context switch will cause what is known as a cache miss\todoCitation{cache hit or miss, check Lang}, which incurs a time penalty while the processing stalls and the required memory is read from slower hardware sources.
 
 %
 %
 %
 %
-\subsection{Flynn's taxonomy}
-1.1	Single instruction stream single data stream (SISD)
-1.2	Single instruction stream, multiple data streams (SIMD)
-1.3	Multiple instruction streams, single data stream (MISD)
-1.4	Multiple instruction streams, multiple data streams (MIMD)
+\subsection{Evaluation and Analysis of Concurrent Algorithms}~\cite[p.~330]{Lang17}
+\subsubsection{Timing}
+\begin{equation}
+	N = input size (num. ops)
+	P = processor count
+	Ts(N) = Sequential execution time
+	Tbest(N) = Optimal execution time
+	TP(N, P) = Parallel runtime
+\end{equation}
+\subsubsection{Speedup, efficiency}
+	Speedup:
+S(N, P) = Tbest(N)/TP(N, P)
 
-%
-%
-\subsubsection{SIMT Architecture}%4.1. SIMT Architecture}
+	Efficiency:
+E(N, P) = Tbest (N)/PTP(N, P) = S/P
 
-%
-%
-%
-%
-\subsection{Critical Sections}
-\label{ch2sPPssCS}
-Thread Safety. C++ STL is not thread safe!
+	Costs:
+C(N, P) = PTP(N, P)
 
-%
-%
-%
-%
-\subsection{Mutexes and semaphores (binary semaphore}
-\label{ch2sPPssMS}
-While it is true that any locking mechanism can be expensive to both compute time and memory, \todoResearch{how expensive are locking mechanisms} typically, with acquired \tdd{}, the ratio of points in $\bP$ to the average neighborhood size \todoReword{add symbol for average neighborhood size} approaches $|\bP|$, therefore the speedup gained by exploiting the concurrency is definitely\todoResearch{quantify the cost} worth the cost of the added synchronization overhead when computing with even moderately sized meshes on a SIMP or SIMT modeled architecture.
-starts at ~\cite[~p.20]{Lang17}
+\subsubsection{Degree of Parallelism}
+	0 < q < 1 is the sequential part
+	1-q = is the parallelizable part
+
 
 %
 %
 %
 %
 \subsection{Control \& Data Dependencies}
+\subsection{Critical Sections}
+\label{ch2sPPssCS}
+%Data Dependencies: ~\cite[p.~358]{Lang17}
+%Section~\ref{ch2sACssCVP}
+%Data Partitioning:
+%Calculations depend on specific data structures.~\cite[p.~357]{Lang17}
+%As in edge lengths depend on the neighborhoods.
 \todoResearch{https://en.wikipedia.org/wiki/Loop-level\_parallelism}
 %True (Flow) Dependence	S1 ->T S2	A true dependence between S1 and S2 means that S1 writes to a location later read from by S2
 %Anti Dependence	S1 ->A S2	An anti-dependence between S1 and S2 means that S1 reads from a location later written to by S2.
@@ -557,111 +585,39 @@ Figure~\ref{fig:dataDependencyOfL2Norm} illustrates the less-than-simple example
 	{\caption[Data Dependencies in the L2-norm Calculation]{The data dependencies inherent to calculation of the L2-norm of a position vector in $\bR{3}$, with each distinct operation colored in teal, and data dependencies marked with arrows. The centered block in sand color represents an exclusive-or situation, abbreviated as xor, where one, and only one pair of operations shall execute.}\label{fig:dataDependencyOfL2Norm}}
 \end{figure}
 
+%
+%
+%
+%
+\subsection{Mutexes and semaphores (binary semaphore}
+\todoBackground{guarding mechanisms}
+\label{ch2sPPssMS}
+While it is true that any locking mechanism can be expensive to both compute time and memory, \todoResearch{how expensive are locking mechanisms} typically, with acquired \tdd{}, the ratio of points in $\bP$ to the average neighborhood size \todoReword{add symbol for average neighborhood size} approaches $|\bP|$, therefore the speedup gained by exploiting the concurrency is definitely\todoResearch{quantify the cost} worth the cost of the added synchronization overhead when computing with even moderately sized meshes on a SIMP or SIMT modeled architecture.
+starts at ~\cite[~p.20]{Lang17}
 
+
+%\subsection{Host Memory and Device Memory}
+\todoBackground{memory vs speed}
+Hardware consists of memory and processors. Memory is divided into a hierarchy which starting at the registers on the processors themselves, increases in capacity, but decreases in speed.\todoReword{moves away from} Of particular interest to this thesis...\todoReword{continue}
+
+
+\subsubsection{Explicit Synchronization}%3.2.5.5.3. Explicit Synchronization}
+\todoBackground{synchronizeThreads()}
+\todoBackground{correctness}
 sand color to highlight the fact that the values stored in memory will change throughout the life of the total procedure, and without the protection of a guarding mechanism, therefore, extra care must be taken so that the implementation of the parallel variant of the serial algorithm will maintain correctness.
 
-\todoBackground{guarding mechanisms}
 
-\todoBackground{correctness}
-
-%
-%Data Partitioning:
-%Calculations depend on specific data structures.~\cite[p.~357]{Lang17}
-%As in edge lengths depend on the neighborhoods.
-
-%
-%Data Dependencies: ~\cite[p.~358]{Lang17}
-%Section~\ref{ch2sACssCVP}
-%
-%Functional Partitioning: ~\cite[p.~359]{Lang17}
-%different operations on the same data
-
-%
-%
-%
-%
-\subsection{Serial Computation \& Threads}
-In a very general sense, when a computer executes a serial program, it proceeds one instruction at a time, sequentially in the order that it is written, reading and writing to memory as required. Individually, these are called threads of execution, and a single processing core can only process a single such thread at a time, however, it can rapidly perform context switching\todoCitation{context switching} among a multitude of self-contained threads, each with their own unique ids and memory addresses, in order to give the illusion of parallel processing.
-
-As memory to be processed by a thread is stored somewhere in a hierarchy which increases in size, but decreases in speed as one moves from the processor's registers, it is likely that a context switch will cause what is known as a cache miss\todoCitation{cache hit or miss, check Lang}, which incurs a time penalty while the processing stalls and the required memory is read from slower hardware sources.
-
-\todoBackground{"spawning a thread"}
-
-%
-%
-%
-%
-\subsection{Multi-threaded Computation}
-All modern computers implement some form of parallelism, be it multi-core or multi-threaded processors, stream processors as found in GPUs, or networks of supercomputers or data centers. This thesis will focus on implementing \fors{t} in a way which can utilize the parallelism provided by the array of stream processors found in a commercially available GPGPU.
-\todoBackground{synchronizeThreads()}
-\todoBackground{memory vs speed}
-
-%
-%
-\subsubsection{Explicit Synchronization}%3.2.5.5.3. Explicit Synchronization}
-
-
-%
-%
-%
-%
-\subsection{Hardware Implementation}%4. Hardware Implementation}
-%
-%
-%
+%\subsection{Hardware Implementation}%4. Hardware Implementation}
 %\section{CUDA extended C++: An interface for GPGPU implementation}
-
-%
-%
-%
-%\subsection{The C++ Standard Library}
-
-%
-%\subsubsection{Set}
-%\label{ch2sCECssCSLsssS}
-%\todoCitation{https://en.cppreference.com/w/cpp/container/set}
-
 %\subsection{CUDA C Runtime}%3.2. CUDA C Runtime}
-
 %\subsection{Versioning and Compatibility}%3.3. Versioning and Compatibility}
-%\subsection{Host Memory and Device Memory}
 %\subsection{Versions <9, vs >= 9}
 %
-%
-%
-%
-%
-%\section{Evaluation and Analysis of Concurrent Algorithms}~\cite[p.~330]{Lang17}
-%Multi-node out of scope?!
-%
-\subsection{Timing}
-%\begin{equation}
-%	N = input size (num. ops)
-%	P = processor count
-%	Ts(N) = Sequential execution time
-%	Tbest(N) = Optimal execution time
-%	TP(N, P) = Parallel runtime
-%\end{equation}
-%
-\subsection{Speedup, efficiency}
-%	Speedup:
-%S(N, P) = Tbest(N)/TP(N, P)
-
-%	Efficiency:
-%E(N, P) = Tbest (N)/PTP(N, P) = S/P
-
-%	Costs:
-%C(N, P) = PTP(N, P)
-%
-\subsection{Degree of Parallelism}
-%	0 < q < 1 is the sequential part
-%	1-q = is the parallelizable part
-%
-\subsection{Iso-efficiency}
+%\subsection{Iso-efficiency}
 %	WK(P) = iso-efficient if it fulfills:
 %	TO(WK(P), P) = KWK(P)~\cite[p.~350]{Lang17}
 %
-\subsection{Scalability}
+%\subsection{Scalability}
 %	A parallel system is called scalable only if in has an iso-efficency function
 %
 %
