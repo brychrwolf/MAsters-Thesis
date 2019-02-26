@@ -493,7 +493,7 @@ because function values are only stored alongside the Cartesian coordinates, 1-f
 %
 %
 \subsection{Serial Computation \& Threads}
-In a very general sense, when a computer executes a serial program, it proceeds one instruction at a time, sequentially in the order that it is written in the source code, and as required, reading from and writing to memory which must then be reserved for it. Individually, these processes are called threads of execution, and a single processing core can only process a single thread at a time\footnote{This is not counting the limited application of parallel processing by exploiting the width of modern register arrays, in order to concurrently compute instructions at half or less precision.}. 
+In a very general sense, when a computer executes a serial program, it proceeds one instruction at a time, sequentially in the order that it is written in the source code, and as required, reading from and writing to memory which must then be reserved for it. Individually, these processes are called threads of execution, and a single processing core can only process a single thread at a time\footnote{This is not counting the limited application of parallel processing by exploiting the width of modern register arrays, in order to concurrently compute instructions at half or less precision.}.
 
 Modern processors, however, can perform context switching\todoCitation{context switching}, which means loading the memory and state of a given thread, among a multitude of self-contained threads, so rapidly, as to give the illusion of parallel processing. Alternatively, a system which exhibits some kind of concurrency architecture may execute programs which ``spawn'' new threads, which are given their own unique context, thus may actually be run concurrently with other threads, enabling real parallel processing.
 
@@ -502,7 +502,7 @@ Modern processors, however, can perform context switching\todoCitation{context s
 %
 %
 \subsection{SIMD - A Concurrency Architecture}
-All modern computers implement some form of parallelism, be it multi-core or multi-threaded processors, arrays of stream processors as found in GPUs, or the networks comprising supercomputers and data centers, and can therefore be classified by Flynn's Taxonomy of the different architectures of concurrency.\todoCitation{Flynn, 1966 doi:10.1109/TC.1972.5009071.} 
+All modern computers implement some form of parallelism, be it multi-core or multi-threaded processors, arrays of stream processors as found in GPUs, or the networks comprising supercomputers and data centers, and can therefore be classified by Flynn's Taxonomy of the different architectures of concurrency.\todoCitation{Flynn, 1966 doi:10.1109/TC.1972.5009071.}
 
 Of the four classifications\footnote{SISD, SIMD, MISD, MIMD} originally defined by Flynn, this thesis is primarily concerned with SIMD\footnote{or SIMT as is branded by NVIDIA}\todoCitation{NVIDIA SIMT 4.1. SIMT Architecture}, which is the acronym for Single Instruction / Multiple Data. As the name implies, the SIMD classification is characterized by systems which are able to take a single instruction, otherwise known as a kernel\todoCitation{CUDA, kernels}, and execute it simultaneously on multiple elements from a pool of data; in general, being described as ``processing in parallel''.
 
@@ -514,7 +514,7 @@ Figure~\ref{fig:simdArchitecture}, illustrates a simplified impression of a syst
 	{\caption[SIMD Architecture]{A simplified impression of a system characterized as SIMD by Flynn's Taxonomy of concurrent architecture. The array of processors each receive the same kernel from a pool of instructions, then load a different portion of the data pool in order to process the combination in parallel.}\label{fig:simdArchitecture}}
 \end{figure}\todoCitation{Flynn, 1966 doi:10.1109/TC.1972.5009071.}
 
-The motivation to implement software which utilizes the architecture of an SIMD system is the speedup to be gained, which may be quantified as discussed in Section~\ref{xxxxxx}\todoReference{quantifiable speedup}, and stems from what is known as loop-level parallelism\todoCitation{loop level parallelism}, which is the modification of instructions which would otherwise be executed serially in a loop, to instead be computed simultaneously, in parallel, incurring only minor synchronization overhead. For example: any operation performed in linear algebra, such as the subtraction of two high-dimensional arrays, is thus made much more scalable in regards to the time required for the computation to complete, as vectors of larger and larger sizes are considered. 
+The motivation to implement software which utilizes the architecture of an SIMD system is the speedup to be gained, which may be quantified as discussed in Section~\ref{xxxxxx}\todoReference{quantifiable speedup}, and stems from what is known as loop-level parallelism\todoCitation{loop level parallelism}, which is the modification of instructions which would otherwise be executed serially in a loop, to instead be computed simultaneously, in parallel, incurring only minor synchronization overhead. For example: any operation performed in linear algebra, such as the subtraction of two high-dimensional arrays, is thus made much more scalable in regards to the time required for the computation to complete, as vectors of larger and larger sizes are considered.
 
 With the proper programming strategy, using the proper frameworks, the model for parallel processing on SIMD architecture can be extended to more complex instructions, and indeed, a major portion of the research presented in this thesis is focused on implementing the software to convolve the complex algorithm for \Fors{t}, by simultaneously executing its various kernels of instructions on every point and one-ring neighborhood in a mesh, in order to fully utilize the parallel architecture of an SIMD system; specifically, commercially-available GPGPUs, which are described in the next section.
 
@@ -527,11 +527,11 @@ GPGPU is an acronym which stands for ``General Purpose, Graphics Processing Unit
 
 Figure~\ref{fig:cpuvgpu} illustrates the principle difference between a CPU, central processing unit, and a GPU. Because graphics rendering is mostly comprised of compute-intensive, but highly parallel procedures, GPUs have been designed with less focus on data flow control and more transistors devoted to data processing, mimicking the design of early supercomputers\todoCitation{LANG, cray was a big GPU}, and diverging from the design of modern CPUs, which have devoted more chip space to processing at higher frequencies, while using large, multi-leveled caches memory for optimization.
 
-\begin{figure}[ht]
-\ffigbox
-	{\includegraphics[width=1.0\linewidth]{figures/cpuvgpu.png}}%{figures/tikz/cpuvgpu.pdf}}
-	{\caption[CPU vs GPU Construction]{An illustration of the principle differences between a CPU and a GPU. CPUs have devoted more chip space to processing at higher frequencies, with more flow control and memory caching, while GPUs have been designed with more transistors devoted to data processing.}\label{fig:cpuvgpu}}
-\end{figure}
+%\begin{figure}[ht]
+%\ffigbox
+%	{\includegraphics[width=1.0\linewidth]{figures/cpuvgpu.png}}%{figures/tikz/cpuvgpu.pdf}}
+%	{\caption[CPU vs GPU Construction]{An illustration of the principle differences between a CPU and a GPU. CPUs have devoted more chip space to processing at higher frequencies, with more flow control and memory caching, while GPUs have been designed with more transistors devoted to data processing.}\label{fig:cpuvgpu}}
+%\end{figure}
 
 %
 %
@@ -558,7 +558,7 @@ Figure~\ref{fig:simpleControlDependency} shows the ubiquitous if-then control st
 	{\caption[If-Then Control Dependency]{A simple example of control dependency using the if-then control structure, with each distinct operation colored in teal, and control dependency marked with an arrow.}\label{fig:simpleControlDependency}}
 \end{figure}
 
-Figure~\ref{fig:dataDependencyOfL2Norm} illustrates the less-than-simple example of data dependencies inherent to calculating the L2-norm of a position vector in $\mathbb{R}^{3}$; an operation which will be revisited often in this thesis, and whose definition was already presented in Equation~\ref{eq:l2norm}. There are six individual procedures involved with calculating the L2-norm: three squarings, two additions, and one square root. 
+Figure~\ref{fig:dataDependencyOfL2Norm} illustrates the less-than-simple example of data dependencies inherent to calculating the L2-norm of a position vector in $\mathbb{R}^{3}$; an operation which will be revisited often in this thesis, and whose definition was already presented in Equation~\ref{eq:l2norm}. There are six individual procedures involved with calculating the L2-norm: three squarings, two additions, and one square root.
 
 \begin{figure}[ht]
 	\includestandalone[width=1.0\textwidth]{figures/tikz/dataDependencyOfL2Norm}
@@ -577,53 +577,60 @@ The three squaring procedures are totally independent of each other and can be p
 %
 %
 \subsubsection{Critical Sections}
-One consequence of processing in parallel is that 
+One consequence of processing in parallel is that
 
-often one will require that information be shared among threads, however it cannot be determined in what order 
+often one will require that information be shared among threads, however it cannot be determined in what order
 
 race-conditions
 example: sum vector of integers
 
-For an illustrative example, consider the very simple parallel program to compute the sum of a set of integers $\{1,\ldots,\,10\}$ using two threads, $\Pi_1$ and $\Pi_2$. Each thread will then load a subset of the work to be done; perhaps $\Pi_1$ calculates that the sum of $\{1,\ldots,\,5}$, while simultaneously, $\Pi_2$ calculates that the sum of the rest. A naive approach would be to simply create a new variable $s$, into which the threads will accumulate the values.  LANG pg 25
-
-
-%
-\begin{equation}
-	\bF := \left \{1,\ldots,\,10\right \}
-	
-	\label{eq:}
-
-	\
-\end{equation}%
-%\nomenclature[ia]{$\bF$}{the set of function values $f$; a scalar field}%
-
+For an illustrative example, consider Algorithm~\ref{alg:critialSection}, the very simple parallel program to compute the sum of a set of integers. Given the set $\{1,\,2,\,3,\,4\}$, the function \textit{parallelSum} instantiates the value $s$ as zero, in order to accumulate the sum calculated in each thread, then spawns two threads, which each execute the kernel \textit{parallelSum} with a unique subset of the work to be done. Each kernel then simultaneously adds the two integers, naively reads the current value of $s$, adds the sum to that value, then stores the result back into $s$.
 
 \begin{algorithm}[ht]
 	\DontPrintSemicolon
 	\SetCommentSty{small}
 	\SetKwFor{For}{for}{:}{}
 	\SetKwProg{Func}{Function}{}{}
-	\SetKwProg{Sub}{Subroutine}{}{}
+	\SetKwProg{Kernel}{Kernel}{}{}
 	\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
 
+	\Input{the set of integers $\{1,\,2,\,3,\,4\}$}
+	\Output{the sum $s$}
+
 	\bigskip
-\nl	\Func{parallelBuildNeighborhoods($\rho$, $\bT$, $|\bP|$)}{
-\nl		$\sigma \leftarrow |\bT|\mathbin{/}\rho$\tcc*{assuming an integer quotient}
-\nl		$\fM \leftarrow \{\mu_1,\,\ldots,\,\mu_{|\bP|}\}$\;
-\nl		\For{$\Pi \leftarrow 1$ \KwTo $\rho\mathbin{/}4$}{
-\nl			\ProgSty{$\sim$build($\Pi$, $\sigma$, $\fM$, $\bT$)}\;
-		}
-\nl		\ProgSty{synchronizeThreads()}\;
+\nl	\Func{parallelSum($\{1,\,2,\,3,\,4\}$)}{
+\nl		$s \leftarrow 0$\;
+\nl		\ProgSty{$\sim$sum($s$, 1, 2)}\;
+\nl		\ProgSty{$\sim$sum($s$, 3, 4)}\;
 	}
 
 	\bigskip
-\nl	\Sub{build($\Pi$, $\sigma$, $\fM$, $\bT$)}{\label{algPBN.build}
-\nl		$\check{\sigma} \leftarrow (\Pi-1)\,\sigma+1$\tcc*{works through its stride}\label{algPBN.stride}
-\nl		$\ProcSty{unlock}(\mu_a)$\;
+\nl	\Kernel{sum($s$, $a$, $b$)}{
+\nl		$s' \leftarrow a + b$\;
+\nl		$s \leftarrow s + s'$\tcc*{Danger!}\label{algCritSec.danger}
 	}
-	\caption{Parallel algorithm for building the family of sets of all members of each neighborhood discovered in the mesh \label{alg:critialSection}}
+	\caption{Simple parallel algorithm, exhibiting an unprotected critical section \label{alg:critialSection}}
 \end{algorithm}%
 
+Unfortunately, the final result of the execution of function \textit{parallelSum} can not be accurately predicted, because the order of operations between each thread are not guaranteed. Closer evaluation of line~\ref{algCritSec.danger} will reveal the danger of the race condition inherent to the critical section implemented into this algorithm.
+
+The high level code in line~\ref{algCritSec.danger} will translated by the compiler to the low level assembly instructions
+%
+\begin{algorithm}[ht]
+	\DontPrintSemicolon
+	\SetCommentSty{small}
+\nl	R1 $\leftarrow s$\;
+\nl	R2 $\leftarrow s'$\;
+\nl R3 $\leftarrow$ ADD R1 R2\;
+\nl	$s \leftarrow$ R3\;
+	\caption{Low level translation of critical section in Algorithm~\ref{alg:critialSection} \label{alg:critialSectionLowLevel}}
+\end{algorithm}%
+%
+which is then executed in parallel by both threads. Because the value $s$ is shared between both threads, while each thread remains independent therefore the order of operations between each thread are not guaranteed, therefore all the possible execution sequences would be %$\{1_a, 4_a, 1_b, 4_b\}$
+
+
+
+  LANG pg 25
 %
 %
 \subsubsection{Mutexes}
