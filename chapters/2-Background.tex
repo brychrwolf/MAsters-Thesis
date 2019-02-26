@@ -493,25 +493,25 @@ because function values are only stored alongside the Cartesian coordinates, 1-f
 %
 %
 \subsection{Architecture of Concurrency} %Hardware
-Of the 4 classifications\footnote{SISD, SIMD, MISD, MIMD} of architectures of concurrency, this thesis is primarily concerned with SIMD\footnote{or SIMT as is branded by NVIDIA}\todoCitation{NVIDIA SIMT 4.1. SIMT Architecture}, which is the acronym for Single Instruction Multiple Data, as originally defined by\todoCitation{Flynn, 1966 doi:10.1109/TC.1972.5009071.}, which describes the architecture of nearly every commercially available computer today. As the name implies, the SIMD classification is characterized by systems which are able to take a single instruction, otherwise known as a kernel, and execute it in parallel, which means simultaneously, on multiple elements from a pool of data, then typically requiring synchronization before the results may be further processed.
+Of the 4 classifications\footnote{SISD, SIMD, MISD, MIMD} of architectures of concurrency, this thesis is primarily concerned with SIMD\footnote{or SIMT as is branded by NVIDIA}\todoCitation{NVIDIA SIMT 4.1. SIMT Architecture}, which is the acronym for Single Instruction / Multiple Data, as originally defined by [66]\todoCitation{Flynn, 1966 doi:10.1109/TC.1972.5009071.}, which describes the architecture of nearly every commercially-available computer today\todoCitation{Lang, most comps now are SIMD}. As the name implies, the SIMD classification is characterized by systems which are able to take a single instruction, otherwise known as a kernel\todoCitation{CUDA, kernels}, and execute it simultaneously on multiple elements from a pool of data; in general, being described as ``processing in parallel''.
 
-Figure~\ref{fig:simdArchitecture}, illustrates a simplified impression of system which employs SIMD architecture.
+Figure~\ref{fig:simdArchitecture}, illustrates a simplified impression of a system which employs SIMD architecture. The array of processors each receive the same kernel from a pool of instructions, then load a different portion of the data pool in order to process to combination in parallel.
 
 \begin{figure}[ht]
 \ffigbox
 	{\includegraphics[width=1.0\linewidth]{figures/tikz/simdArchitecture.pdf}}
-	{\caption[SIMD Architecture]{The architecture characterized as SIMD by Flynn's Taxonomy of systems, where a single instruction is executed simultaneously, in parallel, on }\label{fig:simdArchitecture}}
+	{\caption[SIMD Architecture]{A simplified impression of a system characterized as SIMD by Flynn's Taxonomy of concurrent architecture. The array of processors each receive the same kernel from a pool of instructions, then load a different portion of the data pool in order to process to combination in parallel.}\label{fig:simdArchitecture}}
 \end{figure}\todoCitation{Flynn, 1966 doi:10.1109/TC.1972.5009071.}
 
-The major advantage obtained by implementing software in SIMD system is the quantifiable speedup gained, as disscussed in detail in Section~\ref{xxxxxx} when repetitive tasks which would otherwise be executed serially in a loop, one after another, can instead be computed simultaneously, incurring only minor synchronization overhead. Any operation performed in linear algebra, such as the multiplication of an entire vector by a scalar, is thus made much more scalable in regards to the time required to complete the computation for growing sizes of vectors.
+The major advantage obtained by implementing software to utilize the architecture of an SIMD system, is the quantifiable speedup gained, as discussed in detail in Section~\ref{xxxxxx}\todoReference{quantifiable speedup}, when repetitive tasks which would otherwise be executed serially in a loop, one after another, instead are computed simultaneously, in parallel, incurring only minor synchronization overhead. For example: any operation performed in linear algebra, such as the subtraction of two high-dimensional arrays, is thus made much more scalable in regards to the time required for the computation to complete as vectors of larger and larger sizes are considered.
 
-This concept can be extended to more complex programs, and indeed, the topic of the research presented in this thesis is implementing the convolutions of the complex algorithm for \Fors{t} to be executed for every point in a mesh, simultaneously, in parallel, on a SIMD system.
+This concept can be extended to more complex programs, and indeed, a major portion of the research presented in this thesis is implementing the software to convolve the complex algorithm for \Fors{t}, to be executed for every point in a mesh simultaneously, by utilizing the parallel architecture of SIMD systems.
+
+, then typically requiring synchronization before the results may be further processed
 
 All modern computers implement some form of parallelism, be it multi-core or multi-threaded processors, stream processors as found in GPUs, or networks of supercomputers or data centers. This thesis will focus on implementing \fors{t} in a way which can utilize the parallelism provided by the array of stream processors found in a commercially available GPGPU.
 
 GPGPU stands fo General Use Graphics Processing unit, as coined by Mark Harris, the founder of GPGPU.org\todoCitation{Mark Harris}, coined the term GPGPU.and it describes the hardware
-
-The technology
 
 %\subsection{Host Memory and Device Memory}
 \todoBackground{memory vs speed}
