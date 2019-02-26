@@ -584,8 +584,45 @@ often one will require that information be shared among threads, however it cann
 race-conditions
 example: sum vector of integers
 
-For example, consider the very simple parallel program which computes the sum of the set of four integers $\{1,\,2,\,3,\,4\}$... page 25 LANG
+For an illustrative example, consider the very simple parallel program to compute the sum of a set of integers $\{1,\ldots,\,10\}$ using two threads, $\Pi_1$ and $\Pi_2$. Each thread will then load a subset of the work to be done; perhaps $\Pi_1$ calculates that the sum of $\{1,\ldots,\,5}$, while simultaneously, $\Pi_2$ calculates that the sum of the rest. A naive approach would be to simply create a new variable $s$, into which the threads will accumulate the values.  LANG pg 25
 
+
+%
+\begin{equation}
+	\bF := \left \{1,\ldots,\,10\right \}
+	
+	\label{eq:}
+
+	\
+\end{equation}%
+%\nomenclature[ia]{$\bF$}{the set of function values $f$; a scalar field}%
+
+
+\begin{algorithm}[ht]
+	\DontPrintSemicolon
+	\SetCommentSty{small}
+	\SetKwFor{For}{for}{:}{}
+	\SetKwProg{Func}{Function}{}{}
+	\SetKwProg{Sub}{Subroutine}{}{}
+	\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
+
+	\bigskip
+\nl	\Func{parallelBuildNeighborhoods($\rho$, $\bT$, $|\bP|$)}{
+\nl		$\sigma \leftarrow |\bT|\mathbin{/}\rho$\tcc*{assuming an integer quotient}
+\nl		$\fM \leftarrow \{\mu_1,\,\ldots,\,\mu_{|\bP|}\}$\;
+\nl		\For{$\Pi \leftarrow 1$ \KwTo $\rho\mathbin{/}4$}{
+\nl			\ProgSty{$\sim$build($\Pi$, $\sigma$, $\fM$, $\bT$)}\;
+		}
+\nl		\ProgSty{synchronizeThreads()}\;
+	}
+
+	\bigskip
+\nl	\Sub{build($\Pi$, $\sigma$, $\fM$, $\bT$)}{\label{algPBN.build}
+\nl		$\check{\sigma} \leftarrow (\Pi-1)\,\sigma+1$\tcc*{works through its stride}\label{algPBN.stride}
+\nl		$\ProcSty{unlock}(\mu_a)$\;
+	}
+	\caption{Parallel algorithm for building the family of sets of all members of each neighborhood discovered in the mesh \label{alg:critialSection}}
+\end{algorithm}%
 
 %
 %
