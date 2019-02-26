@@ -1,0 +1,66 @@
+\documentclass{standalone}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows.meta}
+\input{../../myCommands.tex}
+
+\begin{document}
+\tikzset{%
+	>={Latex[width=.4cm, length=.4cm]},
+	base/.style = {
+		draw=black, fill=white, thick,
+		text centered, font=\sffamily, inner sep=.2cm},
+	%Variable
+	baseVar/.style = {base, rectangle, rounded corners,
+		minimum width=1cm, minimum height=1cm},
+	%Operations
+	baseOp/.style = {base, ellipse,
+		minimum width=1cm, minimum height=1cm},
+	%Lines
+	baseLine/.style = {line width=.1cm},
+	%Colors
+	tealStyle/.style = {draw=MyTeal, fill=MyLtTeal},
+	coralStyle/.style = {draw=MyCoral, fill=MyLtCoral},
+	sandStyle/.style = {draw=MySand, fill=MyLtSand},
+	%
+	commentNode/.style = {text=darkgray, fill=white},
+	indVar/.style = {baseVar, tealStyle},
+	indOp/.style = {baseOp, tealStyle},
+	indLine/.style = {baseLine, draw=MyTeal},
+	depVar/.style = {baseVar, coralStyle},
+	depOp/.style = {baseOp, coralStyle},
+	depLine/.style = {baseLine, draw=MyCoral},
+	mutVar/.style = {baseVar, sandStyle},
+	mutOp/.style = {baseOp, sandStyle},
+	mutLine/.style = {baseLine, draw=MySand},
+}
+\begin{tikzpicture}[node distance=0cm]
+	\node (dp) [indVar, xshift=5.5cm, yshift=2cm, minimum width=12.75cm] {Data Pool};
+	\node (ip) [mutVar, xshift=-2.5cm, yshift=-1cm, text width=1.75cm, minimum height=3cm] {Instruction Pool};
+	\node (p1) [depVar, xshift=0cm] {Processor};
+	\node (p2) [depVar, xshift=2.2cm] {Processor};
+	\node (p3) [depVar, xshift=4.4cm] {Processor};
+	\node (p4) [depVar, xshift=6.6cm] {Processor};
+	\node (p5) [depVar, xshift=8.8cm] {Processor};
+	\node (p6) [depVar, xshift=11cm] {Processor};
+	%\foreach \x in {-1cm,-0.5cm,1cm}
+	%	\draw (\x,-1pt) -- (\x,1pt);
+
+	\draw[->, indLine] (0cm, 1.5cm) -- (p1.north);
+	\draw[->, indLine] (2.2cm, 1.5cm) -- (p2.north);
+	\draw[->, indLine] (4.4cm, 1.5cm) -- (p3.north);
+	\draw[->, indLine] (6.6cm, 1.5cm) -- (p4.north);
+	\draw[->, indLine] (8.8cm, 1.5cm) -- (p5.north);
+	\draw[->, indLine] (11cm, 1.5cm) -- (p6.north);
+
+	\draw[mutLine] (-1.425cm, -1.5) -- (11.05cm, -1.5cm);
+%	\draw[->, mutLine, double] (ls.east) .. controls (0cm,-6cm) and (0cm,-3.5cm).. (Evi);
+	\draw[->, mutLine] (0cm, -1.5cm) -- (p1.south);
+	\draw[->, mutLine] (2.2cm, -1.5cm) -- (p2.south);
+	\draw[->, mutLine] (4.4cm, -1.5cm) -- (p3.south);
+	\draw[->, mutLine] (6.6cm, -1.5cm) -- (p4.south);
+	\draw[->, mutLine] (8.8cm, -1.5cm) -- (p5.south);
+	\draw[->, mutLine] (11cm, -1.5cm) -- (p6.south);
+
+\end{tikzpicture}
+\end{document}
