@@ -493,9 +493,13 @@ because function values are only stored alongside the Cartesian coordinates, 1-f
 %
 %
 \subsection{Serial Computation \& Threads}
-In a very general sense, when a computer executes a serial program, it proceeds one instruction at a time, sequentially in the order that it is written in the source code, and as required, reading from and writing to memory which must then be reserved for it. Individually, these processes are called threads of execution, and a single processing core can only process a single thread at a time\footnote{This is not counting the limited application of parallel processing by exploiting the width of modern register arrays, in order to concurrently compute instructions at half or less precision.}.
+In a very general sense, when a computer executes a serial program, it proceeds one instruction at a time, sequentially in the order that it is written in the source code, and as required, reading from and writing to memory which must then be reserved for it. Individually, these processes are called ``threads of execution'', or just ``threads'', and a single processing core can only process a single such thread at a time\footnote{This is not counting the limited application of parallel processing by exploiting the width of modern register arrays, in order to concurrently compute instructions at half or less precision.}.
 
-Modern processors, however, can perform context switching\todoCitation{context switching}, which means loading the memory and state of a given thread, among a multitude of self-contained threads, so rapidly, as to give the illusion of parallel processing. Alternatively, a system which exhibits some kind of concurrency architecture may execute programs which ``spawn'' new threads, which are given their own unique context, thus may actually be run concurrently with other threads, enabling real parallel processing.
+Modern processors, however, can perform fast context switching\todoCitation{context switching}, which means loading the memory and state of a new thread, among a multitude of self-contained threads, and executing it so rapidly, as to give the illusion of parallel processing; similar to commonly known phenomenon where individual frames of film, when viewed at a high enough frequency, create the illusion of moving pictures\todoCitation{frame rates of movies}.
+
+Fast context switching has its limitations, as even at the modern frequency of 4GHz\todoCitation{cpu benchmarks} per core, a serial algorithm can take dozens of hours, or even days to finish computing, when iterating many times over a large collections of data, requiring as seen in our experiments\todoReference{experiments} comparing the serial version and the parallel variant of \Fors{t}.
+
+Alternatively, a system which exhibits some kind of architecture for real concurrency may execute programs which can then ``spawn'' new threads, which are given their own unique context, and thus may be run simultaneously on individual processing cores; enabling real parallel processing. One such architecture is discussed in the next section.
 
 %
 %
@@ -516,7 +520,7 @@ Figure~\ref{fig:simdArchitecture}, illustrates a simplified impression of a syst
 
 The motivation to implement software which utilizes the architecture of an SIMD system is the speedup to be gained, which may be quantified as discussed in Section~\ref{xxxxxx}\todoReference{quantifiable speedup}, and stems from what is known as loop-level parallelism\todoCitation{loop level parallelism}, which is the modification of instructions which would otherwise be executed serially in a loop, to instead be computed simultaneously, in parallel, incurring only minor synchronization overhead. For example: any operation performed in linear algebra, such as the subtraction of two high-dimensional arrays, is thus made much more scalable in regards to the time required for the computation to complete, as vectors of larger and larger sizes are considered.
 
-With the proper programming strategy, using the proper frameworks, the model for parallel processing on SIMD architecture can be extended to more complex instructions, and indeed, a major portion of the research presented in this thesis is focused on implementing the software to convolve the complex algorithm for \Fors{t}, by simultaneously executing its various kernels of instructions on every point and one-ring neighborhood in a mesh, in order to fully utilize the parallel architecture of an SIMD system; specifically, commercially-available GPGPUs, which are described in the next section.
+With the proper programming strategy, using the proper frameworks, the model for parallel processing on SIMD architecture can be extended to far more complex instructions, and indeed, a major portion of the research presented in this thesis is focused on implementing the software to convolve the complex algorithm for \Fors{t}, by simultaneously executing its various kernels of instructions on every point and one-ring neighborhood in a mesh, in order to fully utilize the parallel architecture of an SIMD system; specifically, commercially-available GPGPUs, which are described in the next section.
 
 %
 %
@@ -525,13 +529,13 @@ With the proper programming strategy, using the proper frameworks, the model for
 \subsection{GPGPU - General Use, Graphics Processing Unit}
 GPGPU is an acronym which stands for ``General Purpose, Graphics Processing Unit'', as coined by Mark Harris, the founder of GPGPU.org\todoCitation{Mark Harris, coined the term GPGPU}, and as the name implies, describes the hardware which was originally developed to exclusively perform graphics processing, GPUs, but can now be utilized for general purposes by using the frameworks which are publicly available, for example OpenCL\todoCitation{OpenCL} and CUDA\todoCitation{CUDA}.
 
-Figure~\ref{fig:cpuvgpu} illustrates the principle difference between a CPU, central processing unit, and a GPU. Because graphics rendering is mostly comprised of compute-intensive, but highly parallel procedures, GPUs have been designed with less focus on data flow control and more transistors devoted to data processing, mimicking the design of early supercomputers\todoCitation{LANG, cray was a big GPU}, and diverging from the design of modern CPUs, which have devoted more chip space to processing at higher frequencies, while using large, multi-leveled caches memory for optimization.
+Figure~\ref{fig:cpuvgpu} illustrates the principle difference between a CPU, central processing unit, and a GPU. Because graphics rendering is mostly comprised of compute-intensive, but highly parallel procedures, GPUs have been designed with less focus on data flow control and more transistors devoted to data processing, mimicking the design of early supercomputers\todoCitation{LANG, cray was a big GPU}, and diverging from the design of modern CPUs, which have devoted more chip space to processing at higher frequencies, while using large, multi-leveled caches memory for the optimization of context switching.
 
-%\begin{figure}[ht]
-%\ffigbox
-%	{\includegraphics[width=1.0\linewidth]{figures/cpuvgpu.png}}%{figures/tikz/cpuvgpu.pdf}}
-%	{\caption[CPU vs GPU Construction]{An illustration of the principle differences between a CPU and a GPU. CPUs have devoted more chip space to processing at higher frequencies, with more flow control and memory caching, while GPUs have been designed with more transistors devoted to data processing.}\label{fig:cpuvgpu}}
-%\end{figure}
+\begin{figure}[ht]
+\ffigbox
+	{\includegraphics[width=1.0\linewidth]{figures/cpuvgpu.png}}%{figures/tikz/cpuvgpu.pdf}}
+	{\caption[CPU vs GPU Construction]{An illustration of the principle differences between a CPU and a GPU. CPUs have devoted more chip space to processing at higher frequencies, with more flow control and memory caching, while GPUs have been designed with more transistors devoted to data processing.}\label{fig:cpuvgpu}}
+\end{figure}
 
 %
 %
@@ -540,15 +544,11 @@ Figure~\ref{fig:cpuvgpu} illustrates the principle difference between a CPU, cen
 \subsection{Control \& Data Dependencies}
 \label{ch2sPPssCS}
 %Data Dependencies: ~\cite[p.~358]{Lang17}
-%Section~\ref{ch2sACssCVP}
 %Data Partitioning:
 %Calculations depend on specific data structures.~\cite[p.~357]{Lang17}
 %As in edge lengths depend on the neighborhoods.
+
 \todoResearch{https://en.wikipedia.org/wiki/Loop-level\_parallelism}
-%True (Flow) Dependence	S1 ->T S2	A true dependence between S1 and S2 means that S1 writes to a location later read from by S2
-%Anti Dependence	S1 ->A S2	An anti-dependence between S1 and S2 means that S1 reads from a location later written to by S2.
-%Output Dependence	S1 ->O S2	An output dependence between S1 and S2 means that S1 and S2 write to the same location.
-%Input Dependence	S1 ->I S2	An input dependence between S1 and S2 means that S1 and S2 read from the same location.
 The concepts of control and data dependencies are not new ones, and can be dated back to the invention of multi-pass compilers\todoCitation{Data Dependencies and multi-pass compilers}. The field of study regarding the details is called dependence analysis and has far-reaching consequences from business management, economics, as well as software optimization\todoCitation{dependence analysis}. In general, the basic concept behind both control and data dependencies is that some procedure A is said to be dependent on another procedure B, if A requires B to be executed first.
 
 Figure~\ref{fig:simpleControlDependency} shows the ubiquitous if-then control structure as a simple example of a control dependency. It reads, ``if B is true, then do A''. In this case A is control dependent on B, because B must execute before it can be determined wether or not to execute A.
@@ -558,6 +558,17 @@ Figure~\ref{fig:simpleControlDependency} shows the ubiquitous if-then control st
 	{\caption[If-Then Control Dependency]{A simple example of control dependency using the if-then control structure, with each distinct operation colored in teal, and control dependency marked with an arrow.}\label{fig:simpleControlDependency}}
 \end{figure}
 
+In the literature\todoCitation{4 kinds of data dependence}, there exists four distinct kinds of data dependence. Given that a certain value of data is stored in memory at a definite location and requires a finite amount of time to be read into context in order to be utilized by an operation, the four distinctions of data dependence are:
+%
+\begin{itemize}
+	\item ``true dependence'', which is exhibited when one operation writes to a location in memory which is then later read from by another operation,
+	\item ``anti dependence'', when one operation reads from a memory location later written to by a second operation,
+	\item ``output dependence'', meaning that two operations are to write a data value to the same location in memory,
+	\item and ``input dependence'', when two operations must read a value of data from the same location in memory.
+\end{itemize}
+%
+In this thesis, we will generally not make distinctions between the various types, and will simply refer to any instance thereof as just ``data dependence''.
+
 Figure~\ref{fig:dataDependencyOfL2Norm} illustrates the less-than-simple example of data dependencies inherent to calculating the L2-norm of a position vector in $\mathbb{R}^{3}$; an operation which will be revisited often in this thesis, and whose definition was already presented in Equation~\ref{eq:l2norm}. There are six individual procedures involved with calculating the L2-norm: three squarings, two additions, and one square root.
 
 \begin{figure}[ht]
@@ -565,7 +576,9 @@ Figure~\ref{fig:dataDependencyOfL2Norm} illustrates the less-than-simple example
 	{\caption[Data Dependencies in the L2-norm Calculation]{The data dependencies inherent to the calculation of the L2-norm of a position vector in $\bR{3}$, with each distinct operation colored in teal, and data dependencies marked with arrows. The centered block in sand color represents an exclusive-or situation, abbreviated as xor, where one, and only one pair of operations shall execute.}\label{fig:dataDependencyOfL2Norm}}
 \end{figure}
 
-The three squaring procedures are totally independent of each other and can be performed in any order, indeed even concurrently, in relation to one another. In contrast, the two additions are totally dependent on their addends, because while the order in which the first two of the three addends are used is inconsequential due to the commutative property of addition, the first addition is always dependent on the completion of two squarings, and the second addition is dependent on not only the sum from the first addition, but also the product of the third squaring as well. Finally, because the square root procedure is dependent on the execution of both additions, it also inherits their dependencies on the squaring procedures, and therefore must wait until the very end before executing last.
+The three squaring procedures are totally independent of each other and can be performed in any order, indeed even concurrently, in relation to one another. In contrast, the two additions are totally dependent on their addends, because while the order in which the first two of the three addends are used is inconsequential due to the commutative property of addition, the first addition is always dependent on the completion of two squarings, and the second addition is dependent on not only the sum from the first addition, but also the product of the third squaring. Finally, because the square root procedure is dependent on the execution of both additions, it inherits their dependencies on the squaring procedures, and therefore must wait until the very end before executing last.
+
+A proper understanding of all dependencies becomes even more crucial, when designing software which processes data in parallel, because it is no longer implicitly known when a particular operation has completed so that the dependent operation may begin; managing those complications is the topic of the next section.
 
 %
 %
@@ -577,10 +590,9 @@ The three squaring procedures are totally independent of each other and can be p
 %
 %
 \subsubsection{Critical Sections}
-One major consequence of processing in parallel is that, due to the independence enjoyed by threads, the sequence in which operations are performed can no longer always be guaranteed. That is not intrinsically a problem, however it becomes a critical issue once information must be shared among threads by reading from and writing to volatile memory, which is memory that may be changed by any thread. Sections of code containing instructions to read from or write to volatile memory are aptly named ``critical sections'', and special care must be taken in their regard, in order to ensure program correctness, despite not being able to determine in what order the operations may occur.
+One major consequence of processing in parallel is that, due to the independence enjoyed by individual threads, the sequence in which operations are performed can no longer always be guaranteed. That is not intrinsically a problem, however it becomes a critical issue with the introduction of data or control dependence; when information must be shared among threads by reading from and writing to volatile memory, which is memory that may be changed by any thread.
 
-race-conditions
-example: sum vector of integers
+Sections of code containing the instructions that utilize volatile memory are aptly named ``critical sections'', and special care must be taken in their regard, in order to ensure program correctness, despite not being able to determine in what order the operations may occur.
 
 For an illustrative example, consider Algorithm~\ref{alg:critialSection}, the very simple parallel program to compute the sum of a set of integers. Given the set $\{1,\,2,\,3,\,4\}$, the function \textit{parallelSum} instantiates the value $s$ as zero, in order to later accumulate the sum calculated in each thread, then spawns two threads, which each execute the kernel \textit{accumulateSums} with a unique subset of the work to be done. Each kernel then simultaneously adds the two integers, naively reads the current value of $s$, adds the sum to that value, then stores the result back into $s$.
 
@@ -610,10 +622,10 @@ For an illustrative example, consider Algorithm~\ref{alg:critialSection}, the ve
 	\caption{Simple parallel algorithm, exhibiting an unprotected critical section \label{alg:critialSection}}
 \end{algorithm}%
 
-Unfortunately, the final result of the execution of function \textit{parallelSum} can not be accurately predicted, because the order of operations between each thread are not guaranteed. Closer evaluation of line~\ref{algCritSec.danger} will reveal the danger of the race condition inherent to the critical section which exists in line~\ref{algCritSec.danger} of this algorithm.
+Unfortunately, the final result of the execution of function \textit{parallelSum} can not be accurately predicted, because the order of operations between each thread are not guaranteed due to what can be called a ``race-condition'' in the algorithm. Closer evaluation of line~\ref{algCritSec.danger} reveals the danger of the race condition inherent to this critical section.
 
-The high level code in line~\ref{algCritSec.danger} will translated by a compiler into the low level assembly instructions
-%
+The high level code in line~\ref{algCritSec.danger} will be translated by a compiler into low level assembly instructions\todoCitation{LANG pg 25} written in Algorithm~\ref{alg:critialSectionLowLevel}, which are then executed in parallel by both threads.
+
 \begin{algorithm}[ht]
 	\DontPrintSemicolon
 	\SetCommentSty{small}
@@ -623,8 +635,9 @@ The high level code in line~\ref{algCritSec.danger} will translated by a compile
 \nl	$s \leftarrow$ R3\;
 	\caption{Low level translation of critical section in Algorithm~\ref{alg:critialSection} \label{alg:critialSectionLowLevel}}
 \end{algorithm}%
-%
-which is then executed in parallel by both threads. Because the value $s$ is in volatile memory, which is shared by both threads, and because each thread remains independent, performing their instructions sequentially at their own speeds, the total order of operations can not be guaranteed, and will fall within the range of limited permutations illustrated in Figure~\ref{fig:raceCondition}.
+\todoStyle{make this alg block less formal}
+
+Because the value $s$ is in volatile memory, which is shared by both threads, and because each thread remains independent, performing their instructions sequentially at their own speeds, the total order of operations can not be guaranteed, and will fall within the range of limited permutations illustrated in Figure~\ref{fig:raceCondition}.
 
 \begin{figure}[ht]
 \ffigbox
@@ -632,13 +645,19 @@ which is then executed in parallel by both threads. Because the value $s$ is in 
 	{\caption[SIMD Architecture]{A simplified impression of a system characterized as SIMD by Flynn's Taxonomy of concurrent architecture. The array of processors each receive the same kernel from a pool of instructions, then load a different portion of the data pool in order to process the combination in parallel.}\label{fig:raceCondition}}
 \end{figure}
 
+The consequence being, that only one third of the possible outcomes are actually correct, producing the sum of the four integers as would be expected.
 
-  LANG pg 25
+In order to managing the complications inherent to the race conditions engendered by the presence of critical sections of code processed in parallel, it becomes necessary to introduce some type of locking mechanism with which one may control the flow of execution with regards to data dependence. The one type of locking mechanism used in this thesis, the mutex, is discussed in the next section.
+
 %
 %
 \subsubsection{Mutexes}
 %Mutexes and semaphores (binary semaphore}
-While it is true that any locking mechanism can be expensive to both compute time and memory, \todoResearch{how expensive are locking mechanisms} typically, with acquired \tdd{}, the ratio of points in $\bP$ to the average neighborhood size \todoReword{add symbol for average neighborhood size} approaches $|\bP|$, therefore the speedup gained by exploiting the concurrency is definitely\todoResearch{quantify the cost} worth the cost of the added synchronization overhead when computing with even moderately sized meshes on a SIMP or SIMT modeled architecture.
+The term ``mutex'' is an abbreviation for ``mutual exclusion'', which is used to describe the situation where the presence of a single entity may exclude the presence of all others. For parallel processing, that translates to allowing only one single threads to enter a critical section of code at a time, and is typically implemented as a shared value, called a mutex, which any thread wanting to enter a critical section in code must first find unlocked, before locking the mutex itself and performing the operations therein. All other threads wanting to also enter the critical section will find the mutex locked, and therefore must ``block'', waiting until the mutex is again unlocked, before being able to proceed.
+
+While it is true that employing a mutex can be expensive to both compute time and memory\todoResearch{how expensive are locking mechanisms}  because blocking intrinsically means the cessation of computation, when used properly, the speedup gained by exploiting the concurrency is definitely worth the cost\todoResearch{quantify the cost} of the added synchronization overhead
+
+typical of acquired \tdd{}, the ratio of points in $\bP$ to the average neighborhood size approaches $|\bP|$, therefore  when computing with even moderately sized meshes on a SIMP or SIMT modeled architecture.
 starts at ~\cite[~p.20]{Lang17}
 
 %

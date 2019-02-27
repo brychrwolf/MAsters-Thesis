@@ -38,10 +38,13 @@ Even when ignoring the third dimension present in \tdd{}, in contrast to regular
 %distance between the points and no fixed number of neighboring points in
 %1-rings of irregular grids.~\cite[s.~3.2]{Mara17}
 
-%\ref{ch2s3ssFV} 
+%\ref{ch2s3ssFV}
 %because function values are only stored alongside the Cartesian coordinates, 1-for-1 with points, due to \tdd{} existing as a discrete manifold. The significance of which is another motivating factor behind the research conducted in this thesis.
 %
 \section{Serial is slow. Concurrency is fast.}
+%from \subsection{SIMD - A Concurrency Architecture}
+The motivation to implement software which utilizes the architecture of an SIMD system is the speedup to be gained, which may be quantified as discussed in Section~\ref{xxxxxx}\todoReference{quantifiable speedup}, and stems from what is known as loop-level parallelism\todoCitation{loop level parallelism}, which is the modification of instructions which would otherwise be executed serially in a loop, to instead be computed simultaneously, in parallel, incurring only minor synchronization overhead. For example: any operation performed in linear algebra, such as the subtraction of two high-dimensional arrays, is thus made much more scalable in regards to the time required for the computation to complete, as vectors of larger and larger sizes are considered.
+
 %
 \section{GPUs are commercially available, use GPGPU to exploit concurrency.}
 %GPUs are fast if the program is SIMP or SIMT.%
