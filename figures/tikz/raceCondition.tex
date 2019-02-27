@@ -1,0 +1,92 @@
+\documentclass{standalone}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows.meta}
+\input{../../myCommands.tex}
+
+\begin{document}
+\tikzset{%
+	>={Latex[width=2mm,length=2mm]},
+	base/.style = {
+		draw=black, fill=white, thick,
+		text centered, font=\sffamily, inner sep=.2cm},
+	%Variable
+	baseVar/.style = {base, rectangle, rounded corners,
+		minimum width=1cm, minimum height=1cm},
+	%Lines
+	baseLine/.style = {thick},
+	%Colors
+	tealStyle/.style = {draw=MyTeal, fill=MyLtTeal},
+	coralStyle/.style = {draw=MyCoral, fill=MyLtCoral},
+	sandStyle/.style = {draw=MySand, fill=MyLtSand},
+	%
+	validNode/.style = {baseVar, tealStyle},
+	validPath/.style = {baseLine, draw=MyTeal},
+	invalidNode/.style = {baseVar, coralStyle},
+	invalidPath/.style = {baseLine, draw=MyCoral},
+	%mutVar/.style = {baseVar, sandStyle},
+	%mutLine/.style = {baseLine, draw=MySand},
+}
+\begin{tikzpicture}
+	\coordinate (center1) at (0cm, 0cm);
+	\node (start) [validNode] {start};
+
+	\node (a1) [validNode, xshift=1.5cm, yshift= 2.625cm] {1a};
+	\node (a3) [validNode, xshift=1.5cm, yshift=-2.625cm] {1b};
+
+	\node (b2) [validNode,   xshift=3cm, yshift= 3.75cm] {2a};
+	\node (b3) [invalidNode, xshift=3cm, yshift= 1.50cm] {1b};
+	\node (b1) [invalidNode, xshift=3cm, yshift=-1.50cm] {1a};
+	\node (b4) [validNode,   xshift=3cm, yshift=-3.75cm] {2b};
+
+	\node (c3) [validNode,   xshift=4.5cm, yshift= 3.75cm] {1b};
+	\node (c2a)[invalidNode, xshift=4.5cm, yshift= 2.25cm] {2a};
+	\node (c4a)[invalidNode, xshift=4.5cm, yshift= 0.75cm] {2b};
+	\node (c2b)[invalidNode, xshift=4.5cm, yshift=-0.75cm] {2a};
+	\node (c4b)[invalidNode, xshift=4.5cm, yshift=-2.25cm] {2b};
+	\node (c1) [validNode,   xshift=4.5cm, yshift=-3.75cm] {1a};
+
+	\node (d4a)[validNode,   xshift=6cm, yshift= 3.75cm] {2b};
+	\node (d4b)[invalidNode, xshift=6cm, yshift= 2.25cm] {2b};
+	\node (d2a)[invalidNode, xshift=6cm, yshift= 0.75cm] {2a};
+	\node (d4c)[invalidNode, xshift=6cm, yshift=-0.75cm] {2b};
+	\node (d2b)[invalidNode, xshift=6cm, yshift=-2.25cm] {2a};
+	\node (d2c)[validNode,   xshift=6cm, yshift=-3.75cm] {2a};
+
+	\node (e1) [validNode,   anchor=west, xshift=7.5cm, yshift= 3.75cm] {$s = s'_a + s'_b$};
+	\node (e2) [invalidNode, anchor=west, xshift=7.5cm, yshift= 2.25cm] {$s = s'_b$};
+	\node (e3) [invalidNode, anchor=west, xshift=7.5cm, yshift= 0.75cm] {$s = s'_a$};
+	\node (e4) [invalidNode, anchor=west, xshift=7.5cm, yshift=-0.75cm] {$s = s'_b$};
+	\node (e5) [invalidNode, anchor=west, xshift=7.5cm, yshift=-2.25cm] {$s = s'_a$};
+	\node (e6) [validNode,   anchor=west, xshift=7.5cm, yshift=-3.75cm] {$s = s'_b + s'_a$};
+
+	\draw[->, validPath] (start) -- (a1);
+	\draw[->, validPath] (start) -- (a3);
+
+	\draw[->, validPath]   (a1) -- (b2);
+	\draw[->, invalidPath] (a1) -- (b3);
+	\draw[->, invalidPath] (a3) -- (b1);
+	\draw[->, validPath]   (a3) -- (b4);
+
+	\draw[->, validPath]   (b2) -- (c3);
+	\draw[->, invalidPath] (b3) -- (c2a);
+	\draw[->, invalidPath] (b3) -- (c4a);
+	\draw[->, invalidPath] (b1) -- (c2b);
+	\draw[->, invalidPath] (b1) -- (c4b);
+	\draw[->, validPath]   (b4) -- (c1);
+
+	\draw[->, validPath]   (c3)  -- (d4a);
+	\draw[->, invalidPath] (c2a) -- (d4b);
+	\draw[->, invalidPath] (c4a) -- (d2a);
+	\draw[->, invalidPath] (c2b) -- (d4c);
+	\draw[->, invalidPath] (c4b) -- (d2b);
+	\draw[->, validPath]   (c1)  -- (d2c);
+
+	\draw[->, validPath]   (d4a) -- (e1);
+	\draw[->, invalidPath] (d4b) -- (e2);
+	\draw[->, invalidPath] (d2a) -- (e3);
+	\draw[->, invalidPath] (d4c) -- (e4);
+	\draw[->, invalidPath] (d2b) -- (e5);
+	\draw[->, validPath]   (d2c) -- (e6);
+\end{tikzpicture}
+\end{document}
