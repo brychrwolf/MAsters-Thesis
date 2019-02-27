@@ -585,7 +585,7 @@ A proper understanding of all dependencies becomes even more crucial, when desig
 %
 %
 \subsection{Program Correctness}
-\ldots
+Program correctness, which may otherwise be referred to as functional correctness, is defined by the field of theoretical computer science as existing only when, for each input given, a program produces the expected output,\todoCitation{definition of program correctness}. In this section we discuss the dangers inherent to asynchronous parallel processing, mentioning the concepts of critical sections, the mutex locking mechanism, and the explicit synchronization of threads.
 
 %
 %
@@ -643,34 +643,33 @@ Because the value $s$ is in volatile memory, which is shared by both threads, an
 \ffigbox
 	{\includegraphics[width=0.8\linewidth]{figures/tikz/raceCondition.pdf}}
 	{\caption[SIMD Architecture]{A simplified impression of a system characterized as SIMD by Flynn's Taxonomy of concurrent architecture. The array of processors each receive the same kernel from a pool of instructions, then load a different portion of the data pool in order to process the combination in parallel.}\label{fig:raceCondition}}
-\end{figure}
-
-The consequence being, that only one third of the possible outcomes are actually correct, producing the sum of the four integers as would be expected.
+\end{figure} The consequence being, that only one third of the possible outcomes are actually correct, producing the sum of the four integers as would be expected.
 
 In order to managing the complications inherent to the race conditions engendered by the presence of critical sections of code processed in parallel, it becomes necessary to introduce some type of locking mechanism with which one may control the flow of execution with regards to data dependence. The one type of locking mechanism used in this thesis, the mutex, is discussed in the next section.
 
 %
 %
 \subsubsection{Mutexes}
-%Mutexes and semaphores (binary semaphore}
 The term ``mutex'' is an abbreviation for ``mutual exclusion'', which is used to describe the situation where the presence of a single entity may exclude the presence of all others. For parallel processing, that translates to allowing only one single threads to enter a critical section of code at a time, and is typically implemented as a shared value, called a mutex, which any thread wanting to enter a critical section in code must first find unlocked, before locking the mutex itself and performing the operations therein. All other threads wanting to also enter the critical section will find the mutex locked, and therefore must ``block'', waiting until the mutex is again unlocked, before being able to proceed.
 
-While it is true that employing a mutex can be expensive to both compute time and memory\todoResearch{how expensive are locking mechanisms}  because blocking intrinsically means the cessation of computation, when used properly, the speedup gained by exploiting the concurrency is definitely worth the cost\todoResearch{quantify the cost} of the added synchronization overhead
-
-typical of acquired \tdd{}, the ratio of points in $\bP$ to the average neighborhood size approaches $|\bP|$, therefore  when computing with even moderately sized meshes on a SIMP or SIMT modeled architecture.
-starts at ~\cite[~p.20]{Lang17}
+While it is true that employing a mutex can be expensive to both compute time and memory\todoResearch{how expensive are locking mechanisms}, because blocking intrinsically means the cessation of computation, when used efficiently, the speedup gained by exploiting the parallelism becomes worth the cost\todoResearch{quantify the cost} of the added synchronization overhead.~\cite[~p.20]{Lang17} An example of which is thoroughly explored in the description of Algorithm~\ref{alg:parallelConvolveFilter}, presented later in this thesis.
 
 %
 %
-\subsubsection{Explicit Synchronization}%3.2.5.5.3. Explicit Synchronization}
-\todoBackground{synchronizeThreads()}
-sand color to highlight the fact that the values stored in memory will change throughout the life of the total procedure, and without the protection of a locking mechanism, therefore, extra care must be taken so that the implementation of the parallel variant of the serial algorithm will maintain correctness.
+\subsubsection{Explicit Thread Synchronization}
+Occasionally, in order to maintain the correctness of the overall program due to some dependence within the code, an algorithm is forced to block, waiting for all threads to complete their calculations, before finally continuing with its computations. This procedure is called, ``explicit synchronization'',\todoCitation{CUDA 3.2.5.5.3. Explicit Synchronization} and is expressed in the parallel algorithms presented in this thesis by a call to the subroutine \textit{synchronizeThread)}.
+
+Explicitly synchronizing threads can be very expensive, costing the overall efficiency of an algorithm greatly; easily reaching level of  billions of compute cycles.\todoResearch{get stats on thread synch}\todoReference{experiments about thread synch time costs}. Therefore, it is absolutely imperative that one minimizes its inclusion in the design of any parallel algorithm, especially within loops, avoiding it altogether when possible\todoResearch{avoiding thread synch}, and limiting its use to sections of an algorithm immediately before where the culmination of large volumes of work is to be used.
+
+In this section we discussed the dangers to program correctness inherent to parallel processing, mentioning the concepts of critical sections which arise when individual threads must share information via volatile memory, the mutex locking mechanism which can be used to protect critical sections in order to preserve program correctness, and the explicit synchronization of threads which can be very expensive to the overall efficiency of an algorithm. In the next section, we will explore a few of the metrics which one may use to evaluate and analyze parallel algorithms, for use in comparison and possible further optimization. \todoReword{maybe dot suggest how to use it, also 'ways' instead of metrics.}
 
 %
 %
 %
 %
-\subsection{Evaluation and Analysis of Concurrent Algorithms}~\cite[p.~330]{Lang17}
+\subsection{Evaluation and Analysis of Parallel Algorithms}~\cite[p.~330]{Lang17}
+Of all the metrics which may be used to evaluate the performance of a parallel algorithm, the most basic include: speedup, efficiency, cost, and the degree of parallelsim, from which  
+
 \subsubsection{Timing}
 \begin{equation}
 	N = input size (num. ops)
