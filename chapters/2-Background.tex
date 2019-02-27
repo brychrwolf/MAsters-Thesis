@@ -667,30 +667,35 @@ In this section we discussed the dangers to program correctness inherent to para
 %
 %
 %
-\subsection{Evaluation and Analysis of Parallel Algorithms}~\cite[p.~330]{Lang17}
-Of all the metrics which may be used to evaluate the performance of a parallel algorithm, the most basic include: speedup, efficiency, cost, and the degree of parallelsim, from which  
+\subsection{Evaluation and Analysis of Parallel Algorithms}
+When engaging in the design of parallel algorithms, it is useful to define metrics which can be used to quantitatively describe the differences engendered by the modifications made to the basic serial algorithm. Such metrics could then influence not only choices in the design, but also environments under which the algorithm should be run; for example, to answer the question regarding the scalability of the algorithm and the worthiness of incurring the costs of increasing the count of processors in the pursuit of faster computation times.~\cite[p.~330]{Lang17}
+\todoReword{recap each paragraph}
 
-\subsubsection{Timing}
+Essential to every metric used in the evaluation of parallel algorithms is timing. Given the inputs $\hat{n}$ as the number of operations to be performed by the algorithm, and $\rho$ as the count of processors available in the system, one can define the two essential timings as:
+%
+\begin{align}
+	\mathit{T_s}(\hat{n}) &= \text{The optimal sequential execution time} \\
+	\mathit{T_{\rho}}(\hat{n},\,\rho) &= \text{Parallel runtime}
+	\label{eq:timings}
+\end{align}
+
+which can then be used to define the three essential metrics:
+
+\begin{align}
+	\text{Speedup:}\quad&\mathit{S}(\hat{n},\,\rho) = \frac{\mathit{T_s}(\hat{n})}{\mathit{T_{\rho}}(\hat{n},\,\rho)} \\
+	\text{Costs}:\quad&\mathit{C}(\hat{n},\,\rho) =\rho\cdot\mathit{T_{\rho}}(\hat{n},\,\rho) \\
+	\text{Efficiency}:\quad&\mathit{E}(\hat{n},\,\rho) = \frac{\mathit{T_s}(\hat{n})}{\mathit{C}(\hat{n},\,\rho)} = \frac{\mathit{S}(\hat{n},\,\rho)}{\rho}
+	\label{eq:essentialMetrics}
+\end{align}
+\todoReword{write dignificance, in regards to experiments and evaluation}
+
+By applying these identities, we can determine that for all problem sizes, the speedup obtained is always less than the number of processors used, because otherwise, $\mathit{T_s}(\hat{n})$ could not be the optimal sequential execution time. Also, efficiency will always be less than one thus we can say that $\mathit{E}\cdot\rho$ processors contribute to the solution of the total procedure, while $(1-\mathit{E})\cdot\rho$ do not.~\cite[p.~335]{Lang17}
+
+Also important is the notion of an algorithm's ``degree of parallelism'', which is the maximum number of operations which can be executed in parallel. Which leads to the derivation of Amdahl's, which given a contanst problem size $\hat{n}_{fixed}$
 \begin{equation}
-	N = input size (num. ops)
-	P = processor count
-	Ts(N) = Sequential execution time
-	Tbest(N) = Optimal execution time
-	TP(N, P) = Parallel runtime
+	\lim_{\rho \to \infty} \mathit{S}(\hat{n}_{fixed},\,\rho) = 1 / q
 \end{equation}
-\subsubsection{Speedup, efficiency}
-	Speedup:
-S(N, P) = Tbest(N)/TP(N, P)
 
-	Efficiency:
-E(N, P) = Tbest (N)/PTP(N, P) = S/P
-
-	Costs:
-C(N, P) = PTP(N, P)
-
-\subsubsection{Degree of Parallelism}
-	0 < q < 1 is the sequential part
-	1-q = is the parallelizable part
 
 
 %, each with their own unique ids and memory addresses,
