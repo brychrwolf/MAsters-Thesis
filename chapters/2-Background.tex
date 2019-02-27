@@ -1,7 +1,8 @@
 \chapter{Background}
 \label{ch2}
-As computational geometry is based on many other fields of study in both mathematics and computer science, so does \Fors{t} also rely on their foundation. In this chapter we will briefly examine the underlying theory, concepts, and frameworks upon which the research was founded in order to develop this filter and implement with parallel processing, its convolution over a mesh of acquired \tdd{}, and upon which we will depend to convey the ideas presented in this thesis.
-\todoReword{Elaborate like a teasing summary}
+As computational geometry is based on many other fields of study in both mathematics and computer science, so does \Fors{t} also rely on their foundation. In this chapter, we briefly cover many theories, concepts, and frameworks across many fields of study, opting for breadth over depth, in order to focus only on the specific topics which have a direct influence on research presented in the rest of this thesis.
+
+Section~\ref{ch2sETB} covers the elementary, theoretical basis for the mathematics utilized in the design of \fors{t}, including various topics in set theory, linear algebra, geometry, and topology. Next, Section~\ref{ch2s3} defines several symbols which will be used throughout the rest of this thesis while discussing in relative detail the primitives of \tdd{}, as well as the nature of discrete meshes, one-ring neighborhoods, the differences between acquired and synthetic \tdd{}, and the treatment of scalar fields as function values. Then in Section~\ref{ch2sPP}, limited topics regarding the design and analysis of parallel algorithms are briefly discussed.
 
 %
 %
@@ -293,7 +294,7 @@ Figure~\ref{fig:neighborhoods} illustrates the differences among one-ring neighb
 %
 \section{\tdd}
 \label{ch2s3}
-The data upon which one convolves \fors{t} is called \tdd\todoCitation{\tdd{} name origin, BB82 from Mara12}. As described in Section~\ref{ch2s3ssM}, \tdd{} consists primarily of a single mesh $\bM$, which is composed of $\bP$, a set of points, and the set $\bT$, consisting of triangular faces, each to be covered in Sections~\ref{ch2s3ssP} and~\ref{ch2s3ssF} respectively. \tdd{} also comes in two distinct flavors depending on its origin: acquired or synthetic, as discussed in Section~\ref{ch2s3ssAVS3}. The data can also include a texture map and other various types of information stored as scalar or vector fields, as elaborated on in~\ref{ch2s3ssFV}.
+The data upon which one convolves \fors{t} is called \tdd\todoCitation{\tdd{} name origin, BB82 from Mara12}. As described in Section~\ref{ch2s3ssDM}, \tdd{} consists primarily of a single mesh $\bM$, which is composed of $\bP$, a set of points, and the set $\bT$, consisting of triangular faces, each to be covered in Sections~\ref{ch2s3ssP} and~\ref{ch2s3ssF} respectively. \tdd{} also comes in two distinct flavors depending on its origin: acquired or synthetic, as discussed in Section~\ref{ch2s3ssAVS3}. The data can also include a texture map and other various types of information stored as scalar or vector fields, as elaborated on in~\ref{ch2s3ssFV}.
 
 %
 %
@@ -393,8 +394,8 @@ Please note the similar notation for the cardinality of a set $|\bP|$, to that f
 %
 %
 %
-\subsection{Meshes}
-\label{ch2s3ssM}
+\subsection{Discrete Meshes}
+\label{ch2s3ssDM}
 In \tdd{}, a mesh $\bM$ is the digital representation of a discrete manifold embedded in $\bR{3}$, and is typically\footnote{except in the case of specifically designed synthetic data~\ref{ch7sSD}} two-dimensional, non-planar and comprised of non-regular, triangular faces composed of connected points.~\cite[p.~25]{Mara12} A mesh is the set defined as
 %
 \begin{equation}
@@ -687,15 +688,17 @@ which can then be used to define the three essential metrics:
 	\text{Efficiency}:\quad&\mathit{E}(\hat{n},\,\rho) = \frac{\mathit{T_s}(\hat{n})}{\mathit{C}(\hat{n},\,\rho)} = \frac{\mathit{S}(\hat{n},\,\rho)}{\rho}
 	\label{eq:essentialMetrics}
 \end{align}
-\todoReword{write dignificance, in regards to experiments and evaluation}
+\todoReword{write significance, in regards to experiments and evaluation}
 
 By applying these identities, we can determine that for all problem sizes, the speedup obtained is always less than the number of processors used, because otherwise, $\mathit{T_s}(\hat{n})$ could not be the optimal sequential execution time. Also, efficiency will always be less than one thus we can say that $\mathit{E}\cdot\rho$ processors contribute to the solution of the total procedure, while $(1-\mathit{E})\cdot\rho$ do not.~\cite[p.~335]{Lang17}
 
-Also important is the notion of an algorithm's ``degree of parallelism'', which is the maximum number of operations which can be executed in parallel. Which leads to the derivation of Amdahl's, which given a contanst problem size $\hat{n}_{fixed}$
+Also important is the notion of an algorithm's ``degree of parallelism'', which is the maximum number of operations which can be executed in parallel. Which leads to the derivation of Amdahl's law\todoCitation{Amdahl's Law}, which is given a contant problem size $\hat{n}_{fixed}$,
+%
 \begin{equation}
 	\lim_{\rho \to \infty} \mathit{S}(\hat{n}_{fixed},\,\rho) = 1 / q
 \end{equation}
-
+%
+leading to the conclusion that one can not simply add more processors in order to gain appreciable speedup, which instead relies heavily on  processor counts which grow in relation to problem sizes, and the degree of parallelism, which it self relies on the underlying nature of the serial algorithm and the artful design of the parallel algorithm.
 
 
 %, each with their own unique ids and memory addresses,
@@ -719,10 +722,22 @@ Also important is the notion of an algorithm's ``degree of parallelism'', which 
 %
 %\subsection{Scalability}
 %	A parallel system is called scalable only if in has an iso-efficency function
+
+
+%
 %
 %
 %
 %
 %
 \section{Summary}
-%
+This chapter briefly covered many topics across many fields of study, opting for breadth over depth, in order to focus only on the specific topics which have a direct influence on research presented in the rest of this thesis.
+
+Section~\ref{ch2sETB} covered the elementary, theoretical basis for the mathematics utilized in the design of \fors{t}, including various topics in set theory: expressing definitions, special sets, cardinality, as well as selected membership, relational, and binary operators; linear algebra: position vectors, the subtraction of vectors, and computing the L2-norm; geometry: geodesic discs, circle sectors, centroids and the center of gravity, and interpolation and extrapolation; as well as selected topics of topology, specifically including manifolds and neighborhoods. 
+
+Next, Section~\ref{ch2s3} defined several symbols which will be used throughout the rest of this thesis while discussing in relative detail the primitives of \tdd{}, points, faces, and edge lengths, as well as the nature of discrete meshes, one-ring neighborhoods, the differences between acquired and synthetic \tdd{}, and the treatment of scalar fields as function values.
+
+Then in Section~\ref{ch2sPP}, limited topics regarding the design and analysis of parallel algorithms were briefly presented, including: the nature of serial computation and threads, SIMD as an architecture of concurrency, GPGPUs as a tool for parallel processing, the identification of control and data dependencies in an algorithm, various topics regarding program correctness, including the identification of critical sections, the utilization of mutexes as a locking mechanism, and the costliness of explicit thread synchronization, and finally the metrics available for evaluating a parallel algorithm.
+
+In the next three sections, we will present \Fors{t}, beginning with the mathematical basis of the filter, then presenting the three parts of the serial algorithm for convolving the filter over a discrete manifold, and concluding with an analysis of the serial algorithm and the presentation of a parallel variant of each of its parts.
+
