@@ -2,7 +2,7 @@
 \label{ch2}
 As computational geometry is based on many other fields of study in both mathematics and computer science, so does \Fors{t} also rely on their foundation. In this chapter, we briefly cover many theories, concepts, and frameworks across many fields of study, opting for breadth over depth, in order to focus only on the specific topics which have a direct influence on research presented in the rest of this thesis.
 
-Section~\ref{ch2sETB} covers the elementary, theoretical basis for the mathematics utilized in the design of \fors{t}, including various topics in set theory, linear algebra, geometry, and topology. Next, Section~\ref{ch2s3} defines several symbols which will be used throughout the rest of this thesis while discussing in relative detail the primitives of \tdd{}, as well as the nature of discrete meshes, one-ring neighborhoods, the differences between acquired and synthetic \tdd{}, and the treatment of scalar fields as function values. Then in Section~\ref{ch2sPP}, limited topics regarding the design and analysis of parallel algorithms are briefly discussed.
+Section~\ref{ch2sETB} covers the elementary, theoretical basis for the mathematics utilized in the design of \fors{t}, including various topics in set theory, linear algebra, geometry, and topology. Next, Section~\ref{ch2s3} defines several symbols which will be used throughout the rest of this thesis while discussing in relative detail the primitives of \tdd{}, as well as the nature of discrete meshes, one-ring neighborhoods, the differences between acquired and synthetic \tdd{}, and the treatment of scalar fields as function values. Then in Section~\ref{ch2sPP}, various topics regarding the design and analysis of algorithms for parallel processing are briefly discussed.
 
 %
 %
@@ -12,7 +12,7 @@ Section~\ref{ch2sETB} covers the elementary, theoretical basis for the mathemati
 %
 \section{Elementary Theoretical Basis}
 \label{ch2sETB}
-In this section, an abbreviated list of the important theoretical concepts, are described. These concepts, which are used throughout the rest of this chapter and the remainder of this thesis, include: set theory in Section~\ref{ch2sETBssST}, linear algebra in Section~\ref{ch2sETBssLA}, geometry in Section~\ref{ch2sETBssG}, and topology in Section~\ref{ch2sETBssT}.
+This section discusses an abbreviated collection of the elementary, theoretical concepts that comprise the foundation upon which \fors{t} was designed. These important concepts and symbols are separated into sections, including limited topics of: set theory in Section~\ref{ch2sETBssST}, linear algebra in Section~\ref{ch2sETBssLA}, geometry in Section~\ref{ch2sETBssG}, and topology in Section~\ref{ch2sETBssT}.
 
 %
 %
@@ -487,7 +487,7 @@ because function values are only stored alongside the Cartesian coordinates, 1-f
 %
 \section{Parallel Processing}
 \label{ch2sPP}
-\ldots
+In this section, limited topics regarding the design and analysis of algorithms for parallel processing are briefly discussed, including: the nature of serial computation and threads, SIMD as an architecture of concurrency, GPGPUs as a tool for parallel processing, the identification of control and data dependencies in an algorithm, various topics regarding program correctness, including the identification of critical sections, the utilization of mutexes as a locking mechanism, and the costliness of explicit thread synchronization, and finally the metrics available for evaluating a parallel algorithm.
 
 %
 %
@@ -700,7 +700,6 @@ Also important is the notion of an algorithm's ``degree of parallelism'', which 
 %
 leading to the conclusion that one can not simply add more processors in order to gain appreciable speedup, which instead relies heavily on  processor counts which grow in relation to problem sizes, and the degree of parallelism, which it self relies on the underlying nature of the serial algorithm and the artful design of the parallel algorithm.
 
-
 %, each with their own unique ids and memory addresses,
 
 %As memory to be processed by a thread is stored somewhere in a hierarchy which increases in size, but decreases in speed as one moves from the processor's registers, it is likely that a context switch will cause what is known as a cache miss\todoCitation{cache hit or miss, check Lang}, which incurs a time penalty while the processing stalls and the required memory is read from slower hardware sources.
@@ -723,7 +722,6 @@ leading to the conclusion that one can not simply add more processors in order t
 %\subsection{Scalability}
 %	A parallel system is called scalable only if in has an iso-efficency function
 
-
 %
 %
 %
@@ -737,7 +735,7 @@ Section~\ref{ch2sETB} covered the elementary, theoretical basis for the mathemat
 
 Next, Section~\ref{ch2s3} defined several symbols which will be used throughout the rest of this thesis while discussing in relative detail the primitives of \tdd{}, points, faces, and edge lengths, as well as the nature of discrete meshes, one-ring neighborhoods, the differences between acquired and synthetic \tdd{}, and the treatment of scalar fields as function values.
 
-Then in Section~\ref{ch2sPP}, limited topics regarding the design and analysis of parallel algorithms were briefly presented, including: the nature of serial computation and threads, SIMD as an architecture of concurrency, GPGPUs as a tool for parallel processing, the identification of control and data dependencies in an algorithm, various topics regarding program correctness, including the identification of critical sections, the utilization of mutexes as a locking mechanism, and the costliness of explicit thread synchronization, and finally the metrics available for evaluating a parallel algorithm.
+Then in Section~\ref{ch2sPP}, limited topics regarding the design and analysis of algorithms for parallel processing were briefly presented, including: the nature of serial computation and threads, SIMD as an architecture of concurrency, GPGPUs as a tool for parallel processing, the identification of control and data dependencies in an algorithm, various topics regarding program correctness, including the identification of critical sections, the utilization of mutexes as a locking mechanism, and the costliness of explicit thread synchronization, and finally the metrics available for evaluating a parallel algorithm.
 
 In the next three sections, we will present \Fors{t}, beginning with the mathematical basis of the filter, then presenting the three parts of the serial algorithm for convolving the filter over a discrete manifold, and concluding with an analysis of the serial algorithm and the presentation of a parallel variant of each of its parts.
 
