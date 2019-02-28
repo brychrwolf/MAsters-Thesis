@@ -39,19 +39,19 @@ The four synthetic mesh configurations are: the bisected square tessellation, th
 %
 \pagebreak
 \subsection{Bisected Square Tessellations}
-The synthetic mesh generator for bisected square tessellations generates meshes which are characterized by rings of squares around a center point, with the northwest and southeast corners made adjacent, so as to bisect each square into two equally sized isosceles, right triangles; resulting in two dissimilar edge lengths adjacent to the center point.
+The synthetic mesh generator for bisected square tessellations generates meshes characterized by rings of squares around a center point, with the northwest and southeast corners made adjacent, so as to bisect each square into two equally sized isosceles, right triangles; resulting in two dissimilar edge lengths adjacent to the center point.
 
-The smallest, non-trivial mesh, generated with the parameter R equal to one, is composed of four squares around the center point, represented in total by only nine points and eight faces, however those numbers grow quickly with increasing parameter size R, according to the two equations
+The smallest, non-trivial mesh, generated with the parameter $r$ equal to one, is composed of four squares around the center point, represented in total by only nine points and eight faces, however those numbers grow quickly with increasing parameter size $r$, according to the two equations
 \begin{align}
-	|\bP| &= 4R^2 + 4R + 1 \\
-	|\bT| &= 8R^2
+	|\bP| &= 4r^2 + 4r + 1 \\
+	|\bT| &= 8r^2
 	\label{eq:sq2PointAndFaceCounts}
 \end{align}
 
-Figure~\ref{fig:sq2} shows a comparison of two differently sized bisected square tessellations, generated with parameters R set to 1 and 10, each in wireframe, shown in (a) and (d), then colored by function value before convolving the filter, shown in (b) and (e), as well as after convolving the filter, once for R=1 in (c), and 100 times for R=10 in (f). Notice how the filter response appears to travel faster across the image, along the longer, diagonal edge lengths.
+Figure~\ref{fig:sq2} shows a comparison of two differently sized bisected square tessellations, generated with parameters $r$ set to 1 and 10, each in wireframe, shown in (a) and (d), then colored by function value before convolving the filter, shown in (b) and (e), as well as after convolving the filter, once for $r$=1 in (c), and 100 times for $r$=10 in (f). Notice how the filter response appears to travel faster across the image, along the longer, diagonal edge lengths.%\todoResearch{Why does sq2 10 need 100 iters to match sq 1 at 1 iters?}
 
 \input{figures/latex/sq2.tex}
-\todoResearch{Why does sq2 10 need 100 iters to match sq 1 at 1 iters?}
+
 
 %
 %
@@ -59,16 +59,17 @@ Figure~\ref{fig:sq2} shows a comparison of two differently sized bisected square
 %
 \pagebreak
 \subsection{Quadrisected Square Tessellations}
-The synthetic mesh generator for quadirsected square tessellations generates meshes which are characterized by rings of squares around a center point, with the every corner made adjacent to the center point, quadrisecting each square into four equally sized isosceles, right triangles.
+The synthetic mesh generator for quadirsected square tessellations generates meshes characterized by rings of squares around a center point, with the every corner made adjacent to the center point, quadrisecting each square into four equally sized isosceles, right triangles.
 
-The smallest, non-trivial mesh, generated with the parameter R equal to one, is composed of four squares around the center point, represented in total by only thirteen points and sixteen faces, however those numbers grow quickly with increasing parameter size R, according to the two equations
+The smallest, non-trivial mesh, generated with the parameter $r$ equal to one, is composed of four squares around the center point, represented in total by only thirteen points and sixteen faces, however those numbers grow quickly with increasing parameter size $r$, according to the two equations
 \begin{align}
-	|\bP| &= 8R^2 + 4R + 1 \\
-	|\bT| &= 16R^2
+	|\bP| &= 8r^2 + 4r + 1 \\
+	|\bT| &= 16r^2
 	\label{eq:sq4PointAndFaceCounts}
 \end{align}
 
-Figure~\ref{fig:sq2} shows a comparison of two differently sized quadrisected square tessellations, generated with parameters R set to 1 and 10, each in wireframe, shown in (a) and (d), then colored by function value before convolving the filter, shown in (b) and (e), as well as after convolving the filter, once for R=1 in (c), and 100 times for R=10 in (f).
+Figure~\ref{fig:sq2} shows a comparison of two differently sized quadrisected square tessellations, generated with parameters $r$ set to 1 and 10, each in wireframe, shown in (a) and (d), then colored by function value before convolving the filter, shown in (b) and (e), as well as after convolving the filter, once for $r$=1 in (c), and 100 times for $r$=10 in (f). Notice the circular shape of the filter response in part (f).
+\todoStyle{sq4 wireframes are not dark enough}
 
 \input{figures/latex/sq4.tex}
 %
@@ -77,16 +78,16 @@ Figure~\ref{fig:sq2} shows a comparison of two differently sized quadrisected sq
 %
 \pagebreak
 \subsection{Hexagonal Tesselation}
-The synthetic mesh generator for hexagonal tessellations generates meshes which are characterized by hexagons around one central hexagon, with each corner of the hexagons made adjacent to its own center point, creating six equilateral triangles per hexagon, and ensuring that every edge lengths in the mesh is of equal size.
+The synthetic mesh generator for hexagonal tessellations generates meshes characterized by hexagons around one central hexagon, with each corner of the hexagons made adjacent to its own center point, creating six equilateral triangles per hexagon, and ensuring that every edge lengths in the mesh is of equal size.
 
-The smallest, non-trivial mesh, generated with the parameter R equal to one, is composed of one hexagon around the center point, represented in total by only seven points and 6 faces, however those numbers grow quickly with increasing parameter size R, according to the two equations
+The smallest, non-trivial mesh, generated with the parameter $r$ equal to zero, is composed of one hexagon around the center point, represented in total by only seven points and six faces, however those numbers grow quickly with increasing parameter size $r$, according to the two equations
 \begin{align}
-	|\bP| &= 3R^2 + 3R + 7 +\sum_{r=1}^R{6(2r + 1)}\\
-	|\bT| &= 18R^2 + 18R + 6
+	|\bP| &= 3r^2 + 3r + 7 +\sum_{i=1}^r{6(2i + 1)}\\
+	|\bT| &= 18r^2 + 18r + 6
 	\label{eq:hexPointAndFaceCounts}
 \end{align}
 
-Figure~\ref{fig:sq2} shows a comparison of two differently sized hexagonal tessellations, generated with parameters R set to 1 and 10, each in wireframe, shown in (a) and (d), then colored by function value before convolving the filter, shown in (b) and (e), as well as after convolving the filter, once for R=1 in (c), and 200 times for R=10 in (f).
+Figure~\ref{fig:sq2} shows a comparison of two differently sized hexagonal tessellations, generated with parameters $r$ set to 1 and 10, each in wireframe, shown in (a) and (d), then colored by function value before convolving the filter, shown in (b) and (e), as well as after convolving the filter, once for $r=1$ in (c), and 200 times for $r=10$ in (f).
 
 \input{figures/latex/hex.tex}
 
@@ -96,10 +97,10 @@ Figure~\ref{fig:sq2} shows a comparison of two differently sized hexagonal tesse
 %
 \pagebreak
 \subsection{Random Triangulated Discs}
-The synthetic mesh generator for random triangulated discs generates meshes which are characterized by radially bounded, uniformly distributed, random meshes; including one point located at the origin. Furthermore, the points are then triangulated following the well-studied method originally presented by of Delaunay~\cite{Delaunay34}.
+The synthetic mesh generator for random triangulated discs generates meshes characterized by radially bounded, uniformly distributed, random meshes; including one point located at the origin. Furthermore, the points are then triangulated following the well-studied method originally presented by of Delaunay~\cite{Delaunay34}.
 \todoResearch{how are the points uniformly distributed?}
 
-Unlike the other generators, this requires two parameters, the radius of the disc R, and the explicit number of points P. For our experiments, the parameters were chosen to ensure parity with the sizes and point density of the other synthetic meshes.
+Unlike the other generators, random triangulated discs requires two parameters, the radius of the disc $r$, and the explicit number of points $p$. For our experiments, the parameters were chosen to ensure parity with the sizes and point density of the other synthetic meshes.
 %, the following table of parameters where used.
 %\begin{table}[ht]
 %\begin{tabular}{rrr}
@@ -127,14 +128,14 @@ Unlike the other generators, this requires two parameters, the radius of the dis
 %\end{tabular}
 %\end{table}
 
-%The smallest, non-trivial mesh, generated with the parameter R equal to one, is composed of one hexagon around the center point, represented in total by only seven points and 6 faces, however those numbers grow quickly with increasing parameter size R, according to the two equations
+%The smallest, non-trivial mesh, generated with the parameter $r$ equal to one, is composed of one hexagon around the center point, represented in total by only seven points and 6 faces, however those numbers grow quickly with increasing parameter size $r$, according to the two equations
 %\begin{align}
-%	|\bP| &= 3R^2 + 3R + 7 +\sum_{r=1}^R{6(2r + 1)}\\
-%	|\bT| &= 18R^2 + 18R + 6
+%	|\bP| &= 3r^2 + 3r + 7 +\sum_{r=1}^r{6(2r + 1)}\\
+%	|\bT| &= 18r^2 + 18r + 6
 %	\label{eq:hexPointAndFaceCounts}
 %\end{align}
 
-Figure~\ref{fig:sq2} shows a comparison of two differently sized, random triangulated discs, generated with parameters R set to 1 and 10, and parameters P set to 11 and 641, each in wireframe, shown in (a) and (d), then colored by function value before convolving the filter, shown in (b) and (e), as well as after convolving the filter, twice for R=1 in (c), and 10,000 times for R=10 in (f).
+Figure~\ref{fig:sq2} shows a comparison of two differently sized, random triangulated discs, generated with parameters $r$ set to 1 and 10, and parameters $p$ set to 11 and 641, each in wireframe, shown in (a) and (d), then colored by function value before convolving the filter, shown in (b) and (e), as well as after convolving the filter, twice for $r=1$ in (c), and 10,000 times for $r=10$ in (f). Notice in (f), the relatively high number of iterations required required to achieve the shown filter response.
 
 \input{figures/latex/rdisc.tex}
 
