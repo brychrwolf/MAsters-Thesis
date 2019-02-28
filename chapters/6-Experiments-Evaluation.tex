@@ -39,7 +39,7 @@ The four synthetic mesh configurations are: the bisected square tessellation, th
 %
 \pagebreak
 \subsection{Bisected Square Tessellations}
-The synthetic mesh generator for bisected square tessellations generates meshes which are characterized by rings of squares around a center point, with the northwest and southeast corners made adjacent, so as to bisect the square into two equally sized isosceles, right triangles; resulting in two dissimilar edge lengths adjacent to the center point.
+The synthetic mesh generator for bisected square tessellations generates meshes which are characterized by rings of squares around a center point, with the northwest and southeast corners made adjacent, so as to bisect each square into two equally sized isosceles, right triangles; resulting in two dissimilar edge lengths adjacent to the center point.
 
 The smallest, non-trivial mesh, generated with the parameter R equal to one, is composed of four squares around the center point, represented in total by only nine points and eight faces, however those numbers grow quickly with increasing parameter size R, according to the two equations
 \begin{align}
@@ -59,24 +59,25 @@ Figure~\ref{fig:sq2} shows a comparison of two differently sized bisected square
 %
 \pagebreak
 \subsection{Quadrisected Square Tessellations}
-The synthetic mesh generator for quadirsected square tessellations generates meshes which are characterized by rings of squares around a center point, with the every corner made adjacent to the center point, quadrisecting the square into four equally sized isosceles, right triangles.
+The synthetic mesh generator for quadirsected square tessellations generates meshes which are characterized by rings of squares around a center point, with the every corner made adjacent to the center point, quadrisecting each square into four equally sized isosceles, right triangles.
 
-The smallest, non-trivial mesh, generated with the parameter R equal to one, is composed of four squares around the center point, represented in total by only nine points and eight faces, however those numbers grow quickly with increasing parameter size R, according to the two equations
+The smallest, non-trivial mesh, generated with the parameter R equal to one, is composed of four squares around the center point, represented in total by only thirteen points and sixteen faces, however those numbers grow quickly with increasing parameter size R, according to the two equations
 \begin{align}
-	|\bP| &= 4R^2 + 4R + 1 \\
-	|\bT| &= 8R^2
-	\label{eq:sq2PointAndFaceCounts}
+	|\bP| &= 8R^2 + 4R + 1 \\
+	|\bT| &= 16R^2
+	\label{eq:sq4PointAndFaceCounts}
 \end{align}
 
-Figure~\ref{fig:sq2} shows a comparison of two differently sized bisected square tessellations, generated with parameters R set to 1 and 10, each in wireframe, shown in (a) and (d), then colored by function value before convolving the filter, shown in (b) and (e), as well as after convolving the filter, once for R=1 in (c), and 100 times for R=10 in (f). Notice how the filter response appears to travel faster across the image, along the longer, diagonal edge lengths.
+Figure~\ref{fig:sq2} shows a comparison of two differently sized quadrisected square tessellations, generated with parameters R set to 1 and 10, each in wireframe, shown in (a) and (d), then colored by function value before convolving the filter, shown in (b) and (e), as well as after convolving the filter, once for R=1 in (c), and 100 times for R=10 in (f).
 
+\input{figures/latex/sq4.tex}
 %
 %
 %
 %
 \pagebreak
 \subsection{Hexagonal Tesselation}
-The synthetic mesh generator for hexagonal tessellations generates meshes which are characterized by hexagons around one central hexagon, with each corner of a hexagon made adjacent to its center point, creating six equilateral triangles, and ensuring that every edge lengths in the mesh is of equal size.
+The synthetic mesh generator for hexagonal tessellations generates meshes which are characterized by hexagons around one central hexagon, with each corner of the hexagons made adjacent to its own center point, creating six equilateral triangles per hexagon, and ensuring that every edge lengths in the mesh is of equal size.
 
 The smallest, non-trivial mesh, generated with the parameter R equal to one, is composed of one hexagon around the center point, represented in total by only seven points and 6 faces, however those numbers grow quickly with increasing parameter size R, according to the two equations
 \begin{align}
