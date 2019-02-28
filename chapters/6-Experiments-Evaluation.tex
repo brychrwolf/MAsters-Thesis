@@ -1,10 +1,9 @@
 \chapter{Experiments \& Evaluation}
-Our goal in experimentation was two-fold. It was our intuition that it would be useful to visualize the filter response when applied to acquired \tdd{} with the result of the MSII applied, both regular and irregular synthetic \tdd{} with the Dirac delta function applied.
+Our goal in experimentation was two-fold. It was our intuition that it would be useful to visualize the filter response when applied to acquired \tdd{} with the result of the MSII filter applied as a scalar field, and when applied to both regular and irregular synthetic \tdd{} with the Dirac delta function applied. Secondly, the performance of the parallel algorithm is evaluated in regards to speedup obtained when convolving the filter over meshes of different sizes, with different counts of processors.
 
 A smoothing filter is an application of the Heat equation \todoCitation{Jaehne}
 Gaussian distribution
 Gaussian blurring
-
 
 Two purposes:
 	1. see the behavior of the filter in different data sets, and to
@@ -17,6 +16,8 @@ Two kinds of data sets:
 		circle triangulation
 	acquired
 
+Each image of a mesh was visualized using GigaMesh~\cite{Mara10} with function values colored with the Improved Hot colorramp, exported as a raster image in the portable network graphic, PNG, format.%after disabling the background grid [f7], maximizing the window, disabling screenshot cropping, as well as rejecting tiled rendering, finally cropping to content in GIMP.
+
 
 %
 %
@@ -27,7 +28,8 @@ Two kinds of data sets:
 \section{Synthetic Data}
 In order to study the effect of each convolution of \fors{t} on individual values of a scalar field, we generated synthetic \tdd{} arranged into four different configuraitions of triangle meshes, then applied the Dirac delta function as a scalar field\todoCitation{Dirac delta function}, meaning a function value of one at the center point, and zero everywhere else, before iteravely convolving the filter multiple times on each mesh.
 
-The four synthetic mesh configurations are: the bisected square tessellation, the quadrisected square tesselation, the hexagonal tessellation, and the radially bounded, uniformally distributed, delaney triangulated, random mesh, and were generated using C++ source code which was written specifically for the research presented in this thesis. However, as such tools may also be found useful by other researchers, it is our intention to make that source code of each generator as available to the others as this thesis is.
+The four synthetic mesh configurations are: the bisected square tessellation, the quadrisected square tesselation, the hexagonal tessellation, and the random triangulated circle mesh, and were generated using C++ source code which was written specifically for the research presented in this thesis. However, as such tools may also be found useful by other researchers, it is our intention to make that source code of each generator as available as this thesis to the others.
+
 
 
 , with eight different sizes of each,
@@ -35,27 +37,38 @@ The four synthetic mesh configurations are: the bisected square tessellation, th
 %
 %
 %
-\subsection{Bisected Square Tessellation}
-The synthetic mesh generator for bisected square tessellations generates meshes which are characterized by rings of squares around a center point, with the northwest and southest corners made adjacent as to bisect the square into two equally sized isosceles triangles. The smallest, non-trivial mesh, generated with the parameter R equal to one, is composed of only nine points and eight faces, but grows quickly as summarized in table~\ref{tbl:sq2}.
+\pagebreak
+\subsection{Bisected Square Tessellations}
+The synthetic mesh generator for bisected square tessellations generates meshes which are characterized by rings of squares around a center point, with the northwest and southest corners made adjacent as to bisect the square into two equally sized isosceles triangles, creating two dissimilar edge lengths adjacent to the center point.
 
-\begin{table}[ht]
-\begin{tabular}{rrr}
-\textbf{R} & \textbf{Points} & \textbf{Faces} \\
-\hline
-    0 &          1 &          0\\
-    1 &          9 &          8\\
-    3 &         49 &         72\\
-   10 &        441 &        800\\
-   30 &      3,721 &      7,200\\
-  100 &     40,401 &     80,000\\
-  300 &    361,201 &    720,000\\
-1,000 &  40,04,001 &  8,000,000\\
-3,000 & 36,012,001 & 72,000,000%
-\caption{Summary of the Counts of Points and Faces for Increasing Parameters of the Bisected Square Tesselation Synthetic Mesh Generator\label{tbl:sq2}}
-\end{tabular}
-\end{table}
+The smallest, non-trivial mesh, generated with the parameter R equal to one, is composed of four squares around the center point, represented in total by only nine points and eight faces, however those numbers grow quickly
+%, as summarized in table~\ref{tbl:sq2},
+with increasing parameter size R, according to the two equations
+\begin{align}
+	|\bP| &= 4R^2 + 4R + 1 \\
+	|\bT| &= 8R^2
+	\lable{eq:sq2PointAndFaceCounts}
+\end{align}
 
-Figure~\ref{fig:sq2} shows a comparison of
+%\begin{table}[ht]
+%\begin{tabular}{rrr}
+%\textbf{R} & \textbf{Points} & \textbf{Faces} \\
+%\hline
+%    0 &          1 &          0\\
+%    1 &          9 &          8\\
+%    3 &         49 &         72\\
+%   10 &        441 &        800\\
+%   30 &      3,721 &      7,200\\
+%  100 &     40,401 &     80,000\\
+%  300 &    361,201 &    720,000\\
+%1,000 &  40,04,001 &  8,000,000\\
+%3,000 & 36,012,001 & 72,000,000%
+%\caption{Summary of the Counts of Points and Faces for Increasing Parameters of the Bisected Square Tesselation Synthetic Mesh Generator\label{tbl:sq2}}
+%\end{tabular}
+%\end{table}
+
+Figure~\ref{fig:sq2} shows a comparison of two differently sized bisected square tessellations, generated with parameters R set to 1 and 10, each in wireframe, shown in (a) and (d), then colored by function value before convolving the filter, shown in (b) and (e), as well as after convolving the filter, once for R=1 in (c), and 100 times for R=10 in (f). Notice how the filter response appears to travel faster accross the image, along the longer, diagonal edge lengths.
+
 \input{figures/latex/sq2.tex}
 %\todoResearch{Why does sq2 10 need 100 iters to match sq 1 at 1 iters?}
 
@@ -63,58 +76,70 @@ Figure~\ref{fig:sq2} shows a comparison of
 %
 %
 %
+%\pagebreak
 %\subsection{Square Tesselations, Four Triangles}
 
 %
 %
 %
 %
+\pagebreak
 \subsection{Hexagonal Tesselation}
-The synthetic mesh generator for hexagonal tessellations generates meshes which are characterized by rings of hexagons around one centeral hexagon, with each corner of a hexagon made adjacent to its center point, creating six equilateral triangles. The smallest mesh, generated with the parameter R equal to zero, is composed of only seven points and 6 faces, but grows quickly as summarized in table~\ref{tbl:hex}.
+The synthetic mesh generator for hexagonal tessellations generates meshes which are characterized by hexagons around one centeral hexagon, with each corner of a hexagon made adjacent to its center point, creating six equilateral triangles, and ensuring that every edge lengths in the mesh is of equal size.
 
-\begin{table}[ht]
-\begin{tabular}{rrr}
-\textbf{R} & \textbf{Points} & \textbf{Faces} \\
-\hline
-    0 &          7 &           6\\
-    1 &         31 &          42\\
-    3 &        133 &         222\\
-   10 &      1,057 &       1,986\\
-   30 &      8,557 &      16,746\\
-  100 &     91,507 &     181,806\\
-  300 &    814,507 &   1,625,406\\
-1,000 &  9,015,007 &  18,018,006\\
-3,000 & 81,045,007 & 162,054,006%
-\caption{Summary of the Counts of Points and Faces for Increasing Parameters of the Hexagonal Tesselation Synthetic Mesh Generator\label{tbl:hex}}
-\end{tabular}
-\end{table}
+The smallest, non-trivial mesh, generated with the parameter R equal to one, is composed of one hexagon around the center point, represented in total by only seven points and 6 faces, however those numbers grow quickly
+%, as summarized in table~\ref{tbl:hex},
+with increasing parameter size R, according to the two equations
+\begin{align}
+	|\bP| &= 3R^2 + 3R + 7 +\sum_{r=1}^R{6(2r + 1)}\\
+	|\bT| &= 18R^2 + 18R + 6
+	\lable{eq:hexPointAndFaceCounts}
+\end{align}
 
-Figure~\ref{fig:sq2} shows a comparison of
+%\begin{table}[ht]
+%\begin{tabular}{rrr}
+%\textbf{R} & \textbf{Points} & \textbf{Faces} \\
+%\hline
+%    0 &          7 &           6\\
+%    1 &         31 &          42\\
+%    3 &        133 &         222\\
+%   10 &      1,057 &       1,986\\
+%   30 &      8,557 &      16,746\\
+%  100 &     91,507 &     181,806\\
+%  300 &    814,507 &   1,625,406\\
+%1,000 &  9,015,007 &  18,018,006\\
+%3,000 & 81,045,007 & 162,054,006%
+%\caption{Summary of the Counts of Points and Faces for Increasing Parameters of the Hexagonal Tesselation Synthetic Mesh Generator\label{tbl:hex}}
+%\end{tabular}
+%\end{table}
+
+Figure~\ref{fig:sq2} shows a comparison of two differently sized hexagonal tessellations, generated with parameters R set to 1 and 10, each in wireframe, shown in (a) and (d), then colored by function value before convolving the filter, shown in (b) and (e), as well as after convolving the filter, once for R=1 in (c), and 200 times for R=10 in (f).
+
 \input{figures/latex/hex.tex}
 
 %
 %
 %
 %
+\pagebreak
 \subsection{Random Trigangulated Circles}
 The synthetic mesh generator for random trigangulated circles generates meshes which are characterized by radially bounded, uniformally distributed, delaney triangulated, random meshes. Unlike the other generators, this requires two parameters, the radius R, and the number of points P. The smallest mesh,
 
 
 
 generated with the parameter R equal to zero, is composed of only seven points and 6 faces, but grows quickly as summarized in table~\ref{tbl:hex}.
+The synthetic mesh generator for hexagonal tessellations generates meshes which are characterized by hexagons around one centeral hexagon, with each corner of a hexagon made adjacent to its center point, creating six equilateral triangles, and ensuring that every edge lengths in the mesh is of equal size.
 
-\begin{table}[ht]
-\begin{tabular}{rrr}
-\textbf{R} & \textbf{Points} & \textbf{Faces} \\
-\hline
-    0 &          7 &           6\\
-3,000 & 81,045,007 & 162,054,006%
-\caption{Summary of the Counts of Points and Faces for Increasing Parameters of the Hexagonal Tesselation Synthetic Mesh Generator\label{tbl:hex}}
-\end{tabular}
-\end{table}
+The smallest, non-trivial mesh, generated with the parameter R equal to one, is composed of one hexagon around the center point, represented in total by only seven points and 6 faces, however those numbers grow quickly with increasing parameter size R, according to the two equations
+\begin{align}
+	|\bP| &= 3R^2 + 3R + 7 +\sum_{r=1}^R{6(2r + 1)}\\
+	|\bT| &= 18R^2 + 18R + 6
+	\lable{eq:hexPointAndFaceCounts}
+\end{align}
 
-Figure~\ref{fig:sq2} shows a comparison of
-%\input{figures/latex/rcirc.tex}
+Figure~\ref{fig:sq2} shows a comparison of two differently sized hexagonal tessellations, generated with parameters R set to 1 and 10, each in wireframe, shown in (a) and (d), then colored by function value before convolving the filter, shown in (b) and (e), as well as after convolving the filter, once for R=1 in (c), and 200 times for R=10 in (f).
+
+\input{figures/latex/rcirc.tex}
 
 %
 %
