@@ -41,36 +41,17 @@ The four synthetic mesh configurations are: the bisected square tessellation, th
 \subsection{Bisected Square Tessellations}
 The synthetic mesh generator for bisected square tessellations generates meshes which are characterized by rings of squares around a center point, with the northwest and southeast corners made adjacent, so as to bisect the square into two equally sized isosceles, right triangles; resulting in two dissimilar edge lengths adjacent to the center point.
 
-The smallest, non-trivial mesh, generated with the parameter R equal to one, is composed of four squares around the center point, represented in total by only nine points and eight faces, however those numbers grow quickly
-%, as summarized in table~\ref{tbl:sq2},
-with increasing parameter size R, according to the two equations
+The smallest, non-trivial mesh, generated with the parameter R equal to one, is composed of four squares around the center point, represented in total by only nine points and eight faces, however those numbers grow quickly with increasing parameter size R, according to the two equations
 \begin{align}
 	|\bP| &= 4R^2 + 4R + 1 \\
 	|\bT| &= 8R^2
 	\label{eq:sq2PointAndFaceCounts}
 \end{align}
 
-%\begin{table}[ht]
-%\begin{tabular}{rrr}
-%\textbf{R} & \textbf{Points} & \textbf{Faces} \\
-%\hline
-%    0 &          1 &          0\\
-%    1 &          9 &          8\\
-%    3 &         49 &         72\\
-%   10 &        441 &        800\\
-%   30 &      3,721 &      7,200\\
-%  100 &     40,401 &     80,000\\
-%  300 &    361,201 &    720,000\\
-%1,000 &  40,04,001 &  8,000,000\\
-%3,000 & 36,012,001 & 72,000,000%
-%\caption{Summary of the Counts of Points and Faces for Increasing Parameters of the Bisected Square Tesselation Synthetic Mesh Generator\label{tbl:sq2}}
-%\end{tabular}
-%\end{table}
-
 Figure~\ref{fig:sq2} shows a comparison of two differently sized bisected square tessellations, generated with parameters R set to 1 and 10, each in wireframe, shown in (a) and (d), then colored by function value before convolving the filter, shown in (b) and (e), as well as after convolving the filter, once for R=1 in (c), and 100 times for R=10 in (f). Notice how the filter response appears to travel faster across the image, along the longer, diagonal edge lengths.
 
 \input{figures/latex/sq2.tex}
-%\todoResearch{Why does sq2 10 need 100 iters to match sq 1 at 1 iters?}
+\todoResearch{Why does sq2 10 need 100 iters to match sq 1 at 1 iters?}
 
 %
 %
@@ -80,31 +61,12 @@ Figure~\ref{fig:sq2} shows a comparison of two differently sized bisected square
 \subsection{Quadrisected Square Tessellations}
 The synthetic mesh generator for quadirsected square tessellations generates meshes which are characterized by rings of squares around a center point, with the every corner made adjacent to the center point, quadrisecting the square into four equally sized isosceles, right triangles.
 
-The smallest, non-trivial mesh, generated with the parameter R equal to one, is composed of four squares around the center point, represented in total by only nine points and eight faces, however those numbers grow quickly
-%, as summarized in table~\ref{tbl:sq2},
-with increasing parameter size R, according to the two equations
+The smallest, non-trivial mesh, generated with the parameter R equal to one, is composed of four squares around the center point, represented in total by only nine points and eight faces, however those numbers grow quickly with increasing parameter size R, according to the two equations
 \begin{align}
 	|\bP| &= 4R^2 + 4R + 1 \\
 	|\bT| &= 8R^2
 	\label{eq:sq2PointAndFaceCounts}
 \end{align}
-
-%\begin{table}[ht]
-%\begin{tabular}{rrr}
-%\textbf{R} & \textbf{Points} & \textbf{Faces} \\
-%\hline
-%    0 &          1 &          0\\
-%    1 &          9 &          8\\
-%    3 &         49 &         72\\
-%   10 &        441 &        800\\
-%   30 &      3,721 &      7,200\\
-%  100 &     40,401 &     80,000\\
-%  300 &    361,201 &    720,000\\
-%1,000 &  40,04,001 &  8,000,000\\
-%3,000 & 36,012,001 & 72,000,000%
-%\caption{Summary of the Counts of Points and Faces for Increasing Parameters of the Bisected Square Tesselation Synthetic Mesh Generator\label{tbl:sq2}}
-%\end{tabular}
-%\end{table}
 
 Figure~\ref{fig:sq2} shows a comparison of two differently sized bisected square tessellations, generated with parameters R set to 1 and 10, each in wireframe, shown in (a) and (d), then colored by function value before convolving the filter, shown in (b) and (e), as well as after convolving the filter, once for R=1 in (c), and 100 times for R=10 in (f). Notice how the filter response appears to travel faster across the image, along the longer, diagonal edge lengths.
 
@@ -116,31 +78,12 @@ Figure~\ref{fig:sq2} shows a comparison of two differently sized bisected square
 \subsection{Hexagonal Tesselation}
 The synthetic mesh generator for hexagonal tessellations generates meshes which are characterized by hexagons around one central hexagon, with each corner of a hexagon made adjacent to its center point, creating six equilateral triangles, and ensuring that every edge lengths in the mesh is of equal size.
 
-The smallest, non-trivial mesh, generated with the parameter R equal to one, is composed of one hexagon around the center point, represented in total by only seven points and 6 faces, however those numbers grow quickly
-%, as summarized in table~\ref{tbl:hex},
-with increasing parameter size R, according to the two equations
+The smallest, non-trivial mesh, generated with the parameter R equal to one, is composed of one hexagon around the center point, represented in total by only seven points and 6 faces, however those numbers grow quickly with increasing parameter size R, according to the two equations
 \begin{align}
 	|\bP| &= 3R^2 + 3R + 7 +\sum_{r=1}^R{6(2r + 1)}\\
 	|\bT| &= 18R^2 + 18R + 6
 	\label{eq:hexPointAndFaceCounts}
 \end{align}
-
-%\begin{table}[ht]
-%\begin{tabular}{rrr}
-%\textbf{R} & \textbf{Points} & \textbf{Faces} \\
-%\hline
-%    0 &          7 &           6\\
-%    1 &         31 &          42\\
-%    3 &        133 &         222\\
-%   10 &      1,057 &       1,986\\
-%   30 &      8,557 &      16,746\\
-%  100 &     91,507 &     181,806\\
-%  300 &    814,507 &   1,625,406\\
-%1,000 &  9,015,007 &  18,018,006\\
-%3,000 & 81,045,007 & 162,054,006%
-%\caption{Summary of the Counts of Points and Faces for Increasing Parameters of the Hexagonal Tesselation Synthetic Mesh Generator\label{tbl:hex}}
-%\end{tabular}
-%\end{table}
 
 Figure~\ref{fig:sq2} shows a comparison of two differently sized hexagonal tessellations, generated with parameters R set to 1 and 10, each in wireframe, shown in (a) and (d), then colored by function value before convolving the filter, shown in (b) and (e), as well as after convolving the filter, once for R=1 in (c), and 200 times for R=10 in (f).
 
@@ -277,36 +220,6 @@ Figure~\ref{fig:computeTimesS} shows how compute times increase with both meshsi
 		Increasing Vertex Count}
 		\label{fig:ratioFacesVertices}}
 \end{figure}
-
-
-
-%\subsection{Debossed H}
-%In Figure \ref{fig:h}, we show a debossed capital letter H.\footnote{The H is
-%as a nod to Heidelberg University and the cuniform script studied by the FCGL.}
-%\begin{figure}[ht]
-%\centering
-%	\begin{subfigure}{.48\linewidth}
-%		\centering
-%		\resizebox{0.48\linewidth}{!}{\input{data/synthetic_meshes/h.tikz_labels.tex}}
-%		\caption{HWireframe}\label{fig:h.a}
-%	\end{subfigure}
-%	\hfill
-%	\begin{subfigure}{.48\linewidth}
-%		\centering
-%		\includegraphics[width=0.48\linewidth]{data/synthetic_meshes/h_colored.png}
-%		\caption{HColored}\label{fig:h.b}
-%	\end{subfigure}
-%	\caption[A debossed H, which contains 22 vertices and 36 faces.]{A debossed H,
-%	which contains 22 vertices and 36 faces: (a) wireframe (b) colored by the
-%	relation to its distance to an underlying plane, in RdGy
-%	colorramp~\cite[p.~???]{Brewer2003}~\cite[p.~19]{Giga17}, visualized using the
-%	GigaMesh~\cite{Mara10} framework with triangle edges rendered.}\label{fig:h}
-%\end{figure}
-%To evaluate methods available for discrete surfaces, we can increase the number of vertices of our synthetic wedge using five iterations of the mid-edge subdivision scheme [PR97,HW99].~\cite[p.~38]{Mara12}
-
-%\subsection{Mars Crater}
-%Mars dataset crater as a Digital Terrain Models (DTMs) Mention in Mara 3.6
-%Summary “Dali” inspired methodProcessing regular grids like Digital Terrain Models (DTMs) will gain dramatic performance increases using the estimator, while processing irregular grids with high curvatures will strongly benefit from precise computation of the volume integral invariant.~\cite[p.~143]{Mara12}
 
 %
 %
