@@ -16,7 +16,9 @@ Two kinds of data sets:
 		disc triangulation
 	acquired
 
-Each image of a mesh was visualized using GigaMesh~\cite{Mara10} with function values colored with the Improved Hot colorramp, exported as a raster image in the portable network graphic, PNG, format.%after disabling the background grid [f7], maximizing the window, disabling screenshot cropping, as well as rejecting tiled rendering, finally cropping to content in GIMP.
+Each image of a mesh was visualized using GigaMesh~\cite{Mara10} with function values colored with the Improved Hot colorramp, exported as a raster image in the portable network graphic, PNG, format.
+
+
 
 
 %
@@ -26,11 +28,9 @@ Each image of a mesh was visualized using GigaMesh~\cite{Mara10} with function v
 %
 %
 \section{Synthetic \tdd{}}
-In order to study the effect of each convolution of \fors{t} on individual values of a scalar field, we generated synthetic \tdd{} arranged into four different configurations of triangle meshes, then applied the Dirac delta function as a scalar field\todoCitation{Dirac delta function}, meaning a function value of one at the center point, and zero everywhere else, before iteratively convolving the filter multiple times on each mesh.
+In order to study the effect of each convolution of \fors{t} on individual function values of a scalar field, we generated synthetic \tdd{} arranged into four different configurations of triangle meshes, then applied the Dirac delta function as a scalar field\todoCitation{Dirac delta function}, meaning a function value of one at the center point, and zero everywhere else, before iteratively convolving \fors{t} multiple times over each mesh.
 
-The four synthetic mesh configurations are: the bisected square tessellation, the quadrisected square tesselation, the hexagonal tessellation, and the random triangulated disc, and were generated using C++ source code which was written specifically for the research presented in this thesis. However, as such tools may also be found useful by other researchers, it is our intention to make that source code of each generator as available as this thesis to the others.
-
-, with eight different sizes of each,
+The four synthetic mesh configurations are: the bisected square tessellation, the quadrisected square tessellation, the hexagonal tessellation, and the random triangulated disc, and were generated using original C++ source code which was written specifically for the research presented in this thesis. However, as such tools may also be found useful by other researchers, it is our intention to make the source code of each generator as available as this thesis.
 
 %
 %
@@ -47,9 +47,9 @@ The smallest, non-trivial mesh, generated with the parameter $r$ equal to one, i
 	\label{eq:sq2PointAndFaceCounts}
 \end{align}
 
-Figure~\ref{fig:sq2} shows a comparison of two differently sized bisected square tessellations, generated with parameters $r$ set to 1 and 10, each in wireframe, shown in (a) and (d), then colored by function value before convolving the filter, shown in (b) and (e), as well as after convolving the filter, once for $r$=1 in (c), and 100 times for $r$=10 in (f). Notice how the filter response appears to travel faster across the image, along the longer, diagonal edge lengths.%\todoResearch{Why does sq2 10 need 100 iters to match sq 1 at 1 iters?}
+Figure~\ref{fig:sq2} shows a comparison of two differently sized bisected square tessellations, generated with parameters $r$ set to 1 and 10, each in wireframe, shown in (a) and (d), then colored by function value before convolving the filter, shown in (b) and (e), as well as after convolving the filter, once for $r$=1 in (c), and 100 times for $r$=10 in (f). Notice how the filter response appears to travel faster across the image, along the longer, diagonal edge lengths. Notice the very circular filter response in (f).
 
-%\input{figures/latex/sq2.tex}
+\input{figures/latex/sq2.tex}
 
 %
 %
@@ -69,7 +69,7 @@ The smallest, non-trivial mesh, generated with the parameter $r$ equal to one, i
 Figure~\ref{fig:sq2} shows a comparison of two differently sized quadrisected square tessellations, generated with parameters $r$ set to 1 and 10, each in wireframe, shown in (a) and (d), then colored by function value before convolving the filter, shown in (b) and (e), as well as after convolving the filter, once for $r$=1 in (c), and 100 times for $r$=10 in (f). Notice the circular shape of the filter response in part (f).
 \todoStyle{sq4 wireframes are not dark enough}
 
-%\input{figures/latex/sq4.tex}
+\input{figures/latex/sq4.tex}
 
 %
 %
@@ -88,7 +88,7 @@ The smallest, non-trivial mesh, generated with the parameter $r$ equal to zero, 
 
 Figure~\ref{fig:sq2} shows a comparison of two differently sized hexagonal tessellations, generated with parameters $r$ set to 1 and 10, each in wireframe, shown in (a) and (d), then colored by function value before convolving the filter, shown in (b) and (e), as well as after convolving the filter, once for $r=1$ in (c), and 200 times for $r=10$ in (f).
 \todoStyle{b c e and f need to correct for dpi}
-%\input{figures/latex/hex.tex}
+\input{figures/latex/hex.tex}
 
 %
 %
@@ -96,47 +96,53 @@ Figure~\ref{fig:sq2} shows a comparison of two differently sized hexagonal tesse
 %
 \pagebreak
 \subsection{Random Triangulated Discs}
-The synthetic mesh generator for random triangulated discs generates meshes characterized by radially bounded, uniformly distributed, random meshes; including one point located at the origin. Furthermore, the points are then triangulated following the well-studied method originally presented by of Delaunay~\cite{Delaunay34}.
-\todoResearch{how are the points uniformly distributed?}
+The synthetic mesh generator for random triangulated discs generates meshes characterized by radially bounded, uniformly distributed, random points,  triangulated following the well-studied method originally presented by of Delaunay~\cite{Delaunay34}. Generating random triangulated discs requires two parameters, the radius of the disc $r$, and the number of points $p$. The parameters were chosen to ensure parity with the sizes and point density of the other synthetic meshes, as summarized in Table~\ref{tbl:rdisc}.
+\vspace*{-.5\baselineskip}
+\begin{table}[ht]
+\begin{tabular}{rrr|rrr}
+\textbf{Radius $r$} & \textbf{Points $p$} & \textbf{Faces} & \textbf{Radius $r$} & \textbf{Points $p$} & \textbf{Faces}\\
+\hline
+    1 &         11 &          12 &   100 &     60,401 &     120,668\\
+    3 &         67 &         119 &   300 &    541,201 &   1,082,132\\
+   10 &        641 &       1,252 & 1,000 &  6,004,001 &  12,007,382\\
+   30 &      5,521 &      10,971 & 3,000 & 54,012,001 & 108,022,714%
+\caption{Summary of the parameters used with the random triangulated disc generator\label{tbl:rdisc}}
+\end{tabular}
+\end{table}
 
-Unlike the other generators, random triangulated discs requires two parameters, the radius of the disc $r$, and the explicit number of points $p$. For our experiments, the parameters were chosen to ensure parity with the sizes and point density of the other synthetic meshes.
-%, the following table of parameters where used.
-%\begin{table}[ht]
-%\begin{tabular}{rrr}
-%\textbf{R} & \textbf{Points} & \textbf{Faces} \\
-%\hline
-%1	11
-%3	67
-%10	641
-%30	5521
-%100	60401
-%300	541201
-%1000	6004001
-%3000	54012001
+Figure~\ref{fig:sq2} shows a comparison of two differently sized, random triangulated discs, generated with parameters $r$ set to 1 and 10, and parameters $p$ set to 11 and 641, each in wireframe, shown in (a) and (d), then colored by function value before convolving the filter, shown in (b) and (e), as well as after convolving the filter, twice for $r=1$ in (c), and 10,000 times for $r=10$ in (f).
+\vspace*{-\baselineskip}
+\input{figures/latex/rdisc.tex}
 
-%   0 &          7 &           6\\
-%    1 &         31 &          42\\
-%    3 &        133 &         222\\
-%   10 &      1,057 &       1,986\\
-%   30 &      8,557 &      16,746\\
-%  100 &     91,507 &     181,806\\
-%  300 &    814,507 &   1,625,406\\
-%1,000 &  9,015,007 &  18,018,006\\
-%3,000 & 81,045,007 & 162,054,006%
-%\caption{Summary of the Counts of Points and Faces for Increasing Parameters of the Hexagonal Tesselation Synthetic Mesh Generator\label{tbl:hex}}
-%\end{tabular}
-%\end{table}
+%
+%
+%
+%
+\pagebreak
+\subsection{Ratio Approaching Two}
+In addition to the synthetic meshes featured in Figures~\ref{fig:sq2}~-~\ref{fig:rdisc}, many others sizes of each type of mesh were also generated to be used in the experiments designed to test compute times, which will be discussed in detail in Section~\ref{ch6sCT}. While designing those experiments, an interesting trend uncovered itself as the ratio of the count of triangle faces $|\bT|$ over the count of points $|\bP|$ tended to approach two as the total count of points in a mesh increased.
+\begin{equation}
+	\lim_{|\bP| \rightarrow \infty}{\frac{|\bT|}{|\bP|}} = 2
+	\label{eq:ratioApproachesTwo}
+\end{equation}
 
-%The smallest, non-trivial mesh, generated with the parameter $r$ equal to one, is composed of one hexagon around the center point, represented in total by only seven points and 6 faces, however those numbers grow quickly with increasing parameter size $r$, according to the two equations
-%\begin{align}
-%	|\bP| &= 3r^2 + 3r + 7 +\sum_{r=1}^r{6(2r + 1)}\\
-%	|\bT| &= 18r^2 + 18r + 6
-%	\label{eq:hexPointAndFaceCounts}
-%\end{align}
+In fact, the largest two mesh sizes generated, the hexagonal tessellation and quadrisected square, both with $r$ set to 3,000 and more than $8.1\times 10^7$ and $7.2\times 10^7$ points each, exhibit ratios closer than $5\times 10^{-4}$ less than 2, but never at or above.
 
-Figure~\ref{fig:sq2} shows a comparison of two differently sized, random triangulated discs, generated with parameters $r$ set to 1 and 10, and parameters $p$ set to 11 and 641, each in wireframe, shown in (a) and (d), then colored by function value before convolving the filter, shown in (b) and (e), as well as after convolving the filter, twice for $r=1$ in (c), and 10,000 times for $r=10$ in (f). Notice in (f), the relatively high number of iterations required required to achieve the shown filter response.
+Figure~\ref{fig:ratioApproachesTwo} illustrates the trend followed by every synthetic mesh we generated, and the three acquired meshes as well. The ratio of the count of faces $|\bT|$, divided by the count of points $|\bP|$, approaches two as the total count of points in the mesh increases.
+\begin{figure}[ht]
+	\includegraphics[width=\linewidth]
+	{figures/numFacesByVerticesGoTo2.png}
+	\caption[Ratio of Faces / Points]{Ratio of Faces to Points by Increasing Vertex Count}
+	\label{fig:ratioApproachesTwo}
+\end{figure}
 
-%\input{figures/latex/rdisc.tex}
+Further research led us to the definition of Euler's polyhedron formula, which was proved by Cauchy as early as 1811, which says the counts of points plus the counts of faces minus the counts of edges, will always be two for convex polyhedrons.
+\begin{equation}
+	|\bP| + |\bF| - |\bE| = 2
+	\label{eq:eulersPoluhedron}
+\end{equation}
+
+It is therefore our intuition that the trend of the ratio of faces to points approaching two, is related to the diminishing ratio of border-edges to non-border-edges with increasingly dense meshes. Of this, we say no more, except that it is interesting enough to warrant further research.
 
 %
 %
@@ -146,37 +152,43 @@ Figure~\ref{fig:sq2} shows a comparison of two differently sized, random triangu
 %
 \pagebreak
 \section{Acquired \tdd{}}
-\dots
-Each acquired mesh was processed using the GigaMesh framework to generate the function values using the MSII, Multi-Scale Integral Invariants filter\todoCitation{}
+Each of the three acquired \tdd{} examples used in our experiments, the partial model of the University of Heidelberg seal, the flat surface from ILATO, and the Stanford Bunny, were initially processed using the GigaMesh framework in order to generate function values using the Multi-Scale Integral Invariants filter, MSII~\cite{Mara12}.
+
+
 
 %
 %
 %
 %
-\pagebreak
-\subsection{University of Heidelberg Seal}
-The seal of the University of Heidelberg, established 1386, as stored by the Univeristy of Heidelberg Archives. Captured with a high resolution 3D-scanner, with the raw scanned data stored in the heiDATA dataverse of the IWR Computer Graphics~\cite{Unisiegel}. This partial model is taken from the center of the original data, and is comprised of 397,210 points and 789,406 faces.
+\subsection{The University of Heidelberg Seal}
+This acquired \tdd{} is a partial model, comprised of 397,210 points and 789,406 faces, taken from the center of a 3D-scan of the seal of the University of Heidelberg, as established in 1386, and stored by the Univeristy of Heidelberg Archives. The original data was captured with a high resolution 3D-scanner and is stored in the heiDATA dataverse of the IWR Computer Graphics~\cite{Unisiegel}.
 
-Figure~\ref{fig:unisiegel} shows\dots
+Figure~\ref{fig:unisiegel} shows three views of the partial model taken from the University of Heidelberg seal: in wireframe, colored by function values generated by applying the MSII filter, before convolving \fors{t}, and colored by function value after convolving \fors{t} 100 times.
+
 \input{figures/latex/unisiegel.tex}
 
-%
-%
-%
-%
-\subsection{A Flat surface}
-Flat surfaces have NOISE!
-Figure~\ref{fig:ILATO}: ILATO\_1A\_SM2066-HE5-60\_070214\_merged\_GMO\_r1.00\_n4\_v256
-%\input{figures/latex/ILATO.tex}
+There exist several holes in this \tdd{}, including the large hold in the lap of the figure, just below the center of each image. As \fors{t} convolves over every point, considering each neighborhood in isolation, the convexity of the entire mesh is inconsequential, and faces adjacent to holes are treated the same as faces adjacent to borders. Also notice the black area\ldots
 
 %
 %
 %
 %
-\subsection{Stanford Bunny}
+\subsection{A flat surface from ILATO}
+This acquired \tdd{} is a partial model, comprised of 56,215 points and 111,311 faces, taken from the center of sample 1A of the set of industrial samples presented by the ILATO project~, Improving Limited Angle computed Tomography by Optical data integration\cite{ILATO14}. The original data was obtained by scanning an aluminum block with brushed surface finish, with a Breuckmann scanners SmartScan 3D~\cite{Bayer16}.
+
+Figure~\ref{fig:ILATO} shows four views of the partial model taken from ILATO sample 1a: in wireframe, colored by function values generated by applying the MSII filter, before convolving \fors{t}, colored by function value after convolving \fors{t} 1000 times, and then again after convolving the filter 3000 times.
+\input{figures/latex/ILATO.tex}
+
+As with the other acquired \tdd{}, the function values were computed by applying the MSII filter, and use the same color ramp as the other models, however, because total variance over the entire model is very small, in the range of -0.018 and 0.018, practically representing the noise characteristic of the 3D-scanner and software used to generate the mesh, the range of function values are also compressed, so smoothing does not appear to occur as rapidly as seen in other experiments.
+
+%
+%
+%
+%
+\subsection{The Stanford Bunny}
 The Stanford Bunny was range scanned in 1994 using a Cyberware 3030MS optical triangulation scanner. The ten separate scans were then zippered together~\cite[Turk94] to produce the \tdd{} which we obtained from The Stanford 3D Scanning Repository~\cite{StanfordBun}. This mesh is comprised of 35,947 points and 69,451 faces.
 
-Figure~\ref{fig:unisiegel} shows\dots
+Figure~\ref{fig:bun} shows three views of the Stanford Bunny: in wireframe, colored by function values generated by applying the MSII filter, before convolving \fors{t}, and colored by function value after convolving \fors{t} 100 times.
 \input{figures/latex/bun.tex}
 
 %
@@ -185,14 +197,8 @@ Figure~\ref{fig:unisiegel} shows\dots
 %
 %
 %
-\section{Evaluation}
-\ldots
-
-%
-%
-%
-%
-\subsection{Compute Times}
+\section{Compute Times}
+, with eight different sizes of each,
 
 Figure~\ref{fig:computeTimesLP} shows how compute times increase linearly with both mesh size and number of iterations in a very predictable way when total compute time is at least 0.1 seconds, and less predictable for shorter periods do to the nature of thread optimization at the processor level and variable memory read times.\todoResearch{add formula for timing (or at least ref to it) here.}\todoResearch{process time noise at very fast speeds}
 \begin{figure}[ht]
@@ -212,20 +218,6 @@ Figure~\ref{fig:computeTimesS} shows how compute times increase with both meshsi
 	\RawCaption{\caption[Compute Times - Scatter]{Compute Times for Different
 		Hardware Configurations by increaseing Mesh Size and Filter Iterations}
 		\label{fig:computeTimesS}}
-\end{figure}
-
-%
-%
-%
-%
-\subsection{Curious Trend, ratio goes to 2}
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[width=1.0\linewidth,height=1.0\textheight,keepaspectratio]{figures/numFacesByVerticesGoTo2.png}
-	\RawCaption{\caption[Ratio of Faces / Vertices]{Ratio of Faces to Vertices by
-		Increasing Vertex Count}
-		\label{fig:ratioFacesVertices}}
 \end{figure}
 
 %
