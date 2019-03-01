@@ -586,11 +586,13 @@ A proper understanding of all dependencies becomes even more crucial, when desig
 %
 %
 \subsection{Program Correctness}
+\label{ch2sPPssPC}
 Program correctness, which may otherwise be referred to as functional correctness, is defined by the field of theoretical computer science as existing only when, for each input given, a program produces the expected output,\todoCitation{definition of program correctness}. In this section we discuss the dangers inherent to asynchronous parallel processing, mentioning the concepts of critical sections, the mutex locking mechanism, and the explicit synchronization of threads.
 
 %
 %
 \subsubsection{Critical Sections}
+\label{ch2sPPssPCsssCS}
 One major consequence of processing in parallel is that, due to the independence enjoyed by individual threads, the sequence in which operations are performed can no longer always be guaranteed. That is not intrinsically a problem, however it becomes a critical issue with the introduction of data or control dependence; when information must be shared among threads by reading from and writing to volatile memory, which is memory that may be changed by any thread.
 
 Sections of code containing the instructions that utilize volatile memory are aptly named ``critical sections'', and special care must be taken in their regard, in order to ensure program correctness, despite not being able to determine in what order the operations may occur.
@@ -651,6 +653,7 @@ In order to managing the complications inherent to the race conditions engendere
 %
 %
 \subsubsection{Mutexes}
+\label{ch2sPPssPCsssM}
 The term ``mutex'' is an abbreviation for ``mutual exclusion'', which is used to describe the situation where the presence of a single entity may exclude the presence of all others. For parallel processing, that translates to allowing only one single threads to enter a critical section of code at a time, and is typically implemented as a shared value, called a mutex, which any thread wanting to enter a critical section in code must first find unlocked, before locking the mutex itself and performing the operations therein. All other threads wanting to also enter the critical section will find the mutex locked, and therefore must ``block'', waiting until the mutex is again unlocked, before being able to proceed.
 
 While it is true that employing a mutex can be expensive to both compute time and memory\todoResearch{how expensive are locking mechanisms}, because blocking intrinsically means the cessation of computation, when used efficiently, the speedup gained by exploiting the parallelism becomes worth the cost\todoResearch{quantify the cost} of the added synchronization overhead.~\cite[~p.20]{Lang17} An example of which is thoroughly explored in the description of Algorithm~\ref{alg:parallelConvolveFilter}, presented later in this thesis.
@@ -658,6 +661,7 @@ While it is true that employing a mutex can be expensive to both compute time an
 %
 %
 \subsubsection{Explicit Thread Synchronization}
+\label{ch2sPPssPCsssETS}
 Occasionally, in order to maintain the correctness of the overall program due to some dependence within the code, an algorithm is forced to block, waiting for all threads to complete their calculations, before finally continuing with its computations. This procedure is called, ``explicit synchronization'',\todoCitation{CUDA 3.2.5.5.3. Explicit Synchronization} and is expressed in the parallel algorithms presented in this thesis by a call to the subroutine \textit{synchronizeThread)}.
 
 Explicitly synchronizing threads can be very expensive, costing the overall efficiency of an algorithm greatly; easily reaching level of  billions of compute cycles.\todoResearch{get stats on thread synch}\todoReference{experiments about thread synch time costs}. Therefore, it is absolutely imperative that one minimizes its inclusion in the design of any parallel algorithm, especially within loops, avoiding it altogether when possible\todoResearch{avoiding thread synch}, and limiting its use to sections of an algorithm immediately before where the culmination of large volumes of work is to be used.
@@ -669,6 +673,7 @@ In this section we discussed the dangers to program correctness inherent to para
 %
 %
 \subsection{Evaluation and Analysis of Parallel Algorithms}
+\label{ch2sPPssEAPA}
 When engaging in the design of parallel algorithms, it is useful to define metrics which can be used to quantitatively describe the differences engendered by the modifications made to the basic serial algorithm. Such metrics could then influence not only choices in the design, but also environments under which the algorithm should be run; for example, to answer the question regarding the scalability of the algorithm and the worthiness of incurring the costs of increasing the count of processors in the pursuit of faster computation times.~\cite[p.~330]{Lang17}
 \todoReword{recap each paragraph}
 

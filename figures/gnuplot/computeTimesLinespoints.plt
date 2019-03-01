@@ -7,12 +7,12 @@ round(x, n) = round(x*10**n)*10.0**(-n)
 
 set datafile separator ","
 data = "../../data/computeTimesLinespoints.csv"
-set terminal pngcairo size 1000, 680 #enhanced font "Times New Roman, 10"
+set terminal pngcairo size 720, 1000 enhanced font "FreeSerif,14"
 set output "../computeTimesLinespoints.png"
 
-set title font ",16" offset 8 \
-"Compute Times of Applying the One-Ring Filter for Selected Numbers of Iterations\n \
-onto Acquired and Synthetic 3D Meshes of Varying Sizes"
+#set title font ",16" \ #offset 8 \
+#"Compute Times of Applying the One-Ring Filter for Selected Numbers of Iterations\n \
+#onto Acquired and Synthetic 3D Meshes of Varying Sizes"
 
 set key outside
 
@@ -21,5 +21,7 @@ set ylabel "Compute Time (seconds) - Log Scale"
 set xlabel "One-Ring Filter Iterations - Log Scale"
 
 plot for [i=3:12] data every ::1::8  using 2:i with linespoints title "TG.".columnhead(i) ls ceil(9-(i-1)*8/10), \
-	 for [i=3:12] data every ::9::16 using 2:i with linespoints title "MG.".columnhead(i) ls ceil(9-(i-1)*8/10)
+	 for [i=3:12] data every ::9::16 using 2:i with linespoints title "MG.".columnhead(i) ls ceil(9-(i-1)*8/10), \
+	 for [i=3:12] data every ::17::24 using 2:i with linespoints title "TC.".columnhead(i) ls ceil(9-(i-1)*8/10), \
+	 for [i=3:12] data every ::25::31 using 2:i with linespoints title "MC.".columnhead(i) ls ceil(9-(i-1)*8/10)
 
