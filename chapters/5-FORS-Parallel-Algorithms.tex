@@ -1,27 +1,27 @@
 \chapter{Fast One-Ring Smoothing: Parallel Algorithms}
-\label{ch6}
+\label{ch5}
 In the previous two chapters we presented the mathematical grounding and serial algorithms for an improved version of \Fors{t}, as it is currently implemented within the GigaMesh framework, and while it has improved accuracy in regards to the method of weighting the mean function values, it is still yet entirely serial in design, so that unfortunately, its performance suffers greatly under the complexity of modern mesh sizes, which with the current high resolution scanners in use, can grow to be MESH\_SIZES\todoResearch{mesh sizes}.
 
 In this chapter, we will now explore the serial version of this as-yet-unpublished algorithm, in order to negotiate any instances of control or data dependency, hopefully discovering manifestations of independent procedures worthy of exploiting with parallel processing, with the goal of improving the performance of the filter when implemented on a system capable of parallel computation.
 \todoBackground{Data dependencies}
 
-Following the pattern set by the serial algorithm in Chapter~\ref{ch5}, the parallel algorithm for \Fors{t} also has three main parts. In contrast however, the parallel variant of each of the three serial parts are split further into subroutines, in order to delegate blocks of instructions to separate threads of execution, while protecting critical sections, and avoiding data and control dependencies, so that the threads can be safely executed in parallel.
+Following the pattern set by the serial algorithm in Chapter~\ref{ch4}, the parallel algorithm for \Fors{t} also has three main parts. In contrast however, the parallel variant of each of the three serial parts are split further into subroutines, in order to delegate blocks of instructions to separate threads of execution, while protecting critical sections, and avoiding data and control dependencies, so that the threads can be safely executed in parallel.
 
-The following three sections will each focus on producing the parallel variant of one of the three parts of the serial algorithm which was presented in Chapter~\ref{ch5}, by first analyzing the serial algorithm through the lens of parallel programing, next defining the strategy behind the design of the parallel variant, then finally providing the pseudo code definitions to implement that part of the algorithm.
+The following three sections will each focus on producing the parallel variant of one of the three parts of the serial algorithm which was presented in Chapter~\ref{ch4}, by first analyzing the serial algorithm through the lens of parallel programing, next defining the strategy behind the design of the parallel variant, then finally providing the pseudo code definitions to implement that part of the algorithm.
 
 %
 %
 %
 %
 \section{Build Neighborhoods in Parallel}
-\label{ch6sBNP}
-The sole purpose of Algorithm~\ref{alg:serialBuildNeighborhoods}, as discussed in detail in Section~\ref{ch5sBN}, is to explore every triangular face in the set $\bT$ in order to generate a family of sets of neighborhoods $\bN$, so that subsequent algorithms can recall and iterate over those associations and negate the computational costs incurred by searching the entire mesh each time the membership of a neighborhood must be known. In addition to that goal, because of the nondeterministic nature of the sum of the cardinalities of each neighborhood of $\bN$, the parallel variant of the $\mathit{buildNeighborhoods}$ procedure must also provide a census, a total count of all neighbors in all neighborhoods, so that the next two parts of the parallel variant of \fors{t} algorithm can accurately predict work loads, and evenly delegate portions of the work to independent threads of execution.
+\label{ch5sBNP}
+The sole purpose of Algorithm~\ref{alg:serialBuildNeighborhoods}, as discussed in detail in Section~\ref{ch4sBN}, is to explore every triangular face in the set $\bT$ in order to generate a family of sets of neighborhoods $\bN$, so that subsequent algorithms can recall and iterate over those associations and negate the computational costs incurred by searching the entire mesh each time the membership of a neighborhood must be known. In addition to that goal, because of the nondeterministic nature of the sum of the cardinalities of each neighborhood of $\bN$, the parallel variant of the $\mathit{buildNeighborhoods}$ procedure must also provide a census, a total count of all neighbors in all neighborhoods, so that the next two parts of the parallel variant of \fors{t} algorithm can accurately predict work loads, and evenly delegate portions of the work to independent threads of execution.
 
 %
 %
 \subsection{Analysis of Serial Algorithm~\ref{alg:serialBuildNeighborhoods}: Build Neighborhoods}
-\label{ch6sBNPssASABN}
-In this section, we analyze through the lens of parallel programing, the~\nameref{saBN.title} as presented in Section~\ref{ch5sBN}. The strategy we employ involves reading the serial algorithm line by line, building a dependency graph, and as opportunities for exploiting parallelism are discovered, a strategy\todoReword{strategy twice is bad} for maximizing efficiency is devised.
+\label{ch5sBNPssASABN}
+In this section, we analyze through the lens of parallel programing, the~\nameref{saBN.title} as presented in Section~\ref{ch4sBN}. The strategy we employ involves reading the serial algorithm line by line, building a dependency graph, and as opportunities for exploiting parallelism are discovered, a strategy\todoReword{strategy twice is bad} for maximizing efficiency is devised.
 \todoBackground{Dependency Graph}
 
 Starting in line~\ref{sbn1} of Algorithm~\ref{alg:serialBuildNeighborhoods}, we read the declaration of the function \textit{serialBuildNeighborhoods} requiring the entire set of triangular faces $\bT$ as an input, then already in line~\ref{sbn2}, we encounter a loop over each face $\bt$ in $\bT$. In general, concurrency found in the structure of a loop may be completely exploited by a parallel implementation of the same procedure, but only in the absence of loop-carried dependence. So, in order to determine if the iterations of this loop may be computed in parallel, an analysis of every operation in the loop block is required.\todoResearch{Amdahl's Law}
@@ -44,7 +44,7 @@ The first part of the instruction on line~\ref{sbn3} uses the point $\bp_a$ as a
 
 Both reading from, and writing to $\bN_a$ in volatile memory constitutes a critical section in the algorithm, which must be accounted for in the design of the parallel variant of this part of the algorithm. Furthermore, both dependencies lie in a single path of dependence, which means that the entire group of operations must be protected by a locking mechanism as described in Section~\ref{ch2sPPssMS}. 
 
-Fortunately, because both dependencies revolve around the same set $\bN_a$, instead of implementing a global mutex to protect the critical section in all threads computing \wmfv{s}, it will be sufficient to design the algorithm with a set of mutexes, where each mutex only protects a neighborhood's portion of the total critical sections being processed in parallel.
+Fortunately, because both dependencies revolve around the same set $\bN_a$, instead of implementing a global \gls{mutex} to protect the critical section in all threads computing \wmfv{s}, it will be sufficient to design the algorithm with a set of mutexes, where each mutex only protects a neighborhood's portion of the total critical sections being processed in parallel.
 
 The significance of this design choice comes from how typical of acquired \tdd{}, the ratio of points in $\bP$ to the average neighborhood size approaches $|\bP|$, appreciable with even moderately sized meshes, so instead of all processors, which can count in the thousands, blocking in wait of entering the same critical section for all neighbors of all points, which can count in the tens of millions, each processor must now only monitor the mutex of the neighborhood for which it is working, which typically will include only about 6 neighbors.\todoReword{reference where average neighborhoods size is determined}
 
@@ -53,8 +53,8 @@ Lines~\ref{sbn4}~and~\ref{sbn5} behave similarly to line~\ref{sbn3}, except they
 %
 %
 \subsection{Parallel Variant of Build Neighborhoods}
-\label{ch6sBNPssPVBN}
-Algorithm~\ref{alg:parallelBuildNeighborhoods} defines the structure and procedures required to implement a parallel variant of the function $\mathit{serialBuildNeighborhoods}$, while ensuring correctness by using a set of mutexes to guard critical sections. The main function $\mathit{parallelBuildNeighborhoods}$ requires only the number of available processors $\rho$, the set of all triangular faces $\bT$, and the cardinality of the set of points $|\bP|$ in order to complete its task. Initially, the ``stride'' is calculated in line~\ref{algPBN.stride} as the portion of the total work load, to which a single processor will be instructed to compute, equal to the problem size divided by the number of available processors; here, the unit of work being an entire triangular face $\bt$. Next, a set of mutexes are created, containing an equal amount of elements as the cardinality of points in $\bP$, to be used individually for each neighborhood. \todoReword{remove if no longer setting $\fM$} Then begins the loop to spawn a ``build'' thread for a quarter of the available processors in the system, with the scalar four being a result of each build thread's need to spawn three additional ``union'' threads. Then all the working threads must synchronize first, before the family of sets of neighborhoods $\bN$ can be finally realized.
+\label{ch5sBNPssPVBN}
+Algorithm~\ref{alg:parallelBuildNeighborhoods} defines the structure and procedures required to implement a parallel variant of the function $\mathit{serialBuildNeighborhoods}$, while ensuring correctness by using a set of mutexes to guard critical sections. The main function $\mathit{parallelBuildNeighborhoods}$ requires only the number of available processors $\rho$, the set of all triangular faces $\bT$, and the cardinality of the set of points $|\bP|$ in order to complete its task. Initially, the ``\gls{stride}'' is calculated in line~\ref{algPBN.stride} as the portion of the total work load, to which a single processor will be instructed to compute, equal to the problem size divided by the number of available processors; here, the unit of work being an entire triangular face $\bt$. Next, a set of mutexes are created, containing an equal amount of elements as the cardinality of points in $\bP$, to be used individually for each neighborhood. \todoReword{remove if no longer setting $\fM$} Then begins the loop to spawn a ``build'' thread for a quarter of the available processors in the system, with the scalar four being a result of each build thread's need to spawn three additional ``union'' threads. Then all the working threads must synchronize first, before the family of sets of neighborhoods $\bN$ can be finally realized.
 
 In line~\ref{algPBN.build}, we read that along with access to the set of triangular faces $\bT$ and set of mutexes $\fM$, each build thread in Algorithm~\ref{alg:parallelBuildNeighborhoods} also requires an index $\Pi$, which it uses along with the stride $sigma$, to calculate the lower and upper boundaries, $\check{\sigma}$ and $\hat{\sigma}$, for the portion of the work load on which it should compute. Next, it iterates over each face $\bt$ within those stride boundaries, and spawns three union threads; one each for the three points comprising the corners of the current triangular face.
 
@@ -103,26 +103,26 @@ Line~\ref{algPBN.safeUnion} shows that each union thread requires not only the f
 	}
 	\caption{Parallel algorithm for building the family of sets of all members of each neighborhood discovered in the mesh \label{alg:parallelBuildNeighborhoods}}
 \end{algorithm}%
-\nomenclature[]{$\rho$}{the number of available processors}%
-\nomenclature[]{$\sigma$}{the ``stride'', the size of a block of work intended for a single processor, equal to the problem size divided by the number of available processors}%
-\nomenclature[]{$\check{\sigma}$}{the index of the beginning of a stride}%
-\nomenclature[]{$\hat{\sigma}$}{the index of the beginning of a stride}%
-\nomenclature[]{$\Pi$}{the index representing a single processor}%
-\nomenclature[]{$\fM$}{a set of mutexes}%
-\nomenclature[]{$\mu_v$}{a specific mutex}%
-\nomenclature[]{$\sim$\textit{process}}{a process to be run in parallel by a new thread}%
+\nomenclature[qa]{$\rho$}{the number of available processors}%
+\nomenclature[qb]{$\sigma$}{the ``stride'', the size of a block of work intended for a single processor, equal to the problem size divided by the number of available processors}%
+\nomenclature[qc]{$\check{\sigma}$}{the index of the beginning of a stride}%
+\nomenclature[qd]{$\hat{\sigma}$}{the index of the beginning of a stride}%
+\nomenclature[qe]{$\fM$}{a set of mutexes}%
+\nomenclature[qf]{$\mu$}{a specific mutex}%
+\nomenclature[qg]{$\Pi$}{the index representing a single processor}%
+\nomenclature[qh]{$\sim$\textit{process}}{a process to be run in parallel by a new thread}%
 
 %
 %
 \subsection{Parallel Recursive Census Neighborhoods}
-\label{ch6sBNPssPRCN}
+\label{ch5sBNPssPRCN}
 The motivation behind Algorithm~\ref{alg:parallelRecursiveCensusNeighborhoods} is that the next two parts of parallel algorithm for \fors{t} perform individual computations for each neighbor in the family of sets of neighborhoods $\bN$, and so require a total count of all neighbors in all neighborhoods in order to accurately predict and evenly delegate portions of the work load to each independent thread of execution. Additionally, because of the nondeterministic nature of the cardinality of neighborhoods in acquired \tdd{}, therefore also the total sum of all cardinalities of neighborhoods in $\bN$, the parallel variant of the function $\mathit{serialBuildNeighborhoods}$ must also provide a census of total membership, defined as
 %
 \begin{equation}
 	\hat{n} := \sum\limits_{v=1}^{|\bN|}{|\bN_v|}
 	\label{eq:censusNeighborhoods}
 \end{equation}%
-\nomenclature[]{$\hat{n}$}{census total of all neighbors in all neighborhoods in $\bN$}%
+\nomenclature[ra]{$\hat{n}$}{census total of all neighbors in all neighborhoods in $\bN$}%
 
 While a sum of all cardinalities could be accumulated by each thread in  Algorithm~\ref{alg:parallelBuildNeighborhoods}, unlike in the serial version, it would very inefficient\footnote{It is possible that in some programming languages, the underlying data structure may automatically keep a record of the size of membership in $\bN$. In that case, one would simply ignore Algorithm~\ref{alg:parallelRecursiveCensusNeighborhoods} and instead assign that generated value to $\hat{n}$.} due to the added overhead of collisions with the locking mechanism required to protect the shared value of the total sum.  Alternatively, algorithm~\ref{alg:parallelRecursiveCensusNeighborhoods} only requires as inputs, the family of sets of neighborhoods $\bN$, and the number of processors available in the system, but is highly parallel and performs at the quick rate of $O(log_2(n))$, so when using a system with multiple processors, it is a much more efficient alternative to calculating the sum implicitly while building $\bN$.
 
@@ -182,7 +182,7 @@ In the third and final part, ``the recursive call'', the function \textit{parall
 	}
 	\caption{Parallel algorithm for recursively counting a census of all neighbors in all neighborhoods \label{alg:parallelRecursiveCensusNeighborhoods}}
 \end{algorithm}%
-\nomenclature[]{$\widetilde{\bN}$}{a subset of $\bN$}%
+\nomenclature[rb]{$\widetilde{\bN}$}{a subset of $\bN$}%
 \todoReword{mention that non-existent neighborhoods should be treated as having a cardinality of 0}
 \footnotetext{It is important to notice in line~\ref{algPRCN.onlyFirstCall}, the distinction between the family of sets of neighborhoods $\bN$ in the first call of \textit{parallelRecursiveCensusNeighborhoods}, with that of the set of integers accumulating in the subset $\widetilde{\bN}$ in subsequent calls.}
 
@@ -191,15 +191,15 @@ In the third and final part, ``the recursive call'', the function \textit{parall
 %
 %
 \section{Calculating Edge Lengths in Parallel}
-\label{ch6sCELP}
-The goal of this section is to produce the parallel variant of  Algorithm~\ref{alg:serialCalculateEdgeLengths}, as presented in Chapter~\ref{ch5}, which has the goal of building a set of pre-calculated edge lengths $\bE$, as well as determining the global minimum edge length $\gelm$; both essential parameters of Algorithm~\ref{alg:serialConvolveFilter}. First we will analyze the serial algorithm through the lens of parallel programing, to be followed by defining the strategy behind the design of the parallel variant, then finally providing the pseudo code definitions to implement Algorithm~\ref{alg:parallelCalculateEdgeLengths}.
+\label{ch5sCELP}
+The goal of this section is to produce the parallel variant of  Algorithm~\ref{alg:serialCalculateEdgeLengths}, as presented in Chapter~\ref{ch4}, which has the goal of building a set of pre-calculated edge lengths $\bE$, as well as determining the global minimum edge length $\gelm$; both essential parameters of Algorithm~\ref{alg:serialConvolveFilter}. First we will analyze the serial algorithm through the lens of parallel programing, to be followed by defining the strategy behind the design of the parallel variant, then finally providing the pseudo code definitions to implement Algorithm~\ref{alg:parallelCalculateEdgeLengths}.
 
 
 %
 %
 \subsection{Analysis of Serial Algorithm~\ref{alg:serialCalculateEdgeLengths}: Calculate Edge Lengths}
-\label{ch6sCELPssASACEL}
-In this section, we analyze the~\nameref{saCEL.title} as presented in Section~\ref{ch5sCEL}, through the lens of parallel programing. The strategy we employ involves reading the serial algorithm line by line, building a dependency graph, and as opportunities for exploiting parallelism are discovered, a strategy\todoReword{strategy twice is bad} for maximizing efficiency is devised.
+\label{ch5sCELPssASACEL}
+In this section, we analyze the~\nameref{saCEL.title} as presented in Section~\ref{ch4sCEL}, through the lens of parallel programing. The strategy we employ involves reading the serial algorithm line by line, building a dependency graph, and as opportunities for exploiting parallelism are discovered, a strategy\todoReword{strategy twice is bad} for maximizing efficiency is devised.
 
 Starting in line~\ref{scel1} of Algorithm~\ref{alg:serialCalculateEdgeLengths}, we read the declaration of the function \textit{serialCalculateEdgeLengths} requiring the set of points $\bP$, as well as the family of sets of neighborhoods $\bN$ as inputs. Then, in line~\ref{scel2}, we encounter a loop over each point $\bp_v$ in $\bP$. In order to determine if the iterations of the loop may instead be computed in parallel, an analysis of every operation in the loop block for loop-carried dependencies is required, which in this case, includes lines~\ref{scel3}-~\ref{scel5}.
 
@@ -211,7 +211,7 @@ Figure~\ref{fig:sacelDataDependencies} illustrates the data dependencies inheren
 
 \begin{figure}[ht]
 	\includestandalone[width=1.0\textwidth]{figures/tikz/sacelDataDependencies}
-	{\caption[Data Dependencies in Serial Algorithm~\ref{alg:serialCalculateEdgeLengths}: Calculate Edge Lengths]{An illustration of the data dependencies found in Algorithm~\ref{alg:serialCalculateEdgeLengths}. Square nodes indicate a values stored in memory, oval nodes indicate operations. Single arrows indicate reading values, double arrows indicate writing values to memory. Drawn in teal color are static memory, and the values and operations which are independent and free of data dependencies. Drawn in sand color are mutable memory, the values stored there, and the operations which rely on them. These are independent, however may be modified during processing. Drawn in coral color, are volatile memory, the values stored there, which may be modified at anytime during a procedure, and the operations which rely on those volatile values.}\label{fig:sacelDataDependencies}}
+	{\caption[Data Dependencies in Serial Algorithm~\ref{alg:serialCalculateEdgeLengths}: Calculate Edge Lengths]{An illustration of the data dependencies found in Algorithm~\ref{alg:serialCalculateEdgeLengths}. Square nodes indicate a values stored in memory, oval nodes indicate operations. Single arrows indicate reading values, double arrows indicate writing values to memory. Drawn in teal color are static memory, and the values and operations which are independent and free of data dependencies. Drawn in sand color are \gls{mutableMemory}, the values stored there, and the operations which rely on them. These are independent, however may be modified during processing. Drawn in coral color, are volatile memory, the values stored there, which may be modified at anytime during a procedure, and the operations which rely on those volatile values.}\label{fig:sacelDataDependencies}}
 \end{figure}
 
 As denoted by a teal colored lines, the first operation reads the current point $\bp_v$ from $\bP$ in static memory. Next, that point is referenced to read the corresponding neighborhood $\bN_v$ from $\bN$. Then the point $\bp_i$ is determined, and combined with $\bp_v$ in order to compute $\ellstar$, the distance between the two points.
@@ -227,8 +227,8 @@ The benefit of storing the set of adjacent points twice, once in both directions
 %
 %
 \subsection{Parallel Variant of Calculate Edge Lengths}
-\label{ch6sCELPssPVCEL}
-In this section, we apply the knowledge gained from the analysis of Algorithm~\ref{alg:serialCalculateEdgeLengths} conducted in Section~\ref{ch6sCELPssASACEL}, in order to provide the pseudo code definitions with which one may implement a parallel variant of the function \textit{serialCalculateEdgeLengths}.
+\label{ch5sCELPssPVCEL}
+In this section, we apply the knowledge gained from the analysis of Algorithm~\ref{alg:serialCalculateEdgeLengths} conducted in Section~\ref{ch5sCELPssASACEL}, in order to provide the pseudo code definitions with which one may implement a parallel variant of the function \textit{serialCalculateEdgeLengths}.
 
 The mathematical pseudo code for the parallel algorithm for calculating all the edge lengths between each pair of adjacent points in the mesh is presented in Algorithm~\ref{alg:parallelCalculateEdgeLengths}. It requires the knowledge of and access to the number of available processors in the system $\rho$, the set of all points $\bP$, the family of sets of neighborhoods $\bN$, and the count of all neighbors in all neighborhoods $\hat{n}$, and produces as an output, the set of pre-calculated edge lengths $\bE$, and the global minimum edge length $\gelm$; both instrumental to the calculation of \Fors{t}. This algorithm has been split further into three subroutines in order to maximize efficiency by facilitating the balance of work loaded onto each processor in parallel.
 
@@ -301,20 +301,20 @@ In the next section, we will see how the pre-calculations of Algorithms~\ref{alg
 %
 %
 \section{Convolving the Filter in Parallel}
-\label{ch6sCFP}
-Finally, in this section, we examine the serial Algorithm~\ref{alg:serialConvolveFilter}, which includes the principle loop to convolve \Fors{t}. As a prerequisite, one must have successfully executed the previous three parallel algorithms, as detailed in Sections~\ref{ch6sBNP} and~\ref{ch6sCELP}, in order to generate the input parameters which will be used in the parallel variant of this algorithm. First we will analyze the serial algorithm through the lens of parallel programing, to be followed by defining the strategy behind the design of the parallel variant, then finally providing the pseudo code definitions to implement Algorithm~\ref{alg:parallelCalculateEdgeLengths}.
+\label{ch5sCFP}
+Finally, in this section, we examine the serial Algorithm~\ref{alg:serialConvolveFilter}, which includes the principle loop to convolve \Fors{t}. As a prerequisite, one must have successfully executed the previous three parallel algorithms, as detailed in Sections~\ref{ch5sBNP} and~\ref{ch5sCELP}, in order to generate the input parameters which will be used in the parallel variant of this algorithm. First we will analyze the serial algorithm through the lens of parallel programing, to be followed by defining the strategy behind the design of the parallel variant, then finally providing the pseudo code definitions to implement Algorithm~\ref{alg:parallelCalculateEdgeLengths}.
 
 %
 %
 \subsection{Analysis of Serial Algorithm~\ref{alg:serialConvolveFilter}: Convolve Filter}
-\label{ch6sCFPssASACF}
-In this section, we analyze through the lens of parallel programing, the~\nameref{saCF.title} as presented in Section~\ref{ch5sCF}. The strategy we employ will match that of the previous three algorithms, which involves the reading of the serial algorithm line by line, building a dependency graph, and as opportunities for exploiting parallelism are discovered, devising a strategy\todoReword{strategy twice is bad} for maximizing efficiency using parallel techniques.
+\label{ch5sCFPssASACF}
+In this section, we analyze through the lens of parallel programing, the~\nameref{saCF.title} as presented in Section~\ref{ch4sCF}. The strategy we employ will match that of the previous three algorithms, which involves the reading of the serial algorithm line by line, building a dependency graph, and as opportunities for exploiting parallelism are discovered, devising a strategy\todoReword{strategy twice is bad} for maximizing efficiency using parallel techniques.
 
 Starting in line~\ref{scf1} of Algorithm~\ref{alg:serialConvolveFilter}, we read the declaration of the function \textit{serialConvolveFilter} requiring as inputs: the set of points $\bP$, the set of function values $\bF$, the user-defined number of convolutions to perform $\tau$, as well as the information generated in the previous three algorithms, the family of sets of neighborhoods $\bN$, the set of pre-calculated edge lengths $\bE$, and the global minimum edge length $\gelm$. Then, in the first line of the function \textit{serialConvolveFilter}, we encounter a loop which runs for the user-defined number of convolutions $\tau$. In order to determine if one can parallelize the entire loop, once must closely analyze each operation within the loop block; searching for loop-carried control or data dependencies.
 
 So, skipping ahead to the last line of the loop block, line~\ref{algSCFlastLine}, we read that the set of function values $\bF$ is replaced by the newly computed set of \wmfv{s} $\bF'$, before starting the next convolution. This models exactly the definition of a loop-carried data dependency, therefore it would be impossible to efficiently calculate this loop entirely\footnote{What may be possible, would be to pipeline calculations for selected points between convolutions, since each calculation only actually requires the new function values of its neighbors, not the entire set. However, given the effort required to compute a single convolution of \fors{t} on typical acquired \tdd{}, it is unlikely that any additional speedup will be realized using such a technique, computing with the GPGPUs commercially available today.} in parallel.
 
-In the second and third lines of function \textit{serialConvolveFilter}, we encounter two more loops iterating over each point in $\bP$, and then each neighborhood $\bN_v$ associated with those points. We have seen this pattern before in Section~\ref{ch6sCELPssASACEL}; together, these two loops iterate over the non-deterministic membership of the family of sets of neighborhoods $\bN$, and indeed can be unrolled and computed in parallel by utilizing the total count of neighbors and the average size of all neighborhoods, barring any occurrences of loop-carried dependencies within the loop block.
+In the second and third lines of function \textit{serialConvolveFilter}, we encounter two more loops iterating over each point in $\bP$, and then each neighborhood $\bN_v$ associated with those points. We have seen this pattern before in Section~\ref{ch5sCELPssASACEL}; together, these two loops iterate over the non-deterministic membership of the family of sets of neighborhoods $\bN$, and indeed can be unrolled and computed in parallel by utilizing the total count of neighbors and the average size of all neighborhoods, barring any occurrences of loop-carried dependencies within the loop block.
 
 Figure~\ref{fig:sacfDataDependencies} illustrates the data dependencies inherent to each iteration of the pair of loops over the points $\bp_v$ in $\bP$, and then $\bp_i$ in $\bN_v$, as found in lines~\ref{scf1}~-~\ref{algSCFlastLine} of Algorithm~\ref{alg:serialConvolveFilter}.
 
@@ -344,8 +344,8 @@ Now that we have analyzed, the serial Algorithm~\ref{alg:serialConvolveFilter}, 
 %
 %
 \subsection{Parallel Variant of Convolve Filter}
-\label{ch6sCFPssPRCN}
-In this section, we apply the knowledge gained from the analysis of Algorithm~\ref{alg:serialConvolveFilter} conducted in Section~\ref{ch6sCFPssASACF}, in order to provide the pseudo code definitions with which one may implement a parallel variant of the function \textit{serialConvolveFilter}.
+\label{ch5sCFPssPRCN}
+In this section, we apply the knowledge gained from the analysis of Algorithm~\ref{alg:serialConvolveFilter} conducted in Section~\ref{ch5sCFPssASACF}, in order to provide the pseudo code definitions with which one may implement a parallel variant of the function \textit{serialConvolveFilter}.
 
 Algorithm~\ref{alg:parallelConvolveFilter} is split into three parts, the main function \textit{parallelConvolveFilter}, and two subroutines \textit{safeAccumulateGeoDiscMean} and \textit{safeAccumulateSectorMean}, in order to facilitate the delegation of portions of the total work load to separate threads of execution, while protecting critical sections, and avoiding data and control dependencies, so that the threads can be safely executed in parallel. The main function \textit{parallelConvolveFilter} requires several inputs, as did its serial counterpart, which include: the set of points $\bP$, the set of function values $\bF$, the user-defined number of convolutions to perform $\tau$, as well as the information generated in the previous three algorithms, the family of sets of neighborhoods $\bN$, the set of pre-calculated edge lengths $\bE$, and the global minimum edge length $\gelm$. In addition, it also requires the number of available processors $\rho$, and the count of all neighbors in all neighborhoods $\hat{n}$, specifically for this parallel variant of the algorithm.
 

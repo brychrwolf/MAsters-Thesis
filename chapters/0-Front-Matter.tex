@@ -65,25 +65,29 @@
 		\hfill\rule[2pt]{0.30\linewidth}{1pt}%
 	}{\ifthenelse{\equal{#1}{N}}{%
 		\rule[2pt]{0.30\linewidth}{1pt}\hfill%
-		\nameref{}%
+		\nameref{ch4sBN}%
 		\hfill\rule[2pt]{0.30\linewidth}{1pt}%
 	}{\ifthenelse{\equal{#1}{O}}{%
 		\rule[2pt]{0.30\linewidth}{1pt}\hfill%
-		\nameref{ch5sSIssDN}%
+		\nameref{ch4sCEL}%
 		\hfill\rule[2pt]{0.30\linewidth}{1pt}%
 	}{\ifthenelse{\equal{#1}{P}}{%
 		\rule[2pt]{0.30\linewidth}{1pt}\hfill%
-		\nameref{ch5sSIssCEL}%
+		\nameref{ch4sCF}%
 		\hfill\rule[2pt]{0.30\linewidth}{1pt}%
-	}{\ifthenelse{\equal{#1}{O}}{%
-		\rule[2pt]{0.30\linewidth}{1pt}\hfill%
-		\nameref{ch5sSIssCF}%
-		\hfill\rule[2pt]{0.30\linewidth}{1pt}%
+	}{\ifthenelse{\equal{#1}{Q}}{%
+		\rule[2pt]{0.20\linewidth}{1pt}\hfill%
+		\nameref{ch5sBNPssPVBN}%
+		\hfill\rule[2pt]{0.20\linewidth}{1pt}%
+	}{\ifthenelse{\equal{#1}{R}}{%
+		\rule[2pt]{0.20\linewidth}{1pt}\hfill%
+		\nameref{ch5sBNPssPRCN}%
+		\hfill\rule[2pt]{0.20\linewidth}{1pt}%
 	}{%else
 		\rule[2pt]{0.30\linewidth}{1pt}\hfill%
 		UNSORTED%
 		\hfill\rule[2pt]{0.30\linewidth}{1pt}%
-	}}}}}}}}}}}}}}}}}% add a bracket for each new case
+	}}}}}}}}}}}}}}}}}}% add a bracket for each new case
 }
 %
 \input{chapters/Z2-Glossary.tex}

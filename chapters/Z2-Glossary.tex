@@ -9,4 +9,41 @@
 	description={the line which bisects the central angle of a circle sector}
 }
 
+\newglossaryentry{mutex}{
+	name=mutex,
+	description={an abbreviation for ``mutual exclusion'', a locking mechanism which allows only one single threads to enter a critical section of code at a time},
+	symbol={\ensuremath{\mu}}
+}
+
+\newglossaryentry{criticalSection}{
+	name=critical section,
+	description={sections of code containing the instructions that read from or write to volatile memory}
+}
+
+\newglossaryentry{programCorrectness}{
+	name=program correctness,
+	description={defined by the field of theoretical computer science as existing only when, for each input given, a program produces the expected output}
+}
+
+\newglossaryentry{volatileMemory}{
+	name=volatile memory,
+	description={memory that may be changed by any thread, especially during parallel processing, requiring thread synchronization before access to ensure program correctness}
+}
+
+\newglossaryentry{mutableMemory}{
+	name=mutable memory,
+	description={memory that may be changed by a specific thread, especially during parallel processing, not requiring a mutex}
+}
+\newglossaryentry{principleLoop}{
+	name=principle loop,
+	description={the loop for convolving \Fors{t}}
+}
+
+\newglossaryentry{stride}{
+	name=stride,
+	description={the size of a block of work intended for a single processor, equal to the problem size divided by the number of available processors},
+	symbol={\ensuremath{\sigma}}
+}
+
+
 \newacronym[longplural={Multi-Scale Integral Invariants}]{msii}{MSII}{Multi-Scale Integral Invariants}
