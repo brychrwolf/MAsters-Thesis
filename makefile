@@ -4,6 +4,7 @@ thesis: plots
 	pdflatex --no-pdf thesis
 	makeindex thesis
 	makeindex thesis.nlo -s nomencl.ist -o thesis.nls
+	makeglossaries thesis
 	bibtex thesis
 	pdflatex --no-pdf thesis
 	pdflatex thesis

@@ -1,8 +1,9 @@
 \chapter{Background}
+\todoStyle{go  label all glossary terms!}
 \label{ch2}
 As computational geometry is based on many other fields of study in both mathematics and computer science, so does \Fors{t} also rely on their foundation. In this chapter, we briefly cover many theories, concepts, and frameworks across many fields of study, opting for breadth over depth, in order to focus only on the specific topics which have a direct influence on research presented in the rest of this thesis.
 
-Section~\ref{ch2sETB} covers the elementary, theoretical basis for the mathematics utilized in the design of \fors{t}, including various topics in set theory, linear algebra, geometry, and topology. Next, Section~\ref{ch2s3} defines several symbols which will be used throughout the rest of this thesis while discussing in relative detail the primitives of \tdd{}, as well as the nature of discrete meshes, one-ring neighborhoods, the differences between acquired and synthetic \tdd{}, and the treatment of scalar fields as function values. Then in Section~\ref{ch2sPP}, various topics regarding the design and analysis of algorithms for parallel processing are briefly discussed.
+Section~\ref{ch2sETB} covers the elementary, theoretical basis for the mathematics utilized in the design of \fors{t}, including various topics in set theory, linear algebra, geometry, and topology. Next, Section~\ref{ch2sTDD} defines several symbols which will be used throughout the rest of this thesis while discussing in relative detail the primitives of \tdd{}, as well as the nature of discrete meshes, one-ring neighborhoods, the differences between acquired and synthetic \tdd{}, and the treatment of scalar fields as function values. Then in Section~\ref{ch2sPP}, various topics regarding the design and analysis of algorithms for parallel processing are briefly discussed.
 
 %
 %
@@ -69,7 +70,7 @@ In mathematical notation, the membership and relational operators are written as
 	\left \{A,\,B,\,C\right \} & \supseteq \left \{A,\,B\right \}
 \end{align}
 
-Furthermore, a ``family of sets'' is defined as a multidimensional set, or rather, a set of sets. In general, each member of a family of sets, is a set which shares some common quality with the other members of the family. For example, in Section~\ref{ch2s3ssORN} we will define the set of sets of neighbors as a family of sets, with each member being a set of points comprising a single neighborhood. In this example, it would also be correct to reference to it as simply, a set of neighborhoods.
+Furthermore, a ``family of sets'' is defined as a multidimensional set, or rather, a set of sets. In general, each member of a family of sets, is a set which shares some common quality with the other members of the family. For example, in Section~\ref{ch2sTDDssORN} we will define the set of sets of neighbors as a family of sets, with each member being a set of points comprising a single neighborhood. In this example, it would also be correct to reference to it as simply, a set of neighborhoods.
 
 %
 %
@@ -110,7 +111,7 @@ Nearly as fundamental as set theory, linear algebra is the branch of mathematics
 \todoCitation{position vector}
 The concept of position vectors is of paramount importance for nearly all of the calculations which must be performed by the \fors{t}, as the research in this thesis is focused on the efficient convolution of the filter, over a discrete manifold embedded in 3D-space, which is composed of a set of discrete points, each being represented by a set of three Cartesian coordinates; equating points with position vectors.
 
-As in \tdd{}, all position vectors are represented by a set of Cartesian coordinates with cardinality matching that of the dimensionality of the Euclidean space in which it is embedded. For example, in Section~\ref{ch2s3ssP} we say that a point can also be called a position vector, so if we are given a point in $\bR{3}$, it is defined by the three Cartesian coordinates $x$, $y$, and $z$. ``Cartesian'' refers to the French scholar René Descartes~\cite{EB1}, and ``Euclidean'' refers to Euclid of Alexandria, the Ancient Greek mathematician~\cite{EB2}.
+As in \tdd{}, all position vectors are represented by a set of Cartesian coordinates with cardinality matching that of the dimensionality of the Euclidean space in which it is embedded. For example, in Section~\ref{ch2sTDDssP} we say that a point can also be called a position vector, so if we are given a point in $\bR{3}$, it is defined by the three Cartesian coordinates $x$, $y$, and $z$. ``Cartesian'' refers to the French scholar René Descartes~\cite{EB1}, and ``Euclidean'' refers to Euclid of Alexandria, the Ancient Greek mathematician~\cite{EB2}.
 
 Figure~\ref{fig:definePositionVector} provides three examples of why a point may be called a position vector. Any set of coordinates has an implied direction pointing away from the origin, which in $\bR{3}$ is located at $(0, 0, 0)$. In (a) the point $\bp_a$ is in $\bR{1}$ and located at at coordinate $(4)$ which is at a distance of $4$ units away from the origin. In (b) the point $\bp_b$ is in $\bR{2}$ and located at at coordinates $(4,\,4)$ which is at a distance of $4\sqrt{2}$ units away from the origin. In (c) the point $\bp_c$ is in $\bR{3}$ and located at at coordinates $(4,\,4,\,4)$ which is at a distance of $4\sqrt{3}$ units away from the origin\footnote{The lengths in this example increase with each additional dimension: $4 < 4\sqrt{2} \approx 5.657 < 4\sqrt{3} \approx 6.928$}. This concept extends to any Euclidean space $\bR{n}$.
 
@@ -169,7 +170,7 @@ As vast and encompassing is geometry as a field of study, in this section, we wi
 Geodesy, the term from which geodesic discs get their name, is defined differently in many fields.\todoCitation{geodesy} A geodesic, defined in the original sense, was the shortest route between two points on the Earth's surface; so a straight line distance in curved space. In this thesis, we use the term geodesic disc to mean the surface area on a manifold, encompassed by a circle with a given radius, which itself is also embedded in $\bR{3}$, and reference to such a disc with the symbol $\bO$.
 \todoResearch{create figure of geodeisc disc in 3d}
 
-The significance being the similar mathematical treatment of all adjacent faces in any given neighborhood, in order to ensure a consistent filter window size for the duration of each convolution of \fors{t}, despite that given the nature of acquired \tdd{} as discussed in Section~\ref{ch2s3ssAVS3}, which likely all exist on different planes in $\bR{3}$. Also, from the geodesic disc, we derive the circle sectors which are described in detail in the next section.
+The significance being the similar mathematical treatment of all adjacent faces in any given neighborhood, in order to ensure a consistent filter window size for the duration of each convolution of \fors{t}, despite that given the nature of acquired \tdd{} as discussed in Section~\ref{ch2sTDDssAVS3}, which likely all exist on different planes in $\bR{3}$. Also, from the geodesic disc, we derive the circle sectors which are described in detail in the next section.
 \todoResearch{static filter window size importance}
 \nomenclature[aa]{$\bO$}{a geodesic disc}%
 \nomenclature[ab]{$\bO_v$}{a specific geodesic disc centered about the point $\bp_v$}%
@@ -178,12 +179,11 @@ The significance being the similar mathematical treatment of all adjacent faces 
 %
 \subsubsection{Circle Sectors}
 \label{ch2sETBssGsssCS}
-A circular sector, or circle sector, is the portion of a disc enclosed by two radii and an arc. In general, the larger area is known as the major sector, however \fors{t} is only concerned with the area of the other, smaller area, known as the minor sector as it is a natural way to partition a geodesic disc embedded in $\bR{3}$, where each sector can be delineated by the border of two triangular faces which likely exists on different planes.\todoReference{figure of geodesic disc in 3d, once made} Going forward, the minor circle sector will be abbreviated as just ``the circle sector'', or even more simply, ``the sector'', and will be denoted as $\bs$, or $\bs_i$ in reference to a specific circle sector, as described in Section~\ref{ch4sSEL}.%
-\nomenclature[ba]{``the sector''}{or the circle sector; the minor sector of a circle defined by its radius and central angle}%
-\nomenclature[bb]{$\bs$}{a circle sector}%
-\nomenclature[bc]{$\bs_i$}{a specific circle sector}%
+A circular sector, or circle sector, is the portion of a disc enclosed by two radii and an arc. In general, the larger area is known as the major sector, however \fors{t} is only concerned with the area of the other, smaller area, known as the minor sector as it is a natural way to partition a geodesic disc embedded in $\bR{3}$, where each sector can be delineated by the border of two triangular faces which likely exists on different planes.\todoReference{figure of geodesic disc in 3d, once made} Going forward, the minor circle sector will be abbreviated as just ``the circle sector'', or even more simply, ``the \gls{sector}'', and will be denoted as $\bs$, or $\bs_i$ in reference to a specific circle sector, as described in Section~\ref{ch4sSEL}.%
+\nomenclature[ba]{$\bs$}{a circle sector}%
+\nomenclature[bb]{$\bs_i$}{a specific circle sector}%
 
-As the sector can be described entirely by the central angle $\alpha$ and the circle's radius\footnote{$\ell_{a,b}$ was chosen to represent the radius instead of the much more common $r$, because in \tdd{}, edges are not stored, yet distances between points can be calculated as shown in Section~\ref{ch2s3ssEL}} $\ell_{a,b}$, the area of the sector can be given as
+As the sector can be described entirely by the central angle $\alpha$ and the circle's radius\footnote{$\ell_{a,b}$ was chosen to represent the radius instead of the much more common $r$, because in \tdd{}, edges are not stored, yet distances between points can be calculated as shown in Section~\ref{ch2sTDDssEL}} $\ell_{a,b}$, the area of the sector can be given as
 %
 \begin{equation}
 	A = \pi \ell_{a,b}^2\frac{\alpha}{2\pi} = \frac{\ell_{a,b}^2\alpha}{2}
@@ -191,7 +191,7 @@ As the sector can be described entirely by the central angle $\alpha$ and the ci
 \end{equation}
 %
 because of the fact that in radians, the ratio of a sector's central angle $\alpha$ to the complete angle of the circle $2\pi$, is equal to the ratio of that sector's area to area of the whole circle.~\cite{Weisstein19d}%
-\nomenclature[bd]{$A$}{an area of a circular sector}%
+\nomenclature[bc]{$A$}{an area of a circular sector}%
 
 %
 %
@@ -216,8 +216,7 @@ In the Figure~\ref{fig:circleSector}, a circle sector is produced by the points 
 	{\caption[A Circle Sector in Detail]{The circle sector produced by points $\bp_a$, $\bp_b$, and $\bp_c$, with $\alpha$ as the central angle bisected by a dotted line, and $\ell_{a,b}$ as the length between points $\bp_a$ and $\bp_b$ which is equal radius of the circle. Also labeled is the center of gravity $\bc$ as well as the distance from the center point $\bp_a$ to $\bc$, drawn in a coral color as $\check{\ell}$}\label{fig:circleSector}}
 \end{figure}
 
-The line which bisects the central angle of a circle sector, while not used explicitly in calculations, is an important concept for much of the computations used by \fors{t}, as will be seen in Chapter~\ref{ch4}. Therefore, we make a special note here that the abbreviated, ``bisecting line'', indeed refers to this line which splits the circle sector, and its central angle $\alpha$, into two equivalent halves.%
-\nomenclature[cc]{``bisecting line''}{the line which bisects the central angle of a circle sector}%
+The line which bisects the central angle of a circle sector, while not used explicitly in calculations, is an important concept for much of the computations used by \fors{t}, as will be seen in Chapter~\ref{ch4}. Therefore, we make a special note here that the abbreviated, ``\gls{bisectingLine}'', indeed refers to this line which splits the circle sector, and its central angle $\alpha$, into two equivalent halves.
 
 %
 %
@@ -276,7 +275,7 @@ The significance to our research, is that each convolution of \Fors{t} is compri
 %
 \subsubsection{Neighborhoods}
 \label{ch2sETBssTsssN}
-A neighborhood is also one of the basic concepts of topology. Intuitively speaking, a neighborhood of a point is a set of points containing that point, where one can move in any direction without leaving the set. While determining the neighborhood is trivial for uni-dimensional manifolds\footnote{where each neighborhood only consists of a point, and the two points to either side of it on the line}, and relatively simple for regular two-dimensional manifolds\footnote{such as with a 2D-image, whose pixels have at most four neighbors in orthogonal directions with a geometric distance of 1, as well as four neighbors at the diagonal directions with a geometric distance of $\sqrt{2}$}, determining the neighborhood becomes more complicated for irregular surfaces like those found in \tdd{}. With those surfaces, one must determine the set of neighbors using the associations that define the triangular faces; the details of which are covered in detail in Section:~\ref{ch2s3ssORN}, after the necessary topics regarding \tdd{} have already been discussed.
+A neighborhood is also one of the basic concepts of topology. Intuitively speaking, a neighborhood of a point is a set of points containing that point, where one can move in any direction without leaving the set. While determining the neighborhood is trivial for uni-dimensional manifolds\footnote{where each neighborhood only consists of a point, and the two points to either side of it on the line}, and relatively simple for regular two-dimensional manifolds\footnote{such as with a 2D-image, whose pixels have at most four neighbors in orthogonal directions with a geometric distance of 1, as well as four neighbors at the diagonal directions with a geometric distance of $\sqrt{2}$}, determining the neighborhood becomes more complicated for irregular surfaces like those found in \tdd{}. With those surfaces, one must determine the set of neighbors using the associations that define the triangular faces; the details of which are covered in detail in Section:~\ref{ch2sTDDssORN}, after the necessary topics regarding \tdd{} have already been discussed.
 
 Figure~\ref{fig:neighborhoods} illustrates the differences among one-ring neighborhoods in different kinds of manifolds: (a) a regular square mesh as with pixels of a digital image, (b) a regular triangle mesh, as in a hexagonal tessellation, then in (c) the figure shows two very different neighborhoods in a single, irregular triangle mesh typical of acquired \tdd{}. In particular, notice in (c) the completely arbitrary shape and size of the one-ring neighborhoods found in the irregular triangle mesh; even the number of neighbors varies widely. From this observation is where much of the motivation behind \fors{t} came.
 
@@ -293,15 +292,15 @@ Figure~\ref{fig:neighborhoods} illustrates the differences among one-ring neighb
 %
 %
 \section{\tdd}
-\label{ch2s3}
-The data upon which one convolves \fors{t} is called \tdd\todoCitation{\tdd{} name origin, BB82 from Mara12}. As described in Section~\ref{ch2s3ssDM}, \tdd{} consists primarily of a single mesh $\bM$, which is composed of $\bP$, a set of points, and the set $\bT$, consisting of triangular faces, each to be covered in Sections~\ref{ch2s3ssP} and~\ref{ch2s3ssF} respectively. \tdd{} also comes in two distinct flavors depending on its origin: acquired or synthetic, as discussed in Section~\ref{ch2s3ssAVS3}. The data can also include a texture map and other various types of information stored as scalar or vector fields, as elaborated on in~\ref{ch2s3ssFV}.
+\label{ch2sTDD}
+The data upon which one convolves \fors{t} is called \tdd\todoCitation{\tdd{} name origin, BB82 from Mara12}. As described in Section~\ref{ch2sTDDssDM}, \tdd{} consists primarily of a single mesh $\bM$, which is composed of $\bP$, a set of points, and the set $\bT$, consisting of triangular faces, each to be covered in Sections~\ref{ch2sTDDssP} and~\ref{ch2sTDDssF} respectively. \tdd{} also comes in two distinct flavors depending on its origin: acquired or synthetic, as discussed in Section~\ref{ch2sTDDssAVS3}. The data can also include a texture map and other various types of information stored as scalar or vector fields, as elaborated on in~\ref{ch2sTDDssFV}.
 
 %
 %
 %
 %
 \subsection{Points}
-\label{ch2s3ssP}
+\label{ch2sTDDssP}
 A point $\bp$ is the most primitive element of \tdd{}. ``Point'' is the abbreviated form of ``measuring point'', and is also known in other fields of study as a vertex, or a position vector $\bR{3}$\todoCitation{other names for a point}. A point is defined by the 3-dimensional Cartesian coordinates $x$, $y$, and $z$, and in \tdd{}, points are generally unique and not required to be in any particular order. In this thesis, a point is addressed using several different subscripts, depending on the context.
 
 In this thesis, when referring to a point in $\bP$, $v$ is used as the globally unique index; the index with which we can define the set
@@ -323,7 +322,7 @@ Otherwise, when referencing to a point within a particular face or neighborhood,
 %
 %
 \subsection{Faces}
-\label{ch2s3ssF}
+\label{ch2sTDDssF}
 Faces are the another primitive element of \tdd{}. As we are working exclusively with triangular meshes~\cite[p.~26]{Mara12}, we define a face $\bt$ by the set of three distinct points, which we will index in clockwise order\footnote{It is worth mentioning here that many software packages, such as the GigaMesh Framework~\cite[p.~89]{Mara12}, may expect counter-clockwise ordering of indexes. This is significant because the ordering provides an orientation by which visualization software can apply texture and/or lighting. The only mathematical significance of the ordering is the sign of the area of a face, and totally inconsequential when the absolute value is expected, as shown by~\cite[p.~2]{Braden86}. This is yet another example of the difference between the conventions of mathematical literature versus those of computer science. And again, because this thesis should indeed be considered mathematical literature, we will continue to follow the conventions of mathematical literature.}~\cite[p.~4]{Mara17}.
 \todoResearch{does the "right-hand-rule apply here?"}
 %
@@ -358,7 +357,7 @@ where $k_{max}$ is the maximum index of faces in the data, and is equivalent to 
 %
 %
 \subsection{Edge Lengths}
-\label{ch2s3ssEL}
+\label{ch2sTDDssEL}
 As illustrated in Figure~\ref{fig:triangularFaces}, each triangular face is implicitly composed of three edges. Despite the fact that an edge is not typically\footnote{Other data structures, such as the Winged-Edge~\cite[p.~1]{Baumgart75}, may use edges as a primitive element} a primitive element of \tdd{}, we will endeavor to define the length of an edge $\ell$, because edge lengths are of particular significance for both the design and implementation of \fors{t}.
 
 What is also particularly interesting about Figure~\ref{fig:triangularFaces}, is that when edge lengths are defined by the points of specific faces, each non-border edge length, illustrated in the figure as $\ell_a$ in $\bt_1$, and $\ell_c$ in $\bt_2$, will be labeled twice, despite representing the same distance.
@@ -395,7 +394,7 @@ Please note the similar notation for the cardinality of a set $|\bP|$, to that f
 %
 %
 \subsection{Discrete Meshes}
-\label{ch2s3ssDM}
+\label{ch2sTDDssDM}
 In \tdd{}, a mesh $\bM$ is the digital representation of a discrete manifold embedded in $\bR{3}$, and is typically\footnote{except in the case of specifically designed synthetic data~\ref{ch7sSD}} two-dimensional, non-planar and comprised of non-regular, triangular faces composed of connected points.~\cite[p.~25]{Mara12} A mesh is the set defined as
 %
 \begin{equation}
@@ -414,15 +413,15 @@ Many 3D-scanners produce point clouds\todoCitation{3D-scanners produce point clo
 %
 %
 \subsection{One-Ring Neighborhoods}
-\label{ch2s3ssORN}
+\label{ch2sTDDssORN}
 It was mentioned in Section~\ref{ch2sETBssTsssN}, that it is a non-trivial task to determine the neighborhood of a point $\bp_v$, which exists in an irregular triangle mesh embedded in three-dimensions. Having now examined the definitions of points, faces, and meshes, we can now formalize the one-ring neighborhood in \tdd{} as
 %
 \begin{equation}
 	\bN_v := \left \{\;\bp_i\;:\;\left \{\,\bp_i,\,\bp_v\right \} \subseteq \bt \quad \forall \bt \in \bT\;\right \}
 	\label{eq:defineNeighborhood}
 \end{equation}%
-\nomenclature[ha]{$\bN_v$}{the set of points comprising the one-ring neighborhood about $\bP_v$}%
-\nomenclature[hb]{$\bp_i$}{a one-ring neighbor of $\bp_v$}%
+\nomenclature[hb]{$\bN_v$}{the set of points comprising the one-ring neighborhood about $\bP_v$}%
+\nomenclature[hc]{$\bp_i$}{a one-ring neighbor of $\bp_v$}%
 %
 which in words, means that the neighborhood $\bN_v$ is defined as the set of points $\bp_i$ such that both $\bp_i$ and $\bp_v$ are two points of a triangular face $\bt$, for all faces in the mesh. Therefore, the adjacency of points is defined by the co-membership within a face $\bt$, from the set of faces $\bT$.
 
@@ -432,10 +431,10 @@ When taken together, all the neighborhoods $\bN_v$ comprise a set of sets of nei
 	\bN := \left \{\bN_v,\,\bN_{v+1},\ldots,\,\bN_{v_max}\right \}
 	\label{eq:defineNeighborhood}
 \end{equation}%
-\nomenclature[hc]{$\bN$}{a family of sets of neighbors, the set of neighborhoods}%
+\nomenclature[ha]{$\bN$}{a family of sets of neighbors, the set of neighborhoods}%
 This definition shares the indices $v$ and $v_{max}$ with the definition for a set of points, Equation~\ref{eq:defineSetOfPoints}, to highlight the fact that neighborhoods are defined per point, therefore there must be a correlation in the cardinality between the two sets.
 
-Conversely, the cardinality of each individual neighborhood $|\bN_v|$ will likely vary among other neighborhoods in $\bN$, however, the value must always be $\geq 2$, and though there is no upper limit, $|\bN_v|$ is typically $\leq 12$. Furthermore, the neighboring points are always indexed in a clockwise direction for the same reasons as discussed in Section~\ref{ch2s3ssF}.
+Conversely, the cardinality of each individual neighborhood $|\bN_v|$ will likely vary among other neighborhoods in $\bN$, however, the value must always be $\geq 2$, and though there is no upper limit, $|\bN_v|$ is typically $\leq 12$. Furthermore, the neighboring points are always indexed in a clockwise direction for the same reasons as discussed in Section~\ref{ch2sTDDssF}.
 \todoResearch{get real upper limit for n}.%
 
 As illustrated in Figure~\ref{fig:neighborhoods}, the set of black points are the neighbors $\bp_i$ which belong to $\bN_v$, what is known as a one-ring neighborhood\footnotemark of $\bp_v$, because they are directly connected with the center point $\bp_v$ drawn in coral color. The moniker originates from graph theory where each adjacent point is said to have a relative distance of 1 within the graph of the mesh. \footnotetext{The one-ring can be extended to a 2-ring by taking the union of the neighborhood $\bN_v$ with the neighborhood of each one-ring neighbor $\bp_i$, which adds to the neighborhood, points with the relative distance of 2 within the graph. This iterative concept can be repeated k times and the neighborhood is than referred to as k-ring. Unfortunately, regardless of the fact that the relative distance within the graph can not be assumed equal to the geometric distance nor geodesic distance, it is still used throughout the literature – especially in the field of Computer Graphics.~\cite[p.~29]{Mara12}}
@@ -448,7 +447,7 @@ Our solution for maintaining a constant filter window size while convolving \for
 %
 %
 \subsection{Acquired vs Synthetic \tdd{}}
-\label{ch2s3ssAVS3}
+\label{ch2sTDDssAVS3}
 The corpus of all \tdd{} exists in two flavors, acquired and synthetic data, with each being handily classifiable by the fashion in which it was generated, and the characteristics innate to those techniques.\todoReword{consider adding a figure here showing difference, or referencing a figure or pair of figures that does}
 
 Acquired \tdd{} is typically captured as a point cloud utilizing various methods, such as: LiDAR (Light Detection and Ranging), Structured Light, or Structure from Motion~\cite[p.~19]{Mara12}. Then the data is exported from software packages accompanying the 3D-scanners as either just the point cloud as a simple set of points $\bP$, or optionally as a triangle mesh $\bM$, described by one or more scalar-fields. Acquired \tdd{} also often consists upwards of a million points and as many as twice that number of faces\todoReference{the interesting experimental finding about face to vertex ratio; add as a footnote}. These exported meshes ~\cite[p.~25]{Mara12} uniformly contain noise and may exhibit other complexities for analysis, such as: non-manifold points, multiple borders and holes in the surface, inverted face orientation, non-manifold edges, and agglutination or degenerate faces. ~\cite[p.~28-32]{Mara12}
@@ -461,7 +460,7 @@ For our experiments\todoReference{experiments}, we created another kind of synth
 %
 %
 \subsection{Function Values}
-\label{ch2s3ssFV}
+\label{ch2sTDDssFV}
 In addition to the three Cartesian coordinates, points which comprise a mesh may also contain other relevant data in the form of scalar fields, or vector fields, when combined together into multi-dimensional data. This information, which is stored at each point $\bp$, often includes data regarding: RGB color, material type, reflectivity, transparency, quality, confidence, or the resulting function values from an analytical filter such as the Multi-Scale Integral Invariants (MSII) filter~\cite[p.~21]{Mara12}, but can be extended to include data important to other fields of study, such as: infrared or ultraviolet light, temperature, rainfall, population, crime-rates, etc; essentially, any kind of data that may be measured at a point. As \fors{t} will currently\todoReference{future work/applications} only process a single field at a time, we can define a scalar field simply as the set of function values
 %
 \begin{equation}
@@ -494,6 +493,7 @@ In this section, limited topics regarding the design and analysis of algorithms 
 %
 %
 \subsection{Serial Computation \& Threads}
+\label{ch2sPPssSCT}
 In a very general sense, when a computer executes a serial program, it proceeds one instruction at a time, sequentially in the order that it is written in the source code, and as required, reading from and writing to memory which must then be reserved for it. Individually, these processes are called ``threads of execution'', or just ``threads'', and a single processing core can only process a single such thread at a time\footnote{This is not counting the limited application of parallel processing by exploiting the width of modern register arrays, in order to concurrently compute instructions at half or less precision.}.
 
 Modern processors, however, can perform fast context switching\todoCitation{context switching}, which means loading the memory and state of a new thread, among a multitude of self-contained threads, and executing it so rapidly, as to give the illusion of parallel processing; similar to commonly known phenomenon where individual frames of film, when viewed at a high enough frequency, create the illusion of moving pictures\todoCitation{frame rates of movies}.
@@ -507,6 +507,7 @@ Alternatively, a system which exhibits some kind of architecture for real concur
 %
 %
 \subsection{SIMD - A Concurrency Architecture}
+\label{ch2sPPssSACA}
 All modern computers implement some form of parallelism, be it multi-core or multi-threaded processors, arrays of stream processors as found in GPUs, or the networks comprising supercomputers and data centers, and can therefore be classified by Flynn's Taxonomy of the different architectures of concurrency.\todoCitation{Flynn, 1966 doi:10.1109/TC.1972.5009071.}
 
 Of the four classifications\footnote{SISD, SIMD, MISD, MIMD} originally defined by Flynn, this thesis is primarily concerned with SIMD\footnote{or SIMT as is branded by NVIDIA}\todoCitation{NVIDIA SIMT 4.1. SIMT Architecture}, which is the acronym for Single Instruction / Multiple Data. As the name implies, the SIMD classification is characterized by systems which are able to take a single instruction, otherwise known as a kernel\todoCitation{CUDA, kernels}, and execute it simultaneously on multiple elements from a pool of data; in general, being described as ``processing in parallel''.
@@ -528,6 +529,7 @@ With the proper programming strategy, using the proper frameworks, the model for
 %
 %
 \subsection{GPGPU - General Use, Graphics Processing Unit}
+\label{ch2sPPssGPGPU}
 GPGPU is an acronym which stands for ``General Purpose, Graphics Processing Unit'', as coined by Mark Harris, the founder of GPGPU.org\todoCitation{Mark Harris, coined the term GPGPU}, and as the name implies, describes the hardware which was originally developed to exclusively perform graphics processing, GPUs, but can now be utilized for general purposes by using the frameworks which are publicly available, for example OpenCL\todoCitation{OpenCL} and CUDA\todoCitation{CUDA}.
 
 Figure~\ref{fig:cpuvgpu} illustrates the principle difference between a CPU, central processing unit, and a GPU. Because graphics rendering is mostly comprised of compute-intensive, but highly parallel procedures, GPUs have been designed with less focus on data flow control and more transistors devoted to data processing, mimicking the design of early supercomputers\todoCitation{LANG, cray was a big GPU}, and diverging from the design of modern CPUs, which have devoted more chip space to processing at higher frequencies, while using large, multi-leveled caches memory for the optimization of context switching.
@@ -543,7 +545,7 @@ Figure~\ref{fig:cpuvgpu} illustrates the principle difference between a CPU, cen
 %
 %
 \subsection{Control \& Data Dependencies}
-\label{ch2sPPssCS}
+\label{ch2sPPssCDD}
 %Data Dependencies: ~\cite[p.~358]{Lang17}
 %Data Partitioning:
 %Calculations depend on specific data structures.~\cite[p.~357]{Lang17}
@@ -738,7 +740,7 @@ This chapter briefly covered many topics across many fields of study, opting for
 
 Section~\ref{ch2sETB} covered the elementary, theoretical basis for the mathematics utilized in the design of \fors{t}, including various topics in set theory: expressing definitions, special sets, cardinality, as well as selected membership, relational, and binary operators; linear algebra: position vectors, the subtraction of vectors, and computing the L2-norm; geometry: geodesic discs, circle sectors, centroids and the center of gravity, and interpolation and extrapolation; as well as selected topics of topology, specifically including manifolds and neighborhoods.
 
-Next, Section~\ref{ch2s3} defined several symbols which will be used throughout the rest of this thesis while discussing in relative detail the primitives of \tdd{}, points, faces, and edge lengths, as well as the nature of discrete meshes, one-ring neighborhoods, the differences between acquired and synthetic \tdd{}, and the treatment of scalar fields as function values.
+Next, Section~\ref{ch2sTDD} defined several symbols which will be used throughout the rest of this thesis while discussing in relative detail the primitives of \tdd{}, points, faces, and edge lengths, as well as the nature of discrete meshes, one-ring neighborhoods, the differences between acquired and synthetic \tdd{}, and the treatment of scalar fields as function values.
 
 Then in Section~\ref{ch2sPP}, limited topics regarding the design and analysis of algorithms for parallel processing were briefly presented, including: the nature of serial computation and threads, SIMD as an architecture of concurrency, GPGPUs as a tool for parallel processing, the identification of control and data dependencies in an algorithm, various topics regarding program correctness, including the identification of critical sections, the utilization of mutexes as a locking mechanism, and the costliness of explicit thread synchronization, and finally the metrics available for evaluating a parallel algorithm.
 

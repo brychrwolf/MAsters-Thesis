@@ -7,7 +7,6 @@
 %
 \usepackage{syntonly}
 %\syntaxonly
-%\usepackage{chngcntr}
 \counterwithout{footnote}{chapter}
 \usepackage{amsmath}
 \usepackage{amsfonts}
@@ -15,7 +14,7 @@
 %\usepackage{titlesec}
 \usepackage{graphicx,txfonts}
 %\usepackage[lofdepth,lotdepth]{subfig}
-\usepackage[colorinlistoftodos,disable]{todonotes}%disable
+\usepackage[colorinlistoftodos]{todonotes}%disable
 \usepackage{makeidx}
 \usepackage[refeq,refpage,intoc]{nomencl}
 \usepackage{multicol}
@@ -41,20 +40,21 @@
 		Title={GPGPU Accelerated Iterative Filtering of Scalar Fields on Discrete Manifolds},
 	}
 }
+\usepackage[toc, acronym]{glossaries}
 %
 \input{myCommands.tex}
 %
 \includeonly{
-%	chapters/0-Front-matter,
+	chapters/0-Front-matter,
 %	chapters/1-Introduction,
 	chapters/2-Background,
 %	chapters/3-FORS-Mathematical-Foundation,
 %	chapters/4-FORS-Serial-Algorithms,
 %	chapters/5-FORS-Parallel-Algorithms,
-	chapters/6-Experiments-Evaluation,
+%	chapters/6-Experiments-Evaluation,
 %	chapters/7-Conclusion,
 %	chapters/A1-Appendix,
-%	chapters/Z1-Back-Matter
+	chapters/Z1-Back-Matter
 }
 %
 \makeatletter
@@ -68,6 +68,7 @@
 \makeatother
 \makeindex
 \makenomenclature
+\makeglossaries
 \begin{document}
 \include{chapters/0-Front-matter}
 %
