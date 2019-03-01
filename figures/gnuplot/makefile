@@ -1,8 +1,9 @@
-PLOTS =  ../computeTimesLinespoints4x4.png \
-		../computeTimesLinespoints.png \
+PLOTS =  ../computeTimesLinespoints.png \
 		../computeTimesScatter.png \
-		../numFacesByVerticesGoTo2.png \
-		../outputSerialVsGPGPU.png
+		../speedupAndEfficiency.png \
+		../numFacesByVerticesGoTo2.png
+		#../computeTimesLinespoints4x4.png \
+		#../outputSerialVsGPGPU.png \
 
 
 

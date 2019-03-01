@@ -200,32 +200,36 @@ In this section, we presented three examples of acquired \tdd{} and experienced 
 %
 %
 \section{Compute Times}
-Before one is able to evaluate the speedup and efficiency of any parallel variant, as discussed in Section~\ref{ch2sPPssEAPA}, they first need to obtain two essential timings: the optimal sequential execution time $\mathit{T_s}$, and the parallel runtime $\mathit{T_{\rho}}(\hat{n},\,\rho)$. In order to determine these values, we generated eight versions each of the synthetic bisected square tessellation and the synthetic hexagonal tessellation, using as parameter $r$, each member of the set \{1, 10, 100, 1000\}. Combined with the two acquired meshes, the university seal and the flat surface, that totals ten meshes ranging in sizes from just nine points and eight faces, to $9\times 10^6$ points and $1.8\times 10^7$ faces.
+Before we are able to evaluate the speedup and efficiency of the parallel variant of \Fors{t}, as discussed in Section~\ref{ch2sPPssEAPA}, we must first obtain two essential timings: the optimal sequential execution time $\mathit{T_s}$, and the parallel runtime $\mathit{T_{\rho}}(\hat{n},\,\rho)$. In order to establish these values, we generated four versions each of the synthetic bisected square tessellation and the synthetic hexagonal tessellation, using the members of the set \{1, 10, 100, 1000\} as parameter $r$. Combined with the two acquired meshes, the university seal and the flat surface, that totaled ten meshes ranging in sizes from just nine points and eight faces, to $9\times 10^6$ points and $1.8\times 10^7$ faces.
 
-Next, we designated two machines, a laptop M, and a desktop T, in order to obtain comparisons across hardware of differing capabilities. T operates on a Intel(R) Core(TM) i7-8700 CPU @ 3.20GHz, while M operates on a Intel(R) Core(TM) i5-7300HQ CPU @ 2.50GHz. T has installed a NVIDIA Corporation GP104GL [Quadro P5000] GPU with 2,560 CUDA cores~\cite{quadro5k}, while M has installed a NVIDIA Corporation GP107M [GeForce GTX 1050 Ti Mobile] with 768 CUDA cores~\cite{geforce1050}.
+Next, we designated two machines, a laptop M, and a desktop T, each with a CPU for serial computation as well as a GPU for parallel processing, in order to obtain comparisons across hardware of differing capabilities. T operates on a Intel(R) Core(TM) i7-8700 CPU @ 3.20GHz, while M operates on a Intel(R) Core(TM) i5-7300HQ CPU @ 2.50GHz. T has installed a NVIDIA Corporation GP104GL [Quadro P5000] GPU with 2,560 CUDA cores~\cite{quadro5k}, while M has installed a NVIDIA Corporation GP107M [GeForce GTX 1050 Ti Mobile] with 768 CUDA cores~\cite{geforce1050}.
 
-Then, we ran every combination of hardware and mesh, for eight increasing amounts of convolutions, \{1, 3, 10, 30, 100, 300, 1000, 3000\} restarting the count for each experiment, to ensure that the resulting time was genuine. Of the 320 possible combinations of experiments, we were able to record data for 277 different combinations in order to establish the performance of both the serial and parallel variations of the algorithm for \Fors{t}.
+Then, we systematically executed every combination\footnote{Of the 320 possible combinations of experiments, we were able to record data for 277 different combinations, however, it is unclear that any additional data would influence the result of the combined experiments.} of hardware and mesh for eight increasing amounts of convolutions, \{1, 3, 10, 30, 100, 300, 1000, 3000\}, restarting the count for each experiment in order to ensure that the resulting time was genuine.
 
-Figure~\ref{fig:computeTimesLP} shows the timing results of every recorded experiment\footnotemark. The graph is drawn extra tall to ensure that the grid remain square for an accurate comparison. Results from each combination of hardware and mesh are connected by lines. Combinations involving the smallest mesh sizes are colored red, and the largest mesh sizes in blue, with all others scaled in-between. 
-\footnotetext{Although unnecessary to understand the pattern, we included a coded key for the curious reader. The codes used correspond to the machine T for the desktop or M for the laptop, the algorithm variant P for parallel, or S for serial, a period, a two character code representing the mesh being processed: BS for bisected square, HT for hexagonal tessellation, US for university seal, and FS for the flat surface, then another period, and finally, the count of points comprising the mesh.}
+%Computing, the average timing for each group of experiments resulted in ... the findings. in order to establish the performance of both the serial and parallel variations of the algorithm for \Fors{t}
+
+Figure~\ref{fig:computeTimesLP} shows the timing results of every recorded experiment. The graph is drawn extra tall to ensure that the grid remains square for an unbiased assessment of the correlations therein. Results from each combination of hardware and mesh are connected by lines. Combinations involving the smallest mesh sizes are colored red, and the largest mesh sizes in blue, with all others scaled in-between.
 \todoResearch{N.add formula for timing (or at least ref to it) here.}
 \todoResearch{N.process time noise at very fast speeds}
+
 \begin{figure}[ht]
 \includegraphics[width=1.0\linewidth,height=1.0\textheight,keepaspectratio]
 	{figures/computeTimesLinespoints.png}
-	\caption[Compute Times - Linespoints]{Compute Times of Applying \fors{t} for Selected Numbers of Iterations onto Acquired and Synthetic 3D Meshes of Varying Sizes}
+	\caption[Compute Times - Linespoints]{Compute Times of Applying \fors{t} for Selected Numbers of Iterations onto Acquired and Synthetic 3D Meshes of Varying Sizes
+
+\vspace*{\baselineskip}
+\scriptsize† The codes used correspond to the machine T for the desktop or M for the laptop, the algorithm variant P for parallel, or S for serial, a period, a two character code representing the mesh being processed: BS for bisected square, HT for hexagonal tessellation, US for university seal, and FS for the flat surface, then another period, and finally, the count of points comprising the mesh.}
 	\label{fig:computeTimesLP}
 \end{figure}
 
-Notice how the compute times increase linearly with both mesh size and number of iterations. Timing is very predictable when the total compute time is at least greater than 0.1 seconds, but is much less predictable for faster periods. Fortunately, discrepancies of at such short total, not per convolution, compute times are unlikely to be noticed by the typical user.
+Notice how the compute times increase linearly with both mesh size and number of iterations. Timing is very predictable when the total compute time is at least greater than 0.1 seconds, but is much less predictable for faster periods. Fortunately, the deviations from the trends only occur for short total total timings, and do not appear to propagate per convolution for medium or long compute times, therefore they are unlikely to be noticed by the typical user.
 
-Figure~\ref{fig:computeTimesS} shows how compute times increase with both meshsize and number of iterations.
+Figure~\ref{fig:computeTimesS} graphs the total compute times of each experiment as the area of a circle, given different hardware configurations, for each combination of mesh size, measured in point counts, and the number of convolutions of \fors{t}. In general, one can see that for all experiments, the total compute times increase for with the size of the mesh, as well as the number on convolutions, so that an increase in both results in an exponential increase in the compute time. Which is not surprising given the complexity of the algorithm as discussed in Chapter~\ref{ch3}. One can also see the positive effect of the parallel processing, as the growth of the compute times is much slower for the parallel variant than for the serial.
 
 \begin{figure}[ht]
-	\includegraphics[width=1.0\linewidth,height=1.0\textheight,keepaspectratio]
-	{figures/computeTimesScatter.png}
-	\caption[Compute Times - Scatter]{Compute Times for Different Hardware Configurations by increasing Mesh Size and Filter Iterations}
-		\label{fig:computeTimesS}
+	\includegraphics[width=\linewidth]{figures/computeTimesScatter.png}
+	\caption[Compute Times - Scatter]{A graph of the total compute times of each experiment as the area of a circle, given different hardware configurations, for each combination of mesh size, measured in point counts, and the number of convolutions of \fors{t}. Blue circles indicate the serial variant computed with a CPU, and a red circle indicating the parallel variant was computed on a GPGPU.}
+	\label{fig:computeTimesS}
 \end{figure}
 %
 %
