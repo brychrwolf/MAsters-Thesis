@@ -1,6 +1,10 @@
+STIME = date '+%s' > $@_time
+ETIME = read st < $@_time ; echo $$((`date '+%s'`-$$st)) seconds ; rm -f $@_time
+
 all: svgs tikzs plots thesis
 
 thesis: plots
+	$(STIME)
 	pdflatex --no-pdf thesis
 	makeindex thesis
 	makeindex thesis.nlo -s nomencl.ist -o thesis.nls
@@ -8,6 +12,7 @@ thesis: plots
 	bibtex thesis
 	pdflatex --no-pdf thesis
 	pdflatex thesis
+	$(ETIME)
 
 once:
 	pdflatex thesis
