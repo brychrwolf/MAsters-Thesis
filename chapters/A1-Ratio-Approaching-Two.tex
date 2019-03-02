@@ -1,0 +1,24 @@
+\chapter{Ratio Approaching Two}
+In addition to the synthetic meshes featured in Figures~\ref{fig:sq2}~-~\ref{fig:rdisc}, many others sizes of each type of mesh were also generated to be used in the experiments designed to test compute times, which will be discussed in detail in Section~\ref{ch6sCT}. While designing those experiments, an interesting trend uncovered itself as the ratio of the count of triangle faces $|\bT|$ over the count of points $|\bP|$ tended to approach two as the total count of points in a mesh increased.
+\begin{equation}
+	\lim_{|\bP| \rightarrow \infty}{\frac{|\bT|}{|\bP|}} = 2
+	\label{eq:ratioApproachesTwo}
+\end{equation}
+
+In fact, the largest two mesh sizes generated, the hexagonal tessellation and quadrisected square, both with $r$ set to 3,000 and more than $8.1\times 10^7$ and $7.2\times 10^7$ points each, exhibit ratios closer than $5\times 10^{-4}$ less than 2, but never at or above.
+
+Figure~\ref{fig:ratioApproachesTwo} illustrates the trend followed by every synthetic mesh we generated, and the three acquired meshes as well. The ratio of the count of faces $|\bT|$, divided by the count of points $|\bP|$, approaches two as the total count of points in the mesh increases.
+\begin{figure}[ht]
+	\includegraphics[width=\linewidth]
+	{figures/numFacesByVerticesGoTo2.png}
+	\caption[Ratio of Faces / Points]{Ratio of Faces to Points by Increasing Vertex Count}
+	\label{fig:ratioApproachesTwo}
+\end{figure}
+
+Further research led us to the definition of Euler's polyhedron formula, which was proved by Cauchy as early as 1811, and says the counts of points plus the counts of faces minus the counts of edges, will always be two for convex polyhedrons.
+\begin{equation}
+	|\bP| + |\bF| - |\bE| = 2
+	\label{eq:eulersPoluhedron}
+\end{equation}
+
+It is therefore our intuition that the trend of the ratio of faces to points approaching two, is related to the diminishing ratio of border-edges to non-border-edges with increasingly dense meshes. Of this, we say no more, except that it is interesting enough to warrant further research.

@@ -5,6 +5,18 @@ The fastest CPU commercially available as of this writing is the Intel Core i9-9
 \todoCitation{cpu benchmarks}
 %https://www.cpubenchmark.net/cpu.php?cpu=Intel+Core+i9-9980XE+%40+3.00GHz&id=3373
 
+
+
+The goal of our experimentation was two-fold, analyzing the filter response on various kinds of \tdd{} as well as evaluating the performance of the parallel variant of \fors{t} algorithm. Therefore, we began in Section~\ref{ch6sSTDD} by analyzing the filter response when convolving the filter of over four different configurations of synthetic \tdd{}: the bisected square tessellation, the quadrisected square tessellation, the hexagonal tessellation, and the random triangulated disc, each with the \gls{ddf} applied as a scalar field. 
+
+Figure~\ref{fig:sq2} exposed the behavior of the anisotropic filter response traveling faster along the connections of more distant adjacent points. Figures~\ref{fig:sq4}~and~\ref{fig:hex} show the filter response exhibiting isotropic behavior as the density of the mesh increased, with more adjacent points per unit compared to the bisected square tesselation, while also reducing the overall variance in the length of edges. Figures~\ref{fig:rdisc} showed how the filter response appears to slow down when convolved over irregular meshes, more similar to acquired \tdd{}.
+
+Next, in Section~\ref{ch6sATDD} we analyzed the filter response when convolving the filter of over three different examples of acquired \tdd{}: the partial model of the University of Heidelberg seal, the flat surface from ILATO, and the Stanford Bunny, each processed having been processed by the \gls{MSII} filter.
+
+In Figure~\ref{fig:unisiegel} an error in computation was seen propagating across the image with each subsequent convolution. However, as that error stems from convolving the filter over ``unclean'' \tdd{}, the solution lies not with the filter, but with first processing the data with another tool, such as the ``Automatic Mesh Polishing'' provided by the GigaMesh framework.
+
+In Figure~\ref{fig:ILATO}, the filter response efficacy diminishes,  seemingly having had its effectiveness compromised by convolving the filter over a scalar field with very low variance, highlighting another complexity of working with acquired \tdd{}, where one solution may be to set limits on the range of values visualized by the software.
+
 %
 %
 %
@@ -33,5 +45,8 @@ What they are and why I did not.
 	\item explore using the inner angles $\alpha_i$ in stead of area for weighting
 	\item instead of global min size, just choose a size, especially if not using sqrt to get edgelengths
 	\item create more synthetic meshes with different scalar fields, Random, etc
+	\item \ref{fig:speedup} Another trend is that for most configurations, speedup increases with increasing number of convolutions, seeming to converge to a certain number. More research must be done in order to determine why this may be, but it is possible that it is related to low-level memory optimization by the operating system.
 \end{itemize}
+	\item if neighborhood sizes vary widely, one large neighborhood can cause all other threads to wait. therefore, build in work sharing for big neighborhoods.
+	\item improve efficency of parallel algorithm
 

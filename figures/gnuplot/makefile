@@ -1,6 +1,7 @@
 PLOTS =  ../computeTimesLinespoints.png \
 		../computeTimesScatter.png \
-		../speedupAndEfficiency.png \
+		../speedup.png \
+		../efficiency.png \
 		../numFacesByVerticesGoTo2.png
 		#../computeTimesLinespoints4x4.png \
 		#../outputSerialVsGPGPU.png \

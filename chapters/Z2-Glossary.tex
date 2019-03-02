@@ -34,9 +34,25 @@
 	name=mutable memory,
 	description={memory that may be changed by a specific thread, especially during parallel processing, not requiring a mutex}
 }
+
 \newglossaryentry{principleLoop}{
 	name=principle loop,
 	description={the loop for convolving \Fors{t}}
+}
+
+\newglossaryentry{efficiency}{
+	name=efficiency,
+	description={in regards to parallel processing, efficiency is the ratio of the speedup obtained by a parallel algorithm, divided by the count of processors used to obtain the parallel compute time. It will always be less than or equal to one, and represents the share of the maximal achieveable speedup obtained by the algorithm}
+}
+
+\newglossaryentry{speedup}{
+	name=speedup,
+	description={in regards to a parallel algorithm, speedup is the ratio of the compute time requried for the optimal serial algorithm to run, divided by the compute time required by the parallel algorithm. Speedup will always be less than the number of processors used. Also, as the goal of a parallel algorithm is to complete work faster than its serial variant, it is good for speedup to be a number much greater than one}
+}
+
+\newglossaryentry{degreeOfPar}{
+	name=degree of parallelism,
+	description={which is the maximum number of operations in an algorithm, which can be executed in parallel}
 }
 
 \newglossaryentry{stride}{
@@ -45,5 +61,32 @@
 	symbol={\ensuremath{\sigma}}
 }
 
+\newglossaryentry{ddf}{
+	name=Dirac delta function,
+	description={when applied as a scalar field, a function value of one at the center point, and zero everywhere else}
+}
 
-\newacronym[longplural={Multi-Scale Integral Invariants}]{msii}{MSII}{Multi-Scale Integral Invariants}
+\newglossaryentry{acquiredTDD}{
+	name=acquired \tdd{},
+	description={}
+}
+
+\newglossaryentry{syntheticTDD}{
+	name=synthetic \tdd{},
+	description={}
+}
+
+\newglossaryentry{Amdahl}{
+	name=Amdahl's law,
+	description={Given a constant problem size, the limit as the count of processors goes to infinity, the speedup obtained will only approach the inverse of the degree of parallelism exhibited by the algorithm, a problem which can be partially mitagated by only increasing the number of processors in realtion to the size of the problem}
+}
+
+
+\newacronym{CPU}{CPU}{Central Processing Unit}
+\newacronym{GPU}{GPU}{Graphics Processing Unit}
+\newacronym{GPGPU}{GPGPU}{General Purpose, Graphics Processing Unit}
+\newacronym{CUDA}{CUDA}{Compute Unified Device Architecture}
+\newacronym{PNG}{PNG}{Portable Network Graphic}
+\newacronym{MSII}{MSII}{the Multi-Scale Integral Invariants filter}
+\newacronym{ILATO}{ILATO}{Improving Limited Angle computed Tomography by Optical data integration}
+\newacronym{SIMD}{SIMD}{Single Instruction, Multiple Data}

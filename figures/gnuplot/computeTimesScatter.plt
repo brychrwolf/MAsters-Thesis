@@ -16,7 +16,7 @@ set key outside box samplen 3 width 1.5 height 0.5
 set key title "Machine /\nAlg.Variant"
 
 set logscale xy
-set xrange [0.3:1.5e4]
+set xrange [0.3:1.3e4]
 set yrange [3:1.75e8]
 set xlabel "Fast One-Ring Smothing Filter Convolutions - Log Scale"
 set ylabel "Mesh Size (Point Count) - Log Scale"

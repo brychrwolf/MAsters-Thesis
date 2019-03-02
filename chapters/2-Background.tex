@@ -510,7 +510,7 @@ Alternatively, a system which exhibits some kind of architecture for real concur
 \label{ch2sPPssSACA}
 All modern computers implement some form of parallelism, be it multi-core or multi-threaded processors, arrays of stream processors as found in GPUs, or the networks comprising supercomputers and data centers, and can therefore be classified by Flynn's Taxonomy of the different architectures of concurrency.\todoCitation{Flynn, 1966 doi:10.1109/TC.1972.5009071.}
 
-Of the four classifications\footnote{SISD, SIMD, MISD, MIMD} originally defined by Flynn, this thesis is primarily concerned with SIMD\footnote{or SIMT as is branded by NVIDIA}\todoCitation{NVIDIA SIMT 4.1. SIMT Architecture}, which is the acronym for Single Instruction / Multiple Data. As the name implies, the SIMD classification is characterized by systems which are able to take a single instruction, otherwise known as a kernel\todoCitation{CUDA, kernels}, and execute it simultaneously on multiple elements from a pool of data; in general, being described as ``processing in parallel''.
+Of the four classifications\footnote{SISD, SIMD, MISD, MIMD} originally defined by Flynn, this thesis is primarily concerned with SIMD\footnote{or SIMT as is branded by NVIDIA}\todoCitation{NVIDIA SIMT 4.1. SIMT Architecture}, which is the acronym for Single Instruction / Multiple Data. As the name implies, the \gls{SIMD} classification is characterized by systems which are able to take a single instruction, otherwise known as a kernel\todoCitation{CUDA, kernels}, and execute it simultaneously on multiple elements from a pool of data; in general, being described as ``processing in parallel''.
 
 Figure~\ref{fig:simdArchitecture}, illustrates a simplified impression of a system which employs SIMD architecture. The array of processors each receive the same kernel from a pool of instructions, then load a different portion of the data pool in order to process to combination in parallel.
 
@@ -690,16 +690,16 @@ Essential to every metric used in the evaluation of parallel algorithms is timin
 which can then be used to define the three essential metrics:
 
 \begin{align}
-	\text{Speedup:}\quad&\mathit{S}(\hat{n},\,\rho) = \frac{\mathit{T_s}(\hat{n})}{\mathit{T_{\rho}}(\hat{n},\,\rho)} \\
+	\text{\Gls{speedup}:}\quad&\mathit{S}(\hat{n},\,\rho) = \frac{\mathit{T_s}(\hat{n})}{\mathit{T_{\rho}}(\hat{n},\,\rho)} \\
 	\text{Costs}:\quad&\mathit{C}(\hat{n},\,\rho) =\rho\cdot\mathit{T_{\rho}}(\hat{n},\,\rho) \\
-	\text{Efficiency}:\quad&\mathit{E}(\hat{n},\,\rho) = \frac{\mathit{T_s}(\hat{n})}{\mathit{C}(\hat{n},\,\rho)} = \frac{\mathit{S}(\hat{n},\,\rho)}{\rho}
+	\text{\Gls{efficiency}}:\quad&\mathit{E}(\hat{n},\,\rho) = \frac{\mathit{T_s}(\hat{n})}{\mathit{C}(\hat{n},\,\rho)} = \frac{\mathit{S}(\hat{n},\,\rho)}{\rho}
 	\label{eq:essentialMetrics}
 \end{align}
 \todoReword{write significance, in regards to experiments and evaluation}
 
-By applying these identities, we can determine that for all problem sizes, the speedup obtained is always less than the number of processors used, because otherwise, $\mathit{T_s}(\hat{n})$ could not be the optimal sequential execution time. Also, efficiency will always be less than one thus we can say that $\mathit{E}\cdot\rho$ processors contribute to the solution of the total procedure, while $(1-\mathit{E})\cdot\rho$ do not.~\cite[p.~335]{Lang17}
+By applying these identities, we can determine that for all problem sizes, the \gls{speedup} obtained is always less than the number of processors used, because otherwise, $\mathit{T_s}(\hat{n})$ could not be the optimal sequential execution time. Also, \gls{efficiency} will always be less than one thus we can say that $\mathit{E}\cdot\rho$ processors contribute to the solution of the total procedure, while $(1-\mathit{E})\cdot\rho$ do not.~\cite[p.~335]{Lang17}
 
-Also important is the notion of an algorithm's ``degree of parallelism'', which is the maximum number of operations which can be executed in parallel. Which leads to the derivation of Amdahl's law\todoCitation{Amdahl's Law}, which is given a contant problem size $\hat{n}_{fixed}$,
+Also important is the notion of an algorithm's ``\gls{degreeOfPar}'', which is the maximum number of operations which can be executed in parallel. Which leads to the derivation of \gls{Amdahl}\todoCitation{Amdahl's Law}, which is given a constant problem size $\hat{n}_{fixed}$,
 %
 \begin{equation}
 	\lim_{\rho \to \infty} \mathit{S}(\hat{n}_{fixed},\,\rho) = 1 / q
@@ -742,7 +742,7 @@ Section~\ref{ch2sETB} covered the elementary, theoretical basis for the mathemat
 
 Next, Section~\ref{ch2sTDD} defined several symbols which will be used throughout the rest of this thesis while discussing in relative detail the primitives of \tdd{}, points, faces, and edge lengths, as well as the nature of discrete meshes, one-ring neighborhoods, the differences between acquired and synthetic \tdd{}, and the treatment of scalar fields as function values.
 
-Then in Section~\ref{ch2sPP}, limited topics regarding the design and analysis of algorithms for parallel processing were briefly presented, including: the nature of serial computation and threads, SIMD as an architecture of concurrency, GPGPUs as a tool for parallel processing, the identification of control and data dependencies in an algorithm, various topics regarding program correctness, including the identification of critical sections, the utilization of mutexes as a locking mechanism, and the costliness of explicit thread synchronization, and finally the metrics available for evaluating a parallel algorithm.
+Then in Section~\ref{ch2sPP}, limited topics regarding the design and analysis of algorithms for parallel processing were briefly presented, including: the nature of serial computation and threads, \gls{SIMD} as an architecture of concurrency, \glspl{GPGPU} as a tool for parallel processing, the identification of control and data dependencies in an algorithm, various topics regarding program correctness, including the identification of critical sections, the utilization of mutexes as a locking mechanism, and the costliness of explicit thread synchronization, and finally the metrics available for evaluating a parallel algorithm.
 
 In the next three sections, we will present \Fors{t}, beginning with the mathematical basis of the filter, then presenting the three parts of the serial algorithm for convolving the filter over a discrete manifold, and concluding with an analysis of the serial algorithm and the presentation of a parallel variant of each of its parts.
 

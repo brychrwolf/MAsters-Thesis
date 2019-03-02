@@ -5,6 +5,11 @@ In this and the next two chapters, we present an updated version of \Fors{t}, ba
 The procedure for designing any convolutional filter must begin by defining the size of the filter window,\todoCitation{convolutional filter, jaehne} and when designing for acquired \tdd{}, as covered in Section~\ref{ch3sSEL}, that entails the complex tasks of calculating each edge length, and determining the global minimum edge length for the entire triangular mesh.\todoCitation{global minimum edge length, mara} Next, because one-ring neighborhoods in acquired \tdd{} uniformly have irregular shapes and sizes, the typical characteristics of which can can be seen clearly in Figure~\ref{fig:neighborhoods}, each function value must be scaled appropriately in regards to the distance from it to all of its neighboring points, as discussed in detail in Sections~\ref{ch2sIA},~\ref{ch2sACG}, and~\ref{ch2sIE}. Then as presented in Section~\ref{ch3sWM}, the next steps for \fors{t} involve the computation of the \wmfv{s} for each circle sector of the geodesic disc, then the \wmfv{} for the entire disc, then finally, the convolutions of the filter over the entire mesh.
 \todoBackground{convolutional filter static window size}
 
+
+%A smoothing filter is an application of the Heat equation \todoCitation{Jaehne}
+%Gaussian distribution
+%Gaussian blurring
+
 %
 %
 %
