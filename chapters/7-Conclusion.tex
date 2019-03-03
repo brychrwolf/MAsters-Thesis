@@ -53,5 +53,6 @@ What they are and why I did not.
 	\item if neighborhood sizes vary widely, one large neighborhood can cause all other threads to wait. therefore, build in work sharing for big neighborhoods.
 	\item improve efficency of parallel algorithm
 	\item exploit errorInSource to speed up parallel algorithm
+	\item at end of \label{ch5sCELPssASACEL} Conversely, in order to save nearly half\footnote{Scaling by half comes from the observation that as mesh density increases, the ratio of border to non-border edges dimensions, which discussed in more detail Appendix~\ref{apdx1}.} of that memory, one could store the value only once by implementing the control structures for detecting if an edge length has already been saved, then when retrieving the values, one could search for the edge length required at the cost of compute time. In the next section, we choose to implement the first, speedier method.
 \end{itemize}
 

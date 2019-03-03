@@ -35,6 +35,11 @@
 	description={memory that may be changed by a specific thread, especially during parallel processing, not requiring a mutex}
 }
 
+\newglossaryentry{memRecycling}{
+	name=memory recycling,
+	description={the technique by which, during a convolution, values of a block of memory which will no longer be used until the next convolution, may be overwritten in order to optimize the total memory required to complete the computation}
+}
+
 \newglossaryentry{explicitSynchronization}{
 	name=explicit synchronization,
 	description={in regards to parallel processing, the situation when all threads are forced to block until every thread is able to reach a designated state, is expensive to computation time},
@@ -67,8 +72,8 @@
 	symbol=$q$
 }
 
-\newglossaryentry{stride}{
-	name=stride,
+\newglossaryentry{tStride}{
+	name=the stride,
 	description={the size of a block of work intended for a single processor, equal to the problem size divided by the number of available processors},
 	symbol={\ensuremath{\sigma}}
 }
@@ -123,9 +128,19 @@
 	description={also known as ``threads of execution'', in regards to computer science, it is the smallest sequence of programmed instructions that can be managed independently by a scheduler, which is typically a part of the operating system~\cite{Lamport79}. Threads may be spawned by other threads, creating a heiarchy.}
 }
 
+\newglossaryentry{aPriori}{
+	name=a priori,
+	description={from latin, knowledge which may be gained prior to measuring it. In reagards to parallel programming, it would equate to the ability to predict which thread will win in a race-condition; which is not possible.}
+}
+
 \newglossaryentry{census}{
 	name=census,
 	description={a total count of all neighbors in all neighborhoods}
+}
+
+\newglossaryentry{kernel}{
+	name=kernel,
+	description={in regards to parallel processing in parallel, a set of instructions to be executed simultaneously on multiple processors using multiple elements from a pool of data}
 }
 
 
@@ -135,6 +150,6 @@
 \newacronym{GPGPU}{GPGPU}{General Purpose, Graphics Processing Unit}
 \newacronym{CUDA}{CUDA}{Compute Unified Device Architecture}
 \newacronym{PNG}{PNG}{Portable Network Graphic}
-\newacronym{tMSIIf}{MSII}{the Multi-Scale Integral Invariants filter}
+\newacronym{tMSIIf}{the MSII filter}{the Multi-Scale Integral Invariants filter}
 \newacronym{ILATO}{ILATO}{Improving Limited Angle computed Tomography by Optical data integration}
 \newacronym{SIMD}{SIMD}{Single Instruction, Multiple Data}

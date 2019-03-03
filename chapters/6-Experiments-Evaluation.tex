@@ -53,7 +53,6 @@ The smallest, non-trivial mesh, generated with the parameter $r$ equal to one, i
 \end{align}
 
 Figure~\ref{fig:sq2} shows a comparison of two differently sized quadrisected square tessellations, generated with parameters $r$ set to 1 and 10. Shown in (a) and (d) are each in wireframe, next in (b) and (e), each are colored by function value before convolving the filter, then in (c) $r=1$ is shown after convolving the filter once, and in (f) $r=10$ after convolving the filter 100 times. Notice the circular shape of the filter response in part (f).
-\todoStyle{sq4 wireframes are not dark enough}
 
 \input{figures/latex/sq4.tex}
 
@@ -74,7 +73,7 @@ The smallest, non-trivial mesh, generated with the parameter $r$ equal to zero, 
 \end{align}
 
 Figure~\ref{fig:sq2} shows a comparison of two differently sized hexagonal tessellations, generated with parameters $r$ set to 1 and 10. Shown in (a) and (d) are each in wireframe, next in (b) and (e), each are colored by function value before convolving the filter, then in (c) $r=1$ is shown after convolving the filter twice, and in (f) $r=10$ after convolving the filter 200 times.
-\todoStyle{b c e and f need to correct for dpi}
+
 \input{figures/latex/hex.tex}
 
 %
@@ -219,7 +218,7 @@ In this section, we endeavored to establish the optimal sequential execution tim
 \label{ch6sCWGssS}
 Having now establish the optimal sequential execution time $\mathit{T_s}$, and the parallel compute time $\mathit{T_{\rho}}(\hat{n},\,\rho)$ of \Fors{t}, we can now continue our evaluation by calculating, as discussed in detail in Section~\ref{ch2sPPssEAPA}, the \gls{speedup} obtained by convolving the filter over different sized meshes in parallel using \glspl{GPGPU}.
 
-Figure~\ref{fig:speedup} is a graph of the \gls{speedup} obtained by convolving the parallel variant of \fors{t} over meshes of different sizes for increasing number of convolutions, using either the \gls{GPGPU} of the laptop M with 768 \gls{CUDA} cores or the \gls{GPGPU} of desktop T with 2,560 \gls{CUDA} cores.
+Figure~\ref{fig:speedup} is a plot of the \gls{speedup} obtained by convolving the parallel variant of \fors{t} over meshes of different sizes for increasing number of convolutions, using either the \gls{GPGPU} of the laptop M with 768 \gls{CUDA} cores or the \gls{GPGPU} of desktop T with 2,560 \gls{CUDA} cores.
 
 \begin{figure}[ht]
 	\includegraphics[width=\linewidth]{figures/speedup.png}
@@ -250,7 +249,7 @@ Also notable, the acquired \tdd{} enjoyed appreciable speedup, though considerab
 \label{ch6sCWGssE}
 In this section we evaluate the other important metric for analyzing the performance of a parallel algorithm, \gls{efficiency}, as discussed in detail in Section~\ref{ch2sPPssEAPA}. Having establish the optimal sequential execution time $\mathit{T_s}$, and the parallel compute time $\mathit{T_{\rho}}(\hat{n},\,\rho)$ of \Fors{t}, \gls{efficiency} is calculated as \gls{speedup}, divided by the number of processors used to obtain it.
 
-Figure~\ref{fig:efficiency} is a graph of the \gls{efficiency} obtained by convolving the parallel variant of \fors{t} over meshes of different sizes for increasing number of convolutions, using either the \gls{GPGPU} of the laptop M with 768 \gls{CUDA} cores or the \gls{GPGPU} of desktop T with 2,560 \gls{CUDA} cores.
+Figure~\ref{fig:efficiency} is a plot of the \gls{efficiency} obtained by convolving the parallel variant of \fors{t} over meshes of different sizes for increasing number of convolutions, using either the \gls{GPGPU} of the laptop M with 768 \gls{CUDA} cores or the \gls{GPGPU} of desktop T with 2,560 \gls{CUDA} cores.
 
 \begin{figure}[ht]
 	\includegraphics[width=\linewidth]{figures/efficiency.png}
@@ -275,6 +274,7 @@ The minimum efficiency recorded is $\approx$0.000136, and similar to the minimum
 %
 %
 %
+\clearpage
 \section{Summary}
 The goal of our experimentation was two-fold, analyzing the filter response on various kinds of \tdd{} as well as evaluating the performance of the parallel variant of \fors{t} algorithm. Therefore, we began in Section~\ref{ch6sSTDD} by analyzing the filter response when convolving the filter of over four different configurations of synthetic \tdd{}, each with the \gls{ddf} applied as a scalar field.
 
