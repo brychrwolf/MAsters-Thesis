@@ -1,16 +1,8 @@
 \chapter{Introduction \& Motivation}
 \label{ch1}
-It should come as no surprise that if one were to implement an algorithm in a way which was aware of data dependencies, the time required for the computation to complete could significantly decrease when executing that program in parallel on GPGPUs (General Purpose Graphical Processing Units). \todoReword{sounds like whining} What may be a surprise however is the complexity and amount of effort it that it make take one in order to implement concurrent code and achieve the correctness required and efficiency desired from the program. This thesis has three parts: first, the presentation of the updated version of Forf{t}, second, exploring the details of the algorithm as an example for discovering opportunities to exploit concurrency, third, a guide to implementing those findings on hardware capable for parallel processing. As a bonus, also included are the details about the four synthetic mesh generators which we developed during the course of our research.
-\Fors{T}\ldots
-\todoReword{ith the goal of improving the overall performance and scalability of \fors{t} when it is implemented on a system capable of parallel computation.}
+Motivated by the increasing importance of \tdd{} acquisition for both industry and academia, and the inherent difficulties associated with processing that data in an efficient way, this thesis presents the parallel variant of \Fors{t} as a meaningful solution.
 
-
-%and bring to fruition the work invested in designing and developing \Fors{t}
-
-%\Fors{T} was conceived and developed by a research team which focuses on computational geometry
-
-%use paragraph in manifold section....
-%The significance to our research, is that each convolution of \Fors{t} is comprised of calculations of the \wmfv{s} at the central point of a one-ring neighborhood, having weighted the function values in relation to the distance between each neighbor, and because those distances are uniformly dissimilar in acquired \tdd{}\cite{tdd{} is not regular}, maintaining a consistent filter window size is only accomplished by defining the geodesic disc, which exists on the manifold defined by the mesh. Therefore, as discussed in more detail in Chapter~\ref{ch4}, the weights may be calculated sector-wise, as if all sectors were on the same plane, greatly reducing the complexity of the entire procedure.
+The work presented in this thesis was conducted as part of the Heidelberg University Excellence Initiative as part of the \gls{FCGL}at the \gls{IWR}. The algorithms presented may be implemented directly as source code, as was already done in CUDA enchanced C++ in order to generate the synthetic \tdd{} and conduct the experiments used for analysis. The serial algorithm is also readily available as part of the GigaMesh framework, which is maintained by the \gls{FCGL}.
 
 %
 %
@@ -19,48 +11,21 @@ It should come as no surprise that if one were to implement an algorithm in a wa
 %
 %
 \section{Motivation}
+%3D-Data is important to many fields
+From industrial quality scanning~\cite{ILATO14}, to computerized analysis of documents and artifacts within the Digital Humanities~\cite{Bogacz15}, the demand for high definition \tdd{} is only increasing. And in light of recent tragedies befalling global physical archives, for example the museum fire which destroyed Brazil's oldest museum and its 20 million artifacts~\cite{Andreoni18}, or the numerous war zones occupying archaeologically important sites, 3D-scanning can only become more important.
 
-%
-%
-%
-%
-\subsection{3D Data is important (and big).}
+%3D-Data Noises in data, so must still process
+However, raw \tdd{} is typically not suitable for analysis~\cite[p.~25-32]{Mara12}, so processing and pre-processing with a smoothing filter can be necessary. In dense, high-resolution meshes for example, one can see noise propagating as jagged outlines in segment boundaries of connected components when visualizing the output of filters designed for analysis, like \acrlong{tMSIIf} (MSII)~\cite[s.~3.2]{Mara17}.
 
-%
-%
-%
-%
-\subsection{Filtering techniques for irregular triangle meshes, have not yet been established}
+%processing is difficult
+One major complication slowing the development of filters for \tdd{} has been that the window size of any filter must remain static for the duration of its convolution in order for the output response to be mapped correctly back onto the input field~\cite[p.~106-112]{Jaehne97}. While it is trivial define a static-sized filter for convolving regular meshes like raster images, it is a complex and complicated task to create the same for convolving acquired \tdd{}, whose one-ring neighborhoods are subsets of non-planar meshes embedded in $\bR{3}$, uniformly irregular, with completely arbitrary shapes, sizes, and counts of members~\cite[p.~29]{Mara12}~\cite[s.~3.2]{Mara17}.
 
+%3D-Data is big. serial is slow
+A problem also arises, that with high-resolution 3D-scanning, comes large amounts of data; commonly totaling millions, or tens of millions of points per scanned item and featuring several hundred points per mm$^2$~\cite[25,144]{Mara17}~\cite[4]{ILATO14}. At that scale, serial algorithms which process that data can no longer be included in the regular workflow of a scientist analyzing the artifacts, because each operation can easily take hours or days to complete.
 
 
-A core principle for any convolutional filter, as discussed in Section\todoReference{convolutional filter static window size} is that the  window size of the filter must remain static for the duration of the convolution, in order for the output response be mapped correctly back onto the input field~\cite[p.~106-112]{Jaehne97}. While it is trivial define a static-sized filter for convolving regular meshes, it is a complex and complicated task to create the same for convolving acquired \tdd{}, whose one-ring neighborhoods are uniformly irregular, as illustrated in Figure~\ref{fig:neighborhoods}.
-
-Even when ignoring the third dimension present in \tdd{}, in contrast to regular square meshes, as is standard pixels for digital imaging, the one-ring neighborhoods found in irregular triangle meshes have completely arbitrary shapes and sizes, and in fact, even the number of neighbors vary widely. From this observation is where the motivation behind \fors{t} came.
-%
-\subsection{Noise propagates when processing dense meshes}
-%Filtering 3Ddata is useful for preprocessing acquired 3D data with various methods like structured light or LiDAR.
-%When the field of function values $f(\bp_i)$ are rendered as isolines, or when one visualizes connected components of segmented areas of interest.
-
-%In dense, high-resolution meshes, which can feature several hundred points per mm$^2$\todoCitation{}, one can see noise propagating within the results of the MSII filter as jagged outlines.~\cite[s.~3.2]{Mara17}
-%
-%The design principles for filtering of function
-%values in irregular grids are the same as for those well-known algorithms used
-%for raster images. However, they require adaptation as there is no fixed
-%distance between the points and no fixed number of neighboring points in
-%1-rings of irregular grids.~\cite[s.~3.2]{Mara17}
-
-%\ref{ch2s3ssFV}
-%because function values are only stored alongside the Cartesian coordinates, 1-for-1 with points, due to \tdd{} existing as a discrete manifold. The significance of which is another motivating factor behind the research conducted in this thesis.
-%
-\subsection{Serial is slow. Concurrency is fast.}
-%from \subsection{SIMD - A Concurrency Architecture}
-The motivation to implement software which utilizes the architecture of an SIMD system is the speedup to be gained, which may be quantified as discussed in Section~\ref{xxxxxx}\todoReference{quantifiable speedup}, and stems from what is known as loop-level parallelism\todoCitation{loop level parallelism}, which is the modification of instructions which would otherwise be executed serially in a loop, to instead be computed simultaneously, in parallel, incurring only minor synchronization overhead. For example: any operation performed in linear algebra, such as the subtraction of two high-dimensional arrays, is thus made much more scalable in regards to the time required for the computation to complete, as vectors of larger and larger sizes are considered.
-
-%
-\subsection{GPUs are commercially available, use GPGPU to exploit concurrency.}
-%GPUs are fast if the program is SIMP or SIMT.%
-%\nomenclature{GPU}{Hardware for fast processing SIMT or SIMT programs}%
+%gpgpus are cheap, so do the thing
+Fortunately, with the introduction of \glspl{GPGPU} to the commercial market, an opportunity to exploit the parallel processing power of \gls{SIMD} systems at a budget obtainable by individual research groups has presented itself. Therefore, the motivation for designing a smoothing filter, which can efficiently convolve over large, irregular, acquired \tdd{} by utilizing commercially available GPGPUs was realized, and thus came \Fors{t}, and the research presented in this thesis.
 
 %
 %
@@ -69,56 +34,25 @@ The motivation to implement software which utilizes the architecture of an SIMD 
 %
 %
 \section{Related Work}
-As mentioned in the introduction of Chapter~\ref{ch1}, there are not yet many options for those persons wanting to filter scalar fields on discrete 2D meshes embedded in 3D. However research has been done in related fields including copious amounts of research didcated to 2D filters, work on gaussian blurring, smoothing and diffusion processes of which \fors{t} belongs. Also realted to the research presented in this thesis are other approaches to implementing concurrent and parallel software, including
+%Other Mesh filters
+As filtering noise from acquired \tdd{} is a motivating topic, adapting filters designed for regular two-dimensional meshes for use with irregular, non-planar, acquired \tdd{} is a topic of current research. One such filter for de-noising meshes while preserving sharp-edges, which was recently adapted for use with point clouds and parallel processing, is the ``The Bilateral Filter for Point Clouds''~\cite{Digne17}. 
 
-%
-%
-%
-%
-\subsection{Other Mesh filters}
-...while not many exist, these are the ones that do.
-%	which I could have done~\cite[p.~00]{todoCitation}\todoCitation{}
+%2D filters
+Because it is possible to adapt a filter, that was designed for two-dimensional data, to be convolved on \tdd{}, the entire field of digital image processing presents itself as opportunities for related work, for example the filters for feature extraction including smoothing~\cite[299]{Jaehne97}, edge~\cite[331]{Jaehne97} and motion~\cite[397]{Jaehne97} detection, as well as more complicated topics, such as three-dimensional face recognition from two-dimensional images~\cite{faceRecog19}.
 
-%
-%
-%
-%
-\subsection{2D filters}
-Wow, there are so popular many 2D filters implemented everywhere from science medical to instagram.
-%	like from Digital Image Processing: i.e. Jaehne~\cite[p.~00]{todoCitation}\todoCitation{}
+%Numerics and Numerical Stability}
+As a consequence of the design of the \fors{t}, larger filter responses are only obtained through more convolutions of the filter. Also, as smoothing filters are also characterized as a diffusion-reaction system~\cite[474]{Jaehne97}, the on-going research on the topic of numerical optimization of such systems, especially in regards to the stability of algorithms remains relevant.
 
-%
-%
-%
-%
-\subsection{Work with Diffusion Processes}
-%	like from Digital Image Processing: i.e. Jaehne~\cite[p.~00]{todoCitation}\todoCitation{}
+%Other approaches to acceleration}
+In our research, the parallel variant of \fors{t} was implemented using the proprietary CUDA framework~\cite{CUDA18}, however, there exists another framework which enables the use of non-NVIDIA produced \glspl{GPGPU} for parallel processing. It is called OpenCL, and it is developed by The Khronos Group~\cite{Khronos19} to enable the general processing on most \glspl{GPU}, regardless of its manufacturer.
 
-%
-%
-%
-%
-\subsection{Numerics and Numerical Stability}
-%	like from Digital Image Processing: i.e. Jaehne~\cite[p.~00]{todoCitation}\todoCitation{}
-
-%
-%
-%
-%
-\subsection{Other approaches to acceleration}
-\begin{itemize}
-	\item OpenCL to include all GPUs
-	\item Implement in OpenMP to use multiple machines
-	\item Implement in PThreads
-\end{itemize}
+Other frameworks for developing software for parallel processing which are not used in this thesis include: OpenMP~\cite{OpenMP19} which enable the use of distributed computation across multiple machines and networks, and POSIX Threads, or pthreads~\cite[195-210]{Lang17}, for using the \gls{SIMD} environment made available by all modern day \glspl{CPU}.
 
 %
 %
 %
 %
 %
-
-
 %
 \section{Structure this Thesis}
 This document is structured into the following chapters: Chapter 2 briefly covers many theories, concepts, and frameworks across many fields of study in order to focus on a few specific topics which have a direct influence on research presented this thesis. These include topics from set theory, linear algebra, geometry, and topology. \Fors{T} is presented in Chapters 3, 4, and 5, with Chapter 3 introducing the mathematical foundations upon which the filter was designed, Chapter 4 defining the serial algorithm for implementing the filter, and Chapter 5 analyzing the serial filter in order to present the parallel variant of \fors{t} algorithm. The example meshes used in experimentation are described in Chapter 6, before both the filter response as well as the performance of the parallel algorithm are evaluated. Finally a conclusion for this thesis and an outlook for future enhancements is given in Chapter 6.
