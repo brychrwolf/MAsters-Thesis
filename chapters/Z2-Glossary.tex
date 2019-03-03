@@ -27,7 +27,7 @@
 
 \newglossaryentry{volatileMemory}{
 	name=volatile memory,
-	description={memory that may be changed by any thread, especially during parallel processing, requiring thread synchronization before access to ensure program correctness}
+	description={memory that may be changed by any thread without warning, especially during parallel processing, requiring thread synchronization before access to ensure program correctness}
 }
 
 \newglossaryentry{mutableMemory}{
@@ -35,8 +35,19 @@
 	description={memory that may be changed by a specific thread, especially during parallel processing, not requiring a mutex}
 }
 
-\newglossaryentry{principleLoop}{
-	name=principle loop,
+\newglossaryentry{explicitSynchronization}{
+	name=explicit synchronization,
+	description={in regards to parallel processing, the situation when all threads are forced to block until every thread is able to reach a designated state, is expensive to computation time},
+	symbol=\textit{synchronizeThreads}
+}
+
+\newglossaryentry{raceCondition}{
+	name=raceccondition,
+	description={in regards to parallel processing, a situation where two or more threads are instructed to perform operations on the same value in volatile memory, so that the program output is contingent on the non-deterministic order in which the operations are actually performed}
+}
+
+\newglossaryentry{tPrinLoop}{
+	name=the principle loop,
 	description={the loop for convolving \Fors{t}}
 }
 
@@ -52,7 +63,8 @@
 
 \newglossaryentry{degreeOfPar}{
 	name=degree of parallelism,
-	description={which is the maximum number of operations in an algorithm, which can be executed in parallel}
+	description={which is the maximum number of operations in an algorithm, which can be executed in parallel},
+	symbol=$q$
 }
 
 \newglossaryentry{stride}{
@@ -76,6 +88,21 @@
 	description={}
 }
 
+\newglossaryentry{adjacent}{
+	name=adjacent,
+	description={synonym of neighboring. A face $\bt_i$ is said to be \gls{adjacent} to another face $\bt_j$ if, and only if, they share together the same subset of two points. Similarly, a point $\bp_a$ is said to be adjacent to another point $\bp_b$ if, and only if, the set $\{\bp_a, \bp_b\}$ is a subset of at least one face $\bt \in \bT$}
+}
+
+\newglossaryentry{adjacency}{
+	name=adjacency,
+	description={see adjacent.}
+}
+
+\newglossaryentry{neighboring}{
+	name=neighboring,
+	description={see adjacent.}
+}
+
 \newglossaryentry{Amdahl}{
 	name=Amdahl's law,
 	description={Given a constant problem size, the limit as the count of processors goes to infinity, the speedup obtained will only approach the inverse of the degree of parallelism exhibited by the algorithm, a problem which can be partially mitagated by only increasing the number of processors in realtion to the size of the problem}
@@ -83,13 +110,22 @@
 
 \newglossaryentry{lawOfSines}{
 	name=law of sines,
-	description={}
+	description={Let a, b, and c be the lengths of the legs of a triangle opposite angles A, B, and C. Then the law of sines states that $a/\sin{A}=b/\sin{B}=c/\sin{C}=2R$, where R is the radius of the circumcircle~\cite{Weisstein19g}}
 }
-
 
 \newglossaryentry{lawOfCosines}{
 	name=law of cosines,
-	description={}
+	description={Let a, b, and c be the lengths of the legs of a triangle opposite angles A, B, and C. Then the law of cosines states that $cos{A}=\frac{c^2 + b^2 - a^2}{2ba}$~\cite{Weisstein19e}}
+}
+
+\newglossaryentry{thread}{
+	name=thread,
+	description={also known as ``threads of execution'', in regards to computer science, it is the smallest sequence of programmed instructions that can be managed independently by a scheduler, which is typically a part of the operating system~\cite{Lamport79}. Threads may be spawned by other threads, creating a heiarchy.}
+}
+
+\newglossaryentry{census}{
+	name=census,
+	description={a total count of all neighbors in all neighborhoods}
 }
 
 
@@ -99,6 +135,6 @@
 \newacronym{GPGPU}{GPGPU}{General Purpose, Graphics Processing Unit}
 \newacronym{CUDA}{CUDA}{Compute Unified Device Architecture}
 \newacronym{PNG}{PNG}{Portable Network Graphic}
-\newacronym{MSII}{MSII}{the Multi-Scale Integral Invariants filter}
+\newacronym{tMSIIf}{MSII}{the Multi-Scale Integral Invariants filter}
 \newacronym{ILATO}{ILATO}{Improving Limited Angle computed Tomography by Optical data integration}
 \newacronym{SIMD}{SIMD}{Single Instruction, Multiple Data}

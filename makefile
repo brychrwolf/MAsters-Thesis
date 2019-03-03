@@ -1,5 +1,5 @@
 STIME = date '+%s' > $@_time
-ETIME = read st < $@_time ; echo $$((`date '+%s'`-$$st)) seconds ; rm -f $@_time
+ETIME = read st < $@_time ; echo make recipe completed in $$((`date '+%s'`-$$st)) seconds ; rm -f $@_time
 
 all: svgs tikzs plots thesis
 
