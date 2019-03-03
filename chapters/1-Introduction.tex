@@ -12,21 +12,33 @@ It should come as no surprise that if one were to implement an algorithm in a wa
 %use paragraph in manifold section....
 %The significance to our research, is that each convolution of \Fors{t} is comprised of calculations of the \wmfv{s} at the central point of a one-ring neighborhood, having weighted the function values in relation to the distance between each neighbor, and because those distances are uniformly dissimilar in acquired \tdd{}\cite{tdd{} is not regular}, maintaining a consistent filter window size is only accomplished by defining the geodesic disc, which exists on the manifold defined by the mesh. Therefore, as discussed in more detail in Chapter~\ref{ch4}, the weights may be calculated sector-wise, as if all sectors were on the same plane, greatly reducing the complexity of the entire procedure.
 
+%
+%
+%
+%
+%
+%
+\section{Motivation}
 
 %
 %
 %
-\section{3D Data is important (and big).}
+%
+\subsection{3D Data is important (and big).}
 
-\section{Filtering techniques for irregular triangle meshes, have not yet been established}
+%
+%
+%
+%
+\subsection{Filtering techniques for irregular triangle meshes, have not yet been established}
 
 
 
-A core principle for any convolutional filter, as discussed in Section\todoReference{convolutional filter static window size} is that the  window size of the filter must remain static for the duration of the convolution. While it is trivial define a static-sized filter for convolving regular meshes, it is a complex and complicated task to create the same for convolving acquired \tdd{}, whose one-ring neighborhoods are uniformly irregular, as illustrated in Figure~\ref{fig:neighborhoods}.
+A core principle for any convolutional filter, as discussed in Section\todoReference{convolutional filter static window size} is that the  window size of the filter must remain static for the duration of the convolution, in order for the output response be mapped correctly back onto the input field~\cite[p.~106-112]{Jaehne97}. While it is trivial define a static-sized filter for convolving regular meshes, it is a complex and complicated task to create the same for convolving acquired \tdd{}, whose one-ring neighborhoods are uniformly irregular, as illustrated in Figure~\ref{fig:neighborhoods}.
 
 Even when ignoring the third dimension present in \tdd{}, in contrast to regular square meshes, as is standard pixels for digital imaging, the one-ring neighborhoods found in irregular triangle meshes have completely arbitrary shapes and sizes, and in fact, even the number of neighbors vary widely. From this observation is where the motivation behind \fors{t} came.
 %
-\section{Noise propagates when processing dense meshes}
+\subsection{Noise propagates when processing dense meshes}
 %Filtering 3Ddata is useful for preprocessing acquired 3D data with various methods like structured light or LiDAR.
 %When the field of function values $f(\bp_i)$ are rendered as isolines, or when one visualizes connected components of segmented areas of interest.
 
@@ -41,12 +53,12 @@ Even when ignoring the third dimension present in \tdd{}, in contrast to regular
 %\ref{ch2s3ssFV}
 %because function values are only stored alongside the Cartesian coordinates, 1-for-1 with points, due to \tdd{} existing as a discrete manifold. The significance of which is another motivating factor behind the research conducted in this thesis.
 %
-\section{Serial is slow. Concurrency is fast.}
+\subsection{Serial is slow. Concurrency is fast.}
 %from \subsection{SIMD - A Concurrency Architecture}
 The motivation to implement software which utilizes the architecture of an SIMD system is the speedup to be gained, which may be quantified as discussed in Section~\ref{xxxxxx}\todoReference{quantifiable speedup}, and stems from what is known as loop-level parallelism\todoCitation{loop level parallelism}, which is the modification of instructions which would otherwise be executed serially in a loop, to instead be computed simultaneously, in parallel, incurring only minor synchronization overhead. For example: any operation performed in linear algebra, such as the subtraction of two high-dimensional arrays, is thus made much more scalable in regards to the time required for the computation to complete, as vectors of larger and larger sizes are considered.
 
 %
-\section{GPUs are commercially available, use GPGPU to exploit concurrency.}
+\subsection{GPUs are commercially available, use GPGPU to exploit concurrency.}
 %GPUs are fast if the program is SIMP or SIMT.%
 %\nomenclature{GPU}{Hardware for fast processing SIMT or SIMT programs}%
 
@@ -100,15 +112,13 @@ Wow, there are so popular many 2D filters implemented everywhere from science me
 	\item Implement in PThreads
 \end{itemize}
 
+%
+%
+%
+%
+%
 
 
 %
-\section{Structure of this thesis}
-%This paper is structed as follows:
-%1. 3D data acquisition
-%2. noise filtering
-%3. GPGPUs, parallel processing, concurrency profiling
-%4. the published and current fast 1-ring smoothing filters
-%5. how we exploit found concurrency
-%6. experiments and mesh generators
-%7. compare serial vs parallel results and compute times
+\section{Structure this Thesis}
+This document is structured into the following chapters: Chapter 2 briefly covers many theories, concepts, and frameworks across many fields of study in order to focus on a few specific topics which have a direct influence on research presented this thesis. These include topics from set theory, linear algebra, geometry, and topology. \Fors{T} is presented in Chapters 3, 4, and 5, with Chapter 3 introducing the mathematical foundations upon which the filter was designed, Chapter 4 defining the serial algorithm for implementing the filter, and Chapter 5 analyzing the serial filter in order to present the parallel variant of \fors{t} algorithm. The example meshes used in experimentation are described in Chapter 6, before both the filter response as well as the performance of the parallel algorithm are evaluated. Finally a conclusion for this thesis and an outlook for future enhancements is given in Chapter 6.

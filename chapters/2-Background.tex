@@ -162,19 +162,16 @@ In this thesis, the L2-norm is denoted using the abbreviated symbol $|\cdot|$. P
 %
 \subsection{Geometry}
 \label{ch2sETBssG}
-As vast and encompassing as the field of geometry is, in this section, we will only introduce the few concepts which are of paramount importance for \fors{t}, including: geodesic discs for ensuring a consistent filter widow size for the duration of each convolution in Section~\ref{ch3sSEL}, the characteristics of a circle sector to be used in calculating the area and center of gravity in Section~\ref{ch3sACG}, as well as interpolation and extrapolation for calculating the \wmfv{s} in Section~\ref{ch3sWM}.
+As vast and encompassing as the field of geometry is, in this section, we will only introduce the few concepts which are of paramount importance for \fors{t}, including: geodesic discs for ensuring a consistent filter window size for the duration of each convolution in Section~\ref{ch3sSEL}, the characteristics of a circle sector to be used in calculating the area and center of gravity in Section~\ref{ch3sACG}, as well as interpolation and extrapolation for calculating the \wmfv{s} in Section~\ref{ch3sWM}.
 \todoResearch{weighted averaging using density}
-\todoResearch{static filter window size importance}
 
 %
 %
 \subsubsection{Geodesic Discs}
-\todoStyle{Why periods after figure numbers, but not section numbers?}
 \label{ch2sETBssGsssGD}
 Geodesy, the term from which geodesic discs get their name, is defined differently in many fields.\todoCitation{geodesy} A geodesic, as defined in the original sense, was the shortest route between two points on the Earth's surface; so a straight line distance in curved space. In this thesis, we use the term geodesic disc to mean the surface area on a manifold, encompassed by a circle with a given radius, which itself is also embedded in $\bR{3}$, and reference to this disc with the symbol $\bO$.
 
-The significance is that one may treat similarly all adjacent faces in a neighborhood of a non-planar mesh as if they were planar, greatly simplifying the required mathematics involved. It also becomes possible to ensure a consistent filter window size for the duration of each convolution of \fors{t}, despite that given the nature of acquired \tdd{} as discussed in Section~\ref{ch2sTDDssAVS3}, each adjacent face likely exists on a different plane in $\bR{3}$ than its neighbor. Also, from the geodesic disc we derive the circle sectors which are described in detail in the next section.
-\todoResearch{static filter window size importance}
+The significance is that one may treat similarly all adjacent faces in a neighborhood of a non-planar mesh as if they were planar, greatly simplifying the required mathematics involved. It also becomes possible to ensure a consistent filter window size for the duration of each convolution of \fors{t}, which is imperative in order for the output signal to be mapped correctly back onto the scalar field~\cite[p.~106-112]{Jaehne97}, despite that given the nature of acquired \tdd{}, as discussed in Section~\ref{ch2sTDDssAVS3}, each adjacent face likely exists on a different plane in $\bR{3}$ than its neighbor.  Also, from the geodesic disc we derive the circle sectors which are described in detail in the next section.
 \nomenclature[aa]{$\bO$}{a geodesic disc}%
 \nomenclature[ab]{$\bO_v$}{a specific geodesic disc centered about the point $\bp_v$}%
 
@@ -182,7 +179,7 @@ The significance is that one may treat similarly all adjacent faces in a neighbo
 %
 \subsubsection{Circle Sectors}
 \label{ch2sETBssGsssCS}
-A circular sector, or circle sector, is the portion of a disc enclosed by two radii and an arc. In general, the larger area is known as the major sector, however \fors{t} is only concerned with the area of the other, smaller area, known as the minor sector. This is a natural way to partition a geodesic disc embedded in $\bR{3}$, where each sector can be delineated by the border of two triangular faces which likely exists on different planes.\todoReference{figure of geodesic disc in 3d, once made} Going forward, the minor circle sector will be abbreviated as just ``the circle sector'', or even more simply, ``the \gls{sector}''
+A circular sector, or circle sector, is the portion of a disc enclosed by two radii and an arc. In general, the larger area is known as the major sector, however \fors{t} is only concerned with the area of the other, smaller area, known as the minor sector. This is a natural way to partition a geodesic disc embedded in $\bR{3}$, where each sector can be delineated by the border of two triangular faces which likely exists on different planes. Going forward, the minor circle sector will be abbreviated as just ``the circle sector'', or even more simply, ``the \gls{sector}''
 \todoReword{replace all occurrences of circle sector with glossary term sector, consider adding the to glossary term}, and will be denoted as $\bs$, or $\bs_i$ in reference to a specific circle sector, as described in Section~\ref{ch3sSEL}.%
 \nomenclature[ba]{$\bs$}{a circle sector}%
 \nomenclature[bb]{$\bs_i$}{a specific circle sector of geodesic disc $\bO_v$}%
@@ -467,7 +464,7 @@ As presented in Section~\ref{ch6sSTDD}, for a portion of our experiments, we cre
 %
 \subsection{Function Values}
 \label{ch2sTDDssFV}
-In addition to the three Cartesian coordinates, points which comprise a mesh may also contain other relevant data in the form of scalar fields, or vector fields, when combined together into multi-dimensional data. This information, which is stored at each point $\bp$, often includes data regarding RGB color, material type, reflectivity, transparency, quality, confidence, or the resulting function values from an analytical filter such as \gls{tMSIIf}~\cite[p.~21]{Mara12}. A scalar field  can also be extended to include data important to other fields of study, such as infrared or ultraviolet light, temperature, rainfall, population, crime-rates, etc; essentially, any kind of data that may be measured at a point. As \fors{t} will currently\todoReference{future work/applications} only process a single field at a time, we can define a scalar field simply as the set of function values
+In addition to the three Cartesian coordinates, points which comprise a mesh may also contain other relevant data in the form of scalar fields, or vector fields, when combined together into multi-dimensional data. This information, which is stored at each point $\bp$, often includes data regarding RGB color, material type, reflectivity, transparency, quality, confidence, or the resulting function values from an analytical filter such as \gls{tMSIIf}~\cite[p.~21]{Mara12}. A scalar field  can also be extended to include data important to other fields of study, such as infrared or ultraviolet light, temperature, rainfall, population, crime-rates, etc; essentially, any kind of data that may be measured at a point. As \fors{t} will currently only process a single field at a time, we can define a scalar field simply as the set of function values
 
 \begin{equation}
 	\bF := \left \{\: f_v \mid v \in \mathbb{N}, \;\text{and}\; 1\leq v \leq v_{max} \:\right \}
@@ -645,8 +642,7 @@ The high level code in line~\ref{algCritSec.danger} will be translated by a comp
 \nl R3 $\leftarrow$ ADD R1 R2\;
 \nl	$s \leftarrow$ R3\;
 	\caption{A low level translation of the critical section in Algorithm~\ref{alg:critialSection} \label{alg:critialSectionLowLevel}}
-\end{algorithm}%
-\todoStyle{make this alg block less formal}
+\end{algorithm}
 
 Figure~\ref{fig:raceCondition} illustrates how, because the value $s$ is in volatile memory which is shared by both threads, and because each thread remains independent, performing their instructions sequentially at their own speeds, the total order of operations can not be guaranteed and will fall within a range of limited permutations. The consequence being, that only one third of the possible outcomes are actually correct, producing the sum of the four integers as would be expected.
 
@@ -664,7 +660,7 @@ In order to manage the complications inherent to the \glspl{raceCondition} engen
 \label{ch2sPPssPCsssM}
 The term ``\gls{mutex}'' is an abbreviation for ``mutual exclusion'', which is used to describe the situation where the presence of a single entity may exclude the presence of all others. For parallel processing, that translates to allowing only one single thread to enter a critical section of code at a time. A mutex is typically implemented as a shared value which any thread wanting to enter a critical section in code must first find unlocked, before locking the mutex itself and performing the operations therein. All other threads wanting to also enter the critical section will find the mutex locked, and therefore must ``block'', waiting until the mutex is again unlocked, before being able to proceed.
 
-While it is true that employing a mutex can be expensive to both compute time and memory\todoResearch{how expensive are locking mechanisms} because blocking intrinsically means the cessation of computation, however, when used efficiently, the speedup gained by exploiting the parallelism of an algorithm becomes worth the cost\todoResearch{quantify the cost} of the added synchronization overhead.~\cite[~p.20]{Lang17} An example of this is thoroughly explored in the description of Algorithm~\ref{alg:parallelConvolveFilter}, and the effects of this overhead can be seen in the results of the timing experiments presented in Sections~\ref{ch6sCWGssS}~and~~\ref{ch6sCWGssE}, later in this thesis.
+While it is true that employing a mutex can be expensive to both compute time and memory\todoResearch{how expensive are locking mechanisms} because blocking intrinsically means the cessation of computation, however, when used efficiently, the speedup gained by exploiting the parallelism of an algorithm becomes worth the cost of the added synchronization overhead.~\cite[~p.20]{Lang17} An example of this is thoroughly explored in the description of Algorithm~\ref{alg:parallelConvolveFilter}, and the effects of this overhead can be seen in the results of the timing experiments presented in Sections~\ref{ch6sCWGssS}~and~~\ref{ch6sCWGssE}, later in this thesis.
 
 %
 %
