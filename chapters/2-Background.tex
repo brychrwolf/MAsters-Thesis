@@ -50,7 +50,7 @@ It is allowed for one to list a set member two or more times in a definition. Fo
 %
 \subsubsection{Special Sets}
 \label{ch2sETBssSTsssSS}
-There exist some sets which are used in mathematical literature with such frequency as to demand their own standardized symbols. In this thesis\todoReference{defineSetofNaturalNumbers}, we have already encountered $\mathbb{N}$, as defined in Equation~\ref{eq:definitionNaturalNumbers}, which denotes the set of all natural numbers, but more often we will use the set of all real numbers $\mathbb{R}$, which can be described as ``the set of all positive or negative, rational or irrational numbers, including zero''. In short, any number which is not imaginary. This special set, is also usually written with a superscript denoting a specific dimensionality, as in $\bR{3}$ for three-dimensional data.
+There exist some sets which are used in mathematical literature with such frequency as to demand their own standardized symbols. In this thesis, we have already encountered $\mathbb{N}$, as defined in Equation~\ref{eq:definitionNaturalNumbers}, which denotes the set of all natural numbers, but more often we will use the set of all real numbers $\mathbb{R}$, which can be described as ``the set of all positive or negative, rational or irrational numbers, including zero''. In short, any number which is not imaginary. This special set, is also usually written with a superscript denoting a specific dimensionality, as in $\bR{3}$ for three-dimensional data.
 
 %
 %
@@ -64,7 +64,7 @@ Many times throughout this thesis, we reference the cardinality of set, which si
 \label{ch2sETBssSTsssMRO}
 If an object is said to be a member of a set, it is written with the symbol $\in$ and expressed as either ``belonging to'', or ``being an element of'', or simply being ``in'' the set. Similarly, a set may be the subset of another set, written with the symbol $\subseteq$, meaning that every member of the first set is also a member of second set. A superset works exactly in reverse, written with the symbol $\supseteq$, it is the identity where every member of the second set is also a member of first set.
 
-In mathematical notation, the membership and relational operators are written as\footnote{The negative operators also exists as $\notin$, $\nsubseteq$, and  $\nsupseteq$}
+In mathematical notation, the membership and relational operators are written as\footnote{The negative operators also exists as $\notin$, $\nsubseteq$, and $\nsupseteq$.}
 
 \begin{align}
 	B & \in \left \{A,\,B,\,C\right \} \\
@@ -78,8 +78,7 @@ Furthermore, a ``family of sets'' is defined as a multidimensional set, or rathe
 %
 \subsubsection{Binary Operations}
 \label{ch2sETBssSTsssBO}
-Among all the basic binary operations one can perform on a set\footnote{which are the union, intersection, complement, and Cartesian product.}, in this thesis, we exclusively use the union operation, denoted as $\cup$, whose output is the set of all objects that are members of either set, or both. For example:
-\todoStyle{all footnotes need punctuations}
+Among all the basic binary operations one can perform on a set\footnote{which are the union, intersection, complement, and Cartesian product.}, in this thesis, we exclusively use the union operation, denoted as $\cup$, whose output is the set of all objects that are members of either set, or both. For example,
 
 \begin{equation}
 	\left \{0,\,1,\,2\right \} \cup \left \{2,\,3,\,4\right \} = \left \{0,\,1,\,2,\,3,\,4\right \}
@@ -117,7 +116,7 @@ The concept of position vectors is of paramount importance to nearly all of the 
 
 As in \tdd{}, all position vectors are represented by a set of Cartesian coordinates with cardinality matching that of the dimensionality of the Euclidean space in which it is embedded. For example, in Section~\ref{ch2sTDDssP} we say that a point can also be called a position vector, so if we are given a point in $\bR{3}$, it is defined by the three Cartesian coordinates $x$, $y$, and $z$. ``Cartesian'' refers to the French scholar, René Descartes~\cite{EB1}, and ``Euclidean'' refers to Euclid of Alexandria, the Ancient Greek mathematician~\cite{EB2}.
 
-Figure~\ref{fig:definePositionVector} provides three examples of why a point may be called a position vector. Any set of coordinates has an implied direction pointing away from the origin, which in $\bR{3}$ is located at $(0, 0, 0)$. In (a), the point $\bp_a$ is in $\bR{1}$ and located at at coordinate $(4)$, which is at a distance of $4$ units away from the origin. In (b), the point $\bp_b$ is in $\bR{2}$ and located at at coordinates $(4,\,4)$, which is at a distance of $4\sqrt{2}$ units away from the origin. In (c), the point $\bp_c$ is in $\bR{3}$ and located at coordinates $(4,\,4,\,4)$, which is at a distance of $4\sqrt{3}$ units away from the origin\footnote{The lengths in this example increase with each additional dimension: $4 < 4\sqrt{2} \approx 5.657 < 4\sqrt{3} \approx 6.928$}. This concept extends to any Euclidean space $\bR{n}$.
+Figure~\ref{fig:definePositionVector} provides three examples of why a point may be called a position vector. Any set of coordinates has an implied direction pointing away from the origin, which in $\bR{3}$ is located at $(0, 0, 0)$. In (a), the point $\bp_a$ is in $\bR{1}$ and located at at coordinate $(4)$, which is at a distance of $4$ units away from the origin. In (b), the point $\bp_b$ is in $\bR{2}$ and located at at coordinates $(4,\,4)$, which is at a distance of $4\sqrt{2}$ units away from the origin. In (c), the point $\bp_c$ is in $\bR{3}$ and located at coordinates $(4,\,4,\,4)$, which is at a distance of $4\sqrt{3}$ units away from the origin\footnote{The lengths in this example increase with each additional dimension: $4 < 4\sqrt{2} \approx 5.657 < 4\sqrt{3} \approx 6.928$.}. This concept extends to any Euclidean space $\bR{n}$.
 
 \begin{figure}[ht]
 \ffigbox
@@ -364,7 +363,7 @@ where $k_{max}$ is the maximum index of faces in the data, and is equivalent to 
 %
 \subsection{Edge Lengths}
 \label{ch2sTDDssEL}
-As illustrated in Figure~\ref{fig:triangularFaces}, each triangular face is implicitly composed of three edges. Despite the fact that an edge is not typically\footnote{Other data structures, such as the Winged-Edge~\cite[p.~1]{Baumgart75}, may use edges as a primitive element} a primitive element of \tdd{}, we will endeavor to define the length of an edge $\ell$, because edge lengths are of particular significance for both the design and implementation of \fors{t}.
+As illustrated in Figure~\ref{fig:triangularFaces}, each triangular face is implicitly composed of three edges. Despite the fact that an edge is not typically\footnote{Other data structures, such as the Winged-Edge~\cite[p.~1]{Baumgart75}, may use edges as a primitive element.} a primitive element of \tdd{}, we will endeavor to define the length of an edge $\ell$, because edge lengths are of particular significance for both the design and implementation of \fors{t}.
 
 What is also particularly interesting about Figure~\ref{fig:triangularFaces}, is that when edge lengths are defined by the points of specific faces, each non-border edge length, illustrated in the figure as $\ell_a$ in $\bt_1$, and $\ell_c$ in $\bt_2$, will be labeled twice, despite representing the same distance.
 
@@ -539,7 +538,7 @@ With the proper programming strategy, using the proper frameworks, the model for
 \label{ch2sPPssGPGPU}
 \glsreset{GPGPU}\gls{GPGPU} was coined by Mark Harris, the founder of GPGPU.org\todoCitation{Mark Harris, coined the term GPGPU}, and as the name implies, describes \glspl{GPU}, which was originally developed to exclusively perform graphics processing, but can now be utilized for general purposes by using the frameworks which are publicly available, for example OpenCL\todoCitation{OpenCL} and CUDA\todoCitation{CUDA}.
 
-Figure~\ref{fig:cpuvgpu} illustrates the principle difference between a \gls{CPU}, and a GPU. Because graphics rendering is mostly comprised of compute-intensive, but highly-parallel procedures, \glspl{GPU} have been designed with less focus on data flow control and more transistors devoted to data processing\footnote{mimicking the design of early supercomputers}\todoCitation{LANG, footnote cray was a big GPU}. This diverges from the design of modern CPUs, which has devoted more chip space to processing at higher frequencies, while using large, multi-leveled caches of memory for the optimization of context switching\todoCitation{context switching}.
+Figure~\ref{fig:cpuvgpu} illustrates the principle difference between a \gls{CPU}, and a GPU. Because graphics rendering is mostly comprised of compute-intensive, but highly-parallel procedures, \glspl{GPU} have been designed with less focus on data flow control and more transistors devoted to data processing\footnote{mimicking the design of early supercomputers.}\todoCitation{LANG, footnote cray was a big GPU}. This diverges from the design of modern CPUs, which has devoted more chip space to processing at higher frequencies, while using large, multi-leveled caches of memory for the optimization of context switching\todoCitation{context switching}.
 
 \begin{figure}[ht]
 \ffigbox
