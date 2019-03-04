@@ -93,21 +93,101 @@
 \input{chapters/Z2-Glossary.tex}
 %
 \frontmatter
-\maketitle
+
+%%%%%%%%%%%%%%START TEMPLATE
+% TITLE:
+\begin{titlepage}
+%\pagenumbering{roman}
+
+\vspace*{1cm}
+\begin{center}
+\vspace*{3cm}
+\textbf{
+\Large Universität Heidelberg\\
+\smallskip
+\Large Interdisciplinary Center for Scientific Computing\\
+\smallskip
+\Large Forensic Computational Geometry Laboratory\\
+\smallskip
+}
+
+\vspace{3cm}
+
+\textbf{\large Master's Thesis} % Bachelor-Arbeit
+
+\vspace{0.5\baselineskip}
+{\huge
+\textbf{GPGPU Accelerated Iterative Filtering of Scalar Fields on Discrete Manifolds}
+}
+\end{center}
+
+\vfill
+
+{\large
+\begin{tabular}[l]{ll}
+Name: & Bryan Wolfford\\
+Matrikelnummer: & 3346612\\
+Betreuer: & Hubert Mara and Susanne Krömker\\
+Datum der Abgabe: & March 3, 2019
+\end{tabular}
+}
+
+\end{titlepage}
+
+%\onehalfspacing
+
+\thispagestyle{empty}
+
+\vspace*{100pt}
+\noindent
+I affirm that I have written this Master's Thesis independently and with those sources and aids as specificed in accordance with the principles and
+recommendations of the ``Verantwortung in der Wissenschaft'' of the University of Heidelberg.
+
+\vspace*{50pt}
+\noindent
+
+\underline{\phantom{mmmmmmmmmmmmmmmmmmmm}}
+
+\medskip
+\noindent
+Abgabedatum: March 3, 2019
+\newpage
+
+% Add a brief summary of your topic and contributions (Zusammenfassung) in German *and* in English:
+%\chapter*{Zusammenfassung}
+%\input{zusammenfassung}
+%\newpage
+
+\chapter*{Abstract}
+\input{chapters/abstract}
+\newpage
+
+% MAIN PART:
+% Table of contents (Inhaltsverzeichnis)
+%\tableofcontents
+%\cleardoublepage
+
+% List of figures (Abbildungsverzeichnis):
+%\listoffigures
+% List of tables (Tabellenverzeichnis):
+%\listoftables
+
+%%%%%%%%%%%%%%END TEMPLATE
+
+%\maketitle
 
 \listoftodos
 \todototoc
 
-\chapter{Affirmation of Authorship}
-I affirmation authorship.
+%\chapter{Affirmation of Authorship}
+%I affirmation authorship.
 
 \chapter{Aknowledgements}
-I aknowledge things.
+I wish the warmest regards for everyone who has supported me during my time here, especially for my wife, Kirsten, for all the sacrifices she made for the benefit of this research, and my son, Dexter, who is perpetually a ray of sunshine, even on the grayest of days.
 
-\chapter{Abstract}
-This is some abstract text.
-\todoRemove{Remove listoftodos in final draft}
-\todoRemove{update date in final draft}
+%\chapter{Abstract}
+%This is some abstract text.
+%\todoRemove{update date in final draft}
 
 \printnomenclature
 \tableofcontents

@@ -1,59 +1,58 @@
-\chapter{Conclusions}
-As of this writing, the fastest available GPGPU card available is the Quadro RTX 6000 which has 4,608 parallel processing cores and can perform at 16.3 TFLOPS~\cite{quadro6k}, up from the the previous 5000 model, which already had 3,702 and could perform at 11.2 TFLOPS~\cite{quadro5k}.
+\chapter{Conclusions and Outlook}
+\label{ch7}
+Figure~\ref{fig:sq2} exposed the anisotropic behavior of the filter response which was due information traveling faster along the connections of more-distant adjacent points. However, Figures~\ref{fig:sq4}~and~\ref{fig:hex} show the filter response exhibiting isotropic behavior as the density of the mesh increased, reducing the overall variance in the length of edges.
 
-The fastest CPU commercially available as of this writing is the Intel Core i9-9980XE, which has 16 cores which each operate at 3.0GHz, and costs about \$2,300.
-\todoCitation{cpu benchmarks}
+Our conclusion then becomes, that designing a filter with isotropic behavior, unlike with pixels of a digital image, will require considerations for not only the filter windows size for inputs, but also bounding the distance information may be written as an output, in order to prevent long, consecutive paths from propagating information faster that other paths.
+
+Figures~\ref{fig:rdisc} showed how the filter response appears to slow down when convolved over an irregular mesh, and it still remains unclear why the discrepancy exists, as pure speculation, it could be related to low level optimization made at the compiler or processor level which are written to detect and exploit pattern in control and data structures.
+
+In Figure~\ref{fig:unisiegel} an error in computation was seen propagating across the image with each subsequent convolution. However, as that error stems from convolving the filter over ``unclean'' \tdd{}, the solution lies not with the filter, but with first processing the data with another tool, such as the ``Automatic Mesh Polishing'' provided by the GigaMesh framework. However, graceful error handling would not be impossible to implement for an enhanced version of the the filter.
+
+Then in Figure~\ref{fig:ILATO}, we see that the filter's efficacy diminishes when convolving the filter over a scalar field with very low variance. While this is correct behavior, as an averaging operation should always output a value somewhere within the range of its inputs, this also highlights an opportunity to introduce new user-defined parameters for the filter, for example, to enable the control of convergence tolerance.
+
+In each of the experiments with synthetic data, the filter response applied to the \gls{ddf} did behave as a model of the diffusion process would which was expected. Also, when \fors{t} was applied to \gls{tMSIIf} generated scalar fields on the examples of acquired \tdd{}, the features did in fact become smoother. Therefore, it may be concluded that as a smoothing filter, the Fast One-Ring filter is successful.
+
+Next, Figure~\ref{fig:speedup} exposes just how powerful using a GPGPU to process a convolutional filter can be, even achieving speedups higher than 200\%. As one of our goals was to realize an appreciable speedup, we can conclude that \fors{t} is also successful are scaling better with the growing size of \tdd{}.
+
+Conversely, the parallel variant of \fors{t} algorithm only ever reached as high as 15\% efficiency. This indicates that vast improvements to the implementation of the algorithm are still yet to be made. An effective first approach would be to optimize how often threads are explicitly synchronized.
+
+In conclusion, as a smoothing filter and at scaling for large mesh sizes, \Fors{t} is quite successful. However there are still several aspects of the filter remaining, which can be improved upon.
+
+%As of this writing, the fastest available GPGPU card available is the Quadro RTX 6000 which has 4,608 parallel processing cores and can perform at 16.3 TFLOPS~\cite{quadro6k}, up from the the previous 5000 model, which already had 3,702 and could perform at 11.2 TFLOPS~\cite{quadro5k}.
+
+%The fastest CPU commercially available as of this writing is the Intel Core i9-9980XE, which has 16 cores which each operate at 3.0GHz, and costs about \$2,300.
+%\todoCitation{cpu benchmarks}
 %https://www.cpubenchmark.net/cpu.php?cpu=Intel+Core+i9-9980XE+%40+3.00GHz&id=3373
 
+\section{Future Research}
+Now that the filter has been implemented in CUDA enhanced C++, the next step could be to implement it using OpelCL in order to include other GPGPUs not manufactured by NVIDIA. Likewise, OpenMP could also be utilized in order to take advantage of under-utilized networks of computers by extending the parallel processing beyond just a single machine.
 
-%
-%
-%
-%
-%
-%
-\section{Summary}
+As mentioned in Section~\ref{ch5sCELPssASACEL}, there exists a design choice which must be made regarding whether or not to store edge lengths twice in order to speedup the algorithm. The decision to not store the reverse lookup table was never explored further, presenting an opportunity for future research.
 
-The goal of our experimentation was two-fold, analyzing the filter response on various kinds of \tdd{} as well as evaluating the performance of the parallel variant of \fors{t} algorithm. Therefore, we began in Section~\ref{ch6sSTDD} by analyzing the filter response when convolving the filter of over four different configurations of synthetic \tdd{}: the bisected-square tessellation, the quadrisected-square tessellation, the hexagonal tessellation, and the random triangulated disc, each with the \gls{ddf} applied as a scalar field.
+Footnote~\ref{errorInTheSource} mentions how a typo in the original source code led to slightly different filter responses, but an equal convergence value. Therefore, it would be valuable to examine to necessity of calculating the global min edge length, and compare it to assigning the scalar to one instead.
 
-Figure~\ref{fig:sq2} exposed the behavior of the anisotropic filter response traveling faster along the connections of more distant adjacent points. Figures~\ref{fig:sq4}~and~\ref{fig:hex} show the filter response exhibiting isotropic behavior as the density of the mesh increased, with more adjacent points per unit compared to the bisected-square tesselation, while also reducing the overall variance in the length of edges. Figures~\ref{fig:rdisc} showed how the filter response appears to slow down when convolved over irregular meshes, more similar to acquired \tdd{}.
+Section~\ref{ch2sTDDssFV} discusses the possibility of \gls{tMSIIf} processing feature vectors instead of only scalar fields, and we iterate here that future research into the processing of multi-dimensional function values would be valuable.
 
-Next, in Section~\ref{ch6sATDD} we analyzed the filter response when convolving the filter of over three different examples of acquired \tdd{}: the partial model of the University of Heidelberg seal, the flat surface from ILATO, and the Stanford Bunny, each processed having been processed by \gls{tMSIIf}.
+Currently, there exists a serial version of \fors{t} which uses the median, instead of the mean as the operation for smoothing. A next step would be to also implement that filter with a parallel variant.
 
-In Figure~\ref{fig:unisiegel} an error in computation was seen propagating across the image with each subsequent convolution. However, as that error stems from convolving the filter over ``unclean'' \tdd{}, the solution lies not with the filter, but with first processing the data with another tool, such as the ``Automatic Mesh Polishing'' provided by the GigaMesh framework.
-
-In Figure~\ref{fig:ILATO}, the filter response efficacy diminishes,  seemingly having had its effectiveness compromised by convolving the filter over a scalar field with very low variance, highlighting another complexity of working with acquired \tdd{}, where one solution may be to set limits on the range of values visualized by the software.
-
-
-%
-%
-%
-%
-%
-%
-\section{Future Work}
-What they are and why I did not.
-\begin{itemize}
-	\item Implement in OpenCL to include all GPUs
-	\item Implement in OpenMP to use multiple machines
-	\item Implement in PThreads to exploit MIMP
-	\item Pipelining memory reads/calculations exploit more concurrency
-	\item Edge case handling: max mesh size in memory, Derive calculation for compute time per iteration by mesh size. Maybe find when load time is greater than iteration time
-	\item support other file types
-	\item Calculating edge length takes longest, so DO NOT DOUBLE EFFORT HERE
-	\item Determine is using $\elm$ vs $\bar{\elm}$ has any effect, especially on one-ring neighborhood with a relatively large $\elm$ on mesh with a very small $\bar{\elm}$
-	\item More analysis on \fors. it is my intuition that the un-isotropic nature of the filter is due to the speed at which information travels along longer edges.
-	\item Apply the filter to multi-channel vector fields like RGB, however color-wheel based methods may be better From scetion
-\label{ch2sTDDssFV}
-	\item Implement Median and Mode version of filter (others based on what's foudn in 2d filter results)
-	\item Implement more storage vs speed options
-	\item explore using the inner angles $\alpha_i$ in stead of area for weighting
-	\item instead of global min size, just choose a size, especially if not using sqrt to get edgelengths
-	\item create more synthetic meshes with different scalar fields, Random, etc
-	\item \ref{fig:speedup} Another trend is that for most configurations, speedup increases with increasing number of convolutions, seeming to converge to a certain number. More research must be done in order to determine why this may be, but it is possible that it is related to low-level memory optimization by the operating system.
-	\item if neighborhood sizes vary widely, one large neighborhood can cause all other threads to wait. therefore, build in work sharing for big neighborhoods.
-	\item improve efficency of parallel algorithm
-	\item exploit errorInSource to speed up parallel algorithm
-	\item at end of \label{ch5sCELPssASACEL} Conversely, in order to save nearly half\footnote{Scaling by half comes from the observation that as mesh density increases, the ratio of border to non-border edges dimensions, which discussed in more detail Appendix~\ref{apdx1}.} of that memory, one could store the value only once by implementing the control structures for detecting if an edge length has already been saved, then when retrieving the values, one could search for the edge length required at the cost of compute time. In the next section, we choose to implement the first, speedier method.
-\end{itemize}
+Finally, because a circle sector can be described entirely by its interior angle, further research may be able to determine if simply using the interior angles for weighting the function values, instead of also calculating the area of each circle sector, would not only be possible, but also have a positive effect on the performance of the algorithm.
+%	\item Pipelining memory reads/calculations exploit more concurrency
+%	\item Edge case handling: max mesh size in memory, Derive calculation for compute time per iteration by mesh size. Maybe find when load time is greater than iteration time
+%	\item support other file types
+%	\item Calculating edge length takes longest, so DO NOT DOUBLE EFFORT HERE
+%	\item Determine is using $\elm$ vs $\bar{\elm}$ has any effect, especially on one-ring neighborhood with a relatively large $\elm$ on mesh with a very small $\bar{\elm}$
+%	\item More analysis on \fors. it is my intuition that the un-isotropic nature of the filter is due to the speed at which information travels along longer edges.
+	%\item Apply the filter to multi-channel vector fields like RGB, however color-wheel based methods may be better From scetion
+%\label{ch2sTDDssFV}
+%	\item Implement Median and Mode version of filter (others based on what's foudn in 2d filter results)
+%	\item Implement more storage vs speed options
+%	\item explore using the inner angles $\alpha_i$ in stead of area for weighting
+%	\item instead of global min size, just choose a size, especially if not using sqrt to get edgelengths
+%	\item create more synthetic meshes with different scalar fields, Random, etc
+%	\item \ref{fig:speedup} Another trend is that for most configurations, speedup increases with increasing number of convolutions, seeming to converge to a certain number. More research must be done in order to determine why this may be, but it is possible that it is related to low-level memory optimization by the operating system.
+%	\item if neighborhood sizes vary widely, one large neighborhood can cause all other threads to wait. therefore, build in work sharing for big neighborhoods.
+%	\item improve efficency of parallel algorithm
+%	\item exploit errorInSource to speed up parallel algorithm
+%	\item at end of \label{ch5sCELPssASACEL} Conversely, in order to save nearly half\footnote{Scaling by half comes from the observation that as mesh density increases, the ratio of border to non-border edges dimensions, which discussed in more detail Appendix~\ref{apdx1}.} of that memory, one could store the value only once by implementing the control structures for detecting if an edge length has already been saved, then when retrieving the values, one could search for the edge length required at the cost of compute time. In the next section, we choose to implement the first, speedier method.
+%\end{itemize}
 

@@ -2,7 +2,7 @@
 \label{ch1}
 Motivated by the increasing importance of \tdd{} acquisition for both industry and academia, and the inherent difficulties associated with processing that data in an efficient way, this thesis presents the parallel variant of \Fors{t} as a meaningful solution.
 
-The work presented in this thesis was conducted with support from the Heidelberg University Excellence Initiative and the \gls{FCGL} at the \gls{IWR}. The algorithms presented may be implemented directly as source code, as was already done in CUDA enhanced C++, in order to generate the synthetic \tdd{} and conduct the experiments used for analysis. The serial algorithm is also readily available as part of the GigaMesh framework, which is maintained by the \gls{FCGL}.
+The work presented in this thesis was conducted with support from the Heidelberg University Excellence Initiative through the DFG, as well as the \gls{FCGL} in cooperation with the Graduate School for Mathematical and Computational Modeling (HGS MathComp) at the \gls{IWR}. The algorithms presented may be implemented directly as source code, as was already done in CUDA enhanced C++, in order to generate the synthetic \tdd{} and conduct the experiments used for analysis. The serial algorithm is also readily available as part of the GigaMesh framework, which is maintained by the \gls{FCGL}.
 
 %
 %
@@ -44,7 +44,7 @@ Because it is possible to adapt a filter, that was designed for two-dimensional 
 As a consequence of the design of the \Fors{t}, larger filter responses are only obtained through more convolutions of the filter. Additionally, as smoothing filters are also characterized as a diffusion-reaction system~\cite[p.~474]{Jaehne97}, the on-going research on the topic of numerical optimization of such systems, especially in regards to the stability of algorithms remains relevant.
 
 %Other approaches to acceleration}
-In our research, the parallel variant of \fors{t} was implemented using the proprietary CUDA framework~\cite{CUDA18}, however, there exists another framework which enables the use of non-NVIDIA produced \glspl{GPGPU} for parallel processing. It is called OpenCL and it is developed by The Khronos Group~\cite{Khronos19} to enable general processing on most \glspl{GPU}, regardless of manufacturer.
+In our research, the parallel variant of \fors{t} was implemented using the proprietary CUDA framework~\cite{CUDA17}, however, there exists another framework which enables the use of non-NVIDIA produced \glspl{GPGPU} for parallel processing. It is called OpenCL and it is developed by The Khronos Group~\cite{Khronos19} to enable general processing on most \glspl{GPU}, regardless of manufacturer.
 
 Other frameworks for developing software for parallel processing, which are not used in this thesis include: OpenMP~\cite{OpenMP19} which enables the use of distributed computation across multiple machines and networks, and POSIX Threads, or pthreads~\cite[p.~195-210]{Lang17}, for use in the limited \gls{SIMD} environment, made available by all modern day \glspl{CPU}.
 

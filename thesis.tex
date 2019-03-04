@@ -1,12 +1,26 @@
+%\documentclass[
+%     12pt,         % font size
+%     a4paper,      % paper format
+%     BCOR10mm,     % binding correction
+%     DIV14,        % stripe size for margin calculation
+%     openany,
+%     liststotoc,   % table listing in toc
+%     bibtotoc,     % bibliography in toc
+%     idxtotoc,     % index in toc
+%     parskip       % paragraph skip instad of paragraph indent
+%]{scrbook}
 \documentclass[a4paper,openany]{book}
 \author{Bryan Wolfford}
 \title{GPGPU Accelerated Iterative Filtering of Scalar Fields on Discrete Manifolds}
 \date{\today}
+%
+%\usepackage{url} %template
+%\usepackage[latin1]{inputenc} %template
+%\usepackage[utf8]{fontenc} %template
+%\usepackage{setspace} %template
+%
 \setcounter{tocdepth}{4}
 \setcounter{secnumdepth}{4}
-%
-\usepackage{syntonly}
-%\syntaxonly
 \counterwithout{footnote}{chapter}
 \usepackage{amsmath}
 \usepackage{amsfonts}
@@ -15,7 +29,7 @@
 \titlelabel{\thetitle.\quad}
 \usepackage{graphicx,txfonts}
 %\usepackage[lofdepth,lotdepth]{subfig}
-\usepackage[colorinlistoftodos]{todonotes}%disable
+\usepackage[colorinlistoftodos,disable]{todonotes}%disable
 \usepackage{makeidx}
 \usepackage[refeq,refpage,intoc]{nomencl}
 \usepackage{multicol}
@@ -30,12 +44,26 @@
 \usepackage{standalone}
 \usepackage{tikz}
 \usetikzlibrary{shapes,arrows.meta}
-\usepackage[bookmarks,colorlinks]{hyperref}
-\hypersetup{colorlinks,
-	citecolor=[rgb]{0,0.33,0.33},
-	filecolor=[rgb]{0,0.33,0.33},
-	linkcolor=[rgb]{0,0.33,0.33},
-	urlcolor=[rgb]{0,0.33,0.33},
+\usepackage[
+	bookmarks=true,
+	colorlinks,
+	pdfpagelabels,
+	pdfstartview = FitH,
+	bookmarksopen = true,
+	bookmarksnumbered = true,
+	linkcolor = black,
+	plainpages = false,
+	hypertexnames = false,
+	citecolor = black,
+	urlcolor=black
+]{hyperref} %template
+%\usepackage[bookmarks]{hyperref}
+\hypersetup{
+%	colorlinks,
+%	citecolor=[rgb]{0,0.33,0.33},
+%	filecolor=[rgb]{0,0.33,0.33},
+%	linkcolor=[rgb]{0,0.33,0.33},
+%	urlcolor=[rgb]{0,0.33,0.33},
 	pdfinfo={
 		Author={Bryan Wolfford},
 		Title={GPGPU Accelerated Iterative Filtering of Scalar Fields on Discrete Manifolds},
@@ -43,6 +71,7 @@
 }
 \usepackage[toc, acronym]{glossaries}
 %
+\pagestyle{headings} %template
 \input{myCommands.tex}
 %
 \includeonly{
@@ -73,6 +102,7 @@
 %\glsunsetall
 \begin{document}
 \include{chapters/0-Front-matter}
+%\pagenumbering{arabic}
 %
 \mainmatter
 \include{chapters/1-Introduction}
