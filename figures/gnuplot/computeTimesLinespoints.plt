@@ -7,7 +7,7 @@ round(x, n) = round(x*10**n)*10.0**(-n)
 
 set datafile separator ","
 data = "../../data/computeTimesLinespoints.csv"
-set terminal pngcairo size 720, 1000 enhanced font "FreeSerif,14"
+set terminal pngcairo size 720, 1100 enhanced font "FreeSerif,14"
 set output "../computeTimesLinespoints.png"
 
 #set title font ",16" \ #offset 8 \
@@ -18,7 +18,7 @@ set key Left outside enhanced title "Experiment Code †"
 
 set logscale xy
 set ylabel "Compute Time (seconds) - Log Scale"
-set xlabel "Fast One-Ring Smothing Filter Convolutions - Log Scale"
+set xlabel "Fast One-Ring Smoothing Filter Convolutions - Log Scale"
 
 plot for [i=3:12] data every ::1::8  using 2:i with linespoints title "MS.".columnhead(i) ls ceil(9-(i-1)*8/10) pt (i==8 ? 5 : (i==10 ? 7 : 1)), \
 	 for [i=3:12] data every ::9::16 using 2:i with linespoints title "TS.".columnhead(i) ls ceil(9-(i-1)*8/10) pt (i==8 ? 5 : (i==10 ? 7 : 1)), \
