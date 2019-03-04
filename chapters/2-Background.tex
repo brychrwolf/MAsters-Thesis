@@ -42,7 +42,7 @@ The other option, extensional definition, is denoted by enclosing the list of me
 	\label{eq:definitionNaturalNumbers}
 \end{equation}
 
-which in words, means ``the set of natural numbers is the set which includes every integer from zero\footnote{In some literature, zero is excluded from the set of natural numbers.}\todoCitation{zero not in set of natural numbers} until infinity.''
+which in words, means ``the set of natural numbers is the set which includes every integer from zero\footnote{In some literature, zero is excluded from the set of natural numbers.} until infinity.''
 
 It is allowed for one to list a set member two or more times in a definition. For example, $\left \{\:4,\,2,\,2\:\right \}$. However, it is identical to the set $\left \{\:4,\,2\:\right \}$ per the axiom of extensionality\todoResearch{Zermelo–Fraenkel set theory., Axiom of extensionality, logical extensionality}, which states that two definitions of sets, which differ only in that one of the definitions lists members multiple times, define the same set.
 
@@ -84,8 +84,7 @@ Among all the basic binary operations one can perform on a set\footnote{which ar
 	\left \{0,\,1,\,2\right \} \cup \left \{2,\,3,\,4\right \} = \left \{0,\,1,\,2,\,3,\,4\right \}
 \end{equation}
 
-Also noteworthy, are the commutative and associative properties of the union\todoCitation{associatePropertyOfUnions} operation, which are analogous to the similarly named properties of the addition operator for scalar values. These properties say that the order of the sets, and how the sets are grouped, do not change the final result of the operation\todoCitation{properties of operations, link in notes}, for example:
-%Halmos, P. R. (2013-11-27). Naive Set Theory. Springer Science & Business Media. ISBN 9781475716450.
+Also noteworthy, are the commutative and associative properties of the union~\cite{Halmos13} operation, which are analogous to the similarly named properties of the addition operator for scalar values. These properties say that the order of the sets, and how the sets are grouped, do not change the final result of the operation, for example:
 
 \begin{equation}
 \begin{aligned}
@@ -105,16 +104,14 @@ The commutative and associative properties of the union operation are exploited 
 \subsection{Linear Algebra}
 \label{ch2sETBssLA}
 Nearly as fundamental as set theory, linear algebra is the branch of mathematics which studies the different methods and representations which may concern a line, including: sets of equations, matrices, transformations, vector spaces, norming functions, et cetera. Linear algebra is used in almost all scientific domains that require the use of mathematics, including geometry and scientific computing, and also provides the symbols and concepts for performing blocks of operations in parallel~\cite{Weisstein19i}. In this section, we will briefly introduce only the major concepts used in our research: position vectors, the subtraction of two vectors, and computing the L2-norm of a vector.
-\todoStyle{put all citations BEFORE punctuation}
 
 %
 %
 \subsubsection{Position Vectors}
 \label{ch2sETBssLAsssPV}
-\todoCitation{position vector}
 The concept of position vectors is of paramount importance to nearly all of the calculations which must be performed by the \fors{t}, because the research in this thesis is focused on the efficient convolution of the filter over a discrete manifold embedded in 3D-space, with each point being represented by a set of three Cartesian coordinates, equating points with position vectors.
 
-As in \tdd{}, all position vectors are represented by a set of Cartesian coordinates with cardinality matching that of the dimensionality of the Euclidean space in which it is embedded. For example, in Section~\ref{ch2sTDDssP} we say that a point can also be called a position vector, so if we are given a point in $\bR{3}$, it is defined by the three Cartesian coordinates $x$, $y$, and $z$. ``Cartesian'' refers to the French scholar, René Descartes~\cite{EB1}, and ``Euclidean'' refers to Euclid of Alexandria, the Ancient Greek mathematician~\cite{EB2}.
+As in \tdd{}, all position vectors are represented by a set of Cartesian coordinates with cardinality matching that of the dimensionality of the Euclidean space in which it is embedded~\cite{Weisstein19l}. For example, in Section~\ref{ch2sTDDssP} we say that a point can also be called a position vector, so if we are given a point in $\bR{3}$, it is defined by the three Cartesian coordinates $x$, $y$, and $z$. ``Cartesian'' refers to the French scholar, René Descartes~\cite{EB1}, and ``Euclidean'' refers to Euclid of Alexandria, the Ancient Greek mathematician~\cite{EB2}.
 
 Figure~\ref{fig:definePositionVector} provides three examples of why a point may be called a position vector. Any set of coordinates has an implied direction pointing away from the origin, which in $\bR{3}$ is located at $(0, 0, 0)$. In (a), the point $\bp_a$ is in $\bR{1}$ and located at at coordinate $(4)$, which is at a distance of $4$ units away from the origin. In (b), the point $\bp_b$ is in $\bR{2}$ and located at at coordinates $(4,\,4)$, which is at a distance of $4\sqrt{2}$ units away from the origin. In (c), the point $\bp_c$ is in $\bR{3}$ and located at coordinates $(4,\,4,\,4)$, which is at a distance of $4\sqrt{3}$ units away from the origin\footnote{The lengths in this example increase with each additional dimension: $4 < 4\sqrt{2} \approx 5.657 < 4\sqrt{3} \approx 6.928$.}. This concept extends to any Euclidean space $\bR{n}$.
 
@@ -169,7 +166,7 @@ As vast and encompassing as the field of geometry is, in this section, we will o
 %
 \subsubsection{Geodesic Discs}
 \label{ch2sETBssGsssGD}
-Geodesy, the term from which geodesic discs get their name, is defined differently in many fields.\todoCitation{geodesy} A geodesic, as defined in the original sense, was the shortest route between two points on the Earth's surface; so a straight line distance in curved space. In this thesis, we use the term geodesic disc to mean the surface area on a manifold, encompassed by a circle with a given radius, which itself is also embedded in $\bR{3}$, and reference to this disc with the symbol $\bO$.
+Geodesy, the term from which geodesic discs get their name, is defined differently in many fields~\cite{EB3}. A geodesic, as defined in the original sense, was the shortest route between two points on the Earth's surface; so a straight line distance in curved space. In this thesis, we use the term geodesic disc to mean the surface area on a manifold, encompassed by a circle with a given radius, which itself is also embedded in $\bR{3}$, and reference to this disc with the symbol $\bO$.
 
 The significance is that one may treat similarly all adjacent faces in a neighborhood of a non-planar mesh as if they were planar, greatly simplifying the required mathematics involved. It also becomes possible to ensure a consistent filter window size for the duration of each convolution of \fors{t}, which is imperative in order for the output signal to be mapped correctly back onto the scalar field~\cite[p.~106-112]{Jaehne97}, despite that given the nature of acquired \tdd{}, as discussed in Section~\ref{ch2sTDDssAVS3}, each adjacent face likely exists on a different plane in $\bR{3}$ than its neighbor.  Also, from the geodesic disc we derive the circle sectors which are described in detail in the next section.
 \nomenclature[aa]{$\bO$}{a geodesic disc}%
@@ -223,7 +220,9 @@ The line which bisects the central angle of a circle sector, while not used expl
 %
 \subsubsection{Interpolation \& Extrapolation}
 \label{ch2sETBssGsssIE}
-Simply stated, interpolation is a method of constructing new data points within the range of a discrete set of known data points, such as those points found in the discrete manifolds of \tdd{}. There exist a large variety of methods for interpolating different kinds of data\todoCitation{different kinds of interpolation}, but in this thesis, we will only consider linear interpolation, which is simple to calculate\footnote{however can become imprecise in relation to the square of the distance between the data points.}\todoCitation{footnote:error of linear interpolation} and can be extended for n-dimensions\todoCitation{n-dimensional linear interpolation}.
+Simply stated, interpolation is a method of constructing new data points within the range of a discrete set of known data points, such as those points found in the discrete manifolds of \tdd{}. There exist a large variety of methods for interpolating different kinds of data~\cite{Weisstein19a}, but in this thesis, we will only consider linear interpolation, which is simple to calculate\footnote{however can become imprecise in relation to the square of the distance between the data points.}
+and can be extended for n-dimensions~\cite{Weisstein19a}.
+%\todoResearch{footnote:error of linear interpolation}
 
 Given the two data points in $\bR{2}$, $(x_a, y_a)$ and $(x_b, y_b)$, we can calculate the $y_c$ coordinate of a third point located along a straight line drawn between the first two points, while also having the coordinate $x_c$, as
 
@@ -270,7 +269,7 @@ Of all the major concepts studied in topology, this thesis is only concerned fir
 \label{ch2sETBssTsssM}
 A manifold is a topological space that is locally, but possibly not globally, Euclidean; a concept that is central to many parts of geometry because it allows complicated structures, such as the triangle mesh, to be described and understood in terms of the simpler, local topological properties. Expressed another way, this means that a manifold is an $n$D-subset of an Euclidean space $\mathbb{R}^{>n}$~\cite[p.~199]{Mara12}. For example, 1-dimensional manifolds in $\mathbb{R}^{2}$ include lines and circles, and 2-dimensional manifolds in $\mathbb{R}^{3}$, also called surfaces, can include commonly-known shapes such as the plane, the sphere, and the torus, but also of prime importance for this thesis, the triangle mesh.
 
-The significance to our research is that each convolution of \fors{t} is comprised of calculations of the \wmfv{s} at the central point of a one-ring neighborhood, having weighted the function values in relation to the distance between each neighbor, and because those distances are uniformly dissimilar in acquired \tdd{}\todoCitation{tdd{} is not regular}, maintaining a consistent filter window size is only accomplished by defining the geodesic disc, which exists on the manifold defined by the mesh. Therefore, as mentioned in Section~\ref{ch2sETBssGsssGD} and discussed in more detail in Chapter~\ref{ch4}, the weights may be calculated sector-wise, as if all sectors were on the same plane, greatly reducing the complexity of the entire procedure.
+The significance to our research is that each convolution of \fors{t} is comprised of calculations of the \wmfv{s} at the central point of a one-ring neighborhood, having weighted the function values in relation to the distance between each neighbor, and because those distances are uniformly dissimilar in acquired \tdd{}~\cite[p.~29]{Mara12}, maintaining a consistent filter window size is only accomplished by defining the geodesic disc, which exists on the manifold defined by the mesh. Therefore, as mentioned in Section~\ref{ch2sETBssGsssGD} and discussed in more detail in Chapter~\ref{ch4}, the weights may be calculated sector-wise, as if all sectors were on the same plane, greatly reducing the complexity of the entire procedure.
 
 %
 %
@@ -294,7 +293,7 @@ Figure~\ref{fig:neighborhoods} illustrates the differences among one-ring neighb
 %
 \section{\tdd}
 \label{ch2sTDD}
-The data upon which one convolves \fors{t} is called \tdd\todoCitation{\tdd{} name origin, BB82 from Mara12}. As described in Section~\ref{ch2sTDDssDM}, \tdd{} consists primarily of a single mesh $\bM$, which is composed of $\bP$, a set of points, and the set $\bT$, consisting of triangular faces, each to be covered in Sections~\ref{ch2sTDDssP} and~\ref{ch2sTDDssF} respectively. As discussed in Section~\ref{ch2sTDDssAVS3}, \tdd{} also comes in two distinct flavors depending on its origin: acquired or synthetic. The data can also include a texture map and other various types of information stored as scalar or vector fields, which is elaborated on in~\ref{ch2sTDDssFV}.
+The data upon which one convolves \fors{t} is called \tdd{}~\cite[p.~29]{Mara12}. As described in Section~\ref{ch2sTDDssDM}, \tdd{} consists primarily of a single mesh $\bM$, which is composed of $\bP$, a set of points, and the set $\bT$, consisting of triangular faces, each to be covered in Sections~\ref{ch2sTDDssP} and~\ref{ch2sTDDssF} respectively. As discussed in Section~\ref{ch2sTDDssAVS3}, \tdd{} also comes in two distinct flavors depending on its origin: acquired or synthetic. The data can also include a texture map and other various types of information stored as scalar or vector fields, which is elaborated on in~\ref{ch2sTDDssFV}.
 
 %
 %
@@ -302,7 +301,7 @@ The data upon which one convolves \fors{t} is called \tdd\todoCitation{\tdd{} na
 %
 \subsection{Points}
 \label{ch2sTDDssP}
-A point $\bp$ is the most primitive element of \tdd{}. ``Point'' is the abbreviated form of ``measuring point'', and is also known in other fields of study as a vertex, or a position vector $\bR{3}$\todoCitation{other names for a point}. A point is defined by the 3-dimensional Cartesian coordinates $x$, $y$, and $z$, and in \tdd{}, points are generally unique and not required to be in any particular order. In this thesis, a point is addressed using several different subscripts, depending on the context.
+A point $\bp$ is the most primitive element of \tdd{}. ``Point'' is the abbreviated form of ``measuring point'', and is also known in other fields of study as a vertex, or a position vector $\bR{3}$~\cite{Weisstein19l}. A point is defined by the 3-dimensional Cartesian coordinates $x$, $y$, and $z$, and in \tdd{}, points are generally unique and not required to be in any particular order. In this thesis, a point is addressed using several different subscripts, depending on the context.
 
 In this thesis, when referring to a point in $\bP$, $v$ is used as the globally unique index; the index with which we can define the set
 
@@ -407,7 +406,7 @@ In \tdd{}, a mesh $\bM$ is the digital representation of a discrete manifold emb
 
 with the set $\bP$ consisting of points, and the set $\bT$ consisting of triangular faces.
 
-Many 3D-scanners produce point clouds\todoCitation{3D-scanners produce point clouds}, which as the name suggests, are comprised solely of a set of points $\bP$, and do not provide the set $\bT$. However, it is possible, and necessary for the production of a mesh, to perform a point set triangulation\todoCitation{perform a point set triangulation} in order to connect $\bP$ into a set of triangle faces, enabling one to combine the two sets into a mesh~\cite[p.~26]{Mara12}. For example, a portion of our experiments use a random triangulation disc generator, as presented in Section~\ref{ch6sSTDDssRTD}, which performs the well-known Delaunay triangulation\todoCitation{Delaunay triangulation} in order to produce a mesh from a randomly generated point cloud.
+Many 3D-scanners produce point clouds, which as the name suggests, are comprised solely of a set of points $\bP$, and do not provide the set $\bT$. However, it is possible, and necessary for the production of a mesh, to perform a point set triangulation in order to connect $\bP$ into a set of triangle faces, enabling one to combine the two sets into a mesh~\cite[p.~26]{Mara12}. For example, a portion of our experiments use a random triangulation disc generator, as presented in Section~\ref{ch6sSTDDssRTD}, which performs the well-known Delaunay triangulation~\cite{Delaunay34} in order to produce a mesh from a randomly generated point cloud.
 %\todoResearch{add figure of point cloud to triangulation}
 
 %
@@ -455,7 +454,7 @@ The corpus of all \tdd{} exists in two flavors, acquired and synthetic data, wit
 
 Acquired \tdd{} is typically captured as a point cloud utilizing various methods, such as: LiDAR (Light Detection and Ranging), Structured Light, or Structure from Motion~\cite[p.~19]{Mara12}. Then the data is exported from software packages accompanying the 3D-scanners as either just a point cloud comprised of a simple set of points $\bP$, or optionally as a triangle mesh $\bM$, described by one or more scalar-fields. Acquired \tdd{} also often consists upwards of a million points and as many as twice that number of faces\footnote{Appendix~\ref{apdx1} presents an interesting trend concerning how the ratio of face counts to point counts approaches to two for increasing mesh sizes, which is somehow related to Euler's polyhedron formula.}. These exported meshes~\cite[p.~25]{Mara12} uniformly contain noise and may exhibit other complexities for analysis, such as: non-manifold points, multiple borders and holes in the surface, inverted face orientation, non-manifold edges, and agglutination or degenerate faces~\cite[p.~28-32]{Mara12}.
 
-Conversely, synthetic \tdd{} is artfully-crafted to avoid the complexities exhibited by acquired data. When modeling 3-dimensional objects, synthetic \tdd{} can require significantly less memory for storage, as simplifications can be made for large regular surfaces. For example, even the largest flat, rectangular surface can be modeled with only four points and two faces, whereas the acquired data methods require that the Nyquist–Shannon sampling theorem\todoCitation{Nyquist Shannon Theorem} be obeyed for the smallest detectable feature throughout the entire surface~\cite[p.~19]{Mara12}~\cite[p.~3]{Mara17}.
+Conversely, synthetic \tdd{} is artfully-crafted to avoid the complexities exhibited by acquired data. When modeling 3-dimensional objects, synthetic \tdd{} can require significantly less memory for storage, as simplifications can be made for large regular surfaces. For example, even the largest flat, rectangular surface can be modeled with only four points and two faces, whereas the acquired data methods require that the Nyquist–Shannon sampling theorem~\cite[p.~249-250]{Jaehne97} be obeyed for the smallest detectable feature throughout the entire surface~\cite[p.~19]{Mara12}~\cite[p.~3]{Mara17}.
 
 As presented in Section~\ref{ch6sSTDD}, for a portion of our experiments, we created another kind of synthetic \tdd{} which does not model a 3D-object. Instead, these synthetic-mesh generators produce different types of tessellations on arbitrarily large, planar surfaces, accompanied by a configurable scalar-field of function values.
 
@@ -499,9 +498,9 @@ In this section, limited topics regarding the design and analysis of algorithms 
 \label{ch2sPPssSCT}
 In a very general sense, when a computer executes a serial program, it proceeds one instruction at a time, sequentially in the order that it is written in the source code, and as required, reads from and writes to memory, which must then be reserved for it. Individually, these processes are called ``threads of execution'', or just ``\glspl{thread}'', and a single processing core can only process a single such thread at a time\footnote{This is not counting the limited application of parallel processing by exploiting the width of modern register arrays, in order to concurrently compute instructions at half or less precision.}.
 
-Modern processors, however, can perform fast context switching\todoCitation{context switching}, which means loading the memory and state of a new thread, among a multitude of self-contained threads, and executing it so rapidly, as to give the illusion of parallel processing; similar to the commonly-known phenomenon where individual frames of film, when viewed at a high enough frequency, create the illusion of moving pictures\todoCitation{frame rates of movies}.
+Modern processors, however, can perform fast context switching~\cite{Silberschatz10}, which means loading the memory and state of a new thread, among a multitude of self-contained threads, and executing it so rapidly, as to give the illusion of parallel processing; similar to the commonly-known phenomenon where individual frames of film, when viewed at a high enough frequency, create the illusion of moving pictures.
 
-Fast context switching has its limitations, as even at the modern frequency of 4GHz\todoCitation{cpu benchmarks} per core, a serial algorithm can take dozens of hours, or even days, to finish computing, when iterating many times over a large collections of data, as seen in Section~\ref{ch6sCWGsCT}, the portion of our experiments comparing the timing of the serial version and the parallel variant of \fors{t} algorithm.
+Fast context switching has its limitations, as even at the modern frequency of 4GHz~\cite{CPUBenchmark} per core, a serial algorithm can take dozens of hours, or even days, to finish computing, when iterating many times over a large collections of data, as seen in Section~\ref{ch6sCWGsCT}, the portion of our experiments comparing the timing of the serial version and the parallel variant of \fors{t} algorithm.
 
 Alternatively, a system which exhibits some kind of architecture for real concurrency may execute programs which can then ``spawn'' new threads, which are given their own unique context, and thus may be run simultaneously on individual processing cores; enabling real parallel processing. One such architecture is discussed in the next section.
 
@@ -511,19 +510,19 @@ Alternatively, a system which exhibits some kind of architecture for real concur
 %
 \subsection{SIMD - A Concurrency Architecture}
 \label{ch2sPPssSACA}
-All modern computers implement some form of parallelism, be it multi-core or multi-threaded processors, arrays of stream processors as found in GPUs, or the networks comprising supercomputers and data centers, and can therefore be classified by Flynn's Taxonomy of the different architectures of concurrency.\todoCitation{Flynn, 1966 doi:10.1109/TC.1972.5009071.}
+All modern computers implement some form of parallelism, be it multi-core or multi-threaded processors, arrays of stream processors as found in GPUs, or the networks comprising supercomputers and data centers, and can therefore be classified by Flynn's Taxonomy of the different architectures of concurrency~\cite{Flynn72}.
 
-Of the four classifications\footnote{\{SISD, SIMD, MISD, and MIMD\}} originally defined by Flynn, this thesis is primarily concerned with \glsreset{SIMD}\gls{SIMD}\footnote{or SIMT as is branded by NVIDIA.}\todoCitation{NVIDIA SIMT 4.1. SIMT Architecture} systems. As the name implies, the \gls{SIMD} classification is characterized by systems which are able to take a single instruction, otherwise known as a \gls{kernel}\todoCitation{CUDA, kernels}, and execute it simultaneously on multiple elements from a pool of data. In general, this is described as ``processing in parallel''.
+Of the four classifications\footnote{\{SISD, SIMD, MISD, and MIMD\}} originally defined by Flynn, this thesis is primarily concerned with \glsreset{SIMD}\gls{SIMD}\footnote{or SIMT as is branded by NVIDIA~\cite[p.~70-72]{CUDA18}.} systems. As the name implies, the \gls{SIMD} classification is characterized by systems which are able to take a single instruction, otherwise known as a \gls{kernel}~\cite[p.~8]{CUDA18}, and execute it simultaneously on multiple elements from a pool of data. In general, this is described as ``processing in parallel''.
 
 Figure~\ref{fig:simdArchitecture} illustrates a simplified impression of a system which employs SIMD architecture. The array of processors each receive the same kernel from a pool of instructions, then load a different portion of the data pool in order to process to combination in parallel.
 
 \begin{figure}[ht]
 \ffigbox
 	{\includegraphics[width=1.0\linewidth]{figures/tikz/simdArchitecture.pdf}}
-	{\caption[SIMD Architecture]{A simplified impression of a system characterized as SIMD by Flynn's Taxonomy of concurrent architecture. The array of processors each receive the same kernel from a pool of instructions, then load a different portion of the data pool in order to process the combination in parallel.}\label{fig:simdArchitecture}}
-\end{figure}\todoCitation{Flynn, 1966 doi:10.1109/TC.1972.5009071.}
+	{\caption[SIMD Architecture]{A simplified impression of a system characterized as SIMD by Flynn's Taxonomy of concurrent architecture~\cite{Flynn72}. The array of processors each receive the same kernel from a pool of instructions, then load a different portion of the data pool in order to process the combination in parallel.}\label{fig:simdArchitecture}}
+\end{figure}
 
-The motivation to implement software which utilizes the architecture of an \gls{SIMD} system is the speedup to be gained, which may be quantified as discussed in Section~\ref{ch2sPPssEAPA}, and stems from what is known as loop-level parallelism\todoCitation{loop level parallelism}, which is the modification of instructions which would otherwise be executed serially in a loop, to instead be computed simultaneously, in parallel, incurring only minor synchronization overhead. For example: any operation performed in linear algebra, such as the subtraction of two high-dimensional arrays, is thus made much more scalable in regards to the time required for the computation to complete, as vectors of larger and larger sizes are considered.
+The motivation to implement software which utilizes the architecture of an \gls{SIMD} system is the speedup to be gained, which may be quantified as discussed in Section~\ref{ch2sPPssEAPA}, and stems from what is known as loop-level parallelism, which is the modification of instructions which would otherwise be executed serially in a loop, to instead be computed simultaneously, in parallel, incurring only minor synchronization overhead. For example: any operation performed in linear algebra, such as the subtraction of two high-dimensional arrays, is thus made much more scalable in regards to the time required for the computation to complete, as vectors of larger and larger sizes are considered.
 
 With the proper programming strategy, using the proper frameworks, the model for parallel processing on \gls{SIMD} architecture can be extended to far more complex instructions, and indeed, a major portion of the research presented in this thesis is focused on implementing the software to convolve the complex algorithm for \Fors{t}, by simultaneously executing its various kernels of instructions on every point and one-ring neighborhood in a mesh, in order to fully utilize the parallel architecture of an SIMD system; specifically, commercially-available \glspl{GPGPU}, which are described in the next section.
 
@@ -533,9 +532,9 @@ With the proper programming strategy, using the proper frameworks, the model for
 %
 \subsection{GPGPU - General Use, Graphics Processing Unit}
 \label{ch2sPPssGPGPU}
-\glsreset{GPGPU}\gls{GPGPU} was coined by Mark Harris, the founder of GPGPU.org\todoCitation{Mark Harris, coined the term GPGPU}, and as the name implies, describes \glspl{GPU}, which was originally developed to exclusively perform graphics processing, but can now be utilized for general purposes by using the frameworks which are publicly available, for example OpenCL\todoCitation{OpenCL} and CUDA\todoCitation{CUDA}.
+\glsreset{GPGPU}\gls{GPGPU} was coined by Mark Harris, the founder of GPGPU.org~\cite{GPGPU19}, and as the name implies, describes \glspl{GPU}, which was originally developed to exclusively perform graphics processing, but can now be utilized for general purposes by using the frameworks which are publicly available, for example OpenCL~\cite{Khronos19} and CUDA~\cite{CUDA19}.
 
-Figure~\ref{fig:cpuvgpu} illustrates the principle difference between a \gls{CPU}, and a GPU. Because graphics rendering is mostly comprised of compute-intensive, but highly-parallel procedures, \glspl{GPU} have been designed with less focus on data flow control and more transistors devoted to data processing\footnote{mimicking the design of early supercomputers.}\todoCitation{LANG, footnote cray was a big GPU}. This diverges from the design of modern CPUs, which has devoted more chip space to processing at higher frequencies, while using large, multi-leveled caches of memory for the optimization of context switching\todoCitation{context switching}.
+Figure~\ref{fig:cpuvgpu} illustrates the principle difference between a \gls{CPU}, and a GPU. Because graphics rendering is mostly comprised of compute-intensive, but highly-parallel procedures, \glspl{GPU} have been designed with less focus on data flow control and more transistors devoted to data processing\footnote{mimicking the design of early supercomputers~\cite[p.7-9]{Lang17}. This diverges from the design of modern CPUs, which has devoted more chip space to processing at higher frequencies, while using large, multi-leveled caches of memory for the optimization of context switching~\cite{Silberschatz10}.
 
 \begin{figure}[ht]
 \ffigbox
@@ -555,7 +554,9 @@ Figure~\ref{fig:cpuvgpu} illustrates the principle difference between a \gls{CPU
 %As in edge lengths depend on the neighborhoods.
 
 \todoResearch{https://en.wikipedia.org/wiki/Loop-level\_parallelism}
-The concepts of control and data dependencies are not new ones, and can be dated back to the invention of multi-pass compilers\todoCitation{Data Dependencies and multi-pass compilers}. The field of study regarding the details is called dependence analysis and has far-reaching consequences from business management, to economics, as well as software optimization\todoCitation{dependence analysis}. In general, the basic concept behind both control and data dependencies is that some procedure A is said to be dependent on another procedure B, if A requires B to be executed first.
+The concepts of control and data dependencies are not new ones, and can be dated back to the invention of multi-pass compilers. The field of study regarding the details is called dependence analysis and has far-reaching consequences from business management, to economics, as well as software optimization. In general, the basic concept behind both control and data dependencies is that some procedure A is said to be dependent on another procedure B, if A requires B to be executed first.
+%\todoResearch{Data Dependencies and multi-pass compilers}
+%\todoResearch{dependence analysis}
 
 Figure~\ref{fig:simpleControlDependency} shows the ubiquitous if-then control structure as a simple example of a control dependency. It reads, ``if B is true, then do A''. In this case A is control dependent on B, because B must execute before it can be determined whether or not to execute A.
 
@@ -564,7 +565,7 @@ Figure~\ref{fig:simpleControlDependency} shows the ubiquitous if-then control st
 	{\caption[If-Then Control Dependency]{A simple example of control dependency using the if-then control structure, with each distinct operation colored in teal, and control dependency marked with an arrow.}\label{fig:simpleControlDependency}}
 \end{figure}
 
-In the literature\todoCitation{4 kinds of data dependence}, there exist four distinct kinds of data dependence. Given that a certain value of data is stored in memory at a definite location and requires a finite amount of time to be read into context in order to be utilized by an operation, the four distinctions of data dependence are:
+There exist four distinct kinds of data dependence. Given that a certain value of data is stored in memory at a definite location and requires a finite amount of time to be read into context in order to be utilized by an operation, the four distinctions of data dependence are:
 %
 \begin{itemize}
 	\item ``true dependence'', which is exhibited when one operation writes to a location in memory which is then later read from by another operation;
@@ -592,7 +593,8 @@ A proper understanding of all dependencies becomes even more crucial when design
 %
 \subsection{Program Correctness}
 \label{ch2sPPssPC}
-\Gls{programCorrectness}, which may otherwise be referred to as functional correctness, is defined by the field of theoretical computer science as existing only when, for each input given, a program produces the expected output\todoCitation{definition of program correctness}. In this section, we discuss the dangers inherent to asynchronous parallel processing, mentioning the concepts of critical sections, the mutex locking mechanism, and the explicit synchronization of threads.
+\Gls{programCorrectness}, which may otherwise be referred to as functional correctness, is defined by the field of theoretical computer science as existing only when, for each input given, a program produces the expected output. In this section, we discuss the dangers inherent to asynchronous parallel processing, mentioning the concepts of critical sections, the mutex locking mechanism, and the explicit synchronization of threads.
+%\todoCitation{definition of program correctness}
 
 %
 %
@@ -632,7 +634,7 @@ For an illustrative example, consider Algorithm~\ref{alg:critialSection}, the ve
 
 Unfortunately, the final result of the execution of function \textit{parallelSum} can not be accurately predicted, because the order of operations between each thread are not guaranteed due to what is known as a ``\gls{raceCondition}'' in the algorithm. Closer evaluation of line~\ref{algCritSec.danger} reveals the danger of the \gls{raceCondition} inherent to this \gls{criticalSection}.
 
-The high level code in line~\ref{algCritSec.danger} will be translated by a compiler into low level assembly instructions\todoCitation{LANG pg 25} written in Algorithm~\ref{alg:critialSectionLowLevel}, which are then executed in parallel by both threads.
+The high level code in line~\ref{algCritSec.danger} will be translated by a compiler into low level assembly instructions~\cite[p.~25]{Lang17} written in Algorithm~\ref{alg:critialSectionLowLevel}, which are then executed in parallel by both threads.
 
 \begin{algorithm}[ht]
 	\DontPrintSemicolon
@@ -666,7 +668,7 @@ While it is true that employing a mutex can be expensive to both compute time an
 %
 \subsubsection{Explicit Thread Synchronization}
 \label{ch2sPPssPCsssETS}
-Occasionally, in order to maintain the correctness of the overall program due to some dependence within the code, an algorithm is forced to block, waiting for all threads to complete their calculations, before finally continuing with its computations. This procedure is called, ``\gls{explicitSynchronization}'',\todoCitation{CUDA 3.2.5.5.3. Explicit Synchronization} and is expressed in the parallel algorithms presented in this thesis by a call to the subroutine \textit{synchronizeThreads}.
+Occasionally, in order to maintain the correctness of the overall program due to some dependence within the code, an algorithm is forced to block, waiting for all threads to complete their calculations, before finally continuing with its computations. This procedure is called, ``\gls{explicitSynchronization}''~\cite[p.~34]{CUDA18} and is expressed in the parallel algorithms presented in this thesis by a call to the subroutine \textit{synchronizeThreads}.
 
 Explicitly synchronizing threads can be very expensive, costing the overall efficiency of an algorithm greatly; easily reaching the level of billions of compute cycles.\todoResearch{get stats on thread synch}\todoReference{experiments about thread synch time costs}. Therefore, it is absolutely imperative that one minimizes its inclusion in the design of any parallel algorithm, especially within loops, avoiding it altogether whenever possible\todoResearch{avoiding thread synch}, and limiting its use to only the sections of an algorithm which signify the culmination of a large volume of parallel work.
 
@@ -701,7 +703,7 @@ which can then be used to define the three essential metrics:
 
 By applying these identities, we can determine that for all problem sizes, the \gls{speedup} obtained is always less than the number of processors used, because otherwise, $\mathit{T_s}(\hat{n})$ could not be the optimal sequential execution time. Also, \gls{efficiency} will always be less than one thus we can say that $\mathit{E}\cdot\rho$ processors contribute to the solution of the total procedure, while $(1-\mathit{E})\cdot\rho$ do not~\cite[p.~335]{Lang17}.
 
-Also important is the notion of an algorithm's ``\gls{degreeOfPar}'', which is the maximum number of operations that can be executed in parallel, a principle central to \gls{Amdahl}\todoCitation{Amdahl's Law}, which is defined as, when given a constant problem size $\hat{n}_{fixed}$, and an algorithm's \gls{degreeOfPar} $q$,
+Also important is the notion of an algorithm's ``\gls{degreeOfPar}'', which is the maximum number of operations that can be executed in parallel, a principle central to \gls{Amdahl}~\cite{Amdahl67} which is defined as, when given a constant problem size $\hat{n}_{fixed}$, and an algorithm's \gls{degreeOfPar} $q$,
 
 \begin{equation}
 	\lim_{\rho \to \infty} \mathit{S}(\hat{n}_{fixed},\,\rho) = 1 / q
