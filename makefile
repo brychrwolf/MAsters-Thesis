@@ -1,7 +1,7 @@
 STIME = date '+%s' > $@_time
 ETIME = read st < $@_time ; echo make recipe completed in $$((`date '+%s'`-$$st)) seconds ; rm -f $@_time
 
-all: svgs tikzs plots thesis
+all: svgs tikzs plots thesis presentation
 
 thesis: plots
 	$(STIME)
@@ -55,7 +55,15 @@ cleanPlots:
 
 
 
+.PHONY: presentation
+presentation:
+	cd presentation && $(MAKE)
+
+cleanPresentation:
+	cd presentation && make clean
+
+
 clean: cleanThesis
 
-cleanAll: cleanThesis cleanChapters cleanPlots cleanSvgs
+cleanAll: cleanThesis cleanChapters cleanPlots cleanSvgs cleanPresentation
 
