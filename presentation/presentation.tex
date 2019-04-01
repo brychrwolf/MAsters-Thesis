@@ -1,62 +1,193 @@
-\documentclass[a4paper, openany]{beamer}
+\documentclass[aspectratio=169]{beamer}
+\usepackage[utf8]{inputenc}
 \usepackage{graphicx}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage{fancybox}
+\usepackage[ruled,vlined]{algorithm2e}
+\usepackage{standalone}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows.meta}
+%\usepackage{enumitem}
+
+\usepackage{beamerthemesplit}
+\usetheme[compress]{Heidelberg}
+\definecolor{unirot}{rgb}{0.5976525,0,0}
+\usecolortheme[named=unirot]{structure}
+
 \title{GPGPU Accelerated Iterative Filtering of Scalar Fields on Discrete Manifolds}
 \author{Bryan Wolfford}
 
-\institute[*]{
+\institute[Uni HD]{
 	Universität Heidelberg\\
-	\smallskip
 	Interdisciplinary Center for Scientific Computing\\
-	\smallskip
-	Forensic Computational Geometry Laboratory
+	Forensic Computational Geometry Laboratory\\
+	\color{unirot}{wolfford@stud.uni-heidelberg.de}
 }
 \date{\today}
 
-\usetheme{Berlin}
-\usecolortheme{beaver}
-\usefonttheme{serif}
-%\setbeamertemplate{background canvas}{\includegraphics[width=
-%\paperwidth,height=\paperheight]{Filename}}
+\AtBeginSection[]{
+	\begin{frame}<beamer> 
+		\frametitle{Outline}
+		% show TOC and highlight current section
+		\tableofcontents[currentsection]  
+	\end{frame}
+}
+
+%\AtBeginSubsection[]{
+%	\begin{frame}<beamer> 
+%		\frametitle{Outline}
+		% show TOC and highlight current section
+%		\tableofcontents[currentsection,currentsubsection]  
+%	\end{frame}
+%}
 
 \begin{document}
-\maketitle
+\input{../myCommands.tex}
+\frame[plain]{\titlepage}
+\frame{\frametitle{Outline}\tableofcontents}
 
-\section{Introduction}
-\begin{frame}
-\frametitle{Structure}
-\framesubtitle{Subtitle}
-\end{frame}
 
-\begin{frame}
-\frametitle{An Image}
-\includegraphics[width=\textwidth]{example-image-16x9.png}
-\end{frame}
 
-\begin{frame}
-\frametitle{Columns}
-\begin{columns}
-\column{.5\textwidth}
-Some text.
-\column{.5\textwidth}
-Some more text.
-\end{columns}
-\end{frame}
 
-\begin{frame}
-\frametitle{Columns 2}
-\begin{columns}
-\begin{column}{.5\textwidth}
-Some text.
-\end{column}
-\begin{column}{.5\textwidth}
-Some more text.
-\end{column}
-\end{columns}
-\end{frame}
+%================================================
+%================================================
+\section{Introduction \& Motivation}
 
-\section{Background}
-\section{Fast One Ring Smoothing}
-\section{Parallel Variant}
+%------------------------------------------------
+\frame{
+\frametitle{Introduction}
+
+}
+
+%------------------------------------------------
+\frame{
+\frametitle{One-Ring Neighborhoods in Regular and Irregular Meshes}
+\includegraphics[width=1.0\linewidth]{../figures/neighborhoods.png}
+}
+
+%------------------------------------------------
+\frame{
+\frametitle{SIMD Architecture}
+\includegraphics[width=1.0\linewidth]{../figures/tikz/simdArchitecture.pdf}
+}
+
+%------------------------------------------------
+\frame{
+\frametitle{CPU vs GPU Construction}
+\includegraphics[width=1.0\linewidth]{../figures/cpuvgpu.png}
+}
+
+
+
+
+%================================================
+%================================================
+\section[FORS]{Fast One-Ring Smoothing}
+
+
+%================================================
+\subsection[Foundation]{Mathematical Foundation}
+
+%------------------------------------------------
+\frame{
+\frametitle{A One-Ring Neighborhood and its Geodesic Disc}
+\includegraphics[width=1.0\linewidth]{../figures/geodesicDisc.png}
+}
+
+%------------------------------------------------
+\frame{
+\frametitle{An Enhanced View of a Circle Sector}
+\includegraphics[width=0.5\linewidth]{../figures/anglesAndCenterOfGravity.png}
+}
+
+%------------------------------------------------
+\frame{
+\frametitle{Interpolation of Function Values toward the Center of Gravity}
+\includegraphics[width=1.0\linewidth]{../figures/interpolatedFunctionValues.png}
+}
+
+%------------------------------------------------
+\frame{
+\frametitle{Weighted Mean Function Value $f'_v$at $\bp_v$}
+\includegraphics[width=1.0\linewidth]{../figures/funcValVolumes.png}
+}
+
+
+%================================================
+\subsection[Serial]{Serial Algorithm}
+
+%------------------------------------------------
+\frame{
+\frametitle{Union Operations as Performed in Build Neighborhoods}
+\includestandalone[width=\textwidth]{../figures/tikz/unionsOfSiampleBuildNeighborhoods}
+}
+
+
+%================================================
+\subsection[Parallel]{Parallel Algorithm}
+
+%------------------------------------------------
+\frame{
+\frametitle{Parallel Algorithm}
+
+}
+
+
+
+
+%================================================
+%================================================
 \section{Experiments \& Evaluation}
-\section{Conclusion}
+
+
+%================================================
+\subsection{Filter Response}
+
+%------------------------------------------------
+\frame{
+\frametitle{Experiment 1}
+
+}
+
+
+%================================================
+\subsection{Parallel Algorithm}
+
+%------------------------------------------------
+\frame{
+\frametitle{Experiment 1}
+
+}
+
+
+
+
+%================================================
+%================================================
+\section[Conclusion]{Conclusion \& Outlook}
+
+%------------------------------------------------
+\frame{
+\frametitle{Conclusion}
+
+}
+
+%------------------------------------------------
+\frame{
+\frametitle{Outlook}
+
+}
+
+%------------------------------------------------
+\frame{
+\frametitle{Questions}
+
+\begin{figure}
+	\includegraphics[width=.8\textwidth]{questions} 
+\end{figure}
+\vspace*{-3.3cm}\begin{center}\begin{LARGE}\textbf{Questions}\end{LARGE}\end{center}
+\vspace*{2cm}
+}
+
 \end{document}
