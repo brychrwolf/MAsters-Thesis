@@ -1,10 +1,10 @@
-\documentclass[aspectratio=169]{beamer}
+\documentclass[aspectratio=169,t]{beamer}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{color}
 \usepackage{graphicx}
 \usepackage{fancybox}
-\usepackage[ruled,vlined]{algorithm2e}
+\usepackage[vlined]{algorithm2e}
 \usepackage{standalone}
 \usepackage{tikz}
 \usetikzlibrary{shapes,arrows.meta}
@@ -27,23 +27,24 @@
 \date{\today}
 
 \AtBeginSection[]{
-	\begin{frame}<beamer> 
+	\begin{frame}<beamer>
 		\frametitle{Outline}
 		% show TOC and highlight current section
-		\tableofcontents[currentsection]  
+		\tableofcontents[currentsection]
 	\end{frame}
 }
 
 %\AtBeginSubsection[]{
-%	\begin{frame}<beamer> 
+%	\begin{frame}<beamer>
 %		\frametitle{Outline}
 		% show TOC and highlight current section
-%		\tableofcontents[currentsection,currentsubsection]  
+%		\tableofcontents[currentsection,currentsubsection]
 %	\end{frame}
 %}
 
 \begin{document}
 \input{../myCommands.tex}
+\setlength{\intextsep}{0pt}
 \frame[plain]{\titlepage}
 \frame{\frametitle{Outline}\tableofcontents}
 
@@ -123,6 +124,174 @@
 \includestandalone[width=\textwidth]{../figures/tikz/unionsOfSimpleBuildNeighborhoods}
 }
 
+%------------------------------------------------
+\frame{
+\frametitle{Serial Algorithm for Building Neighborhoods}
+\begin{algorithm}[H]
+	\SetAlgoSkip{}
+	\DontPrintSemicolon
+	\SetCommentSty{small}
+	\SetKwFor{For}{for}{:}{}
+	\SetKwProg{Func}{Function}{}{}
+	\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
+
+	\only<1>{
+	\begin{block}{Part (1 of 2)}
+		\Input{the set of all triangular faces $\bT$}
+		\Output{the family of sets of discovered neighborhoods $\bN$}
+
+		\bigskip
+	\nl	\Func{serialBuildNeighborhoods($\bT$)}{\label{sbn1}
+	\nl		\For(\tcc*[f]{$\bt = \left \{\bp_a, \bp_b, \bp_c\right \}$}){$\bt \in \bT$}{
+	\nl			\ProgSty{union($\bN$, $\bp_a$, $\bp_b$, $\bp_c$)}\;
+	\nl			\ProgSty{union($\bN$, $\bp_b$, $\bp_a$, $\bp_c$)}\;
+	\nl			\ProgSty{union($\bN$, $\bp_c$, $\bp_a$, $\bp_b$)}\;
+			}
+		}
+	\end{block}
+	}
+
+	\only<2>{
+	\begin{block}{Part (2 of 2)}
+	\nl	\Func{union($\bN$, $a$, $b$, $c$)}{
+	\nl		$\bN_a \leftarrow \bN_a \cup \{b,\,c\}$\;
+		}
+	\end{block}
+	}
+\end{algorithm}
+}
+
+%------------------------------------------------
+\frame{
+\frametitle{Serial Algorithm for Calculating Edge Lengths}
+\begin{algorithm}[H]
+	\SetAlgoSkip{}
+	\DontPrintSemicolon
+	\SetCommentSty{small}
+	\SetKwFor{For}{for}{:}{}
+	\SetKwProg{Func}{Function}{}{}
+	\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
+
+	\only<1>{
+	\begin{block}{Part (1 of 1)}
+		\Input{the set of all points $\bP$, \\
+			the family of sets of discovered neighborhoods $\bN$}
+		\Output{the set of pre-calculated edge lengths $\bE$, \\
+			the global minimum edge length $\gelm$}
+
+		\bigskip
+	\nl	\Func{serialCalculateEdgeLengths($\bP$, $\bN$)}{
+	\nl		\For{$\bp_v \in \bP$}{
+	\nl			\For{$\bp_i \in \bN_v$}{
+					\linespread{1.5}\selectfont
+	\nl				$\bE_{\sv{i}} \leftarrow |\bp_i - \bp_v|$\tcc*[r]{This is $\ellstar$ as in Eq:~\ref{eq:localMinimumEdgeLength}}
+	\nl				$\gelm \leftarrow \min\left \{\gelm,\,\bE_{\sv{i}}\right \}$\tcc*[r]{Eq:~\ref{eq:globalMinimumEdgeLength}}
+				}
+			}
+		}
+	\end{block}
+	}
+\end{algorithm}
+}
+
+%------------------------------------------------
+\frame{
+\frametitle{Serial Algorithm for Convolving the Filter}
+\begin{algorithm}[H]
+	\SetAlgoSkip{}
+	\DontPrintSemicolon
+	\SetCommentSty{small}
+	\SetKwFor{For}{for}{:}{}
+	\SetKwProg{Func}{Function}{}{}
+	\SetKwProg{Cont}{}{}{}
+	\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
+
+	\only<1>{
+	\begin{block}{Part (1 of 4)}
+		\Input{the set of all points $\bP$, \\
+			the family of sets of discovered neighborhoods $\bN$, \\
+			the set of pre-calculated edge lengths $\bE$, \\
+			the global minimum edge length $\gelm$, \\
+			the set of function values $\bF$, \\
+			the user-defined number of convolutions $\tau$}
+		\Output{the set of one-ring \wmfv{s} $\bF'$}
+
+		\bigskip
+		\linespread{1}\selectfont
+	\nl	\Func{serialConvolveFilter($\bP$, $\bN$, $\bE$, $\gelm$, $\bF$, $\tau$)}{
+			\emph{(Continued\ldots)}
+		}
+	\end{block}
+	}
+
+	\only<2>{
+	\setcounter{AlgoLine}{0}
+	\begin{block}{Part (2 of 4)}
+	\nl	\Func{serialConvolveFilter($\bP$, $\bN$, $\bE$, $\gelm$, $\bF$, $\tau$)}{
+	\nl		\For{$t\leftarrow 1\;\KwTo\;\tau$}{
+	\nl			\For{$\bp_v \in \bP$}{
+	\nl				\For{$\bp_i \in \bN_v$}{
+						\linespread{1.5}\selectfont
+	\nl					$\kern-0.5pt\alpha \leftarrow cos^{-1}$
+						\begin{Large}
+							$\kern-6pt\left (\frac{\bE_c^2\,+\,\bE_b^2\,-\,\bE_a^2}{2\,\cdot\,\bE_c\,\cdot\,\bE_b}\right )$\tcc*[r]{Eq:~\ref{eq:alphaFromEdgeLengths}}
+						\end{Large}\label{algSCFalpha}
+						\linespread{1.2}\selectfont
+	\nl					$\kern0.00pt\beta \leftarrow (\pi - \alpha)\mathbin{/}2$\tcc*[r]{Eq:~\ref{eq:betaFromHalfAlpha}}\label{algSCFbeta}
+	\nl					$\kern-1.5ptA \leftarrow \Big(\gelm\,\Big)^2\kern-4pt\cdot\alpha\mathbin{/}2$\tcc*[r]{Eq:~\ref{eq:circularSectorArea}}\label{algSCFarea}
+					}
+				}
+			}
+		}
+	\end{block}
+	}
+	\only<3>{
+	\setcounter{AlgoLine}{0}
+	\begin{block}{Part (3 of 4)}
+		\Cont{}{
+			\vspace*{-1\baselineskip}
+			\Cont{}{
+				\vspace*{-1\baselineskip}
+				\Cont{}{
+					\vspace*{-1\baselineskip}
+					\Cont{}{
+	\nl					$\kern1.00pt\check{\ell} \leftarrow \big(4\cdot\gelm\cdot\sin(\alpha\mathbin{/}2)\big)\mathbin{/}3\,\alpha$\tcc*[r]{Eq:~\ref{eq:distToCoG}\enspace\footnotemark{}}\label{algSCFcog}
+	\nl					$\kern1.00pt\zeta \leftarrow \gelm\mathbin{/}\sin(\beta)$\tcc*[r]{Eq:~\ref{eq:zeta}}\label{algSCFzeta}
+	\nl					\For{$j \in {1,2}$}{\label{algSCFjloop}
+	\nl						$\tilde{\ell}_j \leftarrow \zeta\mathbin{/}\bE_j$\tcc*[r]{Eq:~\ref{eq:distanceIForInterpolation},~\ref{eq:distanceIp1ForInterpolation}}
+	\nl						$f'_j \leftarrow f_0\cdot(1 - \tilde{\ell}_j) + f_j\cdot\tilde{\ell}_j$\tcc*[r]{Eq:~\ref{eq:interpolatedFi},~\ref{eq:interpolatedFip1}}
+						}
+	\nl					$\check{f} \leftarrow f_0\cdot(1 - \check{\ell}) + \big((f'_1 + f'_2)\cdot\check{\ell}\big)\mathbin{/}2$\tcc*[r]{Eq:~\ref{eq:weightedMeanAtCoGatSector}}\label{algSCFcheckf}
+					}
+				}
+			}
+		}
+	\end{block}
+	}
+	\only<4>{
+	\setcounter{AlgoLine}{0}
+	\begin{block}{Part (4 of 4)}
+		\Cont{}{
+			\vspace*{-1\baselineskip}
+			\Cont{}{
+				\vspace*{-1\baselineskip}
+				\Cont{}{
+					\vspace*{-1\baselineskip}
+					\Cont{}{
+	\nl					$\kern-2.0pt\tilde{f}_v \leftarrow \tilde{f}_v + A\cdot\check{f}$\tcc*[r]{Eq:~\ref{eq:meanFuncValAtPv}}\label{algSCFtildef}
+	\nl					$\kern-4.0pt\tilde{A}_v \leftarrow \tilde{A}_v + A$\tcc*[r]{Eq:~\ref{eq:meanFuncValAtPv}}\label{algSCFtildeA}
+					}
+	\nl				$f'_v \leftarrow \tilde{f}_v\mathbin{/}\tilde{A}_v$\tcc*[r]{Eq:~\ref{eq:meanFuncValAtPv}}\label{algSCFfprimev}
+				}
+	\nl		$\bF' \leftarrow \left \{f'_1,\ldots,\,f'_{|\bP|}\right \}$\;\label{algSCF2ndlastLine}
+	\nl 	$\bF \leftarrow \bF'$\tcc*{smooth newest values every convolution}\label{algSCFlastLine}
+			}
+		}
+	\end{block}
+	}
+\end{algorithm}
+}
+
 
 %================================================
 \subsection[Parallel]{Parallel Algorithm}
@@ -184,7 +353,7 @@
 \frametitle{Questions}
 
 \begin{figure}
-	\includegraphics[width=.8\textwidth]{questions} 
+	\includegraphics[width=.8\textwidth]{questions}
 \end{figure}
 \vspace*{-3.3cm}\begin{center}\begin{LARGE}\textbf{Questions}\end{LARGE}\end{center}
 \vspace*{2cm}
