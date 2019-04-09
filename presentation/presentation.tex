@@ -26,13 +26,13 @@
 }
 \date{\today}
 
-\AtBeginSection[]{
-	\begin{frame}<beamer>
-		\frametitle{Outline}
+%\AtBeginSection[]{
+%	\begin{frame}<beamer>
+%		\frametitle{Outline}
 		% show TOC and highlight current section
-		\tableofcontents[currentsection]
-	\end{frame}
-}
+%		\tableofcontents[currentsection]
+%	\end{frame}
+%}
 
 %\AtBeginSubsection[]{
 %	\begin{frame}<beamer>
@@ -53,30 +53,64 @@
 
 %================================================
 %================================================
-\section{Introduction \& Motivation}
+\section{Motivation \& Introduction}
 
 %------------------------------------------------
-\frame{
-\frametitle{Introduction}
+\frame{\frametitle{Motivation}
+	\begin{itemize}
+		\item Increasing demand for high-definition \tdd{}
+		\begin{itemize}
+			\item Industrial quality scanning~\cite{ILATO14}
+			\item Fuzzy borders on hyroglyphs
+			\item OCR
+		\end{itemize}
+
+		\item Danger to physical archives
+		\begin{itemize}
+			\item 2018 Brazilian museum fire destroyed 20 million artifacts~\cite{Andreoni18}
+		\end{itemize}
+	\end{itemize}
+
+
+%\section{Motivation}
+%3D-Data is important to many fields
+From industrial quality scanning~\cite{ILATO14}, to computerized analysis of documents and artifacts within the Digital Humanities~\cite{Bogacz15}, the demand for high-definition \tdd{} is only increasing. And in light of recent tragedies befalling global physical archives, like the museum fire which destroyed Brazil's oldest museum and its 20 million artifacts~\cite{Andreoni18}, or the numerous war zones occupying archaeologically important sites, 3D-scanning will continue to increase in importance.
+
+%3D-Data Noises in data, so must still process
+However, raw \tdd{} is typically not suitable for analysis~\cite[p.~25-32]{Mara12}, so processing and pre-processing with a smoothing filter becomes necessary. In dense, high-resolution meshes, for example, one can see noise propagating as jagged outlines in segment boundaries of connected components when visualizing the output of filters designed for analysis, like the Multi-Scale Integral Invariants filter (MSII)~\cite[s.~3.2]{Mara17}.
+
+%processing is difficult
+One major complication slowing the development of filters for \tdd{} has been that the window size of any filter must remain static for the duration of its convolution, in order for the output response to be mapped correctly back onto the input field~\cite[p.~106-112]{Jaehne97}. While it is trivial to define a static-sized filter for convolving regular meshes like raster images, it is a complex and complicated task to create the same for convolving acquired \tdd{}, whose one-ring neighborhoods are subsets of non-planar meshes embedded in $\bR{3}$, uniformly irregular, with completely arbitrary shapes, sizes, and counts of members~\cite[p.~29]{Mara12}~\cite[s.~3.2]{Mara17}.
+
+%3D-Data is big. serial is slow
+Another problem which arises, is that with high-resolution 3D-scanning, the data output is often comprised of millions, or tens of millions, of points per scanned item and features several hundred points per mm$^2$~\cite[25,144]{Mara17}~\cite[4]{ILATO14}. At that scale, serial algorithms processing that data can no longer be included in the regular workflow of a scientist analyzing the artifacts, because each operation can easily take hours or days to complete.
+
+
+%gpgpus are cheap, so do the thing
+Fortunately, with the introduction of GPGPUs to the commercial market, individual research groups now have the opportunity to exploit the parallel processing power of SIMD systems, without needing access to an institutional supercomputer. Therefore, the motivation for designing a smoothing filter, which can efficiently convolve over large, irregular, acquired \tdd{} by utilizing commercially available GPGPUs, was realized. Thus came \Fors{t}, and the research presented in this thesis.
+}
+
+%------------------------------------------------
+\frame{\frametitle{Introduction}
 
 }
 
 %------------------------------------------------
-\frame{
-\frametitle{One-Ring Neighborhoods in Regular and Irregular Meshes}
-\includegraphics[width=1.0\linewidth]{../figures/neighborhoods.png}
+\frame{\frametitle{SIMD Architecture}
+	\includegraphics[width=1.0\linewidth]{../figures/tikz/simdArchitecture.pdf}
+	GPUs, Supercomputers, Computer Pools %Name examples like the cray, and pool in this building
 }
 
 %------------------------------------------------
-\frame{
-\frametitle{SIMD Architecture}
-\includegraphics[width=1.0\linewidth]{../figures/tikz/simdArchitecture.pdf}
+\frame{\frametitle{CPU vs GPU Construction}
+	\includegraphics[width=1.0\linewidth]{../figures/cpuvgpu.png}
 }
 
 %------------------------------------------------
-\frame{
-\frametitle{CPU vs GPU Construction}
-\includegraphics[width=1.0\linewidth]{../figures/cpuvgpu.png}
+\frame{\frametitle{One-Ring Neighborhoods in Regular and Irregular Meshes}
+	\includegraphics[width=1.0\linewidth]{../figures/neighborhoods_presentation.png}
+	One-ring neighborhoods in (a) a regular square mesh, as in pixels of a digital image (b) a regular triangle mesh, as in a hexagonal tessellation (c) an irregular triangle mesh, typical of acquired \tdd{}.
+
 }
 
 
@@ -84,34 +118,30 @@
 
 %================================================
 %================================================
-\section[FORS]{Fast One-Ring Smoothing}
+\section[Fast One-Ring Smoothing]{Fast One-Ring Smoothing}
 
 
 %================================================
 \subsection[Foundation]{Mathematical Foundation}
 
 %------------------------------------------------
-\frame{
-\frametitle{A One-Ring Neighborhood and its Geodesic Disc}
-\includegraphics[width=1.0\linewidth]{../figures/geodesicDisc.png}
+\frame{\frametitle{A One-Ring Neighborhood and its Geodesic Disc}
+	\includegraphics[width=1.0\linewidth]{../figures/geodesicDisc_presentation.png}
 }
 
 %------------------------------------------------
-\frame{
-\frametitle{An Enhanced View of a Circle Sector}
-\includegraphics[width=0.5\linewidth]{../figures/anglesAndCenterOfGravity.png}
+\frame{\frametitle{An Enhanced View of a Circle Sector}
+	\includegraphics[width=0.5\linewidth]{../figures/anglesAndCenterOfGravity_presentation.png}
 }
 
 %------------------------------------------------
-\frame{
-\frametitle{Interpolation of Function Values toward the Center of Gravity}
-\includegraphics[width=1.0\linewidth]{../figures/interpolatedFunctionValues.png}
+\frame{\frametitle{Interpolation of Function Values toward the Center of Gravity}
+	\includegraphics[width=1.0\linewidth]{../figures/interpolatedFunctionValues.png}
 }
 
 %------------------------------------------------
-\frame{
-\frametitle{Weighted Mean Function Value $f'_v$at $\bp_v$}
-\includegraphics[width=1.0\linewidth]{../figures/funcValVolumes.png}
+\frame{\frametitle{Weighted Mean Function Value $f'_v$at $\bp_v$}
+	\includegraphics[width=1.0\linewidth]{../figures/funcValVolumes.png}
 }
 
 
@@ -119,14 +149,12 @@
 \subsection[Serial]{Serial Algorithm}
 
 %------------------------------------------------
-\frame{
-\frametitle{Union Operations as Performed in Build Neighborhoods}
-\includestandalone[width=\textwidth]{../figures/tikz/unionsOfSimpleBuildNeighborhoods}
+\frame{\frametitle{Union Operations as Performed in Build Neighborhoods}
+	\includestandalone[width=\textwidth]{../figures/tikz/unionsOfSimpleBuildNeighborhoods}
 }
 
 %------------------------------------------------
-\frame{
-\frametitle{Serial Algorithm for Building Neighborhoods}
+\frame{\frametitle{Serial Algorithm for Building Neighborhoods}
 \begin{algorithm}[H]
 	\SetAlgoSkip{}
 	\DontPrintSemicolon
@@ -162,8 +190,7 @@
 }
 
 %------------------------------------------------
-\frame{
-\frametitle{Serial Algorithm for Calculating Edge Lengths}
+\frame{\frametitle{Serial Algorithm for Calculating Edge Lengths}
 \begin{algorithm}[H]
 	\SetAlgoSkip{}
 	\DontPrintSemicolon
@@ -195,8 +222,7 @@
 }
 
 %------------------------------------------------
-\frame{
-\frametitle{Serial Algorithm for Convolving the Filter}
+\frame{\frametitle{Serial Algorithm for Convolving the Filter}
 \begin{algorithm}[H]
 	\SetAlgoSkip{}
 	\DontPrintSemicolon
@@ -297,9 +323,7 @@
 \subsection[Parallel]{Parallel Algorithm}
 
 %------------------------------------------------
-\frame{
-\frametitle{Parallel Algorithm}
-
+\frame{\frametitle{Parallel Algorithm}
 }
 
 
@@ -324,11 +348,34 @@
 \subsection{Parallel Algorithm}
 
 %------------------------------------------------
-\frame{
-\frametitle{Experiment 1}
+\frame{\frametitle{Evaluation and Analysis of Parallel Algorithms}
 
+\begin{align}
+	\mathit{T_s}(\hat{n}) &= \text{The optimal sequential execution time} \\
+	\mathit{T_{\rho}}(\hat{n},\,\rho) &= \text{Parallel runtime}
+	\label{eq:timings}
+\end{align}
+
+which can then be used to define the three essential metrics:
+
+\begin{align}
+	\text{Speedup:}\quad&\mathit{S}(\hat{n},\,\rho) = \frac{\mathit{T_s}(\hat{n})}{\mathit{T_{\rho}}(\hat{n},\,\rho)} \\
+	\text{Costs}:\quad&\mathit{C}(\hat{n},\,\rho) =\rho\cdot\mathit{T_{\rho}}(\hat{n},\,\rho) \\
+	\text{Efficiency}:\quad&\mathit{E}(\hat{n},\,\rho) = \frac{\mathit{T_s}(\hat{n})}{\mathit{C}(\hat{n},\,\rho)} = \frac{\mathit{S}(\hat{n},\,\rho)}{\rho}
+	\label{eq:essentialMetrics}
+\end{align}
 }
 
+%------------------------------------------------
+\frame{\frametitle{Amdahl's law and the Degree of Parallelism}
+Also important is the notion of an algorithm's ``degree of parallelism'', which is the maximum number of operations that can be executed in parallel, a principle central to Amdahl's law~\cite{Amdahl67} which is defined as, when given a constant problem size $\hat{n}_{fixed}$, and an algorithm's degree of parallelism $q$,
+
+\begin{equation}
+	\lim_{\rho \to \infty} \mathit{S}(\hat{n}_{fixed},\,\rho) = 1 / q
+\end{equation}
+
+This leads to the conclusion that one can not simply add more processors in order to gain appreciable speedup, but instead that relies heavily on processor counts which grow in relation to problem sizes, and the degree of parallelism, which itself relies on the underlying nature of the serial algorithm and the artful design of the parallel algorithm.
+}
 
 
 
@@ -349,14 +396,15 @@
 }
 
 %------------------------------------------------
-\frame{
-\frametitle{Questions}
-
-\begin{figure}
+\frame{\frametitle{Questions}
 	\includegraphics[width=.8\textwidth]{questions}
-\end{figure}
-\vspace*{-3.3cm}\begin{center}\begin{LARGE}\textbf{Questions}\end{LARGE}\end{center}
-\vspace*{2cm}
+	\vspace*{-3.3cm}
+	\begin{center}
+		\begin{LARGE}
+			\textbf{Questions}
+		\end{LARGE}
+	\end{center}
+	\vspace*{2cm}
 }
 
 \end{document}
