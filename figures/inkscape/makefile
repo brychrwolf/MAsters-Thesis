@@ -8,16 +8,25 @@ SVGS_OUTPUTS =  ../geodesicDisc.png \
 				../interpolatedFunctionValues.png \
 				../definePositionVector.png
 
+SVGS_OUTPUTS_PRESENTATION = \
+				../geodesicDisc_presentation.png \
+				../anglesAndCenterOfGravity_presentation.png \
+				../neighborhoods_presentation.png
 
 
 all: $(SVGS_OUTPUTS)
+
+presentation: ${SVGS_OUTPUTS_PRESENTATION}
 
 ../%.png: %.svg
 	inkscape -f $< -e $@
 
 
 
-clean: cleanSvgs
+clean: cleanSvgs cleanSvgsPresentation
 
 cleanSvgs:
 	rm -f $(SVGS_OUTPUTS)
+
+cleanPresentation:
+	rm -f $(SVGS_OUTPUTS_PRESENTATION)

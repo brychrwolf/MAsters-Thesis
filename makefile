@@ -57,9 +57,11 @@ cleanPlots:
 
 .PHONY: presentation
 presentation:
+	cd figures/inkscape && $(MAKE) presentation
 	cd presentation && $(MAKE)
 
 cleanPresentation:
+	cd figures/inkscape && $(MAKE) cleanPresentation
 	cd presentation && make clean
 
 
