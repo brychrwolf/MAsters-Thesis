@@ -8,6 +8,7 @@
 \usepackage{standalone}
 \usepackage{tikz}
 \usetikzlibrary{shapes,arrows.meta}
+\usepackage{anyfontsize}
 %\usepackage{enumitem}
 
 \usepackage{beamerthemesplit}
@@ -268,7 +269,7 @@
 	\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
 
 	\only<1>{
-	\begin{block}{Part (1 of 1)}
+	\begin{block}{}%Part (1 of 1)}
 		\Input{the set of all points $\bP$, \\
 			the set of discovered neighborhoods $\bN$}
 		\Output{the set of pre-calculated edge lengths $\bE$, \\
@@ -287,6 +288,63 @@
 	\end{block}
 	}
 \end{algorithm}
+}
+%------------------------------------------------
+\frame{\frametitle{Serial Algorithm for Convolving the Filter}
+
+{\fontsize{3}{3.3}\selectfont
+%\begin{minipage}[t]{0.5\textwidth}
+\begin{algorithm}[H]
+	\DontPrintSemicolon
+	\SetCommentSty{small}
+	\SetKwFor{For}{for}{:}{}
+	\SetKwProg{Func}{Function}{}{}
+	\SetKwProg{Cont}{}{}{}
+	\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
+
+	\begin{block}{}
+		\Input{the set of all points $\bP$, \\
+			the set of discovered neighborhoods $\bN$, \\
+			the set of pre-calculated edge lengths $\bE$, \\
+			the minimum edge length of the mesh $\gelm$, \\
+			the set of function values $\bF$, \\
+			the user-defined number of convolutions $\tau$}
+		\Output{the set of one-ring \wmfv{s} $\bF'$}
+
+		\bigskip
+		%\linespread{1}\selectfont
+	\nl	\Func{serialConvolveFilter($\bP$, $\bN$, $\bE$, $\gelm$, $\bF$, $\tau$)}{
+	\nl		\For{$t\leftarrow 1\;\KwTo\;\tau$}{
+	\nl			\For{$\bp_v \in \bP$}{
+	\nl				\For{$\bp_i \in \bN_v$}{
+						\linespread{1.5}\selectfont
+	\nl					$\kern-0.5pt\alpha \leftarrow cos^{-1}$
+						%\begin{Large}
+							$\kern-6pt\left (\frac{\bE_c^2\,+\,\bE_b^2\,-\,\bE_a^2}{2\,\cdot\,\bE_c\,\cdot\,\bE_b}\right )$\;
+						%\end{Large}
+						\linespread{1.2}\selectfont
+	\nl					$\kern0.00pt\beta \leftarrow (\pi - \alpha)\mathbin{/}2$\;
+	\nl					$\kern-1.5ptA \leftarrow \Big(\gelm\,\Big)^2\kern-4pt\cdot\alpha\mathbin{/}2$\;
+	\nl					$\kern1.00pt\check{\ell} \leftarrow \big(4\cdot\gelm\cdot\sin(\alpha\mathbin{/}2)\big)\mathbin{/}3\,\alpha$\;
+	\nl					$\kern1.00pt\zeta \leftarrow \gelm\mathbin{/}\sin(\beta)$\;
+	\nl					\For{$j \in {1,2}$}{\label{algSCFjloop}
+	\nl						$\tilde{\ell}_j \leftarrow \zeta\mathbin{/}\bE_j$\;
+	\nl						$f'_j \leftarrow f_0\cdot(1 - \tilde{\ell}_j) + f_j\cdot\tilde{\ell}_j$\;
+						}
+	\nl					$\check{f} \leftarrow f_0\cdot(1 - \check{\ell}) + \big((f'_1 + f'_2)\cdot\check{\ell}\big)\mathbin{/}2$\;
+	\nl					$\kern-2.0pt\tilde{f}_v \leftarrow \tilde{f}_v + A\cdot\check{f}$\;
+	\nl					$\kern-4.0pt\tilde{A}_v \leftarrow \tilde{A}_v + A$\;
+					}
+	\nl				$f'_v \leftarrow \tilde{f}_v\mathbin{/}\tilde{A}_v$\;
+				}
+	\nl		$\bF' \leftarrow \left \{f'_1,\ldots,\,f'_{|\bP|}\right \}$\;
+	\nl 	$\bF \leftarrow \bF'$\;
+			}
+		}
+	\end{block}
+\end{algorithm}
+%\end{minipage}
+}
 }
 
 %------------------------------------------------
@@ -390,7 +448,21 @@
 \subsection[Parallel]{Parallel Algorithm}
 
 %------------------------------------------------
-\frame{\frametitle{Parallel Algorithm}
+\frame{\frametitle{Data Dependencies in Serial Algorithm Build Neighborhoods}
+	\centering
+	\includestandalone[width=0.75\textwidth]{../figures/tikz/sabnDataDependencies}
+}
+
+%------------------------------------------------
+\frame{\frametitle{Data Dependencies in Serial Algorithms}
+	\begin{columns}[t]
+		\begin{column}{.5\textwidth}
+			\includestandalone[width=1.0\textwidth]{../figures/tikz/sacelDataDependencies}
+		\end{column}
+		\begin{column}{.5\textwidth}
+			\includestandalone[width=1.0\textwidth]{../figures/tikz/sacfDataDependencies}
+		\end{column}
+	\end{columns}
 }
 
 
