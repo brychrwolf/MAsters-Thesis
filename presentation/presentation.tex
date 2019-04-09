@@ -61,7 +61,7 @@
 		\item Increasing demand for high-definition \tdd{}
 		\begin{itemize}
 			\item Industrial quality scanning~\cite{ILATO14}
-			\item Fuzzy borders on hyroglyphs
+			\item Fuzzy borders on hieroglyphs
 			\item OCR
 		\end{itemize}
 
@@ -71,23 +71,22 @@
 		\end{itemize}
 	\end{itemize}
 
-
 %\section{Motivation}
 %3D-Data is important to many fields
-From industrial quality scanning~\cite{ILATO14}, to computerized analysis of documents and artifacts within the Digital Humanities~\cite{Bogacz15}, the demand for high-definition \tdd{} is only increasing. And in light of recent tragedies befalling global physical archives, like the museum fire which destroyed Brazil's oldest museum and its 20 million artifacts~\cite{Andreoni18}, or the numerous war zones occupying archaeologically important sites, 3D-scanning will continue to increase in importance.
+%From industrial quality scanning~\cite{ILATO14}, to computerized analysis of documents and artifacts within the Digital Humanities~\cite{Bogacz15}, the demand for high-definition \tdd{} is only increasing. And in light of recent tragedies befalling global physical archives, like the museum fire which destroyed Brazil's oldest museum and its 20 million artifacts~\cite{Andreoni18}, or the numerous war zones occupying archaeologically important sites, 3D-scanning will continue to increase in importance.
 
 %3D-Data Noises in data, so must still process
-However, raw \tdd{} is typically not suitable for analysis~\cite[p.~25-32]{Mara12}, so processing and pre-processing with a smoothing filter becomes necessary. In dense, high-resolution meshes, for example, one can see noise propagating as jagged outlines in segment boundaries of connected components when visualizing the output of filters designed for analysis, like the Multi-Scale Integral Invariants filter (MSII)~\cite[s.~3.2]{Mara17}.
+%However, raw \tdd{} is typically not suitable for analysis~\cite[p.~25-32]{Mara12}, so processing and pre-processing with a smoothing filter becomes necessary. In dense, high-resolution meshes, for example, one can see noise propagating as jagged outlines in segment boundaries of connected components when visualizing the output of filters designed for analysis, like the Multi-Scale Integral Invariants filter (MSII)~\cite[s.~3.2]{Mara17}.
 
 %processing is difficult
-One major complication slowing the development of filters for \tdd{} has been that the window size of any filter must remain static for the duration of its convolution, in order for the output response to be mapped correctly back onto the input field~\cite[p.~106-112]{Jaehne97}. While it is trivial to define a static-sized filter for convolving regular meshes like raster images, it is a complex and complicated task to create the same for convolving acquired \tdd{}, whose one-ring neighborhoods are subsets of non-planar meshes embedded in $\bR{3}$, uniformly irregular, with completely arbitrary shapes, sizes, and counts of members~\cite[p.~29]{Mara12}~\cite[s.~3.2]{Mara17}.
+%One major complication slowing the development of filters for \tdd{} has been that the window size of any filter must remain static for the duration of its convolution, in order for the output response to be mapped correctly back onto the input field~\cite[p.~106-112]{Jaehne97}. While it is trivial to define a static-sized filter for convolving regular meshes like raster images, it is a complex and complicated task to create the same for convolving acquired \tdd{}, whose one-ring neighborhoods are subsets of non-planar meshes embedded in $\bR{3}$, uniformly irregular, with completely arbitrary shapes, sizes, and counts of members~\cite[p.~29]{Mara12}~\cite[s.~3.2]{Mara17}.
 
 %3D-Data is big. serial is slow
-Another problem which arises, is that with high-resolution 3D-scanning, the data output is often comprised of millions, or tens of millions, of points per scanned item and features several hundred points per mm$^2$~\cite[25,144]{Mara17}~\cite[4]{ILATO14}. At that scale, serial algorithms processing that data can no longer be included in the regular workflow of a scientist analyzing the artifacts, because each operation can easily take hours or days to complete.
+%Another problem which arises, is that with high-resolution 3D-scanning, the data output is often comprised of millions, or tens of millions, of points per scanned item and features several hundred points per mm$^2$~\cite[25,144]{Mara17}~\cite[4]{ILATO14}. At that scale, serial algorithms processing that data can no longer be included in the regular workflow of a scientist analyzing the artifacts, because each operation can easily take hours or days to complete.
 
 
 %gpgpus are cheap, so do the thing
-Fortunately, with the introduction of GPGPUs to the commercial market, individual research groups now have the opportunity to exploit the parallel processing power of SIMD systems, without needing access to an institutional supercomputer. Therefore, the motivation for designing a smoothing filter, which can efficiently convolve over large, irregular, acquired \tdd{} by utilizing commercially available GPGPUs, was realized. Thus came \Fors{t}, and the research presented in this thesis.
+%Fortunately, with the introduction of GPGPUs to the commercial market, individual research groups now have the opportunity to exploit the parallel processing power of SIMD systems, without needing access to an institutional supercomputer. Therefore, the motivation for designing a smoothing filter, which can efficiently convolve over large, irregular, acquired \tdd{} by utilizing commercially available GPGPUs, was realized. Thus came \Fors{t}, and the research presented in this thesis.
 }
 
 %------------------------------------------------
@@ -107,9 +106,24 @@ Fortunately, with the introduction of GPGPUs to the commercial market, individua
 }
 
 %------------------------------------------------
+\frame{\frametitle{Calculating Square Roots on a Computer}
+	Maximize efficiency by minimizing doing these.
+}
+
+%------------------------------------------------
 \frame{\frametitle{One-Ring Neighborhoods in Regular and Irregular Meshes}
 	\includegraphics[width=1.0\linewidth]{../figures/neighborhoods_presentation.png}
-	One-ring neighborhoods in (a) a regular square mesh, as in pixels of a digital image (b) a regular triangle mesh, as in a hexagonal tessellation (c) an irregular triangle mesh, typical of acquired \tdd{}.
+	\begin{columns}[c]
+		\begin{column}{.33\textwidth}
+			a regular square mesh, as in pixels of a digital image
+		\end{column}
+		\begin{column}{.33\textwidth}
+			a regular triangle mesh, as in a hexagonal tessellation
+		\end{column}
+		\begin{column}{.33\textwidth}
+			an irregular triangle mesh, typical of acquired \tdd{}.
+		\end{column}
+	\end{columns}
 }
 
 %------------------------------------------------
@@ -157,7 +171,7 @@ Fortunately, with the introduction of GPGPUs to the commercial market, individua
 }
 
 %------------------------------------------------
-\frame{\frametitle{Weighted Mean Function Value $f'_v$at $\bp_v$}
+\frame{\frametitle{Weighted Mean Function Value $f'_v$ at $\bp_v$}
 	\includegraphics[width=1.0\linewidth]{../figures/funcValVolumes_presentation.png}
 }
 
@@ -167,10 +181,47 @@ Fortunately, with the introduction of GPGPUs to the commercial market, individua
 
 %------------------------------------------------
 \frame{\frametitle{Union Operations as Performed in Build Neighborhoods}
-	\includestandalone[width=\textwidth]{../figures/tikz/unionsOfSimpleBuildNeighborhoods}
+	\begin{columns}[t]
+		\begin{column}{.6\textwidth}
+			\includegraphics[width=1.0\linewidth]{../figures/triangularFaces.png}
+		\end{column}
+		\hspace*{-1.5cm}
+		\begin{column}{.6\textwidth}
+			\includestandalone[width=1.0\linewidth]{../figures/tikz/unionsOfSimpleBuildNeighborhoods}
+		\end{column}
+	\end{columns}
+
+	\begin{columns}[t]
+		\begin{column}{.5\textwidth}
+			\begin{algorithm}[H]
+				\DontPrintSemicolon
+				\SetKwFor{For}{for}{:}{}
+				\begin{block}{}
+				\nl		\For{$\bt \in \bT$}{
+				\nl			\ProgSty{union($\bN$, $\bp_a$, $\bp_b$, $\bp_c$)}\;
+				\nl			\ProgSty{union($\bN$, $\bp_b$, $\bp_a$, $\bp_c$)}\;
+				\nl			\ProgSty{union($\bN$, $\bp_c$, $\bp_a$, $\bp_b$)}\;
+						}
+				\end{block}
+			\end{algorithm}
+		\end{column}
+		\begin{column}{.5\textwidth}
+			\begin{algorithm}[H]
+				\DontPrintSemicolon
+				\SetKwFor{For}{for}{:}{}
+				\SetKwProg{Func}{Function}{}{}
+				\begin{block}{}
+				\nl	\Func{union($\bN$, $a$, $b$, $c$)}{
+				\nl		$\bN_a \leftarrow \bN_a \cup \{b,\,c\}$\;
+					}
+				\end{block}
+			\end{algorithm}
+		\end{column}
+	\end{columns}
 }
 
 %------------------------------------------------
+\iffalse %%%%% COMMENTED OUT
 \frame{\frametitle{Serial Algorithm for Building Neighborhoods}
 \begin{algorithm}[H]
 	\SetAlgoSkip{}
@@ -204,7 +255,7 @@ Fortunately, with the introduction of GPGPUs to the commercial market, individua
 	\end{block}
 	}
 \end{algorithm}
-}
+}\fi %%%%% END COMMENT
 
 %------------------------------------------------
 \frame{\frametitle{Serial Algorithm for Calculating Edge Lengths}
@@ -219,17 +270,17 @@ Fortunately, with the introduction of GPGPUs to the commercial market, individua
 	\only<1>{
 	\begin{block}{Part (1 of 1)}
 		\Input{the set of all points $\bP$, \\
-			the family of sets of discovered neighborhoods $\bN$}
+			the set of discovered neighborhoods $\bN$}
 		\Output{the set of pre-calculated edge lengths $\bE$, \\
-			the global minimum edge length $\gelm$}
+			the minimum edge length of the mesh $\gelm$}
 
 		\bigskip
 	\nl	\Func{serialCalculateEdgeLengths($\bP$, $\bN$)}{
 	\nl		\For{$\bp_v \in \bP$}{
 	\nl			\For{$\bp_i \in \bN_v$}{
 					\linespread{1.5}\selectfont
-	\nl				$\bE_{\sv{i}} \leftarrow |\bp_i - \bp_v|$\tcc*[r]{This is $\ellstar$ as in Eq:~\ref{eq:localMinimumEdgeLength}}
-	\nl				$\gelm \leftarrow \min\left \{\gelm,\,\bE_{\sv{i}}\right \}$\tcc*[r]{Eq:~\ref{eq:globalMinimumEdgeLength}}
+	\nl				$\bE_{\sv{i}} \leftarrow |\bp_i - \bp_v|$\tcc*[r]{This is $\ellstar$}
+	\nl				$\gelm \leftarrow \min\left \{\gelm,\,\bE_{\sv{i}}\right \}$\;
 				}
 			}
 		}
@@ -241,7 +292,6 @@ Fortunately, with the introduction of GPGPUs to the commercial market, individua
 %------------------------------------------------
 \frame{\frametitle{Serial Algorithm for Convolving the Filter}
 \begin{algorithm}[H]
-	\SetAlgoSkip{}
 	\DontPrintSemicolon
 	\SetCommentSty{small}
 	\SetKwFor{For}{for}{:}{}
@@ -252,9 +302,9 @@ Fortunately, with the introduction of GPGPUs to the commercial market, individua
 	\only<1>{
 	\begin{block}{Part (1 of 4)}
 		\Input{the set of all points $\bP$, \\
-			the family of sets of discovered neighborhoods $\bN$, \\
+			the set of discovered neighborhoods $\bN$, \\
 			the set of pre-calculated edge lengths $\bE$, \\
-			the global minimum edge length $\gelm$, \\
+			the minimum edge length of the mesh $\gelm$, \\
 			the set of function values $\bF$, \\
 			the user-defined number of convolutions $\tau$}
 		\Output{the set of one-ring \wmfv{s} $\bF'$}
@@ -289,7 +339,7 @@ Fortunately, with the introduction of GPGPUs to the commercial market, individua
 	\end{block}
 	}
 	\only<3>{
-	\setcounter{AlgoLine}{0}
+	\setcounter{AlgoLine}{7}
 	\begin{block}{Part (3 of 4)}
 		\Cont{}{
 			\vspace*{-1\baselineskip}
@@ -312,7 +362,7 @@ Fortunately, with the introduction of GPGPUs to the commercial market, individua
 	\end{block}
 	}
 	\only<4>{
-	\setcounter{AlgoLine}{0}
+	\setcounter{AlgoLine}{13}
 	\begin{block}{Part (4 of 4)}
 		\Cont{}{
 			\vspace*{-1\baselineskip}
