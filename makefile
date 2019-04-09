@@ -5,12 +5,12 @@ all: svgs tikzs plots thesis presentation
 
 thesis: plots
 	$(STIME)
-	pdflatex --no-pdf thesis
+	pdflatex -draftmode thesis
 	makeindex thesis
 	makeindex thesis.nlo -s nomencl.ist -o thesis.nls
 	makeglossaries thesis
 	bibtex thesis
-	pdflatex --no-pdf thesis
+	pdflatex -draftmode thesis
 	pdflatex thesis
 	$(ETIME)
 

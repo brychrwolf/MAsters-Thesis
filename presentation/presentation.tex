@@ -110,7 +110,18 @@ Fortunately, with the introduction of GPGPUs to the commercial market, individua
 \frame{\frametitle{One-Ring Neighborhoods in Regular and Irregular Meshes}
 	\includegraphics[width=1.0\linewidth]{../figures/neighborhoods_presentation.png}
 	One-ring neighborhoods in (a) a regular square mesh, as in pixels of a digital image (b) a regular triangle mesh, as in a hexagonal tessellation (c) an irregular triangle mesh, typical of acquired \tdd{}.
+}
 
+%------------------------------------------------
+\frame{\frametitle{Function Values as a Scalar Field}
+	\begin{columns}[c]
+		\begin{column}{.75\textwidth}
+			\includegraphics[width=1.0\linewidth]{../figures/visualizeFunctionValues.png}
+		\end{column}
+		\begin{column}{.25\textwidth}
+			Visualization of the curvature of function values feature boundries, connected segments, cuneiform tablets ~\cite[p.103]{Mara17}
+		\end{column}
+	\end{columns}
 }
 
 
@@ -126,7 +137,12 @@ Fortunately, with the introduction of GPGPUs to the commercial market, individua
 
 %------------------------------------------------
 \frame{\frametitle{A One-Ring Neighborhood and its Geodesic Disc}
-	\includegraphics[width=1.0\linewidth]{../figures/geodesicDisc_presentation.png}
+	\centering
+	\includegraphics[width=0.8\linewidth]{../figures/geodesicDisc_presentation.png}
+	\begin{align}
+		\elm(\bp_0) &:= \min_{\forall \bp_i \in \bN_v}|\bp_i - \bp_0| \\
+		\gelm &:= \min\left \{\elm(\bp_0) \;|\; \bp_0 \in \bM\,\right \}
+	\end{align}
 }
 
 %------------------------------------------------
@@ -136,12 +152,13 @@ Fortunately, with the introduction of GPGPUs to the commercial market, individua
 
 %------------------------------------------------
 \frame{\frametitle{Interpolation of Function Values toward the Center of Gravity}
-	\includegraphics[width=1.0\linewidth]{../figures/interpolatedFunctionValues.png}
+	\centering
+	\includegraphics[width=0.9\linewidth]{../figures/interpolatedFunctionValues.png}
 }
 
 %------------------------------------------------
 \frame{\frametitle{Weighted Mean Function Value $f'_v$at $\bp_v$}
-	\includegraphics[width=1.0\linewidth]{../figures/funcValVolumes.png}
+	\includegraphics[width=1.0\linewidth]{../figures/funcValVolumes_presentation.png}
 }
 
 

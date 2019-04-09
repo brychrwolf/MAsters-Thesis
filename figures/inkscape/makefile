@@ -11,6 +11,7 @@ SVGS_OUTPUTS =  ../geodesicDisc.png \
 SVGS_OUTPUTS_PRESENTATION = \
 				../geodesicDisc_presentation.png \
 				../anglesAndCenterOfGravity_presentation.png \
+				../funcValVolumes_presentation.png \
 				../neighborhoods_presentation.png
 
 

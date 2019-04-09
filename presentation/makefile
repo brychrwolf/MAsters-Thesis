@@ -3,8 +3,8 @@ ETIME = read st < $@_time ; echo make recipe completed in $$((`date '+%s'`-$$st)
 
 presentation:
 	$(STIME)
-	pdflatex --no-pdf presentation
-	pdflatex --no-pdf presentation
+	pdflatex -draftmode presentation
+	pdflatex -draftmode presentation
 	pdflatex presentation
 	$(ETIME)
 
