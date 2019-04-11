@@ -12,10 +12,11 @@ SVGS_OUTPUTS_PRESENTATION = \
 				../geodesicDisc_presentation.png \
 				../anglesAndCenterOfGravity_presentation.png \
 				../funcValVolumes_presentation.png \
-				../neighborhoods_presentation.png
+				../neighborhoods_presentation.png \
+				../amdahlsLaw.png
 
 
-all: $(SVGS_OUTPUTS)
+all: $(SVGS_OUTPUTS) ${SVGS_OUTPUTS_PRESENTATION}
 
 presentation: ${SVGS_OUTPUTS_PRESENTATION}
 

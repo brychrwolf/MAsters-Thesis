@@ -65,7 +65,9 @@ presentation: svgs tikzs plots
 	$(ETIME)
 
 presentationOnce:
+	$(STIME)
 	pdflatex presentation
+	$(ETIME)
 
 cleanPresentation:
 	cd figures/inkscape && $(MAKE) cleanPresentation
