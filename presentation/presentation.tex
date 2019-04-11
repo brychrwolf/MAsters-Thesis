@@ -46,6 +46,7 @@
 \begin{document}
 \input{../myCommands.tex}
 \setlength{\intextsep}{0pt}
+\def\hilite<#1>{\temporal<#1>{\color{black}}{\color{unirot}}{\color{gray}}}
 \frame[plain]{\titlepage}
 \frame{\frametitle{Outline}\tableofcontents}
 
@@ -107,9 +108,9 @@
 }
 
 %------------------------------------------------
-\frame{\frametitle{Calculating Square Roots on a Computer}
-	Maximize efficiency by minimizing doing these.
-}
+%\frame{\frametitle{Calculating Square Roots on a Computer}
+%	Maximize efficiency by minimizing doing these.
+%}
 
 %------------------------------------------------
 \frame{\frametitle{One-Ring Neighborhoods in Regular and Irregular Meshes}
@@ -222,43 +223,6 @@
 }
 
 %------------------------------------------------
-\iffalse %%%%% COMMENTED OUT
-\frame{\frametitle{Serial Algorithm for Building Neighborhoods}
-\begin{algorithm}[H]
-	\SetAlgoSkip{}
-	\DontPrintSemicolon
-	\SetCommentSty{small}
-	\SetKwFor{For}{for}{:}{}
-	\SetKwProg{Func}{Function}{}{}
-	\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
-
-	\only<1>{
-	\begin{block}{Part (1 of 2)}
-		\Input{the set of all triangular faces $\bT$}
-		\Output{the family of sets of discovered neighborhoods $\bN$}
-
-		\bigskip
-	\nl	\Func{serialBuildNeighborhoods($\bT$)}{\label{sbn1}
-	\nl		\For(\tcc*[f]{$\bt = \left \{\bp_a, \bp_b, \bp_c\right \}$}){$\bt \in \bT$}{
-	\nl			\ProgSty{union($\bN$, $\bp_a$, $\bp_b$, $\bp_c$)}\;
-	\nl			\ProgSty{union($\bN$, $\bp_b$, $\bp_a$, $\bp_c$)}\;
-	\nl			\ProgSty{union($\bN$, $\bp_c$, $\bp_a$, $\bp_b$)}\;
-			}
-		}
-	\end{block}
-	}
-
-	\only<2>{
-	\begin{block}{Part (2 of 2)}
-	\nl	\Func{union($\bN$, $a$, $b$, $c$)}{
-	\nl		$\bN_a \leftarrow \bN_a \cup \{b,\,c\}$\;
-		}
-	\end{block}
-	}
-\end{algorithm}
-}\fi %%%%% END COMMENT
-
-%------------------------------------------------
 \frame{\frametitle{Serial Algorithm for Calculating Edge Lengths}
 \begin{algorithm}[H]
 	\SetAlgoSkip{}
@@ -289,21 +253,21 @@
 	}
 \end{algorithm}
 }
+
 %------------------------------------------------
 \frame{\frametitle{Serial Algorithm for Convolving the Filter}
-	\vspace*{-4mm}
-	\begin{columns}[t]
-		\begin{column}{.35\textwidth}
-			{\fontsize{4.5}{4.5}\selectfont
-				\begin{algorithm}[H]
-					\DontPrintSemicolon
-					\SetCommentSty{small}
-					\SetKwFor{For}{for}{:}{}
-					\SetKwProg{Func}{Function}{}{}
-					\SetKwProg{Cont}{}{}{}
-					\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
-
-					\begin{block}{}
+	\vspace*{-8mm}
+	\begin{columns}
+		\begin{column}[t]{.35\textwidth}
+			\begin{block}{}
+				{\fontsize{4.2}{4.2}\selectfont
+					\begin{algorithm}[H]
+						\DontPrintSemicolon
+						\SetCommentSty{small}
+						\SetKwFor{For}{for}{:}{}
+						\SetKwProg{Func}{Function}{}{}
+						\SetKwProg{Cont}{}{}{}
+						\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
 						\Input{the set of all points $\bP$, \\
 							the set of discovered neighborhoods $\bN$, \\
 							the set of pre-calculated edge lengths $\bE$, \\
@@ -339,133 +303,128 @@
 					\nl 	$\bF \leftarrow \bF'$\;
 							}
 						}
-					\end{block}
-				\end{algorithm}
-			}
+					\end{algorithm}
+				}
+			\end{block}
 		\end{column}
-		\begin{column}{.65\textwidth}
-			\begin{algorithm}[H]
-				\DontPrintSemicolon
-				\SetCommentSty{small}
-				\SetKwFor{For}{for}{:}{}
-				\SetKwProg{Func}{Function}{}{}
-				\SetKwProg{Cont}{}{}{}
-				\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
+		\begin{column}[t]{.65\textwidth}				
+			\only<1>{
 				\begin{block}{Part (1 of 4)}
-					\Input{the set of all points $\bP$, \\
-						the set of discovered neighborhoods $\bN$, \\
-						the set of pre-calculated edge lengths $\bE$, \\
-						the minimum edge length of the mesh $\gelm$, \\
-						the set of function values $\bF$, \\
-						the user-defined number of convolutions $\tau$}
-					\Output{the set of one-ring \wmfv{s} $\bF'$}
-
-					\bigskip
-					\linespread{1}\selectfont
-				\nl	\Func{serialConvolveFilter($\bP$, $\bN$, $\bE$, $\gelm$, $\bF$, $\tau$)}{
-						\emph{(Continued\ldots)}
-					}
+					\begin{algorithm}[H]
+						\DontPrintSemicolon
+						\SetCommentSty{small}
+						\SetKwFor{For}{for}{:}{}
+						\SetKwProg{Func}{Function}{}{}
+						\SetKwProg{Cont}{}{}{}
+						\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
+						\Input{the set of all points $\bP$, \\
+							the set of discovered neighborhoods $\bN$, \\
+							the set of pre-calculated edge lengths $\bE$, \\
+							the minimum edge length of the mesh $\gelm$, \\
+							the set of function values $\bF$, \\
+							the user-defined number of convolutions $\tau$}
+						\Output{the set of one-ring \wmfv{s} $\bF'$}
+					\end{algorithm}
 				\end{block}
-			\end{algorithm}
+			}\only<2>{
+				\begin{block}{Part (2 of 4)}
+					\begin{algorithm}[H]
+						\SetAlgoLined
+						\DontPrintSemicolon
+						\SetCommentSty{small}
+						\SetKwFor{For}{for}{:}{}
+						\SetKwProg{Func}{Function}{}{}
+						\SetKwProg{Cont}{}{}{}
+						\setcounter{AlgoLine}{0}
+					\nl	\Func{serialConvolveFilter($\bP$, $\bN$, $\bE$, $\gelm$, $\bF$, $\tau$)}{
+					\nl		\For{$t\leftarrow 1\;\KwTo\;\tau$}{
+					\nl			\For{$\bp_v \in \bP$}{
+					\nl				\For{$\bp_i \in \bN_v$}{
+										\linespread{1.5}\selectfont
+					\nl					$\kern-0.5pt\alpha \leftarrow cos^{-1}$
+										\begin{Large}
+											$\kern-6pt\left (\frac{\bE_c^2\,+\,\bE_b^2\,-\,\bE_a^2}{2\,\cdot\,\bE_c\,\cdot\,\bE_b}\right )$\;
+										\end{Large}
+										\linespread{1.2}\selectfont
+					\nl					$\kern0.00pt\beta \leftarrow (\pi - \alpha)\mathbin{/}2$\;
+					\nl					$\kern-1.5ptA \leftarrow \Big(\gelm\,\Big)^2\kern-4pt\cdot\alpha\mathbin{/}2$\;
+									}
+								}
+							}
+						}
+					\end{algorithm}
+				\end{block}
+			}\only<3>{
+				\begin{block}{Part (3 of 4)}
+					\begin{algorithm}[H]
+						\SetAlgoLined
+						\DontPrintSemicolon
+						\SetCommentSty{small}
+						\SetKwFor{For}{for}{:}{}
+						\SetKwProg{Func}{Function}{}{}
+						\SetKwProg{Cont}{}{}{}
+						\setcounter{AlgoLine}{7}
+						\vspace*{-1\baselineskip}
+						\Cont{}{
+							\vspace*{-1\baselineskip}
+							\Cont{}{
+								\vspace*{-1\baselineskip}
+								\Cont{}{
+									\vspace*{-1\baselineskip}
+									\Cont{}{
+					\nl					$\kern1.00pt\check{\ell} \leftarrow \big(4\cdot\gelm\cdot\sin(\alpha\mathbin{/}2)\big)\mathbin{/}3\,\alpha$\;
+					\nl					$\kern1.00pt\zeta \leftarrow \gelm\mathbin{/}\sin(\beta)$\;
+										\SetAlgoVlined
+					\nl					\For{$j \in {1,2}$}{\label{algSCFjloop}
+					\nl						$\tilde{\ell}_j \leftarrow \zeta\mathbin{/}\bE_j$\;
+					\nl						$f'_j \leftarrow f_0\cdot(1 - \tilde{\ell}_j) + f_j\cdot\tilde{\ell}_j$\;
+										}
+					\nl					$\check{f} \leftarrow f_0\cdot(1 - \check{\ell}) + \big((f'_1 + f'_2)\cdot\check{\ell}\big)\mathbin{/}2$\;
+									}
+								}
+							}
+						}
+					\end{algorithm}
+				\end{block}
+			}\only<4>{
+				\begin{block}{Part (4 of 4)}
+					\begin{algorithm}[H]
+						\DontPrintSemicolon
+						\SetCommentSty{small}
+						\SetKwFor{For}{for}{:}{}
+						\SetKwProg{Func}{Function}{}{}
+						\SetKwProg{Cont}{}{}{}
+						\setcounter{AlgoLine}{13}
+						\vspace*{-1\baselineskip}
+						\Cont{}{
+							\vspace*{-1\baselineskip}
+							\Cont{}{
+								\vspace*{-1\baselineskip}
+								\Cont{}{
+									\vspace*{-1\baselineskip}
+									\Cont{}{
+					\nl					$\kern-2.0pt\tilde{f}_v \leftarrow \tilde{f}_v + A\cdot\check{f}$\;
+					\nl					$\kern-4.0pt\tilde{A}_v \leftarrow \tilde{A}_v + A$\;
+									}
+					\nl				$f'_v \leftarrow \tilde{f}_v\mathbin{/}\tilde{A}_v$\;
+								}
+					\nl		$\bF' \leftarrow \left \{f'_1,\ldots,\,f'_{|\bP|}\right \}$\;
+					\nl 	$\bF \leftarrow \bF'$\;
+							}
+						}
+					\end{algorithm}
+				\end{block}
+			}
 		\end{column}
 	\end{columns}
+	\begin{tikzpicture}[overlay, remember picture]
+		\draw<1>[unirot,ultra thick,rounded corners] (-8mm, 64mm) rectangle (48mm, 50mm);
+		\draw<2>[unirot,ultra thick,rounded corners] (-8mm, 50mm) rectangle (48mm, 34mm);
+		\draw<3>[unirot,ultra thick,rounded corners] (-8mm, 35mm) rectangle (48mm, 19mm);
+	\end{tikzpicture}
 }
 
-%------------------------------------------------
-\frame{\frametitle{Serial Algorithm for Convolving the Filter}
-\begin{algorithm}[H]
-	\DontPrintSemicolon
-	\SetCommentSty{small}
-	\SetKwFor{For}{for}{:}{}
-	\SetKwProg{Func}{Function}{}{}
-	\SetKwProg{Cont}{}{}{}
-	\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
 
-	\only<1>{
-	\begin{block}{Part (1 of 4)}
-		\Input{the set of all points $\bP$, \\
-			the set of discovered neighborhoods $\bN$, \\
-			the set of pre-calculated edge lengths $\bE$, \\
-			the minimum edge length of the mesh $\gelm$, \\
-			the set of function values $\bF$, \\
-			the user-defined number of convolutions $\tau$}
-		\Output{the set of one-ring \wmfv{s} $\bF'$}
-
-		\bigskip
-		\linespread{1}\selectfont
-	\nl	\Func{serialConvolveFilter($\bP$, $\bN$, $\bE$, $\gelm$, $\bF$, $\tau$)}{
-			\emph{(Continued\ldots)}
-		}
-	\end{block}
-	}
-
-	\only<2>{
-	\setcounter{AlgoLine}{0}
-	\begin{block}{Part (2 of 4)}
-	\nl	\Func{serialConvolveFilter($\bP$, $\bN$, $\bE$, $\gelm$, $\bF$, $\tau$)}{
-	\nl		\For{$t\leftarrow 1\;\KwTo\;\tau$}{
-	\nl			\For{$\bp_v \in \bP$}{
-	\nl				\For{$\bp_i \in \bN_v$}{
-						\linespread{1.5}\selectfont
-	\nl					$\kern-0.5pt\alpha \leftarrow cos^{-1}$
-						\begin{Large}
-							$\kern-6pt\left (\frac{\bE_c^2\,+\,\bE_b^2\,-\,\bE_a^2}{2\,\cdot\,\bE_c\,\cdot\,\bE_b}\right )$\tcc*[r]{Eq:~\ref{eq:alphaFromEdgeLengths}}
-						\end{Large}\label{algSCFalpha}
-						\linespread{1.2}\selectfont
-	\nl					$\kern0.00pt\beta \leftarrow (\pi - \alpha)\mathbin{/}2$\tcc*[r]{Eq:~\ref{eq:betaFromHalfAlpha}}\label{algSCFbeta}
-	\nl					$\kern-1.5ptA \leftarrow \Big(\gelm\,\Big)^2\kern-4pt\cdot\alpha\mathbin{/}2$\tcc*[r]{Eq:~\ref{eq:circularSectorArea}}\label{algSCFarea}
-					}
-				}
-			}
-		}
-	\end{block}
-	}
-	\only<3>{
-	\setcounter{AlgoLine}{7}
-	\begin{block}{Part (3 of 4)}
-		\Cont{}{
-			\vspace*{-1\baselineskip}
-			\Cont{}{
-				\vspace*{-1\baselineskip}
-				\Cont{}{
-					\vspace*{-1\baselineskip}
-					\Cont{}{
-	\nl					$\kern1.00pt\check{\ell} \leftarrow \big(4\cdot\gelm\cdot\sin(\alpha\mathbin{/}2)\big)\mathbin{/}3\,\alpha$\tcc*[r]{Eq:~\ref{eq:distToCoG}\enspace\footnotemark{}}\label{algSCFcog}
-	\nl					$\kern1.00pt\zeta \leftarrow \gelm\mathbin{/}\sin(\beta)$\tcc*[r]{Eq:~\ref{eq:zeta}}\label{algSCFzeta}
-	\nl					\For{$j \in {1,2}$}{\label{algSCFjloop}
-	\nl						$\tilde{\ell}_j \leftarrow \zeta\mathbin{/}\bE_j$\tcc*[r]{Eq:~\ref{eq:distanceIForInterpolation},~\ref{eq:distanceIp1ForInterpolation}}
-	\nl						$f'_j \leftarrow f_0\cdot(1 - \tilde{\ell}_j) + f_j\cdot\tilde{\ell}_j$\tcc*[r]{Eq:~\ref{eq:interpolatedFi},~\ref{eq:interpolatedFip1}}
-						}
-	\nl					$\check{f} \leftarrow f_0\cdot(1 - \check{\ell}) + \big((f'_1 + f'_2)\cdot\check{\ell}\big)\mathbin{/}2$\tcc*[r]{Eq:~\ref{eq:weightedMeanAtCoGatSector}}\label{algSCFcheckf}
-					}
-				}
-			}
-		}
-	\end{block}
-	}
-	\only<4>{
-	\setcounter{AlgoLine}{13}
-	\begin{block}{Part (4 of 4)}
-		\Cont{}{
-			\vspace*{-1\baselineskip}
-			\Cont{}{
-				\vspace*{-1\baselineskip}
-				\Cont{}{
-					\vspace*{-1\baselineskip}
-					\Cont{}{
-	\nl					$\kern-2.0pt\tilde{f}_v \leftarrow \tilde{f}_v + A\cdot\check{f}$\tcc*[r]{Eq:~\ref{eq:meanFuncValAtPv}}\label{algSCFtildef}
-	\nl					$\kern-4.0pt\tilde{A}_v \leftarrow \tilde{A}_v + A$\tcc*[r]{Eq:~\ref{eq:meanFuncValAtPv}}\label{algSCFtildeA}
-					}
-	\nl				$f'_v \leftarrow \tilde{f}_v\mathbin{/}\tilde{A}_v$\tcc*[r]{Eq:~\ref{eq:meanFuncValAtPv}}\label{algSCFfprimev}
-				}
-	\nl		$\bF' \leftarrow \left \{f'_1,\ldots,\,f'_{|\bP|}\right \}$\;\label{algSCF2ndlastLine}
-	\nl 	$\bF \leftarrow \bF'$\tcc*{smooth newest values every convolution}\label{algSCFlastLine}
-			}
-		}
-	\end{block}
-	}
-\end{algorithm}
-}
 
 
 %================================================
