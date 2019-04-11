@@ -61,14 +61,14 @@
 	\begin{itemize}
 		\item Increasing demand for high-definition \tdd{}
 		\begin{itemize}
-			\item Industrial quality scanning~\cite{ILATO14}
+			\item Industrial quality scanning
 			\item Fuzzy borders on hieroglyphs
 			\item OCR
 		\end{itemize}
 
 		\item Danger to physical archives
 		\begin{itemize}
-			\item 2018 Brazilian museum fire destroyed 20 million artifacts~\cite{Andreoni18}
+			\item 2018 Brazilian museum fire destroyed 20 million artifacts
 		\end{itemize}
 	\end{itemize}
 
@@ -131,10 +131,10 @@
 \frame{\frametitle{Function Values as a Scalar Field}
 	\begin{columns}[c]
 		\begin{column}{.75\textwidth}
-			\includegraphics[width=1.0\linewidth]{../figures/visualizeFunctionValues.png}
+			\includegraphics[width=1.0\linewidth]{../figures/visualizeFunctionValues2.png}
 		\end{column}
 		\begin{column}{.25\textwidth}
-			Visualization of the curvature of function values feature boundries, connected segments, cuneiform tablets ~\cite[p.103]{Mara12}
+			Visualization of the curvature of function values feature boundries, connected segments, cuneiform tablets
 		\end{column}
 	\end{columns}
 }
@@ -291,60 +291,84 @@
 }
 %------------------------------------------------
 \frame{\frametitle{Serial Algorithm for Convolving the Filter}
+	\vspace*{-4mm}
+	\begin{columns}[t]
+		\begin{column}{.35\textwidth}
+			{\fontsize{4.5}{4.5}\selectfont
+				\begin{algorithm}[H]
+					\DontPrintSemicolon
+					\SetCommentSty{small}
+					\SetKwFor{For}{for}{:}{}
+					\SetKwProg{Func}{Function}{}{}
+					\SetKwProg{Cont}{}{}{}
+					\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
 
-{\fontsize{3}{3.3}\selectfont
-%\begin{minipage}[t]{0.5\textwidth}
-\begin{algorithm}[H]
-	\DontPrintSemicolon
-	\SetCommentSty{small}
-	\SetKwFor{For}{for}{:}{}
-	\SetKwProg{Func}{Function}{}{}
-	\SetKwProg{Cont}{}{}{}
-	\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
+					\begin{block}{}
+						\Input{the set of all points $\bP$, \\
+							the set of discovered neighborhoods $\bN$, \\
+							the set of pre-calculated edge lengths $\bE$, \\
+							the minimum edge length of the mesh $\gelm$, \\
+							the set of function values $\bF$, \\
+							the user-defined number of convolutions $\tau$}
+						\Output{the set of one-ring \wmfv{s} $\bF'$}
 
-	\begin{block}{}
-		\Input{the set of all points $\bP$, \\
-			the set of discovered neighborhoods $\bN$, \\
-			the set of pre-calculated edge lengths $\bE$, \\
-			the minimum edge length of the mesh $\gelm$, \\
-			the set of function values $\bF$, \\
-			the user-defined number of convolutions $\tau$}
-		\Output{the set of one-ring \wmfv{s} $\bF'$}
-
-		\bigskip
-		%\linespread{1}\selectfont
-	\nl	\Func{serialConvolveFilter($\bP$, $\bN$, $\bE$, $\gelm$, $\bF$, $\tau$)}{
-	\nl		\For{$t\leftarrow 1\;\KwTo\;\tau$}{
-	\nl			\For{$\bp_v \in \bP$}{
-	\nl				\For{$\bp_i \in \bN_v$}{
-						\linespread{1.5}\selectfont
-	\nl					$\kern-0.5pt\alpha \leftarrow cos^{-1}$
-						%\begin{Large}
-							$\kern-6pt\left (\frac{\bE_c^2\,+\,\bE_b^2\,-\,\bE_a^2}{2\,\cdot\,\bE_c\,\cdot\,\bE_b}\right )$\;
-						%\end{Large}
+						\medskip
 						\linespread{1.2}\selectfont
-	\nl					$\kern0.00pt\beta \leftarrow (\pi - \alpha)\mathbin{/}2$\;
-	\nl					$\kern-1.5ptA \leftarrow \Big(\gelm\,\Big)^2\kern-4pt\cdot\alpha\mathbin{/}2$\;
-	\nl					$\kern1.00pt\check{\ell} \leftarrow \big(4\cdot\gelm\cdot\sin(\alpha\mathbin{/}2)\big)\mathbin{/}3\,\alpha$\;
-	\nl					$\kern1.00pt\zeta \leftarrow \gelm\mathbin{/}\sin(\beta)$\;
-	\nl					\For{$j \in {1,2}$}{\label{algSCFjloop}
-	\nl						$\tilde{\ell}_j \leftarrow \zeta\mathbin{/}\bE_j$\;
-	\nl						$f'_j \leftarrow f_0\cdot(1 - \tilde{\ell}_j) + f_j\cdot\tilde{\ell}_j$\;
+					\nl	\Func{serialConvolveFilter($\bP$, $\bN$, $\bE$, $\gelm$, $\bF$, $\tau$)}{
+					\nl		\For{$t\leftarrow 1\;\KwTo\;\tau$}{
+					\nl			\For{$\bp_v \in \bP$}{
+					\nl				\For{$\bp_i \in \bN_v$}{
+										\linespread{1.5}\selectfont
+					\nl					$\kern-0.5pt\alpha \leftarrow cos^{-1} \kern-6pt\left (\frac{\bE_c^2\,+\,\bE_b^2\,-\,\bE_a^2}{2\,\cdot\,\bE_c\,\cdot\,\bE_b}\right )$\;
+										\linespread{1.2}\selectfont
+					\nl					$\kern0.00pt\beta \leftarrow (\pi - \alpha)\mathbin{/}2$\;
+					\nl					$\kern-1.5ptA \leftarrow \Big(\gelm\,\Big)^2\kern-4pt\cdot\alpha\mathbin{/}2$\;
+					\nl					$\kern1.00pt\check{\ell} \leftarrow \big(4\cdot\gelm\cdot\sin(\alpha\mathbin{/}2)\big)\mathbin{/}3\,\alpha$\;
+					\nl					$\kern1.00pt\zeta \leftarrow \gelm\mathbin{/}\sin(\beta)$\;
+					\nl					\For{$j \in {1,2}$}{\label{algSCFjloop}
+					\nl						$\tilde{\ell}_j \leftarrow \zeta\mathbin{/}\bE_j$\;
+					\nl						$f'_j \leftarrow f_0\cdot(1 - \tilde{\ell}_j) + f_j\cdot\tilde{\ell}_j$\;
+										}
+					\nl					$\check{f} \leftarrow f_0\cdot(1 - \check{\ell}) + \big((f'_1 + f'_2)\cdot\check{\ell}\big)\mathbin{/}2$\;
+					\nl					$\kern-2.0pt\tilde{f}_v \leftarrow \tilde{f}_v + A\cdot\check{f}$\;
+					\nl					$\kern-4.0pt\tilde{A}_v \leftarrow \tilde{A}_v + A$\;
+									}
+					\nl				$f'_v \leftarrow \tilde{f}_v\mathbin{/}\tilde{A}_v$\;
+								}
+					\nl		$\bF' \leftarrow \left \{f'_1,\ldots,\,f'_{|\bP|}\right \}$\;
+					\nl 	$\bF \leftarrow \bF'$\;
+							}
 						}
-	\nl					$\check{f} \leftarrow f_0\cdot(1 - \check{\ell}) + \big((f'_1 + f'_2)\cdot\check{\ell}\big)\mathbin{/}2$\;
-	\nl					$\kern-2.0pt\tilde{f}_v \leftarrow \tilde{f}_v + A\cdot\check{f}$\;
-	\nl					$\kern-4.0pt\tilde{A}_v \leftarrow \tilde{A}_v + A$\;
-					}
-	\nl				$f'_v \leftarrow \tilde{f}_v\mathbin{/}\tilde{A}_v$\;
-				}
-	\nl		$\bF' \leftarrow \left \{f'_1,\ldots,\,f'_{|\bP|}\right \}$\;
-	\nl 	$\bF \leftarrow \bF'$\;
+					\end{block}
+				\end{algorithm}
 			}
-		}
-	\end{block}
-\end{algorithm}
-%\end{minipage}
-}
+		\end{column}
+		\begin{column}{.65\textwidth}
+			\begin{algorithm}[H]
+				\DontPrintSemicolon
+				\SetCommentSty{small}
+				\SetKwFor{For}{for}{:}{}
+				\SetKwProg{Func}{Function}{}{}
+				\SetKwProg{Cont}{}{}{}
+				\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
+				\begin{block}{Part (1 of 4)}
+					\Input{the set of all points $\bP$, \\
+						the set of discovered neighborhoods $\bN$, \\
+						the set of pre-calculated edge lengths $\bE$, \\
+						the minimum edge length of the mesh $\gelm$, \\
+						the set of function values $\bF$, \\
+						the user-defined number of convolutions $\tau$}
+					\Output{the set of one-ring \wmfv{s} $\bF'$}
+
+					\bigskip
+					\linespread{1}\selectfont
+				\nl	\Func{serialConvolveFilter($\bP$, $\bN$, $\bE$, $\gelm$, $\bF$, $\tau$)}{
+						\emph{(Continued\ldots)}
+					}
+				\end{block}
+			\end{algorithm}
+		\end{column}
+	\end{columns}
 }
 
 %------------------------------------------------
@@ -507,7 +531,7 @@ which can then be used to define the three essential metrics:
 
 %------------------------------------------------
 \frame{\frametitle{Amdahl's law and the Degree of Parallelism}
-Also important is the notion of an algorithm's ``degree of parallelism'', which is the maximum number of operations that can be executed in parallel, a principle central to Amdahl's law~\cite{Amdahl67} which is defined as, when given a constant problem size $\hat{n}_{fixed}$, and an algorithm's degree of parallelism $q$,
+Also important is the notion of an algorithm's ``degree of parallelism'', which is the maximum number of operations that can be executed in parallel, a principle central to Amdahl's law which is defined as, when given a constant problem size $\hat{n}_{fixed}$, and an algorithm's degree of parallelism $q$,
 
 \begin{equation}
 	\lim_{\rho \to \infty} \mathit{S}(\hat{n}_{fixed},\,\rho) = 1 / q
