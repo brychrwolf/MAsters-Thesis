@@ -1,6 +1,7 @@
 \documentclass[aspectratio=169,t]{beamer}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
+\usepackage{subcaption}
 \usepackage{color}
 \usepackage{graphicx}
 \usepackage{fancybox}
@@ -145,20 +146,20 @@
 
 %================================================
 %================================================
-\section[Fast One-Ring Smoothing]{Fast One-Ring Smoothing}
+\section{Fast One-Ring Smoothing}
 
 
 %================================================
-\subsection[Foundation]{Mathematical Foundation}
+\subsection{Mathematical Foundation}
 
 %------------------------------------------------
 \frame{\frametitle{A One-Ring Neighborhood and its Geodesic Disc}
 	\centering
 	\includegraphics[width=0.8\linewidth]{../figures/geodesicDisc_presentation.png}
-	\begin{align}
+	\begin{align*}
 		\elm(\bp_0) &:= \min_{\forall \bp_i \in \bN_v}|\bp_i - \bp_0| \\
 		\gelm &:= \min\left \{\elm(\bp_0) \;|\; \bp_0 \in \bM\,\right \}
-	\end{align}
+	\end{align*}
 }
 
 %------------------------------------------------
@@ -179,7 +180,7 @@
 
 
 %================================================
-\subsection[Serial]{Serial Algorithm}
+\subsection{Serial Algorithm}
 
 %------------------------------------------------
 \frame{\frametitle{Union Operations as Performed in Build Neighborhoods}
@@ -405,10 +406,8 @@
 }
 
 
-
-
 %================================================
-\subsection[Parallel]{Parallel Algorithm}
+\subsection{Data Dependencies}
 
 %------------------------------------------------
 \frame{\frametitle{Data Dependencies in Serial Algorithm Build Neighborhoods}
@@ -417,15 +416,206 @@
 }
 
 %------------------------------------------------
-\frame{\frametitle{Data Dependencies in Serial Algorithms}
-	\begin{columns}[t]
-		\begin{column}{.5\textwidth}
-			\includestandalone[width=1.0\textwidth]{../figures/tikz/sacelDataDependencies}
+\frame{\frametitle{Data Dependencies in Serial Algorithm Calculate Edge Lengths}
+	\centering
+	\includestandalone[width=0.85\textwidth]{../figures/tikz/sacelDataDependencies}
+}
+
+%------------------------------------------------
+\frame{\frametitle{Data Dependencies in Serial Algorithm Convolve Filter}
+	\centering
+	\includestandalone[width=0.5\textwidth]{../figures/tikz/sacfDataDependencies}
+} 
+
+
+%================================================
+\subsection{Parallel Algorithm}
+
+%------------------------------------------------
+\frame{\frametitle{Parallel Alg. 1}
+
+}
+
+%------------------------------------------------
+\frame{\frametitle{Parallel Algorithm for Calculating Edge Lengths}
+\begin{algorithm}[H]
+	\SetAlgoSkip{}
+	\DontPrintSemicolon
+	\SetCommentSty{small}
+	\SetKwFor{For}{for}{:}{}
+	\SetKwProg{Func}{Function}{}{}
+	\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
+
+	\only<1>{
+	\begin{block}{}%Part (1 of 1)}
+		\Input{the set of all points $\bP$, \\
+			the set of discovered neighborhoods $\bN$}
+		\Output{the set of pre-calculated edge lengths $\bE$, \\
+			the minimum edge length of the mesh $\gelm$}
+
+		\bigskip
+	\nl	\Func{serialCalculateEdgeLengths($\bP$, $\bN$)}{
+	\nl		\For{$\bp_v \in \bP$}{
+	\nl			\For{$\bp_i \in \bN_v$}{
+					\linespread{1.5}\selectfont
+	\nl				$\bE_{\sv{i}} \leftarrow |\bp_i - \bp_v|$\tcc*[r]{This is $\ellstar$}
+	\nl				$\gelm \leftarrow \min\left \{\gelm,\,\bE_{\sv{i}}\right \}$\;
+				}
+			}
+		}
+	\end{block}
+	}
+\end{algorithm}
+}
+
+%------------------------------------------------
+\frame{\frametitle{Parallel Algorithm for Convolving the Filter}
+	\vspace*{-8mm}
+	\begin{columns}
+		\begin{column}[t]{.35\textwidth}
+			\begin{block}{}
+				{\fontsize{4.2}{4.2}\selectfont
+					\begin{algorithm}[H]
+						\DontPrintSemicolon
+						\SetCommentSty{small}
+						\SetKwFor{For}{for}{:}{}
+						\SetKwProg{Func}{Function}{}{}
+						\SetKwProg{Cont}{}{}{}
+						\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
+						\Input{the set of all points $\bP$, \\
+							the set of discovered neighborhoods $\bN$, \\
+							the set of pre-calculated edge lengths $\bE$, \\
+							the minimum edge length of the mesh $\gelm$, \\
+							the set of function values $\bF$, \\
+							the user-defined number of convolutions $\tau$}
+						\Output{the set of one-ring \wmfv{s} $\bF'$}
+
+						\medskip
+						\linespread{1.2}\selectfont
+					\nl	\Func{serialConvolveFilter($\bP$, $\bN$, $\bE$, $\gelm$, $\bF$, $\tau$)}{
+					\nl		\For{$t\leftarrow 1\;\KwTo\;\tau$}{
+					\nl			\For{$\bp_v \in \bP$}{
+					\nl				\For{$\bp_i \in \bN_v$}{
+										\linespread{1.5}\selectfont
+					\nl					$\kern-0.5pt\alpha \leftarrow cos^{-1} \kern-6pt\left (\frac{\bE_c^2\,+\,\bE_b^2\,-\,\bE_a^2}{2\,\cdot\,\bE_c\,\cdot\,\bE_b}\right )$\;
+										\linespread{1.2}\selectfont
+					\nl					$\kern0.00pt\beta \leftarrow (\pi - \alpha)\mathbin{/}2$\;
+					\nl					$\kern-1.5ptA \leftarrow \Big(\gelm\,\Big)^2\kern-4pt\cdot\alpha\mathbin{/}2$\;
+					\nl					$\kern1.00pt\check{\ell} \leftarrow \big(4\cdot\gelm\cdot\sin(\alpha\mathbin{/}2)\big)\mathbin{/}3\,\alpha$\;
+					\nl					$\kern1.00pt\zeta \leftarrow \gelm\mathbin{/}\sin(\beta)$\;
+					\nl					\For{$j \in {1,2}$}{\label{algSCFjloop}
+					\nl						$\tilde{\ell}_j \leftarrow \zeta\mathbin{/}\bE_j$\;
+					\nl						$f'_j \leftarrow f_0\cdot(1 - \tilde{\ell}_j) + f_j\cdot\tilde{\ell}_j$\;
+										}
+					\nl					$\check{f} \leftarrow f_0\cdot(1 - \check{\ell}) + \big((f'_1 + f'_2)\cdot\check{\ell}\big)\mathbin{/}2$\;
+					\nl					$\kern-2.0pt\tilde{f}_v \leftarrow \tilde{f}_v + A\cdot\check{f}$\;
+					\nl					$\kern-4.0pt\tilde{A}_v \leftarrow \tilde{A}_v + A$\;
+									}
+					\nl				$f'_v \leftarrow \tilde{f}_v\mathbin{/}\tilde{A}_v$\;
+								}
+					\nl		$\bF' \leftarrow \left \{f'_1,\ldots,\,f'_{|\bP|}\right \}$\;
+					\nl 	$\bF \leftarrow \bF'$\;
+							}
+						}
+					\end{algorithm}
+				}
+			\end{block}
 		\end{column}
-		\begin{column}{.5\textwidth}
-			\includestandalone[width=1.0\textwidth]{../figures/tikz/sacfDataDependencies}
+		\begin{column}[t]{.65\textwidth}				
+			\only<1>{
+				\begin{block}{Part (1 of 3)}
+					\begin{algorithm}[H]
+						\DontPrintSemicolon
+						\SetCommentSty{small}
+						\SetKwFor{For}{for}{:}{}
+						\SetKwProg{Func}{Function}{}{}
+						\SetKwProg{Cont}{}{}{}
+						\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
+						\Input{the set of all points $\bP$, \\
+							the set of discovered neighborhoods $\bN$, \\
+							the set of pre-calculated edge lengths $\bE$, \\
+							the minimum edge length of the mesh $\gelm$, \\
+							the set of function values $\bF$, \\
+							the user-defined number of convolutions $\tau$}
+						\Output{the set of one-ring \wmfv{s} $\bF'$}
+					\end{algorithm}
+				\end{block}
+			}\only<2>{
+				\begin{block}{Part (2 of 3)}
+					\begin{algorithm}[H]
+						\SetAlgoLined
+						\DontPrintSemicolon
+						\SetCommentSty{small}
+						\SetKwFor{For}{for}{:}{}
+						\SetKwProg{Func}{Function}{}{}
+						\SetKwProg{Cont}{}{}{}
+						\setcounter{AlgoLine}{0}
+					\nl	\Func{serialConvolveFilter($\bP$, $\bN$, $\bE$, $\gelm$, $\bF$, $\tau$)}{
+					\nl		\For{$t\leftarrow 1\;\KwTo\;\tau$}{
+					\nl			\For{$\bp_v \in \bP$}{
+					\nl				\For{$\bp_i \in \bN_v$}{
+										\vspace*{1.5\baselineskip}
+										\ldots
+										\vspace*{1.5\baselineskip}
+									}
+						\setcounter{AlgoLine}{15}
+					\nl				$f'_v \leftarrow \tilde{f}_v\mathbin{/}\tilde{A}_v$\;
+								}
+					\nl		$\bF' \leftarrow \left \{f'_1,\ldots,\,f'_{|\bP|}\right \}$\;
+					\nl 	$\bF \leftarrow \bF'$\;
+							}
+						}
+					\end{algorithm}
+				\end{block}
+			}\only<3>{
+				\begin{block}{Part (3 of 3)}
+					{\fontsize{9}{9.5}\selectfont
+					\begin{algorithm}[H]
+						\SetAlgoLined
+						\DontPrintSemicolon
+						\SetCommentSty{small}
+						\SetKwFor{For}{for}{:}{}
+						\SetKwProg{Func}{Function}{}{}
+						\SetKwProg{Cont}{}{}{}
+						\setcounter{AlgoLine}{7}
+						\vspace*{-1\baselineskip}
+						\Cont{}{
+							\vspace*{-1\baselineskip}
+							\Cont{}{
+								\vspace*{-1\baselineskip}
+								\Cont{}{
+									\vspace*{-1\baselineskip}
+									\Cont{}{					
+										\linespread{1.5}\selectfont
+					\nl					$\kern-0.5pt\alpha \leftarrow cos^{-1} \kern-6pt\left (\frac{\bE_c^2\,+\,\bE_b^2\,-\,\bE_a^2}{2\,\cdot\,\bE_c\,\cdot\,\bE_b}\right )$\;
+										\linespread{1.2}\selectfont
+					\nl					$\kern0.00pt\beta \leftarrow (\pi - \alpha)\mathbin{/}2$\;
+					\nl					$\kern-1.5ptA \leftarrow \Big(\gelm\,\Big)^2\kern-4pt\cdot\alpha\mathbin{/}2$\;
+					\nl					$\kern1.00pt\check{\ell} \leftarrow \big(4\cdot\gelm\cdot\sin(\alpha\mathbin{/}2)\big)\mathbin{/}3\,\alpha$\;
+					\nl					$\kern1.00pt\zeta \leftarrow \gelm\mathbin{/}\sin(\beta)$\;
+					\nl					\For{$j \in {1,2}$}{\label{algSCFjloop}
+					\nl						$\tilde{\ell}_j \leftarrow \zeta\mathbin{/}\bE_j$\;
+					\nl						$f'_j \leftarrow f_0\cdot(1 - \tilde{\ell}_j) + f_j\cdot\tilde{\ell}_j$\;
+										}
+					\nl					$\check{f} \leftarrow f_0\cdot(1 - \check{\ell}) + \big((f'_1 + f'_2)\cdot\check{\ell}\big)\mathbin{/}2$\;
+					\nl					$\kern-2.0pt\tilde{f}_v \leftarrow \tilde{f}_v + A\cdot\check{f}$\;
+					\nl					$\kern-4.0pt\tilde{A}_v \leftarrow \tilde{A}_v + A$\;
+									}
+								}
+							}
+						}
+					\end{algorithm}
+					}
+				\end{block}
+			}
 		\end{column}
 	\end{columns}
+	\begin{tikzpicture}[overlay, remember picture]
+		\draw<1>[unirot,ultra thick,rounded corners] (-8mm, 64mm) rectangle (46mm, 50mm);
+		\draw<2>[unirot,ultra thick,rounded corners] (-8mm, 50mm) rectangle (46mm, 41mm);
+		\draw<2>[unirot,ultra thick,rounded corners] (-8mm, 15mm) rectangle (46mm,  2mm);
+		\draw<3>[unirot,ultra thick,rounded corners] (-8mm, 43mm) rectangle (46mm, 14mm);
+	\end{tikzpicture}
 }
 
 
@@ -437,48 +627,129 @@
 
 
 %================================================
-\subsection{Filter Response}
+\subsection{Filter Response On Synthetic Data}
 
 %------------------------------------------------
-\frame{
-\frametitle{Experiment 1}
+\frame{\frametitle{Bisected-Square Tessellations}
+	\input{../figures/latex/sq2.tex}
+}
 
+%------------------------------------------------
+\frame{\frametitle{Quadrisected-Square Tessellations}
+	\input{../figures/latex/sq4.tex}
+}
+
+%------------------------------------------------
+\frame{\frametitle{Hexagonal Tessellations}
+	\input{../figures/latex/hex.tex}
+}
+
+%------------------------------------------------
+\frame{\frametitle{Random Triangulated Discs}
+	\input{../figures/latex/rdisc.tex}
 }
 
 
 %================================================
-\subsection{Parallel Algorithm}
+\subsection{Filter Response On Acquired Data}
+
+%------------------------------------------------
+\frame{\frametitle{The University of Heidelberg Seal}
+	\input{../figures/latex/unisiegel.tex}
+}
+
+%------------------------------------------------
+\frame{\frametitle{A flat surface from ILATO}
+	\input{../figures/latex/ILATO.tex}
+}
+
+%------------------------------------------------
+\frame{\frametitle{The Stanford Bunny}
+	\input{../figures/latex/bun.tex}
+}
+
+
+
+
+%================================================
+\subsection{Convolving with a GPGPU}
 
 %------------------------------------------------
 \frame{\frametitle{Evaluation and Analysis of Parallel Algorithms}
 
-\begin{align}
+\begin{align*}
 	\mathit{T_s}(\hat{n}) &= \text{The optimal sequential execution time} \\
 	\mathit{T_{\rho}}(\hat{n},\,\rho) &= \text{Parallel runtime}
-	\label{eq:timings}
-\end{align}
+\end{align*}
 
 which can then be used to define the three essential metrics:
 
-\begin{align}
+\begin{align*}
 	\text{Speedup:}\quad&\mathit{S}(\hat{n},\,\rho) = \frac{\mathit{T_s}(\hat{n})}{\mathit{T_{\rho}}(\hat{n},\,\rho)} \\
 	\text{Costs}:\quad&\mathit{C}(\hat{n},\,\rho) =\rho\cdot\mathit{T_{\rho}}(\hat{n},\,\rho) \\
 	\text{Efficiency}:\quad&\mathit{E}(\hat{n},\,\rho) = \frac{\mathit{T_s}(\hat{n})}{\mathit{C}(\hat{n},\,\rho)} = \frac{\mathit{S}(\hat{n},\,\rho)}{\rho}
-	\label{eq:essentialMetrics}
-\end{align}
+\end{align*}
 }
 
 %------------------------------------------------
 \frame{\frametitle{Amdahl's law and the Degree of Parallelism}
 Also important is the notion of an algorithm's ``degree of parallelism'', which is the maximum number of operations that can be executed in parallel, a principle central to Amdahl's law which is defined as, when given a constant problem size $\hat{n}_{fixed}$, and an algorithm's degree of parallelism $q$,
 
-\begin{equation}
+\begin{equation*}
 	\lim_{\rho \to \infty} \mathit{S}(\hat{n}_{fixed},\,\rho) = 1 / q
-\end{equation}
+\end{equation*}
 
 This leads to the conclusion that one can not simply add more processors in order to gain appreciable speedup, but instead that relies heavily on processor counts which grow in relation to problem sizes, and the degree of parallelism, which itself relies on the underlying nature of the serial algorithm and the artful design of the parallel algorithm.
 }
 
+%------------------------------------------------
+\frame{\frametitle{Compute Times per Experiment for increasing Convolution Counts}
+\begin{figure}[ht]
+\includegraphics[width=1.0\linewidth,height=1.0\textheight,keepaspectratio]
+	{../figures/computeTimesLinespoints.png}
+	\caption[Compute Times per Experiment for increasing Convolution Counts]{Compute times per experiment, for increasing numbers of convolutions of \fors{t}, onto acquired and synthetic \tdd{} of varying sizes. Combinations involving the smallest mesh sizes are colored red, the largest mesh sizes in blue, with all others scaled in between. The experiments involving acquired \tdd{} are specially marked with squares for the flat surface mesh, and circles for the university seal.
+
+\vspace*{\baselineskip}
+\scriptsize† The experiment codes used correspond to: the system, T for the desktop or M for the laptop; the algorithm variant, P for parallel or S for serial; the mesh being processed, BS for bisected-square, HT for hexagonal tessellation, US for university seal, and FS for the flat surface; and finally, the count of points comprising the mesh.}
+	\label{fig:computeTimesLP}
+\end{figure}
+}
+
+%------------------------------------------------
+\frame{\frametitle{Compute Times Scatter Plot}
+\begin{figure}[ht]
+	\includegraphics[width=\linewidth]{../figures/computeTimesScatter.png}
+	\caption[Compute Times Scatter Plot]{A plot of the total compute times of each experiment as the area of a circle, given different hardware configurations. Each is then plotted for each combination of mesh size measured in point counts, and the number of convolutions of \Fors{t}. Blue circles indicate the serial variant computed with a \gls{CPU}, and a red circle indicates the parallel variant was computed on a \gls{GPGPU}.
+
+\vspace*{\baselineskip}
+\scriptsize† See Figure\ref{fig:computeTimesLP} for an explanation of the experiment codes.}
+	\label{fig:computeTimesS}
+\end{figure}
+}
+
+%------------------------------------------------
+\frame{\frametitle{Speedup}
+\begin{figure}[ht]
+	\includegraphics[width=\linewidth]{../figures/speedup.png}
+	\caption[Speedup]{A graph of the \gls{speedup} obtained by convolving the parallel variant of \Fors{t} over meshes of different sizes. Lines in blue, increasing in saturation with the size of the mesh, are experiments run using the \gls{GPGPU} of laptop M with 768 \gls{CUDA} cores. Lines in red, increasing in saturation with the size of the mesh, are experiments run using the \gls{GPGPU}  of desktop T with 2,560 \gls{CUDA} cores. The experiments involving acquired \tdd{} are specially marked with squares for the flat surface mesh, and circles for the university seal.
+
+\vspace*{\baselineskip}
+\scriptsize† See Figure~\ref{fig:computeTimesLP} for an explanation of the experiment codes.}
+	\label{fig:speedup}
+\end{figure}
+}
+
+%------------------------------------------------
+\frame{\frametitle{Efficiency}
+\begin{figure}[ht]
+	\includegraphics[width=\linewidth]{figures/efficiency.png}
+	\caption[Efficiency]{A graph of the \gls{efficiency} obtained by convolving the parallel variant of \Fors{t} over meshes of different sizes. Lines in blue, increasing in saturation with the size of the mesh, are experiments run using the \gls{GPGPU} of laptop M with 768 \gls{CUDA} cores. Lines in red, increasing in saturation with the size of the mesh, are experiments run using the \gls{GPGPU} of desktop T with 2,560 \gls{CUDA} cores. The experiments involving acquired \tdd{} are specially marked with squares for the flat surface mesh and circles for the university seal.
+
+\vspace*{\baselineskip}
+\scriptsize† See Figure~\ref{fig:computeTimesLP} for an explanation of the experiment codes.}
+	\label{fig:efficiency}
+\end{figure}
+}
 
 
 %================================================
@@ -486,15 +757,25 @@ This leads to the conclusion that one can not simply add more processors in orde
 \section[Conclusion]{Conclusion \& Outlook}
 
 %------------------------------------------------
-\frame{
-\frametitle{Conclusion}
-
+\frame{\frametitle{Conclusion}
+	\begin{itemize}
+		\item item 1
+		\item item 1
+		\item item 1
+		\item item 1
+		\item item 1
+	\end{itemize}
 }
 
 %------------------------------------------------
-\frame{
-\frametitle{Outlook}
-
+\frame{\frametitle{Outlook}
+	\begin{itemize}
+		\item item 1
+		\item item 1
+		\item item 1
+		\item item 1
+		\item item 1
+	\end{itemize}
 }
 
 %------------------------------------------------
