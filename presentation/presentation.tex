@@ -309,7 +309,7 @@
 		\end{column}
 		\begin{column}[t]{.65\textwidth}				
 			\only<1>{
-				\begin{block}{Part (1 of 4)}
+				\begin{block}{Part (1 of 3)}
 					\begin{algorithm}[H]
 						\DontPrintSemicolon
 						\SetCommentSty{small}
@@ -327,7 +327,7 @@
 					\end{algorithm}
 				\end{block}
 			}\only<2>{
-				\begin{block}{Part (2 of 4)}
+				\begin{block}{Part (2 of 3)}
 					\begin{algorithm}[H]
 						\SetAlgoLined
 						\DontPrintSemicolon
@@ -340,22 +340,22 @@
 					\nl		\For{$t\leftarrow 1\;\KwTo\;\tau$}{
 					\nl			\For{$\bp_v \in \bP$}{
 					\nl				\For{$\bp_i \in \bN_v$}{
-										\linespread{1.5}\selectfont
-					\nl					$\kern-0.5pt\alpha \leftarrow cos^{-1}$
-										\begin{Large}
-											$\kern-6pt\left (\frac{\bE_c^2\,+\,\bE_b^2\,-\,\bE_a^2}{2\,\cdot\,\bE_c\,\cdot\,\bE_b}\right )$\;
-										\end{Large}
-										\linespread{1.2}\selectfont
-					\nl					$\kern0.00pt\beta \leftarrow (\pi - \alpha)\mathbin{/}2$\;
-					\nl					$\kern-1.5ptA \leftarrow \Big(\gelm\,\Big)^2\kern-4pt\cdot\alpha\mathbin{/}2$\;
+										\vspace*{1.5\baselineskip}
+										\ldots
+										\vspace*{1.5\baselineskip}
 									}
+						\setcounter{AlgoLine}{15}
+					\nl				$f'_v \leftarrow \tilde{f}_v\mathbin{/}\tilde{A}_v$\;
 								}
+					\nl		$\bF' \leftarrow \left \{f'_1,\ldots,\,f'_{|\bP|}\right \}$\;
+					\nl 	$\bF \leftarrow \bF'$\;
 							}
 						}
 					\end{algorithm}
 				\end{block}
 			}\only<3>{
-				\begin{block}{Part (3 of 4)}
+				\begin{block}{Part (3 of 3)}
+					{\fontsize{9}{9.5}\selectfont
 					\begin{algorithm}[H]
 						\SetAlgoLined
 						\DontPrintSemicolon
@@ -371,56 +371,36 @@
 								\vspace*{-1\baselineskip}
 								\Cont{}{
 									\vspace*{-1\baselineskip}
-									\Cont{}{
+									\Cont{}{					
+										\linespread{1.5}\selectfont
+					\nl					$\kern-0.5pt\alpha \leftarrow cos^{-1} \kern-6pt\left (\frac{\bE_c^2\,+\,\bE_b^2\,-\,\bE_a^2}{2\,\cdot\,\bE_c\,\cdot\,\bE_b}\right )$\;
+										\linespread{1.2}\selectfont
+					\nl					$\kern0.00pt\beta \leftarrow (\pi - \alpha)\mathbin{/}2$\;
+					\nl					$\kern-1.5ptA \leftarrow \Big(\gelm\,\Big)^2\kern-4pt\cdot\alpha\mathbin{/}2$\;
 					\nl					$\kern1.00pt\check{\ell} \leftarrow \big(4\cdot\gelm\cdot\sin(\alpha\mathbin{/}2)\big)\mathbin{/}3\,\alpha$\;
 					\nl					$\kern1.00pt\zeta \leftarrow \gelm\mathbin{/}\sin(\beta)$\;
-										\SetAlgoVlined
 					\nl					\For{$j \in {1,2}$}{\label{algSCFjloop}
 					\nl						$\tilde{\ell}_j \leftarrow \zeta\mathbin{/}\bE_j$\;
 					\nl						$f'_j \leftarrow f_0\cdot(1 - \tilde{\ell}_j) + f_j\cdot\tilde{\ell}_j$\;
 										}
 					\nl					$\check{f} \leftarrow f_0\cdot(1 - \check{\ell}) + \big((f'_1 + f'_2)\cdot\check{\ell}\big)\mathbin{/}2$\;
-									}
-								}
-							}
-						}
-					\end{algorithm}
-				\end{block}
-			}\only<4>{
-				\begin{block}{Part (4 of 4)}
-					\begin{algorithm}[H]
-						\DontPrintSemicolon
-						\SetCommentSty{small}
-						\SetKwFor{For}{for}{:}{}
-						\SetKwProg{Func}{Function}{}{}
-						\SetKwProg{Cont}{}{}{}
-						\setcounter{AlgoLine}{13}
-						\vspace*{-1\baselineskip}
-						\Cont{}{
-							\vspace*{-1\baselineskip}
-							\Cont{}{
-								\vspace*{-1\baselineskip}
-								\Cont{}{
-									\vspace*{-1\baselineskip}
-									\Cont{}{
 					\nl					$\kern-2.0pt\tilde{f}_v \leftarrow \tilde{f}_v + A\cdot\check{f}$\;
 					\nl					$\kern-4.0pt\tilde{A}_v \leftarrow \tilde{A}_v + A$\;
 									}
-					\nl				$f'_v \leftarrow \tilde{f}_v\mathbin{/}\tilde{A}_v$\;
 								}
-					\nl		$\bF' \leftarrow \left \{f'_1,\ldots,\,f'_{|\bP|}\right \}$\;
-					\nl 	$\bF \leftarrow \bF'$\;
 							}
 						}
 					\end{algorithm}
+					}
 				\end{block}
 			}
 		\end{column}
 	\end{columns}
 	\begin{tikzpicture}[overlay, remember picture]
-		\draw<1>[unirot,ultra thick,rounded corners] (-8mm, 64mm) rectangle (48mm, 50mm);
-		\draw<2>[unirot,ultra thick,rounded corners] (-8mm, 50mm) rectangle (48mm, 34mm);
-		\draw<3>[unirot,ultra thick,rounded corners] (-8mm, 35mm) rectangle (48mm, 19mm);
+		\draw<1>[unirot,ultra thick,rounded corners] (-8mm, 64mm) rectangle (46mm, 50mm);
+		\draw<2>[unirot,ultra thick,rounded corners] (-8mm, 50mm) rectangle (46mm, 41mm);
+		\draw<2>[unirot,ultra thick,rounded corners] (-8mm, 15mm) rectangle (46mm,  2mm);
+		\draw<3>[unirot,ultra thick,rounded corners] (-8mm, 43mm) rectangle (46mm, 14mm);
 	\end{tikzpicture}
 }
 
