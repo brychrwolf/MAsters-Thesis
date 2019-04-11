@@ -18,7 +18,7 @@ once:
 	pdflatex thesis
 
 cleanThesis:
-	rm -f thesis.aux thesis.bbl thesis.blg thesis.dvi thesis.idx thesis.ilg thesis.ind thesis.lof thesis.log thesis.lot thesis.out thesis.pdf thesis.toc thesis.loa thesis.nlo thesis.nls thesis.tdo thesis.xdv
+	rm -f thesis.aux thesis.bbl thesis.blg thesis.dvi thesis.idx thesis.ilg thesis.ind thesis.lof thesis.log thesis.lot thesis.out thesis.pdf thesis.toc thesis.loa thesis.nlo thesis.nls thesis.tdo thesis.xdv thesis.acn thesis.acr thesis.alg thesis.glg thesis.glo thesis.gls thesis.glsdefs thesis.ist
 
 cleanChapters:
 	rm -f chapters/*.aux
@@ -55,14 +55,22 @@ cleanPlots:
 
 
 
-.PHONY: presentation
-presentation:
-	cd figures/inkscape && $(MAKE) presentation
-	cd presentation && $(MAKE)
+
+presentation: svgs tikzs plots
+	$(STIME)
+	pdflatex -draftmode presentation
+	makeglossaries presentation
+	pdflatex -draftmode presentation
+	pdflatex presentation
+	$(ETIME)
+
+presentationOnce:
+	pdflatex presentation
 
 cleanPresentation:
 	cd figures/inkscape && $(MAKE) cleanPresentation
-	cd presentation && make clean
+	rm -f presentation.aux presentation.log presentation.nav presentation.out presentation.pdf presentation.snm presentation.toc presentation.acn presentation.acr presentation.alg presentation.glg presentation.glo presentation.gls presentation.glsdefs presentation.ist
+
 
 
 clean: cleanThesis

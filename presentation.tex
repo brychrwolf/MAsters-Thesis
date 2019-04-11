@@ -11,6 +11,8 @@
 \usetikzlibrary{shapes,arrows.meta}
 \usepackage{anyfontsize}
 %\usepackage{enumitem}
+\usepackage[acronym]{glossaries}
+\makeglossaries
 
 \usepackage{beamerthemesplit}
 \usetheme[compress]{Heidelberg}
@@ -45,7 +47,8 @@
 %}
 
 \begin{document}
-\input{../myCommands.tex}
+\input{myCommands.tex}
+\input{chapters/Z2-Glossary.tex}
 \setlength{\intextsep}{0pt}
 \def\hilite<#1>{\temporal<#1>{\color{black}}{\color{unirot}}{\color{gray}}}
 \frame[plain]{\titlepage}
@@ -99,13 +102,13 @@
 
 %------------------------------------------------
 \frame{\frametitle{SIMD Architecture}
-	\includegraphics[width=1.0\linewidth]{../figures/tikz/simdArchitecture.pdf}
+	\includegraphics[width=1.0\linewidth]{figures/tikz/simdArchitecture.pdf}
 	GPUs, Supercomputers, Computer Pools %Name examples like the cray, and pool in this building
 }
 
 %------------------------------------------------
 \frame{\frametitle{CPU vs GPU Construction}
-	\includegraphics[width=1.0\linewidth]{../figures/cpuvgpu.png}
+	\includegraphics[width=1.0\linewidth]{figures/cpuvgpu.png}
 }
 
 %------------------------------------------------
@@ -115,7 +118,7 @@
 
 %------------------------------------------------
 \frame{\frametitle{One-Ring Neighborhoods in Regular and Irregular Meshes}
-	\includegraphics[width=1.0\linewidth]{../figures/neighborhoods_presentation.png}
+	\includegraphics[width=1.0\linewidth]{figures/neighborhoods_presentation.png}
 	\begin{columns}[c]
 		\begin{column}{.33\textwidth}
 			a regular square mesh, as in pixels of a digital image
@@ -133,7 +136,7 @@
 \frame{\frametitle{Function Values as a Scalar Field}
 	\begin{columns}[c]
 		\begin{column}{.75\textwidth}
-			\includegraphics[width=1.0\linewidth]{../figures/visualizeFunctionValues2.png}
+			\includegraphics[width=1.0\linewidth]{figures/visualizeFunctionValues2.png}
 		\end{column}
 		\begin{column}{.25\textwidth}
 			Visualization of the curvature of function values feature boundries, connected segments, cuneiform tablets
@@ -155,7 +158,7 @@
 %------------------------------------------------
 \frame{\frametitle{A One-Ring Neighborhood and its Geodesic Disc}
 	\centering
-	\includegraphics[width=0.8\linewidth]{../figures/geodesicDisc_presentation.png}
+	\includegraphics[width=0.8\linewidth]{figures/geodesicDisc_presentation.png}
 	\begin{align*}
 		\elm(\bp_0) &:= \min_{\forall \bp_i \in \bN_v}|\bp_i - \bp_0| \\
 		\gelm &:= \min\left \{\elm(\bp_0) \;|\; \bp_0 \in \bM\,\right \}
@@ -164,18 +167,18 @@
 
 %------------------------------------------------
 \frame{\frametitle{An Enhanced View of a Circle Sector}
-	\includegraphics[width=0.5\linewidth]{../figures/anglesAndCenterOfGravity_presentation.png}
+	\includegraphics[width=0.5\linewidth]{figures/anglesAndCenterOfGravity_presentation.png}
 }
 
 %------------------------------------------------
 \frame{\frametitle{Interpolation of Function Values toward the Center of Gravity}
 	\centering
-	\includegraphics[width=0.9\linewidth]{../figures/interpolatedFunctionValues.png}
+	\includegraphics[width=0.9\linewidth]{figures/interpolatedFunctionValues.png}
 }
 
 %------------------------------------------------
 \frame{\frametitle{Weighted Mean Function Value $f'_v$ at $\bp_v$}
-	\includegraphics[width=1.0\linewidth]{../figures/funcValVolumes_presentation.png}
+	\includegraphics[width=1.0\linewidth]{figures/funcValVolumes_presentation.png}
 }
 
 
@@ -186,11 +189,11 @@
 \frame{\frametitle{Union Operations as Performed in Build Neighborhoods}
 	\begin{columns}[t]
 		\begin{column}{.6\textwidth}
-			\includegraphics[width=1.0\linewidth]{../figures/triangularFaces.png}
+			\includegraphics[width=1.0\linewidth]{figures/triangularFaces.png}
 		\end{column}
 		\hspace*{-1.5cm}
 		\begin{column}{.6\textwidth}
-			\includestandalone[width=1.0\linewidth]{../figures/tikz/unionsOfSimpleBuildNeighborhoods}
+			\includestandalone[width=1.0\linewidth]{figures/tikz/unionsOfSimpleBuildNeighborhoods}
 		\end{column}
 	\end{columns}
 
@@ -412,19 +415,19 @@
 %------------------------------------------------
 \frame{\frametitle{Data Dependencies in Serial Algorithm Build Neighborhoods}
 	\centering
-	\includestandalone[width=0.75\textwidth]{../figures/tikz/sabnDataDependencies}
+	\includestandalone[width=0.75\textwidth]{figures/tikz/sabnDataDependencies}
 }
 
 %------------------------------------------------
 \frame{\frametitle{Data Dependencies in Serial Algorithm Calculate Edge Lengths}
 	\centering
-	\includestandalone[width=0.85\textwidth]{../figures/tikz/sacelDataDependencies}
+	\includestandalone[width=0.85\textwidth]{figures/tikz/sacelDataDependencies}
 }
 
 %------------------------------------------------
 \frame{\frametitle{Data Dependencies in Serial Algorithm Convolve Filter}
 	\centering
-	\includestandalone[width=0.5\textwidth]{../figures/tikz/sacfDataDependencies}
+	\includestandalone[width=0.5\textwidth]{figures/tikz/sacfDataDependencies}
 } 
 
 
@@ -631,22 +634,22 @@
 
 %------------------------------------------------
 \frame{\frametitle{Bisected-Square Tessellations}
-	\input{../figures/latex/sq2.tex}
+	\input{figures/latex/sq2.tex}
 }
 
 %------------------------------------------------
 \frame{\frametitle{Quadrisected-Square Tessellations}
-	\input{../figures/latex/sq4.tex}
+	\input{figures/latex/sq4.tex}
 }
 
 %------------------------------------------------
 \frame{\frametitle{Hexagonal Tessellations}
-	\input{../figures/latex/hex.tex}
+	\input{figures/latex/hex.tex}
 }
 
 %------------------------------------------------
 \frame{\frametitle{Random Triangulated Discs}
-	\input{../figures/latex/rdisc.tex}
+	\input{figures/latex/rdisc.tex}
 }
 
 
@@ -655,17 +658,17 @@
 
 %------------------------------------------------
 \frame{\frametitle{The University of Heidelberg Seal}
-	\input{../figures/latex/unisiegel.tex}
+	\input{figures/latex/unisiegel.tex}
 }
 
 %------------------------------------------------
 \frame{\frametitle{A flat surface from ILATO}
-	\input{../figures/latex/ILATO.tex}
+	\input{figures/latex/ILATO.tex}
 }
 
 %------------------------------------------------
 \frame{\frametitle{The Stanford Bunny}
-	\input{../figures/latex/bun.tex}
+	\input{figures/latex/bun.tex}
 }
 
 
@@ -706,7 +709,7 @@ This leads to the conclusion that one can not simply add more processors in orde
 \frame{\frametitle{Compute Times per Experiment for increasing Convolution Counts}
 \begin{figure}[ht]
 \includegraphics[width=1.0\linewidth,height=1.0\textheight,keepaspectratio]
-	{../figures/computeTimesLinespoints.png}
+	{figures/computeTimesLinespoints.png}
 	\caption[Compute Times per Experiment for increasing Convolution Counts]{Compute times per experiment, for increasing numbers of convolutions of \fors{t}, onto acquired and synthetic \tdd{} of varying sizes. Combinations involving the smallest mesh sizes are colored red, the largest mesh sizes in blue, with all others scaled in between. The experiments involving acquired \tdd{} are specially marked with squares for the flat surface mesh, and circles for the university seal.
 
 \vspace*{\baselineskip}
@@ -718,7 +721,7 @@ This leads to the conclusion that one can not simply add more processors in orde
 %------------------------------------------------
 \frame{\frametitle{Compute Times Scatter Plot}
 \begin{figure}[ht]
-	\includegraphics[width=\linewidth]{../figures/computeTimesScatter.png}
+	\includegraphics[width=\linewidth]{figures/computeTimesScatter.png}
 	\caption[Compute Times Scatter Plot]{A plot of the total compute times of each experiment as the area of a circle, given different hardware configurations. Each is then plotted for each combination of mesh size measured in point counts, and the number of convolutions of \Fors{t}. Blue circles indicate the serial variant computed with a \gls{CPU}, and a red circle indicates the parallel variant was computed on a \gls{GPGPU}.
 
 \vspace*{\baselineskip}
@@ -730,7 +733,7 @@ This leads to the conclusion that one can not simply add more processors in orde
 %------------------------------------------------
 \frame{\frametitle{Speedup}
 \begin{figure}[ht]
-	\includegraphics[width=\linewidth]{../figures/speedup.png}
+	\includegraphics[width=\linewidth]{figures/speedup.png}
 	\caption[Speedup]{A graph of the \gls{speedup} obtained by convolving the parallel variant of \Fors{t} over meshes of different sizes. Lines in blue, increasing in saturation with the size of the mesh, are experiments run using the \gls{GPGPU} of laptop M with 768 \gls{CUDA} cores. Lines in red, increasing in saturation with the size of the mesh, are experiments run using the \gls{GPGPU}  of desktop T with 2,560 \gls{CUDA} cores. The experiments involving acquired \tdd{} are specially marked with squares for the flat surface mesh, and circles for the university seal.
 
 \vspace*{\baselineskip}
