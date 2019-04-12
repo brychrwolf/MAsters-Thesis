@@ -13,6 +13,7 @@ Then in Figure~\ref{fig:ILATO}, we see that the filter's efficacy diminishes whe
 In each of the experiments with synthetic data, the filter response applied to the \gls{ddf} did behave as a model of the diffusion process would which was expected. Also, when \fors{t} was applied to \gls{tMSIIf} generated scalar fields on the examples of acquired \tdd{}, the features did in fact become smoother. Therefore, it may be concluded that as a smoothing filter, the Fast One-Ring filter is successful.
 
 Next, Figure~\ref{fig:speedup} exposes just how powerful using a GPGPU to process a convolutional filter can be, even achieving speedups higher than 200\%. As one of our goals was to realize an appreciable speedup, we can conclude that \fors{t} is also successful are scaling better with the growing size of \tdd{}.
+\todoReword{its 200 times not percent!}
 
 Conversely, the parallel variant of \fors{t} algorithm only ever reached as high as 15\% efficiency. This indicates that vast improvements to the implementation of the algorithm are still yet to be made. An effective first approach would be to optimize how often threads are explicitly synchronized.
 
