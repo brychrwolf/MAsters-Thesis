@@ -62,59 +62,59 @@
 \section{Motivation \& Introduction}
 
 %------------------------------------------------
-%TODO:Fill out
+%TODO:get images
+%TODO:fix top/bottom margins
 \frame{\frametitle{Motivation}
-	\begin{itemize}
-		\item Increasing demand for high-definition \tdd{}
-		\begin{itemize}
-			\item Modernization of Archeology
-			\item Industrial quality scanning
-		\end{itemize}
-		\item Danger to physical archives %
-		%\begin{itemize}
-		%	\item 2018 Brazilian museum fire destroyed 20 million artifacts
-		%	\item Instability of Middle East \& North  Africa
-		%\end{itemize}
-		\item Lower cost 3D-scanners are now more accurate
-		\item Raw \tdd{} is not suitable for analysis %mesh cleaning uniseigel
-		\begin{itemize}
-			\item Jagged borders of connected components
-			\item Non-manifold faces, singular points, etc.
-		\end{itemize}
-		\item Neighborhoods of points are arbitrary size and shape
-		\item \tdd{} is big, slow to filter without parallelization %tens of millions of points
-		\item \glspl{GPGPU} are increasing in power, reducing in cost
-	\end{itemize}
-
-%\section{Motivation}
-%3D-Data is important to many fields
-%From industrial quality scanning~\cite{ILATO14}, to computerized analysis of documents and artifacts within the Digital Humanities~\cite{Bogacz15}, the demand for high-definition \tdd{} is only increasing. And in light of recent tragedies befalling global physical archives, like the museum fire which destroyed Brazil's oldest museum and its 20 million artifacts~\cite{Andreoni18}, or the numerous war zones occupying archaeologically important sites, 3D-scanning will continue to increase in importance.
-
-%3D-Data Noises in data, so must still process
-%However, raw \tdd{} is typically not suitable for analysis~\cite[p.~25-32]{Mara12}, so processing and pre-processing with a smoothing filter becomes necessary. In dense, high-resolution meshes, for example, one can see noise propagating as jagged outlines in segment boundaries of connected components when visualizing the output of filters designed for analysis, like the Multi-Scale Integral Invariants filter (MSII)~\cite[s.~3.2]{Mara17}.
-
-%processing is difficult
-%One major complication slowing the development of filters for \tdd{} has been that the window size of any filter must remain static for the duration of its convolution, in order for the output response to be mapped correctly back onto the input field~\cite[p.~106-112]{Jaehne97}. While it is trivial to define a static-sized filter for convolving regular meshes like raster images, it is a complex and complicated task to create the same for convolving acquired \tdd{}, whose one-ring neighborhoods are subsets of non-planar meshes embedded in $\bR{3}$, uniformly irregular, with completely arbitrary shapes, sizes, and counts of members~\cite[p.~29]{Mara12}~\cite[s.~3.2]{Mara17}.
-
-%3D-Data is big. serial is slow
-%Another problem which arises, is that with high-resolution 3D-scanning, the data output is often comprised of millions, or tens of millions, of points per scanned item and features several hundred points per mm$^2$~\cite[25,144]{Mara17}~\cite[4]{ILATO14}. At that scale, serial algorithms processing that data can no longer be included in the regular workflow of a scientist analyzing the artifacts, because each operation can easily take hours or days to complete.
-
-
-%gpgpus are cheap, so do the thing
-%Fortunately, with the introduction of GPGPUs to the commercial market, individual research groups now have the opportunity to exploit the parallel processing power of SIMD systems, without needing access to an institutional supercomputer. Therefore, the motivation for designing a smoothing filter, which can efficiently convolve over large, irregular, acquired \tdd{} by utilizing commercially available GPGPUs, was realized. Thus came \Fors{t}, and the research presented in this thesis.
+	\begin{columns}[T]
+		\begin{column}{.7\textwidth}
+			\begin{itemize}
+				\hilite<1>{\item Increasing demand for high-definition \tdd{}}
+				\begin{itemize}
+					\hilite<1>{\item Modernization of Archeology}
+					\hilite<1>{\item Industrial quality scanning}
+					\hilite<1>{\item Danger to physical archives}%
+						%\begin{itemize}
+						%	\item 2018 Brazilian museum fire destroyed 20 million artifacts
+						%	\item Instability of Middle East \& North  Africa
+						%\end{itemize}
+					\hilite<1>{\item Lower cost 3D-scanners are now more accurate}
+				\end{itemize}
+				\hilite<2>{\item Raw \tdd{} is not suitable for analysis} %mesh cleaning uniseigel
+				\begin{itemize}
+					\hilite<2>{\item Non-manifold faces, singular points, etc.}
+					\hilite<2>{\item Jagged borders of connected components}
+					\hilite<2>{\item Errors propagate when iterative filtering}
+				\end{itemize}
+				\hilite<3>{\item Neighborhoods of points are arbitrary size and shape}
+				\hilite<4>{\item \tdd{} is big, slow to filter without parallelization} %tens of millions of points
+				\hilite<5>{\item Affordable \glspl{GPGPU} are increasing in power}
+			\end{itemize}
+		\end{column}
+		\begin{column}{.3\textwidth}
+			%\only<1>{\includegraphics[width=0.8\linewidth]{example-image-9x16.png}}
+			\only<2>{
+				\vspace*{-4mm}
+				\includegraphics[width=.6\linewidth]{figures/badMesh1.png}
+				\includegraphics[width=.6\linewidth]{figures/badMesh2.png}
+				\includegraphics[width=.6\linewidth]{figures/badMesh3.png}
+			}
+			\only<3>{
+				\vspace*{12mm}
+				\includegraphics[width=.8\linewidth]{figures/neighborhoods_presentation_acq.png}}
+			%\only<4>{\includegraphics[width=.8\linewidth]{example-image-9x16.png}}
+			%\only<5>{\includegraphics[width=.8\linewidth]{example-image-9x16.png}}
+		\end{column}
+	\end{columns}
 }
 
 %------------------------------------------------
-%TODO:Fill out
-%\frame{\frametitle{Introduction}
-%
-%}
-
-%------------------------------------------------
-%TODO:add details
 \frame{\frametitle{SIMD Architecture}
 	\includegraphics[width=1.0\linewidth]{figures/tikz/simdArchitecture.pdf}
-	GPUs, Supercomputers, Computer Pools %Name examples like the cray, and pool in this building
+
+	\bigskip
+	\begin{flushright}
+		i.e. GPUs, Supercomputers, Computer Pools %Name examples like the cray, and pool in this building
+	\end{flushright}
 }
 
 %------------------------------------------------
@@ -124,7 +124,18 @@
 }
 
 %------------------------------------------------
-%TODO:add details
+\frame{\frametitle{Function Values as a Scalar Field}
+	\begin{columns}[c]
+		\begin{column}{.75\textwidth}
+			\includegraphics[width=1.0\linewidth]{figures/visualizeFunctionValues2.png}
+		\end{column}
+		\begin{column}{.25\textwidth}
+			Visualization of the scalar field filter response of an integral invariant filter convolved over a cuneiform engraving acquired as \tdd{}
+		\end{column}
+	\end{columns}
+}
+
+%------------------------------------------------
 \frame{\frametitle{One-Ring Neighborhoods in Regular and Irregular Meshes}
 	\includegraphics[width=1.0\linewidth]{figures/neighborhoods_presentation.png}
 
@@ -138,19 +149,6 @@
 		\end{column}
 		\begin{column}{.3\textwidth}
 			an irregular triangle mesh, typical of acquired \tdd{}
-		\end{column}
-	\end{columns}
-}
-
-%------------------------------------------------
-%TODO:get correct descripition from mara
-\frame{\frametitle{Function Values as a Scalar Field}
-	\begin{columns}[c]
-		\begin{column}{.75\textwidth}
-			\includegraphics[width=1.0\linewidth]{figures/visualizeFunctionValues2.png}
-		\end{column}
-		\begin{column}{.25\textwidth}
-			Visualization of the curvature of function values feature boundries, connected segments, cuneiform tablets
 		\end{column}
 	\end{columns}
 }
@@ -179,7 +177,7 @@
 %------------------------------------------------
 %TODO:add math to Columns
 \frame{\frametitle{An Enhanced View of a Circle Sector}
-	\begin{columns}[t]
+	\begin{columns}[T]
 		\begin{column}{.5\textwidth}
 			\includegraphics[width=\linewidth]{figures/anglesAndCenterOfGravity_presentation.png}
 		\end{column}
@@ -590,7 +588,6 @@
 	\end{columns}
 }
 \fi
-
 %------------------------------------------------
 \frame{\frametitle{Parallel Algorithm for Calculating Edge Lengths}
 	\vspace*{-8mm}
@@ -1009,18 +1006,18 @@
 
 
 %================================================
-\subsection{Convolving with a GPGPU}
+\subsection{Convolving with a \gls{GPGPU}}
 
 %------------------------------------------------
 \frame{\frametitle{Evaluation and Analysis of Parallel Algorithms}
 
 Two basic timings:
 \begin{align*}
-	\mathit{T_s}(\hat{n}) &= \text{The optimal sequential execution time} \\
-	\mathit{T_{\rho}}(\hat{n},\,\rho) &= \text{Parallel runtime}
+	\mathit{T_s}(\hat{n}) &= \text{sequential execution time} \\%\text{The optimal sequential execution time} \\
+	\mathit{T_{\rho}}(\hat{n},\,\rho) &= \text{Parallel execution time}
 \end{align*}
 
-define three essential metrics:
+Three essential metrics:
 \begin{align*}
 	\text{Speedup:}\quad&\mathit{S}(\hat{n},\,\rho) = \frac{\mathit{T_s}(\hat{n})}{\mathit{T_{\rho}}(\hat{n},\,\rho)} \\
 	\text{Costs}:\quad&\mathit{C}(\hat{n},\,\rho) =\rho\cdot\mathit{T_{\rho}}(\hat{n},\,\rho) \\
@@ -1178,5 +1175,4 @@ define three essential metrics:
 	\end{center}
 	\vspace*{2cm}
 }
-
 \end{document}

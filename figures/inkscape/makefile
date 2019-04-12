@@ -13,6 +13,7 @@ SVGS_OUTPUTS_PRESENTATION = \
 				../anglesAndCenterOfGravity_presentation.png \
 				../funcValVolumes_presentation.png \
 				../neighborhoods_presentation.png \
+				../neighborhoods_presentation_acq.png \
 				../amdahlsLaw.png
 
 
