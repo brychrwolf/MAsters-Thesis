@@ -56,7 +56,7 @@
 
 
 
-
+\iffalse
 %================================================
 %================================================
 \section{Motivation \& Introduction}
@@ -331,7 +331,7 @@
 				}
 			\end{block}
 		\end{column}
-		\begin{column}[t]{.65\textwidth}				
+		\begin{column}[t]{.65\textwidth}
 			\only<1>{
 				\begin{block}{Part (1 of 3)}
 					\begin{algorithm}[H]
@@ -397,7 +397,7 @@
 								\vspace*{-1\baselineskip}
 								\Cont{}{
 									\vspace*{-1\baselineskip}
-									\Cont{}{					
+									\Cont{}{
 										\linespread{1.5}\selectfont
 					\nl					$\kern-0.5pt\alpha \leftarrow cos^{-1} \kern-6pt\left (\frac{\bE_c^2\,+\,\bE_b^2\,-\,\bE_a^2}{2\,\cdot\,\bE_c\,\cdot\,\bE_b}\right )$\;
 										\linespread{1.2}\selectfont
@@ -451,9 +451,9 @@
 \frame{\frametitle{Data Dependencies in Serial Algorithm Convolve Filter}
 	\centering
 	\includestandalone[width=0.4825\textwidth]{figures/tikz/sacfDataDependencies}
-} 
+}
 
-\iffalse
+
 %================================================
 %TODO: Entire section!
 \subsection{Parallel Algorithm}
@@ -548,7 +548,7 @@
 				}
 			\end{block}
 		\end{column}
-		\begin{column}[t]{.65\textwidth}				
+		\begin{column}[t]{.65\textwidth}
 			\only<1>{
 				\begin{block}{Part (1 of 3)}
 					\begin{algorithm}[H]
@@ -612,7 +612,7 @@
 								\vspace*{-1\baselineskip}
 								\Cont{}{
 									\vspace*{-1\baselineskip}
-									\Cont{}{					
+									\Cont{}{
 										\linespread{1.5}\selectfont
 					\nl					$\kern-0.5pt\alpha \leftarrow cos^{-1} \kern-6pt\left (\frac{\bE_c^2\,+\,\bE_b^2\,-\,\bE_a^2}{2\,\cdot\,\bE_c\,\cdot\,\bE_b}\right )$\;
 										\linespread{1.2}\selectfont
@@ -757,7 +757,7 @@ define three essential metrics:
 }
 
 %------------------------------------------------
-\frame{\frametitle{Amdahl's law and the Degree of Parallelism}				
+\frame{\frametitle{Amdahl's law and the Degree of Parallelism}
 	\begin{columns}[T]
 		\begin{column}{.425\textwidth}
 			``Degree of Parallelism'': the maximum share of operations that can be executed in parallel
@@ -769,7 +769,7 @@ define three essential metrics:
 					\lim_{\rho \to \infty} \mathit{S}(\hat{n}_{fixed},\,\rho) = 1 / q
 				\end{equation*}
 			\end{block}
-			
+
 			\medskip
 			\textbf{Conclusion}: one \emph{cannot} simply add more processors in order to gain appreciable speedup!
 		\end{column}
@@ -778,67 +778,70 @@ define three essential metrics:
 		\end{column}
 	\end{columns}
 }
-\fi
+
 %------------------------------------------------
-%TODO: reduce text
+%TODO: exchange experiment codes with points to notice
 \frame{\frametitle{Compute Times per Experiment for increasing Convolution Counts}
-	\vspace*{-4mm}		
+	\vspace*{-4mm}
 	\begin{columns}[T]
-		\begin{column}{.32\textwidth}
+		\begin{column}{.31\textwidth}
 			\centering
 			\includegraphics[width=1.0\textwidth]{figures/computeTimesLinespoints.png}
 		\end{column}
-		\begin{column}{.5\textwidth}
-			Compute times per experiment, for increasing numbers of convolutions of \fors{t}, onto acquired and synthetic \tdd{} of varying sizes. Combinations involving the smallest mesh sizes are colored red, the largest mesh sizes in blue, with all others scaled in between. The experiments involving acquired \tdd{} are specially marked with squares for the flat surface mesh, and circles for the university seal.
-
-			\vspace*{\baselineskip}
-			\scriptsize† The experiment codes used correspond to: the system, T for the desktop or M for the laptop; the algorithm variant, P for parallel or S for serial; the mesh being processed, BS for bisected-square, HT for hexagonal tessellation, US for university seal, and FS for the flat surface; and finally, the count of points comprising the mesh.
+		\begin{column}{.69\textwidth}
+			The experiment codes:
+				\begin{itemize}
+					\item the system
+					\begin{itemize}
+						\item T for the desktop
+						\item M for the laptop
+					\end{itemize}
+					\item the algorithm variant
+					\begin{itemize}
+						\item P for parallel
+						\item S for serial
+					\end{itemize}
+					\item the mesh being processed
+					\begin{itemize}
+						\item BS for bisected-square
+						\item HT for hexagonal tessellation
+						\item US for university seal
+						\item FS for the flat surface
+					\end{itemize}
+					\item the count of points comprising the mesh.
+				\end{itemize}
 		\end{column}
 	\end{columns}
 }
 
 %------------------------------------------------
 \frame{\frametitle{Compute Times Scatter Plot}
-\begin{figure}[ht]
-	\includegraphics[width=\linewidth]{figures/computeTimesScatter.png}
-	\caption[Compute Times Scatter Plot]{A plot of the total compute times of each experiment as the area of a circle, given different hardware configurations. Each is then plotted for each combination of mesh size measured in point counts, and the number of convolutions of \Fors{t}. Blue circles indicate the serial variant computed with a \gls{CPU}, and a red circle indicates the parallel variant was computed on a \gls{GPGPU}.
-
-\vspace*{\baselineskip}
-\scriptsize† See Figure\ref{fig:computeTimesLP} for an explanation of the experiment codes.}
-	\label{fig:computeTimesS}
-\end{figure}
+	\vspace*{-3mm}
+	\centering
+	\includegraphics[width=.75\textwidth]{figures/computeTimesScatter.png}
 }
 
 %------------------------------------------------
 \frame{\frametitle{Speedup}
-\begin{figure}[ht]
-	\includegraphics[width=\linewidth]{figures/speedup.png}
-	\caption[Speedup]{A graph of the \gls{speedup} obtained by convolving the parallel variant of \Fors{t} over meshes of different sizes. Lines in blue, increasing in saturation with the size of the mesh, are experiments run using the \gls{GPGPU} of laptop M with 768 \gls{CUDA} cores. Lines in red, increasing in saturation with the size of the mesh, are experiments run using the \gls{GPGPU}  of desktop T with 2,560 \gls{CUDA} cores. The experiments involving acquired \tdd{} are specially marked with squares for the flat surface mesh, and circles for the university seal.
-
-\vspace*{\baselineskip}
-\scriptsize† See Figure~\ref{fig:computeTimesLP} for an explanation of the experiment codes.}
-	\label{fig:speedup}
-\end{figure}
+	\vspace*{-3mm}
+	\centering
+	\includegraphics[width=.9\textwidth]{figures/speedup.png}
 }
 
 %------------------------------------------------
 \frame{\frametitle{Efficiency}
-\begin{figure}[ht]
-	\includegraphics[width=\linewidth]{figures/efficiency.png}
-	\caption[Efficiency]{A graph of the \gls{efficiency} obtained by convolving the parallel variant of \Fors{t} over meshes of different sizes. Lines in blue, increasing in saturation with the size of the mesh, are experiments run using the \gls{GPGPU} of laptop M with 768 \gls{CUDA} cores. Lines in red, increasing in saturation with the size of the mesh, are experiments run using the \gls{GPGPU} of desktop T with 2,560 \gls{CUDA} cores. The experiments involving acquired \tdd{} are specially marked with squares for the flat surface mesh and circles for the university seal.
-
-\vspace*{\baselineskip}
-\scriptsize† See Figure~\ref{fig:computeTimesLP} for an explanation of the experiment codes.}
-	\label{fig:efficiency}
-\end{figure}
+	\vspace*{-3mm}
+	\centering
+	\includegraphics[width=.9\textwidth]{figures/efficiency.png}
 }
 
-\iffalse
+\fi
 %================================================
 %================================================
 \section[Conclusion]{Conclusion \& Outlook}
 
 %------------------------------------------------
+%TODO:complete
 \frame{\frametitle{Conclusion}
 	\begin{itemize}
 		\item item 1
@@ -850,6 +853,7 @@ define three essential metrics:
 }
 
 %------------------------------------------------
+%TODO:complete
 \frame{\frametitle{Outlook}
 	\begin{itemize}
 		\item item 1
@@ -859,7 +863,7 @@ define three essential metrics:
 		\item item 1
 	\end{itemize}
 }
-
+\iffalse
 %------------------------------------------------
 \frame{\frametitle{Questions}
 	\includegraphics[width=.8\textwidth]{questions}
