@@ -71,50 +71,81 @@
 \section{Motivation \& Introduction}
 
 %------------------------------------------------
-%TODO:get images
-%TODO:fix top/bottom margins
-\frame{\frametitle{Motivation}
+\frame{\frametitle{Increasing demand for high-definition, 3D~surface scans}
 	\begin{columns}[T]
-		\begin{column}{.55\textwidth}
+		\begin{column}{.45\textwidth}
 			\begin{itemize}
-				\only<1->{
-					\item Increasing demand for high-definition, 3D~surface scans
-					\begin{itemize}
-						\item Modernization of archeology
-						\item Industrial quality scanning
-						\item Danger to physical archives
-						\item Lower cost 3D-scanners are now more~accurate
-					\end{itemize}
-				}\only<2>{\item Raw \tdd{} is not suitable for analysis
-					\begin{itemize}
-						\item Non-manifold faces, singular points, etc.
-						\item Errors propagate in filter responses
-						\item Jagged borders of segmented areas
-					\end{itemize}
-				}
+				\item Modernization of archeology
+				\item Industrial quality scanning
+				\item Danger to physical archives
+				\item Lower cost 3D-scanners are now more~accurate
 			\end{itemize}
 		\end{column}
-		%\hspace*{-10mm}
+		\begin{column}{.55\textwidth}
+			\centering
+			\includegraphics[width=1.0\linewidth]{figures/visualizeFunctionValues2.png}
+			3D Surface Scan as a discrete 2D manifold \break colored by function value
+		\end{column}
+	\end{columns}
+}
+
+
+%------------------------------------------------
+\frame{\frametitle{Raw \tdd{} is not suitable for analysis}
+	\begin{columns}[T]
+		\begin{column}{.45\textwidth}
+			\begin{itemize}
+				\item Non-manifold meshes, edges, and singular points
+			\end{itemize}
+			\begin{columns}[T]
+				\begin{column}{.55\textwidth}
+					\includegraphics[width=\textwidth]{figures/badMesh3.png}
+				\end{column}
+				\begin{column}{.45\textwidth}
+					\includegraphics[width=\textwidth]{figures/badMesh1.png}
+					\includegraphics[width=\textwidth]{figures/badMesh2.png}
+				\end{column}
+			\end{columns}
+		\end{column}
+		\begin{column}{.475\textwidth}
+			%\vspace*{4mm}
+			\begin{itemize}
+				\item Errors propagate in filter responses
+				\item Jagged borders of segmented areas
+			\end{itemize}
+			\vspace*{4mm}
+			\begin{columns}[T]
+				\begin{column}{.1\textwidth}
+				\end{column}
+				\begin{column}{.45\textwidth}
+					\centering
+					\includegraphics[width=\textwidth]{figures/beforeFilter.png}
+					Before smoothing
+				\end{column}
+				\begin{column}{.45\textwidth}
+					\centering
+					\includegraphics[width=\textwidth]{figures/afterFilter.png}
+					After smoothing
+				\end{column}
+			\end{columns}
+		\end{column}
+	\end{columns}
+}
+
+
+%------------------------------------------------
+\frame{\frametitle{Smoothing jagged borders of segmented areas}
+	\vspace*{-4mm}
+	\begin{columns}[T]
 		\begin{column}{.5\textwidth}
-			\only<1>{
-				%\vspace*{-4mm}
-				\includegraphics[width=1.0\linewidth]{figures/visualizeFunctionValues2.png}
-			}\only<2>{
-				\vspace*{-2mm}
-				\begin{columns}[T]
-					\begin{column}{.35\textwidth}
-						\centering
-						\includegraphics[width=\linewidth]{figures/badMesh1.png}
-						\includegraphics[width=\linewidth]{figures/badMesh2.png}
-						\includegraphics[width=\linewidth]{figures/badMesh3.png}
-					\end{column}
-					\begin{column}{.5\textwidth}
-						\includegraphics[width=\linewidth]{figures/beforeFilter.png}\\
-						\vspace*{2mm}
-						\includegraphics[width=\linewidth]{figures/afterFilter.png}
-					\end{column}
-				\end{columns}
-			}
+			\centering
+			\includegraphics[width=.9\textwidth]{figures/beforeFilter.png}
+			Before smoothing
+		\end{column}
+		\begin{column}{.5\textwidth}
+			\centering
+			\includegraphics[width=.9\textwidth]{figures/afterFilter.png}
+			After smoothing
 		\end{column}
 	\end{columns}
 }
