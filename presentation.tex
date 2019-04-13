@@ -56,7 +56,7 @@
 \frame[plain]{
 	\titlepage
 }
-
+\iffalse
 %------------------------------------------------
 %TODO:highlight my contribution
 \frame{\frametitle{Outline}
@@ -88,7 +88,6 @@
 		\end{column}
 	\end{columns}
 }
-
 
 %------------------------------------------------
 \frame{\frametitle{Raw \tdd{} is not suitable for analysis}
@@ -151,22 +150,6 @@
 }
 
 %------------------------------------------------
-\frame{\frametitle{SIMD Architecture}
-	\includegraphics[width=1.0\linewidth]{figures/tikz/simdArchitecture.pdf}
-
-	\bigskip
-	\begin{flushright}
-		i.e. GPUs, Supercomputers, Computer Pools %Name examples like the cray, and pool in this building
-	\end{flushright}
-}
-
-%------------------------------------------------
-%TODO:maybe remove
-\frame{\frametitle{CPU vs GPU Construction}
-	\includegraphics[width=1.0\linewidth]{figures/cpuvgpu.png}
-}
-\iffalse
-%------------------------------------------------
 \frame{\frametitle{One-Ring Neighborhoods in Regular and Irregular Meshes}
 	\includegraphics[width=1.0\linewidth]{figures/neighborhoods_presentation.png}
 
@@ -183,10 +166,21 @@
 		\end{column}
 	\end{columns}
 }
+\fi
+%------------------------------------------------
+%TODO: format; add pictures?
+\frame{\frametitle{Nomenclature}
+	\begin{tabular}{ l l }
+		$\bM$ & a mesh; a 2D discrete manifold in three dimensions \\
+		$\bP$ & the set of points $\bp_v$ in $\bM$ \\
+		$\bT$ & the set of faces $\bt_k$ in $\bM$ \\
+		$\bF$ & the set of function values; the scalar field \\
+		$\bN$ & the set of one-ring neighborhoods \\
+		$\bN_v$ & a one-ring neighborhood of points \\
+	\end{tabular}
+}
 
-
-
-
+\iffalse
 %================================================
 %================================================
 \section{Fast One-Ring Smoothing}
@@ -465,6 +459,22 @@
 		\draw<2>[unirot,ultra thick,rounded corners] (-8mm, 15mm) rectangle (46mm,  2mm);
 		\draw<3>[unirot,ultra thick,rounded corners] (-8mm, 43mm) rectangle (46mm, 14mm);
 	\end{tikzpicture}
+}
+
+%------------------------------------------------
+\frame{\frametitle{SIMD Architecture}
+	\includegraphics[width=1.0\linewidth]{figures/tikz/simdArchitecture.pdf}
+
+	\bigskip
+	\begin{flushright}
+		i.e. GPUs, Supercomputers, Computer Pools %Name examples like the cray, and pool in this building
+	\end{flushright}
+}
+
+%------------------------------------------------
+
+\frame{\frametitle{CPU vs GPU Construction}
+	\includegraphics[width=1.0\linewidth]{figures/cpuvgpu.png}
 }
 
 
