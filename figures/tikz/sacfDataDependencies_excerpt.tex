@@ -1,0 +1,81 @@
+\documentclass{standalone}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows.meta}
+\input{../../myCommands.tex}
+
+\begin{document}
+\tikzset{%
+	>={Latex[width=2mm,length=2mm]},
+	base/.style = {
+		draw=black, fill=white, thick,
+		text centered, font=\sffamily, inner sep=.2cm},
+	%Variable
+	baseVar/.style = {base, rectangle, rounded corners,
+		minimum width=1cm, minimum height=1cm},
+	%Operations
+	baseOp/.style = {base, ellipse,
+		minimum width=1.5cm, minimum height=1cm},
+	%Lines
+	baseLine/.style = {thick},
+	%Colors
+	tealStyle/.style = {draw=MyTeal, fill=MyLtTeal},
+	coralStyle/.style = {draw=MyCoral, fill=MyLtCoral},
+	sandStyle/.style = {draw=MySand, fill=MyLtSand},
+	%
+	commentNode/.style = {text=darkgray, fill=white},
+	indVar/.style = {baseVar, tealStyle},
+	indOp/.style = {baseOp, tealStyle},
+	indLine/.style = {baseLine, draw=MyTeal},
+	depVar/.style = {baseVar, coralStyle},
+	depOp/.style = {baseOp, coralStyle},
+	depLine/.style = {baseLine, draw=MyCoral},
+	mutVar/.style = {baseVar, sandStyle},
+	mutOp/.style = {baseOp, sandStyle},
+	mutLine/.style = {baseLine, draw=MySand},
+}
+\begin{tikzpicture}[node distance=0cm]
+	\coordinate (center1) at (0cm,0cm);
+		\node (mm)		[mutVar, xshift= 0cm] {mutable memory};
+		\node (vm)		[depVar, xshift= 5.0cm] {volatile memory};
+	\coordinate (center2) at (0cm,-1.5cm);
+	\coordinate (center3) at (0cm,-2.25cm);
+		\node (fprimev)	[mutOp, left of=center3, xshift=2.5cm] {$f'_v$};
+	\coordinate (center4) at (0cm,-3cm);
+	\coordinate (center5) at (0cm,-3.75cm);
+		\node (ftildev)	[depVar, left of=center5, xshift=4cm] {$\tilde{f}_v$};
+		\node (Atildev)	[depVar, left of=center5, xshift=6cm] {$\tilde{A}_v$};
+	\coordinate (center6) at (0cm,-4.5cm);
+	\coordinate (center7) at (0cm,-5.25cm);
+	\coordinate (center8) at (0cm,-6cm);
+		\node (A)		[indOp, left of=center8, xshift=-1.50cm] {$A$};
+	\coordinate (center9) at (0cm,-6.75cm);
+		\node (acftilde)[depOp, left of=center9, xshift=3.25cm] {$\tilde{f}_v + A\cdot\check{f}$};
+	\coordinate (center10) at (0cm,-7.5cm);
+	\coordinate (center11) at (0cm,-8.25cm);
+		\node (acAtilde)[depOp, left of=center11, xshift=5.25cm] {$\tilde{A}_v + A$};
+		\node (fcheck)	[mutOp, left of=center11, xshift=0cm] {$\check{f}$};
+	\coordinate (center12) at (0cm,-9cm);
+	\coordinate (center13) at (0cm,-9.75cm);
+
+
+
+	\draw[->, depLine] (vm) -- (ftildev);
+	\draw[->, depLine] (vm) -- (Atildev);
+
+	\draw[->, depLine] (ftildev) -- (acftilde.90);
+	\draw[->, depLine] (Atildev) -- (acAtilde.90);
+	\draw[->, indLine] (A) .. controls (1cm,-6.75cm) .. (acftilde);
+	\draw[->, indLine] (A) .. controls (1cm,-7.75cm) .. (acAtilde.west);
+
+	\draw[->, mutLine] (fcheck) .. controls (2.75cm,-8.25cm) and (2.75cm,-8.25cm) .. (acftilde.225);
+
+	\draw[->, depLine, double] (acftilde.30) -- (ftildev);
+	\draw[->, depLine, double] (acAtilde.30) -- (Atildev);
+
+	\draw[->, mutLine, double] (ftildev) -- (fprimev);
+	\draw[->, mutLine, double] (Atildev) -- (fprimev);
+
+	\draw[->, mutLine, double] (fprimev) -- (mm);
+\end{tikzpicture}
+\end{document}

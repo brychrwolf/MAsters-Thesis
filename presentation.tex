@@ -1,4 +1,5 @@
 \documentclass[aspectratio=169,t]{beamer}
+\usefonttheme[onlymath]{serif}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{subcaption}
@@ -166,21 +167,33 @@
 		\end{column}
 	\end{columns}
 }
-\fi
+
 %------------------------------------------------
-%TODO: format; add pictures?
-\frame{\frametitle{Nomenclature}
-	\begin{tabular}{ l l }
-		$\bM$ & a mesh; a 2D discrete manifold in three dimensions \\
-		$\bP$ & the set of points $\bp_v$ in $\bM$ \\
-		$\bT$ & the set of faces $\bt_k$ in $\bM$ \\
-		$\bF$ & the set of function values; the scalar field \\
-		$\bN$ & the set of one-ring neighborhoods \\
-		$\bN_v$ & a one-ring neighborhood of points \\
-	\end{tabular}
+\frame{\frametitle{Anatomy of a Mesh}
+	\begin{columns}[T]
+		\begin{column}{.2\textwidth}
+			{\fontsize{10}{14}\selectfont
+				\begin{tabular}{ l l }
+					$\bM$ & the triangle mesh; a 2D discrete manifold \\
+					$\bT$ & the set of triangle faces \{$\bt_1$, \ldots, $\bt_m$\} \\
+					$\bP$ & the set of points \{$\bp_1$, \ldots, $\bp_n$\} \\
+					$\bF$ & the set of function values \{$f_1$, \ldots, $f_n$\} \\
+					~ & ~ \\
+					$\bN$ & the set of one-ring neighborhoods \\
+					$\bN_2$ & the neighborhood of $\bp_2$
+				\end{tabular}
+			}
+		\end{column}
+		\begin{column}{.8\textwidth}
+			\vspace*{2mm}
+			\includegraphics[width=\textwidth]{figures/triangularFaces_presentation.png}
+		\end{column}
+	\end{columns}
 }
 
-\iffalse
+
+
+
 %================================================
 %================================================
 \section{Fast One-Ring Smoothing}
@@ -194,38 +207,66 @@
 	\centering
 	\includegraphics[width=0.8\linewidth]{figures/geodesicDisc_presentation.png}
 	\begin{align*}
-		\elm(\bp_0) &:= \min_{\forall \bp_i \in \bN_v}|\bp_i - \bp_0| \\
-		\gelm &:= \min\left \{\elm(\bp_0) \;|\; \bp_0 \in \bM\,\right \}
+		{\color{MyTeal}\elm(\bp_0)}\; &{\color{black}:= \min_{\forall \bp_i \in \bN_v}|\bp_i - \bp_0|} \\
+		{\color{MyTeal}\gelm}\; &{\color{black}:= \min\left \{{\color{MyTeal}\elm(\bp_0)} \;|\; \bp_0 \in \bM\,\right \}}
 	\end{align*}
 }
 
 %------------------------------------------------
-%TODO:add math to Columns
 \frame{\frametitle{An Enhanced View of a Circle Sector}
+	\vspace{-4mm}
 	\begin{columns}[T]
 		\begin{column}{.5\textwidth}
 			\includegraphics[width=\linewidth]{figures/anglesAndCenterOfGravity_presentation.png}
 		\end{column}
 		\begin{column}[t]{.5\textwidth}
-			Math
-			\begin{itemize}
-				\item item 1
-				\item item 1
-				\item item 1
-			\end{itemize}
+			\begin{align*}
+				{\color{black}\alpha}\; &{\color{black}:= cos^{-1}\left (\frac{\ell_{0,1}^2 + \ell_{0,2}^2 - \ell_{1,2}^2}{2\cdot\ell_{0,1}\cdot\ell_{0,2}}\right )} \\
+				{\color{MySand}\beta}\; &{\color{MySand}:= \Big(\frac{\pi}{2} - \frac{{\color{black}\alpha}}{2}\Big) = \frac{(\pi - {\color{black}\alpha})}{2}} \\
+				{\color{MyTeal}A}\; &{\color{MyTeal}:= \frac{\left (\,\gelm\,\right )^2{\color{black}\alpha}}{2}} \\
+				%{\color{MySand}\tilde{\ell}_1}\; &{\color{MySand}:= \frac{{\color{MyTeal}\gelm}}{\lVert\bp_1 - \bp_0\lVert_2 \;\sin\left (\beta\right )}} \\
+				{\color{MyCoral}\check{\ell}}\; &{\color{MyCoral}:= \frac{4\:{\color{MyTeal}\gelm}\:\sin(\frac{{\color{black}\alpha}}{2})}{3\,{\color{black}\alpha}}}
+			\end{align*}
 		\end{column}
 	\end{columns}
 }
 
 %------------------------------------------------
-\frame{\frametitle{Interpolation of Function Values toward the Center of Gravity}
-	\centering
-	\includegraphics[width=0.95\linewidth]{figures/interpolatedFunctionValues.png}
+\frame{\frametitle{Interpolation of function values to the center of gravity}
+	\only<1>{
+		\vspace*{-4mm}
+		\begin{flushright}Load function values $f_0$, $f_1$, and $f_2$\end{flushright}
+		\vspace*{-6mm}
+		\centering
+		\includegraphics[width=0.95\linewidth]{figures/interpolatedFunctionValues_presentation1.png}
+	}\only<2>{
+		\vspace*{-4mm}
+		\begin{flushright}Extrapolate $f_1$ and $f_2$ to circumscribing triangle\end{flushright}
+		\vspace*{-6mm}
+		\centering
+		\includegraphics[width=0.95\linewidth]{figures/interpolatedFunctionValues_presentation2.png}
+	}\only<3>{
+		\vspace*{-4mm}
+		\begin{flushright}Interpolate $f_1$ and $f_2$ to bisecting line\end{flushright}
+		\vspace*{-6mm}
+		\centering
+		\includegraphics[width=0.95\linewidth]{figures/interpolatedFunctionValues_presentation3.png}
+	}\only<4>{
+		\vspace*{-4mm}
+		\begin{flushright}Interpolate result and $f_0$ to center of gravity\end{flushright}
+		\vspace*{-6mm}
+		\centering
+		\includegraphics[width=0.95\linewidth]{figures/interpolatedFunctionValues_presentation4.png}
+	}
 }
 
 %------------------------------------------------
-\frame{\frametitle{Weighted Mean Function Value $f'_v$ at $\bp_v$}
-	\vspace*{5mm}
+\frame{\frametitle{Filter Result - The weighted mean function value at $\bp_0$}
+	\vspace*{-4mm}
+	\begin{equation*}
+		f'_0 := \frac{\sum A_i\check{f}_i}{\sum A_i} \quad \forall i \in \{1,\,\ldots,\,6\}
+	\end{equation*}
+	\vspace*{0mm}
 	\centering
 	\includegraphics[width=1.0\linewidth]{figures/funcValVolumes_presentation.png}
 }
@@ -462,7 +503,20 @@
 }
 
 %------------------------------------------------
+\frame{\frametitle{Towards Acceleration}
+	\centering
+	{\Huge Unfortunately, this is very slow!}
+	
+	\medskip
+	\scalebox{-1}[1]{\includegraphics[width=0.5\linewidth]{figures/DB_Museum_Nuernberg.jpg}}
+
+	\medskip
+	...thankfully, a modern solution exists.
+}
+
+%------------------------------------------------
 \frame{\frametitle{SIMD Architecture}
+	\vspace*{4mm}
 	\includegraphics[width=1.0\linewidth]{figures/tikz/simdArchitecture.pdf}
 
 	\bigskip
@@ -472,9 +526,32 @@
 }
 
 %------------------------------------------------
-
 \frame{\frametitle{CPU vs GPU Construction}
+	\vspace*{8mm}
 	\includegraphics[width=1.0\linewidth]{figures/cpuvgpu.png}
+}
+
+%------------------------------------------------
+\frame{\frametitle{Amdahl's law and the Degree of Parallelism}
+	\begin{columns}[T]
+		\begin{column}{.48\textwidth}
+			Degree of Parallelism: the maximum share of operations that can be executed in parallel
+
+			\medskip
+			\begin{block}{Amdahl's law}
+				Given a constant problem size $\hat{n}_{fixed}$,
+				\begin{equation*}
+					\lim_{\rho \to \infty} \mathit{S}(\hat{n}_{fixed},\,\rho) = 1 / q
+				\end{equation*}
+			\end{block}
+
+			\medskip
+			\textbf{Conclusion}: one \emph{cannot} simply add more processors in order to gain appreciable speedup!
+		\end{column}
+		\begin{column}{.52\textwidth}
+			\includegraphics[width=1.1\textwidth]{figures/amdahlsLaw.png}
+		\end{column}
+	\end{columns}
 }
 
 
@@ -494,10 +571,27 @@
 }
 
 %------------------------------------------------
-%TODO: Overlapping memory nodes
 \frame{\frametitle{Data Dependencies in Serial Algorithm Convolve Filter}
-	\centering
-	\includestandalone[width=0.4825\textwidth]{figures/tikz/sacfDataDependencies}
+	\only<1>{
+		\centering
+		\includestandalone[width=0.4825\textwidth]{figures/tikz/sacfDataDependencies}
+	}\only<2>{
+		\begin{columns}
+			\begin{column}{.25\textwidth}
+				\hspace*{-30mm}
+				\includestandalone[width=1.93\textwidth]{figures/tikz/sacfDataDependencies}
+			\end{column}
+			\begin{column}{.75\textwidth}
+				\centering
+				\includestandalone[width=0.6\textwidth]{figures/tikz/sacfDataDependencies_excerpt}
+			\end{column}
+		\end{columns}
+	}
+	\begin{tikzpicture}[overlay, remember picture]
+		\draw<2>[black,ultra thick,rounded corners] (6mm, 70mm) rectangle (36mm, 19mm);
+		\draw<2>[gray,dotted,ultra thick] (36mm, 70mm) -- (60mm, 71mm);
+		\draw<2>[gray,dotted,ultra thick] (36mm, 19mm) -- (60mm, 10mm);
+	\end{tikzpicture}
 }
 
 
@@ -968,44 +1062,254 @@
 \subsection{Filter Response On Synthetic Data}
 
 %------------------------------------------------
+\fi
 \frame{\frametitle{Bisected-Square Tessellations}
-	\centering
-	\scalebox{0.6}{
-		\begin{minipage}{\textwidth}
-			\input{figures/latex/sq2_presentation.tex}
-		\end{minipage}
-	}
+	\vspace*{-2mm}
+	\begin{columns}
+		\begin{column}{0.17\textwidth}~\end{column}
+		\begin{column}{0.22\textwidth}
+			\centering
+			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/square_tesselation_2tri_Dirac_delta_1_v9_f8_wireframe.png}
+			{\footnotesize 
+				\par \vspace{-1mm} $r=1$, 
+				\par \vspace{-1mm} wireframe
+			}
+		\end{column}
+		\begin{column}{0.22\textwidth}
+			\centering
+			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/square_tesselation_2tri_Dirac_delta_1_v9_f8_funcvals_0iter_crop.png}
+			{\footnotesize 
+				\par \vspace{-1mm} $r=1$, 
+				\par \vspace{-1mm} $0$~iterations
+			}
+		\end{column}
+		\begin{column}{0.22\textwidth}
+			\centering
+			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/square_tesselation_2tri_Dirac_delta_1_v9_f8_funcvals_1iter_crop.png}
+			{\footnotesize 
+				\par \vspace{-1mm} $r=1$, 
+				\par \vspace{-1mm} $1$~iteration
+			}
+		\end{column}
+		\begin{column}{0.17\textwidth}~\end{column}
+	\end{columns}
+	\vspace*{4mm}
+	\begin{columns}
+		\begin{column}{0.17\textwidth}~\end{column}
+		\begin{column}{0.22\textwidth}
+			\centering
+			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/square_tesselation_2tri_Dirac_delta_10_v441_f800_wireframe.png}
+			{\footnotesize 
+				\par \vspace{-1mm} $r=10$, 
+				\par \vspace{-1mm} wireframe
+			}
+		\end{column}
+		\begin{column}{0.22\textwidth}
+			\centering
+			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/square_tesselation_2tri_Dirac_delta_10_v441_f800_funcvals_0iter.png}
+			{\footnotesize 
+				\par \vspace{-1mm} $r=10$, 
+				\par \vspace{-1mm} $0$~iterations
+			}
+		\end{column}
+		\begin{column}{0.22\textwidth}
+			\centering
+			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/square_tesselation_2tri_Dirac_delta_10_v441_f800_funcvals_100iter.png}
+			{\footnotesize 
+				\par \vspace{-1mm} $r=10$, 
+				\par \vspace{-1mm} $100$~iterations
+			}
+		\end{column}
+		\begin{column}{0.17\textwidth}~\end{column}
+	\end{columns}
 }
 
 %------------------------------------------------
 \frame{\frametitle{Quadrisected-Square Tessellations}
-	\centering
-	\scalebox{0.6}{
-		\begin{minipage}{\textwidth}
-			\input{figures/latex/sq4_presentation.tex}
-		\end{minipage}
-	}
+	\vspace*{-2mm}
+	\begin{columns}
+		\begin{column}{0.17\textwidth}~\end{column}
+		\begin{column}{0.22\textwidth}
+			\centering
+			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/square_tesselation_4tri_Dirac_delta_1_v13_f16_wireframe.png}
+			{\footnotesize 
+				\par \vspace{-1mm} $r=1$, 
+				\par \vspace{-1mm} wireframe
+			}
+		\end{column}
+		\begin{column}{0.22\textwidth}
+			\centering
+			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/square_tesselation_4tri_Dirac_delta_1_v13_f16_funcvals_0iter.png}
+			{\footnotesize 
+				\par \vspace{-1mm} $r=1$, 
+				\par \vspace{-1mm} $0$~iterations
+			}
+		\end{column}
+		\begin{column}{0.22\textwidth}
+			\centering
+			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/square_tesselation_4tri_Dirac_delta_1_v13_f16_funcvals_1iter.png}
+			{\footnotesize 
+				\par \vspace{-1mm} $r=1$, 
+				\par \vspace{-1mm} $1$~iteration
+			}
+		\end{column}
+		\begin{column}{0.17\textwidth}~\end{column}
+	\end{columns}
+	\vspace*{4mm}
+	\begin{columns}
+		\begin{column}{0.17\textwidth}~\end{column}
+		\begin{column}{0.22\textwidth}
+			\centering
+			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/square_tesselation_4tri_Dirac_delta_10_v841_f1600_wireframe_2.png}
+			{\footnotesize 
+				\par \vspace{-1mm} $r=10$, 
+				\par \vspace{-1mm} wireframe
+			}
+		\end{column}
+		\begin{column}{0.22\textwidth}
+			\centering
+			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/square_tesselation_4tri_Dirac_delta_10_v841_f1600_funcvals_0iter.png}
+			{\footnotesize 
+				\par \vspace{-1mm} $r=10$, 
+				\par \vspace{-1mm} $0$~iterations
+			}
+		\end{column}
+		\begin{column}{0.22\textwidth}
+			\centering
+			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/square_tesselation_4tri_Dirac_delta_10_v841_f1600_funcvals_100iter.png}
+			{\footnotesize 
+				\par \vspace{-1mm} $r=10$, 
+				\par \vspace{-1mm} $100$~iterations
+			}
+		\end{column}
+		\begin{column}{0.17\textwidth}~\end{column}
+	\end{columns}
 }
 
 %------------------------------------------------
 \frame{\frametitle{Hexagonal Tessellations}
-	\centering
-	\scalebox{0.6}{
-		\begin{minipage}{\textwidth}
-			\input{figures/latex/hex_presentation.tex}
-		\end{minipage}
-	}
+	\vspace*{-2mm}
+	\begin{columns}
+		\begin{column}{0.17\textwidth}~\end{column}
+		\begin{column}{0.22\textwidth}
+			\centering
+			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/hexagonal_tessellation_Dirac_delta_1_v31_f42_wireframe.png}
+			{\footnotesize 
+				\par \vspace{-1mm} $r=1$, 
+				\par \vspace{-1mm} wireframe
+			}
+		\end{column}
+		\begin{column}{0.22\textwidth}
+			\centering
+			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/hexagonal_tessellation_Dirac_delta_1_v31_f42_funcvals_0iter_crop.png}
+			{\footnotesize 
+				\par \vspace{-1mm} $r=1$, 
+				\par \vspace{-1mm} $0$~iterations
+			}
+		\end{column}
+		\begin{column}{0.22\textwidth}
+			\centering
+			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/hexagonal_tessellation_Dirac_delta_1_v31_f42_funcvals_2iter_crop.png}
+			{\footnotesize 
+				\par \vspace{-1mm} $r=1$, 
+				\par \vspace{-1mm} $2$~iterations
+			}
+		\end{column}
+		\begin{column}{0.17\textwidth}~\end{column}
+	\end{columns}
+	\vspace*{4mm}
+	\begin{columns}
+		\begin{column}{0.17\textwidth}~\end{column}
+		\begin{column}{0.22\textwidth}
+			\centering
+			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/hexagonal_tessellation_Dirac_delta_10_v1057_f1986_wireframe.png}
+			{\footnotesize 
+				\par \vspace{-1mm} $r=10$, 
+				\par \vspace{-1mm} wireframe
+			}
+		\end{column}
+		\begin{column}{0.22\textwidth}
+			\centering
+			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/hexagonal_tessellation_Dirac_delta_10_v1057_f1986_funcvals_0iter_crop.png}
+			{\footnotesize 
+				\par \vspace{-1mm} $r=10$, 
+				\par \vspace{-1mm} $0$~iterations
+			}
+		\end{column}
+		\begin{column}{0.22\textwidth}
+			\centering
+			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/hexagonal_tessellation_Dirac_delta_10_v1057_f1986_funcvals_200iter_crop.png}
+			{\footnotesize 
+				\par \vspace{-1mm} $r=10$, 
+				\par \vspace{-1mm} $200$~iterations
+			}
+		\end{column}
+		\begin{column}{0.17\textwidth}~\end{column}
+	\end{columns}
 }
 
 %------------------------------------------------
 \frame{\frametitle{Random Triangulated Discs}
-	\centering
-	\scalebox{0.6}{
-		\begin{minipage}{\textwidth}
-			\input{figures/latex/rdisc_presentation.tex}
-		\end{minipage}
-	}
+	\vspace*{-2mm}
+	\begin{columns}
+		\begin{column}{0.17\textwidth}~\end{column}
+		\begin{column}{0.22\textwidth}
+			\centering
+			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/random_circle_tessellation_Dirac_delta_1_v11_f12_wireframe.png}
+			{\footnotesize 
+				\par \vspace{-1mm} $r=1$, $p=11$,
+				\par \vspace{-1mm} wireframe
+			}
+		\end{column}
+		\begin{column}{0.22\textwidth}
+			\centering
+			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/random_circle_tessellation_Dirac_delta_1_v11_f12_funcvals_0iter.png}
+			{\footnotesize 
+				\par \vspace{-1mm} $r=1$, $p=11$,
+				\par \vspace{-1mm} $0$~iterations
+			}
+		\end{column}
+		\begin{column}{0.22\textwidth}
+			\centering
+			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/random_circle_tessellation_Dirac_delta_1_v11_f12_funcvals_2iter.png}
+			{\footnotesize 
+				\par \vspace{-1mm} $r=1$, $p=11$,
+				\par \vspace{-1mm} $2$~iterations
+			}
+		\end{column}
+		\begin{column}{0.17\textwidth}~\end{column}
+	\end{columns}
+	\vspace*{4mm}
+	\begin{columns}
+		\begin{column}{0.17\textwidth}~\end{column}
+		\begin{column}{0.22\textwidth}
+			\centering
+			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/random_circle_tessellation_Dirac_delta_10_v641_f1252_wireframe.png}
+			{\footnotesize 
+				\par \vspace{-1mm} $r=10$, $p=641$,
+				\par \vspace{-1mm} wireframe
+			}
+		\end{column}
+		\begin{column}{0.22\textwidth}
+			\centering
+			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/random_circle_tessellation_Dirac_delta_10_v641_f1252_funcvals_0iter.png}
+			{\footnotesize 
+				\par \vspace{-1mm} $r=10$, $p=641$,
+				\par \vspace{-1mm} $0$~iterations
+			}
+		\end{column}
+		\begin{column}{0.22\textwidth}
+			\centering
+			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/random_circle_tessellation_Dirac_delta_10_v641_f1252_funcvals_10000iter.png}
+			{\footnotesize 
+				\par \vspace{-1mm} $r=10$, $p=641$,
+				\par \vspace{-1mm} $10^4$~iterations
+			}
+		\end{column}
+		\begin{column}{0.17\textwidth}~\end{column}
+	\end{columns}
 }
+\iffalse
 
 
 %================================================
@@ -1064,29 +1368,6 @@ Three essential metrics:
 	\text{Costs}:\quad&\mathit{C}(\hat{n},\,\rho) =\rho\cdot\mathit{T_{\rho}}(\hat{n},\,\rho) \\
 	\text{Efficiency}:\quad&\mathit{E}(\hat{n},\,\rho) = \frac{\mathit{T_s}(\hat{n})}{\mathit{C}(\hat{n},\,\rho)} = \frac{\mathit{S}(\hat{n},\,\rho)}{\rho}
 \end{align*}
-}
-
-%------------------------------------------------
-\frame{\frametitle{Amdahl's law and the Degree of Parallelism}
-	\begin{columns}[T]
-		\begin{column}{.425\textwidth}
-			``Degree of Parallelism'': the maximum share of operations that can be executed in parallel
-
-			\medskip
-			\begin{block}{Amdahl's law}
-				Given a constant problem size $\hat{n}_{fixed}$,
-				\begin{equation*}
-					\lim_{\rho \to \infty} \mathit{S}(\hat{n}_{fixed},\,\rho) = 1 / q
-				\end{equation*}
-			\end{block}
-
-			\medskip
-			\textbf{Conclusion}: one \emph{cannot} simply add more processors in order to gain appreciable speedup!
-		\end{column}
-		\begin{column}{.575\textwidth}
-			\includegraphics[width=1.0\textwidth]{figures/amdahlsLaw.png}
-		\end{column}
-	\end{columns}
 }
 
 %------------------------------------------------

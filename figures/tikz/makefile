@@ -2,6 +2,7 @@ OUTPUTS = unionsOfSimpleBuildNeighborhoods.pdf \
 		  sabnDataDependencies.pdf \
 		  sacelDataDependencies.pdf \
 		  sacfDataDependencies.pdf \
+		  sacfDataDependencies_excerpt.pdf \
 		  dataDependencyOfL2Norm.pdf \
 		  simpleControlDependency.pdf \
 		  simdArchitecture.pdf \

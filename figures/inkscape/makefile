@@ -14,6 +14,11 @@ SVGS_OUTPUTS_PRESENTATION = \
 				../funcValVolumes_presentation.png \
 				../neighborhoods_presentation.png \
 				../neighborhoods_presentation_acq.png \
+				../triangularFaces_presentation.png \
+				../interpolatedFunctionValues_presentation1.png \
+				../interpolatedFunctionValues_presentation2.png \
+				../interpolatedFunctionValues_presentation3.png \
+				../interpolatedFunctionValues_presentation4.png \
 				../amdahlsLaw.png
 
 
