@@ -51,8 +51,17 @@
 \input{chapters/Z2-Glossary.tex}
 \setlength{\intextsep}{0pt}
 \def\hilite<#1>{\temporal<#1>{\color{black}}{\color{unirot}}{\color{gray}}}
-\frame[plain]{\titlepage}
-\frame{\frametitle{Outline}\tableofcontents}
+
+%------------------------------------------------
+\frame[plain]{
+	\titlepage
+}
+
+%------------------------------------------------
+%TODO:highlight my contribution
+\frame{\frametitle{Outline}
+	\tableofcontents
+}
 
 
 
@@ -66,43 +75,46 @@
 %TODO:fix top/bottom margins
 \frame{\frametitle{Motivation}
 	\begin{columns}[T]
-		\begin{column}{.7\textwidth}
+		\begin{column}{.55\textwidth}
 			\begin{itemize}
-				\hilite<1>{\item Increasing demand for high-definition \tdd{}}
-				\begin{itemize}
-					\hilite<1>{\item Modernization of Archeology}
-					\hilite<1>{\item Industrial quality scanning}
-					\hilite<1>{\item Danger to physical archives}%
-						%\begin{itemize}
-						%	\item 2018 Brazilian museum fire destroyed 20 million artifacts
-						%	\item Instability of Middle East \& North  Africa
-						%\end{itemize}
-					\hilite<1>{\item Lower cost 3D-scanners are now more accurate}
-				\end{itemize}
-				\hilite<2>{\item Raw \tdd{} is not suitable for analysis} %mesh cleaning uniseigel
-				\begin{itemize}
-					\hilite<2>{\item Non-manifold faces, singular points, etc.}
-					\hilite<2>{\item Jagged borders of connected components}
-					\hilite<2>{\item Errors propagate when iterative filtering}
-				\end{itemize}
-				\hilite<3>{\item Neighborhoods of points are arbitrary size and shape}
-				\hilite<4>{\item \tdd{} is big, slow to filter without parallelization} %tens of millions of points
-				\hilite<5>{\item Affordable \glspl{GPGPU} are increasing in power}
+				\only<1->{
+					\item Increasing demand for high-definition, 3D~surface scans
+					\begin{itemize}
+						\item Modernization of archeology
+						\item Industrial quality scanning
+						\item Danger to physical archives
+						\item Lower cost 3D-scanners are now more~accurate
+					\end{itemize}
+				}\only<2>{\item Raw \tdd{} is not suitable for analysis
+					\begin{itemize}
+						\item Non-manifold faces, singular points, etc.
+						\item Errors propagate in filter responses
+						\item Jagged borders of segmented areas
+					\end{itemize}
+				}
 			\end{itemize}
 		\end{column}
-		\begin{column}{.3\textwidth}
-			%\only<1>{\includegraphics[width=0.8\linewidth]{example-image-9x16.png}}
-			\only<2>{
-				\vspace*{-4mm}
-				\includegraphics[width=.6\linewidth]{figures/badMesh1.png}
-				\includegraphics[width=.6\linewidth]{figures/badMesh2.png}
-				\includegraphics[width=.6\linewidth]{figures/badMesh3.png}
+		%\hspace*{-10mm}
+		\begin{column}{.5\textwidth}
+			\only<1>{
+				%\vspace*{-4mm}
+				\includegraphics[width=1.0\linewidth]{figures/visualizeFunctionValues2.png}
+			}\only<2>{
+				\vspace*{-2mm}
+				\begin{columns}[T]
+					\begin{column}{.35\textwidth}
+						\centering
+						\includegraphics[width=\linewidth]{figures/badMesh1.png}
+						\includegraphics[width=\linewidth]{figures/badMesh2.png}
+						\includegraphics[width=\linewidth]{figures/badMesh3.png}
+					\end{column}
+					\begin{column}{.5\textwidth}
+						\includegraphics[width=\linewidth]{figures/beforeFilter.png}\\
+						\vspace*{2mm}
+						\includegraphics[width=\linewidth]{figures/afterFilter.png}
+					\end{column}
+				\end{columns}
 			}
-			\only<3>{
-				\vspace*{12mm}
-				\includegraphics[width=.8\linewidth]{figures/neighborhoods_presentation_acq.png}}
-			%\only<4>{\includegraphics[width=.8\linewidth]{example-image-9x16.png}}
-			%\only<5>{\includegraphics[width=.8\linewidth]{example-image-9x16.png}}
 		\end{column}
 	\end{columns}
 }
@@ -122,19 +134,7 @@
 \frame{\frametitle{CPU vs GPU Construction}
 	\includegraphics[width=1.0\linewidth]{figures/cpuvgpu.png}
 }
-
-%------------------------------------------------
-\frame{\frametitle{Function Values as a Scalar Field}
-	\begin{columns}[c]
-		\begin{column}{.75\textwidth}
-			\includegraphics[width=1.0\linewidth]{figures/visualizeFunctionValues2.png}
-		\end{column}
-		\begin{column}{.25\textwidth}
-			Visualization of the scalar field filter response of an integral invariant filter convolved over a cuneiform engraving acquired as \tdd{}
-		\end{column}
-	\end{columns}
-}
-
+\iffalse
 %------------------------------------------------
 \frame{\frametitle{One-Ring Neighborhoods in Regular and Irregular Meshes}
 	\includegraphics[width=1.0\linewidth]{figures/neighborhoods_presentation.png}
@@ -1174,5 +1174,5 @@ Three essential metrics:
 		\end{LARGE}
 	\end{center}
 	\vspace*{2cm}
-}
+}\fi
 \end{document}
