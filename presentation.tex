@@ -1062,7 +1062,6 @@
 \subsection{Filter Response On Synthetic Data}
 
 %------------------------------------------------
-\fi
 \frame{\frametitle{Bisected-Square Tessellations}
 	\vspace*{-2mm}
 	\begin{columns}
@@ -1309,42 +1308,110 @@
 		\begin{column}{0.17\textwidth}~\end{column}
 	\end{columns}
 }
-\iffalse
 
 
 %================================================
 \subsection{Filter Response On Acquired Data}
 
 %------------------------------------------------
+%TODO:callout errors
 \frame{\frametitle{The University of Heidelberg Seal}
-	\vspace*{1cm}
-	\centering
-	\scalebox{1.0}{
-		\begin{minipage}{\textwidth}
-			\input{figures/latex/unisiegel_presentation.tex}
-		\end{minipage}
-	}
+	%\vspace*{2mm}
+	%\begin{flushright}error propagation\par\end{flushright}
+	%\vspace*{4mm}
+	\vspace*{16mm}
+	\begin{columns}
+		\begin{column}{0.33\textwidth}
+			\centering
+			\includegraphics[width=\textwidth]{data/acquired_meshes/unisiegel_wireframe.png}
+			{\footnotesize 
+				\par \vspace{-1mm} wireframe
+			}
+		\end{column}
+		\begin{column}{0.33\textwidth}
+			\centering
+			\includegraphics[width=\textwidth]{data/acquired_meshes/unisiegel_0iter.png}
+			{\footnotesize 
+				\par \vspace{-1mm} $0$~iterations
+			}
+		\end{column}
+		\begin{column}{0.33\textwidth}
+			\centering
+			\includegraphics[width=\textwidth]{data/acquired_meshes/unisiegel_100iter.png}
+			{\footnotesize
+				\par \vspace{-1mm} $100$~iterations
+			}
+		\end{column}
+	\end{columns}
+	%\begin{tikzpicture}[overlay, remember picture]
+	%	\draw[gray,ultra thick] (36mm, 70mm) -- (60mm, 71mm);
+	%\end{tikzpicture}
 }
 
 %------------------------------------------------
 \frame{\frametitle{A flat surface from ILATO}
-	\centering
-	\scalebox{0.70}{
-		\begin{minipage}{\textwidth}
-			\input{figures/latex/ILATO_presentation.tex}
-		\end{minipage}
-	}
+	\vspace*{-2mm}
+	\begin{columns}
+		\begin{column}{0.5\textwidth}
+			\centering
+			\includegraphics[width=.75\textwidth]{data/acquired_meshes/ILATO_1A_SM2066-HE5-60_070214_merged_GMO_r1_n4_v256_wireframe.png}
+			{\footnotesize 
+				\par \vspace{-1mm} wireframe
+			}
+		\end{column}
+		\begin{column}{0.5\textwidth}
+			\centering
+			\includegraphics[width=.75\textwidth]{data/acquired_meshes/ILATO_1A_SM2066-HE5-60_070214_merged_GMO_r1_n4_v256_funcvals_0iter.png}
+			{\footnotesize 
+				\par \vspace{-1mm} $0$~iterations
+			}
+		\end{column}
+	\end{columns}
+	\vspace*{4mm}
+	\begin{columns}
+		\begin{column}{0.5\textwidth}
+			\centering
+			\includegraphics[width=.75\textwidth]{data/acquired_meshes/ILATO_1A_SM2066-HE5-60_070214_merged_GMO_r1_n4_v256_funcvals_1000iter.png}
+			{\footnotesize 
+				\par \vspace{-1mm} $1000$~iterations
+			}
+		\end{column}
+		\begin{column}{0.5\textwidth}
+			\centering
+			\includegraphics[width=.75\textwidth]{data/acquired_meshes/ILATO_1A_SM2066-HE5-60_070214_merged_GMO_r1_n4_v256_funcvals_3000iter.png}
+			{\footnotesize 
+				\par \vspace{-1mm} $3000$~iterations
+			}
+		\end{column}
+	\end{columns}
 }
 
 %------------------------------------------------
 \frame{\frametitle{The Stanford Bunny}
-	\vspace*{1cm}
-	\centering
-	\scalebox{1.0}{
-		\begin{minipage}{\textwidth}
-			\input{figures/latex/bun_presentation.tex}
-		\end{minipage}
-	}
+	\vspace*{8mm}
+	\begin{columns}
+		\begin{column}{0.33\textwidth}
+			\centering
+			\includegraphics[width=\textwidth]{data/acquired_meshes/bun_zipper_edited_r1_n4_v256_wireframe.png}
+			{\footnotesize 
+				\par \vspace{-1mm} wireframe
+			}
+		\end{column}
+		\begin{column}{0.33\textwidth}
+			\centering
+			\includegraphics[width=\textwidth]{data/acquired_meshes/bun_zipper_edited_r1_n4_v256_funcvals_0iter.png}
+			{\footnotesize 
+				\par \vspace{-1mm} $0$~iterations
+			}
+		\end{column}
+		\begin{column}{0.33\textwidth}
+			\centering
+			\includegraphics[width=\textwidth]{data/acquired_meshes/bun_zipper_edited_r1_n4_v256_funcvals_100iter.png}
+			{\footnotesize
+				\par \vspace{-1mm} $100$~iterations
+			}
+		\end{column}
+	\end{columns}
 }
 
 
@@ -1354,6 +1421,7 @@
 \subsection{Convolving with a \gls{GPGPU}}
 
 %------------------------------------------------
+\fi
 \frame{\frametitle{Evaluation and Analysis of Parallel Algorithms}
 
 Two basic timings:
@@ -1405,6 +1473,7 @@ Three essential metrics:
 	\end{columns}
 }
 
+\iffalse
 %------------------------------------------------
 \frame{\frametitle{Compute Times Scatter Plot}
 	\vspace*{-3mm}
