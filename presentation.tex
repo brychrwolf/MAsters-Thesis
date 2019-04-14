@@ -7,11 +7,40 @@
 \usepackage{graphicx}
 \usepackage{fancybox}
 \usepackage[vlined]{algorithm2e}
+\usepackage{anyfontsize}
 \usepackage{standalone}
 \usepackage{tikz}
 \usetikzlibrary{shapes,arrows.meta}
-\usepackage{anyfontsize}
-%\usepackage{enumitem}
+\tikzset{%
+	>={Latex[width=2mm,length=2mm]},
+	%Colors
+	blackStyle/.style = {draw=black, fill=lightgray},
+	tealStyle/.style = {draw=MyTeal, fill=MyLtTeal},
+	coralStyle/.style = {draw=MyCoral, fill=MyLtCoral},
+	sandStyle/.style = {draw=MySand, fill=MyLtSand},
+	%Base Styles
+	base/.style = {
+		draw=black, fill=white, thick,
+		text centered, font=\sffamily, inner sep=.2cm},
+	baseVar/.style = {base, rectangle, rounded corners,
+		minimum width=1cm, minimum height=1cm},
+	baseOp/.style = {base, ellipse,
+		minimum width=1cm, minimum height=1cm,
+		align=center},
+	baseLine/.style = {thick},
+	%Colored Styles
+	algNode/.style = {baseOp, blackStyle},
+	algLine/.style = {baseLine, draw=black},
+	%
+	givNode/.style = {baseVar, tealStyle},
+	givLine/.style = {baseLine, draw=MyTeal},
+	%
+	genNode/.style = {baseVar, sandStyle},
+	genLine/.style = {baseLine, draw=MySand},
+	%
+	outNode/.style = {baseVar, coralStyle},
+	outLine/.style = {baseLine, draw=MyCoral},
+}
 \usepackage[acronym]{glossaries}
 \makeglossaries
 
@@ -57,13 +86,12 @@
 \frame[plain]{
 	\titlepage
 }
-%\iffalse
+
 %------------------------------------------------
 %TODO:highlight my contribution
 \frame{\frametitle{Outline}
-	\tableofcontents
+	\tableofcontents[hideallsubsections]
 }
-
 
 
 
@@ -196,7 +224,7 @@
 
 %================================================
 %================================================
-\section{Fast One-Ring Smoothing}
+\section{Fast One-Ring Smoothing Filter}
 
 
 %================================================
@@ -277,230 +305,41 @@
 \subsection{Serial Algorithm}
 
 %------------------------------------------------
-\frame{\frametitle{Serial Algorithm for Building Neighborhoods}
-	\begin{columns}[t]
-		\begin{column}{.6\textwidth}
-			\includegraphics[width=1.0\linewidth]{figures/triangularFaces.png}
-		\end{column}
-		\hspace*{-1.5cm}
-		\begin{column}{.6\textwidth}
-			\includestandalone[width=1.0\linewidth]{figures/tikz/unionsOfSimpleBuildNeighborhoods}
-		\end{column}
-	\end{columns}
+%TODO: ADD nomenclature
+\frame[c]{\frametitle{Serial Algorithm for Fast One-Ring Smoothing}
+	\resizebox{1.0\textwidth}{!}{
+		\begin{tikzpicture}[node distance=0cm]
+			\node<1->(T)      [givNode, xshift=   0cm] {$\bT$};
+			\node<1->(P)      [givNode, xshift=   0cm, yshift=-1.13cm] {$\bP$};	
+			\node<1->(bn)     [algNode, xshift= 3.0cm] {Build \\ Neighborhoods};	
+			\node<1->(N)      [genNode, xshift= 6.0cm] {$\bN$};	
+			\node<2->(ce)     [algNode, xshift= 9.0cm, yshift=-2.81cm] {Calculate \\ Edge~Lengths};
+			\node<3->(F)      [givNode, xshift=12.0cm] {$\bF$};	
+			\node<2->(E)      [genNode, xshift=12.0cm, yshift=-2.25cm] {$\bE$};
+			\node<2->(gelm)   [genNode, xshift=12.0cm, yshift=-3.38cm] {$\gelm$};
+			\node<3->(cf)     [algNode, xshift=15.0cm, yshift=-1.13cm] {Convolve \\ Filter};
+			\node<3->(Fprime) [outNode, xshift=18.0cm, yshift=-1.13cm] {$\bF'$};
+			
+			\node<1->(empty)  [minimum width=1cm, xshift=18.0cm] {\null};
+			\node<1->(empty)  [minimum height=1cm, yshift=-3.38cm] {\null};
 
-	\begin{columns}[t]
-		\begin{column}{.5\textwidth}
-			\begin{algorithm}[H]
-				\DontPrintSemicolon
-				\SetKwFor{For}{for}{:}{}
-				\begin{block}{}
-				\nl		\For{$\bt \in \bT$}{
-				\nl			\ProgSty{union($\bN$, $\bp_a$, $\bp_b$, $\bp_c$)}\;
-				\nl			\ProgSty{union($\bN$, $\bp_b$, $\bp_a$, $\bp_c$)}\;
-				\nl			\ProgSty{union($\bN$, $\bp_c$, $\bp_a$, $\bp_b$)}\;
-						}
-				\end{block}
-			\end{algorithm}
-		\end{column}
-		\begin{column}{.5\textwidth}
-			\begin{algorithm}[H]
-				\DontPrintSemicolon
-				\SetKwFor{For}{for}{:}{}
-				\SetKwProg{Func}{Function}{}{}
-				\begin{block}{}
-				\nl	\Func{union($\bN$, $a$, $b$, $c$)}{
-				\nl		$\bN_a \leftarrow \bN_a \cup \{b,\,c\}$\;
-					}
-				\end{block}
-			\end{algorithm}
-		\end{column}
-	\end{columns}
-}
-
-%------------------------------------------------
-%TODO: Mention tau can be derived from feature size as in Mara17
-\frame{\frametitle{Serial Algorithm for Calculating Edge Lengths}
-\begin{algorithm}[H]
-	\SetAlgoSkip{}
-	\DontPrintSemicolon
-	\SetCommentSty{small}
-	\SetKwFor{For}{for}{:}{}
-	\SetKwProg{Func}{Function}{}{}
-	\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
-
-	\only<1>{
-	\begin{block}{}%Part (1 of 1)}
-		\Input{the set of all points $\bP$, \\
-			the set of discovered neighborhoods $\bN$}
-		\Output{the set of pre-calculated edge lengths $\bE$, \\
-			the minimum edge length of the mesh $\gelm$}
-
-		\bigskip
-	\nl	\Func{serialCalculateEdgeLengths($\bP$, $\bN$)}{
-	\nl		\For{$\bp_v \in \bP$}{
-	\nl			\For{$\bp_i \in \bN_v$}{
-					\linespread{1.5}\selectfont
-	\nl				$\bE_{\sv{i}} \leftarrow \lVert\bp_i - \bp_v\rVert_2$\tcc*[r]{\emph{Expensive!}}
-	\nl				$\gelm \leftarrow \min\left \{\gelm,\,\bE_{\sv{i}}\right \}$\;
-				}
-			}
-		}
-	\end{block}
+			\draw<1->[->, givLine] (T) -- (bn);
+			\draw<1->[->, givLine] (P) -- (bn);	
+			\draw<1->[->, algLine] (bn) -- (N);
+			\draw<2->[->, genLine] (N) -- (ce);
+			\draw<2->[->, givLine] (P) -- (ce);	
+			\draw<2->[->, algLine] (ce) -- (E);
+			\draw<2->[->, algLine] (ce) -- (gelm);	
+			\draw<3->[->, givLine] (F) -- (cf);
+			\draw<3->[->, genLine] (N) -- (cf);
+			\draw<3->[->, genLine] (E) -- (cf);
+			\draw<3->[->, genLine] (gelm) -- (cf);
+			\draw<3->[->, givLine] (P) .. controls (6cm,-1.25cm) .. (cf.185);	
+			\draw<3->[->, algLine] (cf) -- (Fprime);	
+			\draw<4->[->, outLine] (Fprime.north) .. controls (18cm,0cm) .. (15.0cm,0cm) 
+				node[tealStyle, rounded corners, yshift=.1cm]{$\tau$ iterations} -- (F);
+		\end{tikzpicture}
 	}
-\end{algorithm}
-}
-
-%------------------------------------------------
-%TODO: be ready to translate symbols in part 3!
-\frame{\frametitle{Serial Algorithm for Convolving the Filter}
-	\vspace*{-8mm}
-	\begin{columns}
-		\begin{column}[t]{.35\textwidth}
-			\begin{block}{}
-				{\fontsize{4.2}{4.2}\selectfont
-					\begin{algorithm}[H]
-						\DontPrintSemicolon
-						\SetCommentSty{small}
-						\SetKwFor{For}{for}{:}{}
-						\SetKwProg{Func}{Function}{}{}
-						\SetKwProg{Cont}{}{}{}
-						\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
-						\Input{the set of all points $\bP$, \\
-							the set of discovered neighborhoods $\bN$, \\
-							the set of pre-calculated edge lengths $\bE$, \\
-							the minimum edge length of the mesh $\gelm$, \\
-							the set of function values $\bF$, \\
-							the user-defined number of convolutions $\tau$}
-						\Output{the set of one-ring \wmfv{s} $\bF'$}
-
-						\medskip
-						\linespread{1.2}\selectfont
-					\nl	\Func{serialConvolveFilter($\bP$, $\bN$, $\bE$, $\gelm$, $\bF$, $\tau$)}{
-					\nl		\For{$t\leftarrow 1\;\KwTo\;\tau$}{
-					\nl			\For{$\bp_v \in \bP$}{
-					\nl				\For{$\bp_i \in \bN_v$}{
-										\linespread{1.5}\selectfont
-					\nl					$\kern-0.5pt\alpha \leftarrow cos^{-1} \kern-6pt\left (\frac{\bE_c^2\,+\,\bE_b^2\,-\,\bE_a^2}{2\,\cdot\,\bE_c\,\cdot\,\bE_b}\right )$\;
-										\linespread{1.2}\selectfont
-					\nl					$\kern0.00pt\beta \leftarrow (\pi - \alpha)\mathbin{/}2$\;
-					\nl					$\kern-1.5ptA \leftarrow \Big(\gelm\,\Big)^2\kern-4pt\cdot\alpha\mathbin{/}2$\;
-					\nl					$\kern1.00pt\check{\ell} \leftarrow \big(4\cdot\gelm\cdot\sin(\alpha\mathbin{/}2)\big)\mathbin{/}3\,\alpha$\;
-					\nl					$\kern1.00pt\zeta \leftarrow \gelm\mathbin{/}\sin(\beta)$\;
-					\nl					\For{$j \in {1,2}$}{\label{algSCFjloop}
-					\nl						$\tilde{\ell}_j \leftarrow \zeta\mathbin{/}\bE_j$\;
-					\nl						$f'_j \leftarrow f_0\cdot(1 - \tilde{\ell}_j) + f_j\cdot\tilde{\ell}_j$\;
-										}
-					\nl					$\check{f} \leftarrow f_0\cdot(1 - \check{\ell}) + \big((f'_1 + f'_2)\cdot\check{\ell}\big)\mathbin{/}2$\;
-					\nl					$\kern-2.0pt\tilde{f}_v \leftarrow \tilde{f}_v + A\cdot\check{f}$\;
-					\nl					$\kern-4.0pt\tilde{A}_v \leftarrow \tilde{A}_v + A$\;
-									}
-					\nl				$f'_v \leftarrow \tilde{f}_v\mathbin{/}\tilde{A}_v$\;
-								}
-					\nl		$\bF' \leftarrow \left \{f'_1,\ldots,\,f'_{|\bP|}\right \}$\;
-					\nl 	$\bF \leftarrow \bF'$\;
-							}
-						}
-					\end{algorithm}
-				}
-			\end{block}
-		\end{column}
-		\begin{column}[t]{.65\textwidth}
-			\only<1>{
-				\begin{block}{Part (1 of 3)}
-					\begin{algorithm}[H]
-						\DontPrintSemicolon
-						\SetCommentSty{small}
-						\SetKwFor{For}{for}{:}{}
-						\SetKwProg{Func}{Function}{}{}
-						\SetKwProg{Cont}{}{}{}
-						\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
-						\Input{the set of all points $\bP$, \\
-							the set of discovered neighborhoods $\bN$, \\
-							the set of pre-calculated edge lengths $\bE$, \\
-							the minimum edge length of the mesh $\gelm$, \\
-							the set of function values $\bF$, \\
-							the user-defined number of convolutions $\tau$}
-
-						\bigskip
-						\Output{the set of one-ring \wmfv{s} $\bF'$}
-					\end{algorithm}
-				\end{block}
-			}\only<2>{
-				\begin{block}{Part (2 of 3)}
-					\begin{algorithm}[H]
-						\SetAlgoLined
-						\DontPrintSemicolon
-						\SetCommentSty{small}
-						\SetKwFor{For}{for}{:}{}
-						\SetKwProg{Func}{Function}{}{}
-						\SetKwProg{Cont}{}{}{}
-						\setcounter{AlgoLine}{0}
-					\nl	\Func{serialConvolveFilter($\bP$, $\bN$, $\bE$, $\gelm$, $\bF$, $\tau$)}{
-					\nl		\For{$t\leftarrow 1\;\KwTo\;\tau$}{
-					\nl			\For{$\bp_v \in \bP$}{
-					\nl				\For{$\bp_i \in \bN_v$}{
-										\vspace*{1.5\baselineskip}
-										\ldots
-										\vspace*{1.5\baselineskip}
-									}
-						\setcounter{AlgoLine}{15}
-					\nl				$f'_v \leftarrow \tilde{f}_v\mathbin{/}\tilde{A}_v$\;
-								}
-					\nl		$\bF' \leftarrow \left \{f'_1,\ldots,\,f'_{|\bP|}\right \}$\;
-					\nl 	$\bF \leftarrow \bF'$\;
-							}
-						}
-					\end{algorithm}
-				\end{block}
-			}\only<3>{
-				\begin{block}{Part (3 of 3)}
-					{\fontsize{9}{9.5}\selectfont
-					\begin{algorithm}[H]
-						\SetAlgoLined
-						\DontPrintSemicolon
-						\SetCommentSty{small}
-						\SetKwFor{For}{for}{:}{}
-						\SetKwProg{Func}{Function}{}{}
-						\SetKwProg{Cont}{}{}{}
-						\setcounter{AlgoLine}{7}
-						\vspace*{-1\baselineskip}
-						\Cont{}{
-							\vspace*{-1\baselineskip}
-							\Cont{}{
-								\vspace*{-1\baselineskip}
-								\Cont{}{
-									\vspace*{-1\baselineskip}
-									\Cont{}{
-										\linespread{1.5}\selectfont
-					\nl					$\kern-0.5pt\alpha \leftarrow cos^{-1} \kern-6pt\left (\frac{\bE_c^2\,+\,\bE_b^2\,-\,\bE_a^2}{2\,\cdot\,\bE_c\,\cdot\,\bE_b}\right )$\;
-										\linespread{1.2}\selectfont
-					\nl					$\kern0.00pt\beta \leftarrow (\pi - \alpha)\mathbin{/}2$\;
-					\nl					$\kern-1.5ptA \leftarrow \Big(\gelm\,\Big)^2\kern-4pt\cdot\alpha\mathbin{/}2$\;
-					\nl					$\kern1.00pt\check{\ell} \leftarrow \big(4\cdot\gelm\cdot\sin(\alpha\mathbin{/}2)\big)\mathbin{/}3\,\alpha$\;
-					\nl					$\kern1.00pt\zeta \leftarrow \gelm\mathbin{/}\sin(\beta)$\;
-					\nl					\For{$j \in {1,2}$}{\label{algSCFjloop}
-					\nl						$\tilde{\ell}_j \leftarrow \zeta\mathbin{/}\bE_j$\;
-					\nl						$f'_j \leftarrow f_0\cdot(1 - \tilde{\ell}_j) + f_j\cdot\tilde{\ell}_j$\;
-										}
-					\nl					$\check{f} \leftarrow f_0\cdot(1 - \check{\ell}) + \big((f'_1 + f'_2)\cdot\check{\ell}\big)\mathbin{/}2$\;
-					\nl					$\kern-2.0pt\tilde{f}_v \leftarrow \tilde{f}_v + A\cdot\check{f}$\;
-					\nl					$\kern-4.0pt\tilde{A}_v \leftarrow \tilde{A}_v + A$\;
-									}
-								}
-							}
-						}
-					\end{algorithm}
-					}
-				\end{block}
-			}
-		\end{column}
-	\end{columns}
-	\begin{tikzpicture}[overlay, remember picture]
-		\draw<1>[unirot,ultra thick,rounded corners] (-8mm, 64mm) rectangle (46mm, 50mm);
-		\draw<2>[unirot,ultra thick,rounded corners] (-8mm, 50mm) rectangle (46mm, 41mm);
-		\draw<2>[unirot,ultra thick,rounded corners] (-8mm, 15mm) rectangle (46mm,  2mm);
-		\draw<3>[unirot,ultra thick,rounded corners] (-8mm, 43mm) rectangle (46mm, 14mm);
-	\end{tikzpicture}
 }
 
 %------------------------------------------------
@@ -514,6 +353,17 @@
 	\medskip
 	...thankfully, a modern solution exists.
 }
+
+
+
+
+%================================================
+%================================================
+\section{Exploiting Parallelism}
+
+
+%================================================
+\subsection{Some Basics}
 
 %------------------------------------------------
 \frame{\frametitle{SIMD Architecture}
@@ -600,454 +450,52 @@
 \subsection{Parallel Algorithm}
 
 %------------------------------------------------
-\frame{\frametitle{Parallel Algorithm for Building Neighborhoods}
-	\only<1>{
-		\begin{block}{Part 1 of 3}
-			\begin{algorithm}[H]
-				\DontPrintSemicolon
-				\SetKwFor{For}{for}{:}{}
-				\SetKwProg{Func}{Function}{}{}
-				\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
+%TODO: ADD nomenclature
+\frame[c]{\frametitle{Parallel Algorithm for Fast One-Ring Smoothing}
+	\resizebox{1.0\textwidth}{!}{
+		\begin{tikzpicture}[node distance=0cm]
+			\node<1->(T)      [givNode, xshift= 0cm] {$\bT$};	
+			\node<1->(P)      [givNode, xshift= 0cm, yshift=-1.13cm] {$\bP$};
+			\node<1->(rho)    [givNode, xshift= 0cm, yshift=-2.25cm] {$\rho$};
+			\node<1->(bn)     [algNode, xshift= 3cm] {Build \\ Neighborhoods};	
+			\node<1->(N)      [genNode, xshift= 6cm] {$\bN$};	
+			\node<2->(cn)     [algNode, xshift= 9cm, yshift= 1.13cm] {Census \\ Neighborhoods};	
+			\node<2->(hatn)   [genNode, xshift=12cm, yshift= 1.13cm] {$\hat{n}$};
+			\node<3->(ce)     [algNode, xshift=15cm, yshift=-2.81cm] {Calculate \\ Edge~Lengths};
+			\node<3->(E)      [genNode, xshift=18cm, yshift=-2.25cm] {$\bE$};
+			\node<3->(gelm)   [genNode, xshift=18cm, yshift=-3.38cm] {$\gelm$};
+			\node<4->(F)      [givNode, xshift=18cm, yshift= 1.13cm] {$\bF$};
+			\node<4->(cf)     [algNode, xshift=21cm, yshift=-1.13cm] {Convolve \\ Filter};
+			\node<4->(Fprime) [outNode, xshift=24cm, yshift=-1.13cm] {$\bF'$};
+			\node<1->(empty)  [minimum width=1cm, xshift=24cm] {\null};
+			\node<1->(empty)  [minimum height=1cm, yshift=-3.38cm] {\null};
+			\node<1->(empty)  [minimum height=1.75cm, yshift= 1.13cm] {\null};
 
-				\Input{the number of available processors $\rho$, \\
-					the set of all triangular faces $\bT$, \\
-					the cardinality of the set of points $|\bP|$}
-				\Output{the set of discovered neighborhoods $\bN$}
-
-				\bigskip
-			\nl	\Func{parallelBuildNeighborhoods($\rho$, $\bT$, $|\bP|$)}{
-			\nl		$\sigma \leftarrow |\bT|\mathbin{/}\rho$\;
-			\nl		$\fM \leftarrow \{\mu_1,\,\ldots,\,\mu_{|\bP|}\}$\;
-			\nl		\For{$\Pi \leftarrow 1$ \KwTo $\rho\mathbin{/}4$}{
-			\nl			\ProgSty{$\sim$build($\Pi$, $\sigma$, $\fM$, $\bT$)}\;
-					}
-			\nl		\ProgSty{synchronizeThreads()}\;
-				}
-			\end{algorithm}
-		\end{block}
+			\draw<1->[->, givLine] (rho) .. controls (3cm,-2.25cm) .. (bn);
+			\draw<1->[->, givLine] (T) -- (bn);
+			\draw<1->[->, givLine] (P) -- (bn);
+			\draw<1->[->, algLine] (bn) -- (N);
+			\draw<2->[->, givLine] (rho) .. controls (6cm,-2.25cm) .. (cn);
+			\draw<2->[->, genLine] (N) -- (cn);
+			\draw<2->[->, algLine] (cn) -- (hatn);
+			\draw<3->[->, givLine] (rho) .. controls (12cm,-2.25cm) and (6cm,-2.81cm) .. (ce);
+			\draw<3->[->, givLine] (P) -- (ce);
+			\draw<3->[->, genLine] (N) -- (ce);	
+			\draw<3->[->, genLine] (hatn) -- (ce);
+			\draw<3->[->, algLine] (ce) -- (E);
+			\draw<3->[->, algLine] (ce) -- (gelm);
+			\draw<4->[->, givLine] (rho) .. controls (15cm,-2.25cm) and (9cm,-1.13cm) .. (cf.190);
+			\draw<4->[->, givLine] (P) -- (cf);
+			\draw<4->[->, genLine] (N) -- (cf);
+			\draw<4->[->, genLine] (hatn) -- (cf);
+			\draw<4->[->, genLine] (E) -- (cf);
+			\draw<4->[->, genLine] (gelm) -- (cf);
+			\draw<4->[->, givLine] (F) -- (cf);
+			\draw<4->[->, algLine] (cf) -- (Fprime);
+			\draw<5->[->, outLine] (Fprime.north) .. controls (24cm,1.13cm) .. (21.0cm,1.13cm) 
+				node[tealStyle, rounded corners, yshift=.1cm]{$\tau$ iterations} -- (F);
+		\end{tikzpicture}
 	}
-	\only<2>{
-		\begin{columns}
-			\begin{column}{.49\textwidth}
-				\begin{block}{Part 2 of 3}
-					\begin{algorithm}[H]
-						\DontPrintSemicolon
-						\SetCommentSty{small}
-						\SetKwFor{For}{for}{:}{}
-						\SetKwProg{Kernel}{Kernel}{}{}
-						\setcounter{AlgoLine}{6}
-
-					\nl	\Kernel{build($\Pi$, $\sigma$, $\fM$, $\bT$)}{
-					\nl		$\check{\sigma} \leftarrow (\Pi-1)\,\sigma+1$\;
-					\nl		$\hat{\sigma} \leftarrow \Pi\,\sigma$\;
-					\nl		\For(\tcc*[f]{$\bt = \left \{\bp_a, \bp_b, \bp_c\right \}$}){$\bt \in \{\bt_{\check{\sigma}},\ldots,\,\bt_{\hat{\sigma}}\}$}{
-					\nl			\ProgSty{$\sim$safeUnion($\fM$, $\bN$, $\bp_a$, $\bp_b$, $\bp_c$)}\;
-					\nl			\ProgSty{$\sim$safeUnion($\fM$, $\bN$, $\bp_b$, $\bp_a$, $\bp_c$)}\;
-					\nl			\ProgSty{$\sim$safeUnion($\fM$, $\bN$, $\bp_c$, $\bp_a$, $\bp_b$)}\;
-							}
-						}
-					\end{algorithm}
-				\end{block}
-			\end{column}
-			\begin{column}{.433\textwidth}
-				\begin{block}{Part 3 of 3}
-					\begin{algorithm}[H]
-						\DontPrintSemicolon
-						\SetCommentSty{small}
-						\SetKwFor{For}{for}{:}{}
-						\SetKwProg{Kernel}{Kernel}{}{}
-						\setcounter{AlgoLine}{12}
-
-					\nl	\Kernel{safeUnion($\fM$, $\bN$, $a$, $b$, $c$)}{
-					\nl		$\ProcSty{lock}(\mu_a)$\;
-					\nl		$\bN_a \leftarrow \bN_a \cup \{b,\,c\}$\;
-					\nl		$\ProcSty{unlock}(\mu_a)$\;
-						}
-					\end{algorithm}
-				\end{block}
-			\end{column}
-		\end{columns}
-	}
-}
-
-%------------------------------------------------
-%Totally remove
-\iffalse
-\frame{\frametitle{Parallel Recursive Census Neighborhoods (Prefix Sum)}
-	\vspace*{-8mm}
-	\begin{columns}
-		\begin{column}{.49\textwidth}
-			\begin{block}{}
-				{\fontsize{5.8}{5.8}\selectfont
-					\begin{algorithm}[H]
-						\DontPrintSemicolon
-						\SetCommentSty{small}
-						\SetKwFor{For}{for}{:}{}
-						\SetKwProg{Func}{Function}{}{}
-						\SetKwProg{Kernel}{Kernel}{}{}
-						\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
-
-						\Input{the number of available processors $\rho$, \\
-							the set of neighborhoods $\bN$}
-						\Output{the count of all neighbors in all neighborhoods $\hat{n}$}
-
-						\bigskip
-					\nl	\Func{parallelRecursiveCensusNeighborhoods($\rho$, $\bN$)}{
-					\nl		\eIf{$|\bN| \leq 2$}{
-					\nl			$\hat{n} \leftarrow \sum_{i=1}^{|\bN|}\bN_i$\;
-							}{%Else
-					\nl			$\sigma \leftarrow |\bN|\mathbin{/}(2\,\rho)$\;
-					\nl			\For{$\Pi \in \{1,\ldots,\rho\}$}{
-					\nl				\ProgSty{$\sim$parallelSum($\Pi$, $\sigma$, $\bN$)}\;
-								}
-					\nl			\ProgSty{synchronizeThreads()}\;
-					\nl			\ProgSty{parallelRecursiveCensusNeighborhoods($\rho$, $\widetilde{\bN}$)}\;
-							}
-						}
-
-						\bigskip
-					\nl	\Kernel{parallelSum($\Pi$, $\sigma$, $\bN$)}{
-					\nl		$\check{\sigma} \leftarrow (\Pi-1)\,\sigma+1$\;
-					\nl		$\hat{\sigma} \leftarrow 2\,\Pi\,\sigma$\;
-					\nl		\For{$v \in \{\check{\sigma},\,\check{\sigma}\sps{}2,\,\check{\sigma}\sps{}4,\ldots,\,\hat{\sigma}\}$}{
-					\nl			\eIf{$\bN$ is a family of sets}{
-					\nl				$\widetilde{\bN_v} \leftarrow |\bN_v| + |\bN_{\sxpx{v}{1}}|$\;
-								}{%else
-					\nl				$\widetilde{\bN_v} \leftarrow \bN_v + \bN_{\sxpx{v}{1}}$\;
-								}
-							}
-						}
-					\end{algorithm}
-				}
-			\end{block}
-		\end{column}
-	\end{columns}
-}
-\fi
-%------------------------------------------------
-\frame{\frametitle{Parallel Algorithm for Calculating Edge Lengths}
-	\vspace*{-8mm}
-	\begin{columns}
-		\begin{column}[t]{.35\textwidth}
-			\begin{block}{}
-				{\fontsize{4.2}{4.2}\selectfont
-					\begin{algorithm}[H]
-						\DontPrintSemicolon
-						\SetCommentSty{small}
-						\SetKwFor{For}{for}{:}{}
-						\SetKwProg{Func}{Function}{}{}
-						\SetKwProg{Kernel}{Kernel}{}{}
-						\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
-
-						\Input{the number of available processors $\rho$, \\
-							the set of all points $\bP$, \\
-							the set of neighborhoods $\bN$, \\
-							the count of all neighbors in all neighborhoods $\hat{n}$}
-						\Output{the set of pre-calculated edge lengths $\bE$, \\
-							the global minimum edge length $\gelm$}
-
-						\medskip
-					\nl	\Func{parallelCalculateEdgeLengths($\rho$, $\bP$,\,$\bN$,\,$\hat{n}$)}{
-					\nl		$\sigma \leftarrow \hat{n}\mathbin{/}\rho$\;
-					\nl		$\bar{n} \leftarrow \hat{n}\mathbin{/}|\bP|$\;
-					\nl		\For{$\Pi \in \{1,\,\ldots,\,\left \lceil\rho/\bar{n}\right\rceil\}$}{
-					\nl			\ProgSty{$\sim$calculateLengths($\Pi$, $\sigma$, $\mu$, $\bP$,\,$\bN$)}\;
-							}
-					\nl		\ProgSty{synchronizeThreads()}\;
-						}
-
-						\medskip
-					\nl	\Kernel{calculateLengths($\Pi$, $\sigma$, $\bP$,\,$\bN$)}{
-					\nl		$\check{\sigma} \leftarrow (\Pi-1)\,\sigma+1$\;
-					\nl		$\hat{\sigma} \leftarrow \Pi\,\sigma$\;
-					\nl		$\ProcSty{create}(\mu)$\;
-					\nl		\For{$\bp_v \in \{\bp_{\check{\sigma}},\ldots,\,\bp_{\hat{\sigma}}\}$}{
-					\nl			\For{$\bp_i \in \bN_v$}{
-					\nl				\ProgSty{$\sim$safeEdgeLengthCalc($\mu$, $\bE$, $\gelm$, $\bp_v$, $\bp_i$)}\;
-								}
-							}
-						}
-
-						\medskip
-					\nl	\Kernel{safeEdgeLengthCalc($\mu$, $\bE$, $\gelm$, $\bp_v$, $\bp_i$)}{
-					\nl		$\bE_{\sv{i}} \leftarrow |\bp_i - \bp_v|$\;
-					\nl		\If{$\bE_{\sv{i}} < \gelm$}{\label{algPCELhcs}
-					\nl			$\ProcSty{lock}(\mu)$\;
-					\nl			$\gelm \leftarrow \min\left \{\gelm,\,\bE_{\sv{i}}\right \}$\label{algPCELgelm}\;
-					\nl			$\ProcSty{unlock}(\mu)$\;
-							}
-						}
-					\end{algorithm}
-				}
-			\end{block}
-		\end{column}
-		\begin{column}[t]{.65\textwidth}
-			\only<1>{
-				\begin{block}{Part (1 of 4)}
-					\begin{algorithm}[H]
-						\DontPrintSemicolon
-						\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
-						\Input{the number of available processors $\rho$, \\
-							the set of all points $\bP$, \\
-							the set of neighborhoods $\bN$, \\
-							{\fontsize{9.5}{9.5}\selectfont the count of all neighbors in all neighborhoods $\hat{n}$}}
-
-						\bigskip
-						\Output{the set of pre-calculated edge lengths $\bE$, \\
-							the global minimum edge length $\gelm$}
-					\end{algorithm}
-				\end{block}
-			}\only<2>{
-				\begin{block}{Part (2 of 4)}
-					\begin{algorithm}[H]
-						\DontPrintSemicolon
-						\SetKwFor{For}{for}{:}{}
-						\SetKwProg{Func}{Function}{}{}
-						\setcounter{AlgoLine}{0}
-					\nl	\Func{parallelCalculateEdgeLengths($\rho$, $\bP$,\,$\bN$,\,$\hat{n}$)}{
-					\nl		$\sigma \leftarrow \hat{n}\mathbin{/}\rho$\;
-					\nl		$\bar{n} \leftarrow \hat{n}\mathbin{/}|\bP|$\;
-					\nl		\For{$\Pi \in \{1,\,\ldots,\,\left \lceil\rho/\bar{n}\right\rceil\}$}{
-					\nl			\ProgSty{$\sim$calculateLengths($\Pi$, $\sigma$, $\mu$, $\bP$,\,$\bN$)}\;
-							}
-					\nl		\ProgSty{synchronizeThreads()}\;
-						}
-					\end{algorithm}
-				\end{block}
-			}\only<3>{
-				\begin{block}{Part (3 of 4)}
-					\begin{algorithm}[H]
-						\DontPrintSemicolon
-						\SetCommentSty{small}
-						\SetKwFor{For}{for}{:}{}
-						\SetKwProg{Kernel}{Kernel}{}{}
-						\setcounter{AlgoLine}{6}
-					\nl	\Kernel{calculateLengths($\Pi$, $\sigma$, $\bP$,\,$\bN$)}{
-					\nl		$\check{\sigma} \leftarrow (\Pi-1)\,\sigma+1$\;
-					\nl		$\hat{\sigma} \leftarrow \Pi\,\sigma$\;
-					\nl		$\ProcSty{create}(\mu)$\;
-					\nl		\For{$\bp_v \in \{\bp_{\check{\sigma}},\ldots,\,\bp_{\hat{\sigma}}\}$}{
-					\nl			\For{$\bp_i \in \bN_v$}{
-					\nl				\ProgSty{$\sim$safeEdgeLengthCalc($\mu$, $\bE$, $\gelm$, $\bp_v$, $\bp_i$)}\;
-								}
-							}
-						}
-					\end{algorithm}
-				\end{block}
-			}\only<4>{
-				\begin{block}{Part (4 of 4)}
-					\begin{algorithm}[H]
-						\DontPrintSemicolon
-						\SetCommentSty{small}
-						\SetKwFor{For}{for}{:}{}
-						\SetKwProg{Kernel}{Kernel}{}{}
-						\setcounter{AlgoLine}{12}
-					\nl	\Kernel{safeEdgeLengthCalc($\mu$, $\bE$, $\gelm$, $\bp_v$, $\bp_i$)}{
-					\nl		$\bE_{\sv{i}} \leftarrow |\bp_i - \bp_v|$\;
-					\nl		\If{$\bE_{\sv{i}} < \gelm$}{\label{algPCELhcs}
-					\nl			$\ProcSty{lock}(\mu)$\;
-					\nl			$\gelm \leftarrow \min\left \{\gelm,\,\bE_{\sv{i}}\right \}$\label{algPCELgelm}\;
-					\nl			$\ProcSty{unlock}(\mu)$\;
-							}
-						}
-					\end{algorithm}
-				\end{block}
-			}
-		\end{column}
-	\end{columns}
-	\begin{tikzpicture}[overlay, remember picture]
-		\draw<1>[unirot,ultra thick,rounded corners] (-8mm, 64mm) rectangle (46mm, 52mm);
-		\draw<2>[unirot,ultra thick,rounded corners] (-8mm, 52.5mm) rectangle (46mm, 38.5mm);
-		\draw<3>[unirot,ultra thick,rounded corners] (-8mm, 38mm) rectangle (46mm, 20mm);
-		\draw<4>[unirot,ultra thick,rounded corners] (-8mm, 20mm) rectangle (46mm, 02mm);
-	\end{tikzpicture}
-}
-
-%------------------------------------------------
-%TODO: format
-\frame{\frametitle{Parallel Algorithm for Convolving the Filter}
-	\vspace*{-8mm}
-	\begin{columns}
-		\begin{column}[t]{.35\textwidth}
-			\begin{block}{}
-				{\scalebox{.66}{\fontsize{4.0}{4.0}\selectfont
-					\begin{algorithm}[H]
-						\DontPrintSemicolon
-						\SetCommentSty{small}
-						\SetKwFor{For}{for}{:}{}
-						\SetKwProg{Func}{Function}{}{}
-						\SetKwProg{Kernel}{Kernel}{}{}
-						\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
-
-						\Input{the number of available processors $\rho$, \\
-							the set of all points $\bP$, \\
-							the set of neighborhoods $\bN$, \\
-							the count of all neighbors in all neighborhoods $\hat{n}$, \\
-							the set of pre-calculated edge lengths $\bE$, \\
-							the global minimum edge length $\gelm$, \\
-							the set of function values $\bF$, \\
-							the user-defined number of convolutions $\tau$}
-						\Output{the set of one-ring \wmfv{s} $\bF'$}
-
-						\smallskip
-						\linespread{1}\selectfont
-					\nl	\Func{parallelConvolveFilter($\rho$, $\bP$, $\bN$, $\hat{n}$, $\bE$, $\gelm$, $\bF$, $\tau$)}{
-					\nl		\For{$t\leftarrow 1\;\KwTo\;\tau$}{
-					\nl			$\sigma \leftarrow (|\bP|+\hat{n})\mathbin{/}\rho$\;
-					\nl			$\bar{n} \leftarrow \tilde{n}\mathbin{/}|\bP|$\;
-					\nl			\For{$\Pi \in \{1,\ldots,\left \lceil\rho/\bar{n}\right\rceil\}$}{
-					\nl				\ProgSty{$\sim$safeAccumulateGeoDiscMean($\Pi$, $\sigma$, $\bP$, $\bN$, $\bE$, $\gelm$, $\bF$, $\bF'$)}\;
-								}
-					\nl			\ProgSty{synchronizeThreads()}\;
-					\nl 		\If{$t < \tau$}{$\bF \leftarrow \bF'$}
-							}
-					\nl 	\KwRet $\bF'$\;
-						}
-
-						\smallskip
-					\nl	\Kernel{safeAccumulateGeoDiscMean($\Pi$, $\sigma$, $\bP$, $\bN$, $\bE$, $\gelm$, $\bF$, $\bF'$)}{
-					\nl		$\check{\sigma} \leftarrow (\Pi-1)\,\sigma+1$\;
-					\nl		$\hat{\sigma} \leftarrow \Pi\,\sigma$\;
-					\nl		\For{$\bp_v \in \{\bp_{\check{\sigma}},\ldots,\,\bp_{\hat{\sigma}}\}$}{
-					\nl			$\fM \leftarrow \left \{\mu_1,\dots,\mu_{|\bN_v|}\right \}$\;
-					\nl			\For{$\bp_i \in \bN_v$}{
-									\smallskip
-					\nl				\ProgSty{$\sim$safeAccumulateSectorMean($\fM$, $\bE$, $\gelm$, $\bp_v$, $\bp_i$, $\bF$, $\tilde{f}_v$, $\tilde{A}_v$)}\;
-								}
-					\nl			\ProgSty{synchronizeThreads(\{$\check{\sigma}$, \ldots, $\hat{\sigma}$\})}\;
-					\nl			$\bF'_v \leftarrow \tilde{f}_v\mathbin{/}\tilde{A}_v$\;
-							}
-						}
-
-						\smallskip
-					\nl	\Kernel{safeAccumulateSectorMean($\fM$, $\bE$, $\gelm$, $\bp_v$, $\bp_i$, $\bF$, $\tilde{f}_v$, $\tilde{A}_v$)}{
-					\nl		$\kern-0.5pt\alpha \leftarrow cos^{-1}\kern-6pt\left (\frac{\bE_c^2\,+\,\bE_b^2\,-\,\bE_a^2}{2\,\cdot\,\bE_c\,\cdot\,\bE_b}\right )$\;
-					\nl		$\kern0.00pt\beta \leftarrow (\pi - \alpha)\mathbin{/}2$\;
-					\nl		$\kern-1.5ptA \leftarrow \Big(\gelm\,\Big)^2\kern-4pt\cdot\alpha\mathbin{/}2$\;
-					\nl		$\kern1.00pt\check{\ell} \leftarrow \big(4\cdot\gelm\cdot\sin(\alpha\mathbin{/}2)\big)\mathbin{/}3\,\alpha$\;
-					\nl		$\kern1.00pt\zeta \leftarrow \gelm\mathbin{/}\sin(\beta)$\;
-					\nl		\For{$j \in {1,2}$}{
-					\nl			$\tilde{\ell}_j \leftarrow \zeta\mathbin{/}\bE_j$\;
-					\nl			$f'_j \leftarrow f_0\cdot(1 - \tilde{\ell}_j) + f_j\cdot\tilde{\ell}_j$\;
-							}
-					\nl		$\check{f} \leftarrow f_0\cdot(1 - \check{\ell}) + \big((f'_1 + f'_2)\cdot\check{\ell}\big)\mathbin{/}2$\;
-							\linespread{1.0}\selectfont
-					\nl		$\ProcSty{lock}(\mu)$\;
-					\nl		$\kern2.0pt\tilde{f}_v \leftarrow \tilde{f}_v + A\cdot\check{f}$\;
-					\nl		$\kern0.0pt\tilde{A}_v \leftarrow \tilde{A}_v + A$\;
-					\nl		$\ProcSty{lock}(\mu)$\;
-						}
-					\end{algorithm}
-				}}
-			\end{block}
-		\end{column}
-		\begin{column}[t]{.65\textwidth}
-			\only<1>{
-				\begin{block}{Part (1 of 4)}
-					\begin{algorithm}[H]
-						\DontPrintSemicolon
-						\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
-						\Input{the number of available processors $\rho$, \\
-							the set of all points $\bP$, \\
-							the set of neighborhoods $\bN$, \\
-							{\fontsize{9.5}{9.5}\selectfont the count of all neighbors in all neighborhoods $\hat{n}$}, \\
-							the set of pre-calculated edge lengths $\bE$, \\
-							the global minimum edge length $\gelm$, \\
-							the set of function values $\bF$, \\
-							the user-defined number of convolutions $\tau$}
-
-						\bigskip
-						\Output{the set of one-ring \wmfv{s} $\bF'$}
-					\end{algorithm}
-				\end{block}
-			}
-			\only<2>{
-				\begin{block}{Part (2 of 4)}
-					{\fontsize{10}{12}\selectfont
-					\begin{algorithm}[H]
-						\DontPrintSemicolon
-						\SetKwFor{For}{for}{:}{}
-						\SetKwProg{Func}{Function}{}{}
-						\setcounter{AlgoLine}{0}
-
-					\nl	\Func{parallelConvolveFilter($\rho$, $\bP$, $\bN$, $\hat{n}$, $\bE$, $\gelm$, $\bF$, $\tau$)}{
-					\nl		\For{$t\leftarrow 1\;\KwTo\;\tau$}{
-					\nl			$\sigma \leftarrow (|\bP|+\hat{n})\mathbin{/}\rho$\;
-					\nl			$\bar{n} \leftarrow \tilde{n}\mathbin{/}|\bP|$\;
-					\nl			\For{$\Pi \in \{1,\ldots,\left \lceil\rho/\bar{n}\right\rceil\}$}{
-					\nl				\ProgSty{$\sim$safeAccumulateGeoDiscMean($\Pi$, $\sigma$, $\bP$, $\bN$, $\bE$, $\gelm$, $\bF$, $\bF'$)}\;
-								}
-					\nl			\ProgSty{synchronizeThreads()}\;
-					\nl 		\If{$t < \tau$}{$\bF \leftarrow \bF'$}
-							}
-					\nl 	\KwRet $\bF'$\;
-						}
-					\end{algorithm}
-					}
-				\end{block}
-			}\only<3>{
-				\begin{block}{Part (3 of 4)}
-					{\fontsize{10}{12}\selectfont
-					\begin{algorithm}[H]
-						\DontPrintSemicolon
-						\SetKwFor{For}{for}{:}{}
-						\SetKwProg{Kernel}{Kernel}{}{}
-						\setcounter{AlgoLine}{9}
-
-					\nl	\Kernel{safeAccumulateGeoDiscMean($\Pi$, $\sigma$, $\bP$, $\bN$, $\bE$, $\gelm$, $\bF$, $\bF'$)}{
-					\nl		$\check{\sigma} \leftarrow (\Pi-1)\,\sigma+1$\;
-					\nl		$\hat{\sigma} \leftarrow \Pi\,\sigma$\;
-					\nl		\For{$\bp_v \in \{\bp_{\check{\sigma}},\ldots,\,\bp_{\hat{\sigma}}\}$}{
-					\nl			$\fM \leftarrow \left \{\mu_1,\dots,\mu_{|\bN_v|}\right \}$\;
-					\nl			\For{$\bp_i \in \bN_v$}{
-									\smallskip
-					\nl				\ProgSty{$\sim$safeAccumulateSectorMean($\fM$, $\bE$, $\gelm$, $\bp_v$, $\bp_i$, $\bF$, $\tilde{f}_v$, $\tilde{A}_v$)}\;
-								}
-					\nl			\ProgSty{synchronizeThreads(\{$\check{\sigma}$, \ldots, $\hat{\sigma}$\})}\;
-					\nl			$\bF'_v \leftarrow \tilde{f}_v\mathbin{/}\tilde{A}_v$\;
-							}
-						}
-					\end{algorithm}
-					}
-				\end{block}
-			}\only<4,5>{
-				\begin{block}{Part (4 of 4)}
-					{\fontsize{7.75}{9}\selectfont
-					\begin{algorithm}[H]
-						\DontPrintSemicolon
-						\SetKwFor{For}{for}{:}{}
-						\SetKwProg{Kernel}{Kernel}{}{}
-						\setcounter{AlgoLine}{17}
-					\nl	\Kernel{safeAccumulateSectorMean($\fM$, $\bE$, $\gelm$, $\bp_v$, $\bp_i$, $\bF$, $\tilde{f}_v$, $\tilde{A}_v$)}{
-					\nl		$\kern-0.5pt\alpha \leftarrow cos^{-1}\kern-6pt\left (\frac{\bE_c^2\,+\,\bE_b^2\,-\,\bE_a^2}{2\,\cdot\,\bE_c\,\cdot\,\bE_b}\right )$\;
-					\nl		$\kern0.00pt\beta \leftarrow (\pi - \alpha)\mathbin{/}2$\;
-					\nl		$\kern-1.5ptA \leftarrow \Big(\gelm\,\Big)^2\kern-4pt\cdot\alpha\mathbin{/}2$\;
-					\nl		$\kern1.00pt\check{\ell} \leftarrow \big(4\cdot\gelm\cdot\sin(\alpha\mathbin{/}2)\big)\mathbin{/}3\,\alpha$\;
-					\nl		$\kern1.00pt\zeta \leftarrow \gelm\mathbin{/}\sin(\beta)$\;
-					\nl		\For{$j \in {1,2}$}{
-					\nl			$\tilde{\ell}_j \leftarrow \zeta\mathbin{/}\bE_j$\;
-					\nl			$f'_j \leftarrow f_0\cdot(1 - \tilde{\ell}_j) + f_j\cdot\tilde{\ell}_j$\;
-							}
-					\nl		$\check{f} \leftarrow f_0\cdot(1 - \check{\ell}) + \big((f'_1 + f'_2)\cdot\check{\ell}\big)\mathbin{/}2$\;
-							\linespread{1.0}\selectfont
-					\nl		$\ProcSty{lock}(\mu)$\;
-					\nl		$\kern2.0pt\tilde{f}_v \leftarrow \tilde{f}_v + A\cdot\check{f}$\;
-					\nl		$\kern0.0pt\tilde{A}_v \leftarrow \tilde{A}_v + A$\;
-					\nl		$\ProcSty{lock}(\mu)$\;
-						}
-					\end{algorithm}
-					}
-				\end{block}
-			}
-		\end{column}
-	\end{columns}
-	\begin{tikzpicture}[overlay, remember picture]
-		\draw<1>[unirot,ultra thick,rounded corners] (-8mm, 67.5mm) rectangle (46mm, 56.5mm);
-		\draw<2>[unirot,ultra thick,rounded corners] (-8mm, 57mm) rectangle (46mm, 40.5mm);
-		\draw<3>[unirot,ultra thick,rounded corners] (-8mm, 41mm) rectangle (46mm, 24mm);
-		\draw<4>[unirot,ultra thick,rounded corners] (-8mm, 24.5mm) rectangle (46mm, 2mm);
-		\draw<5>[unirot,ultra thick,rounded corners] (47mm, 19mm) rectangle (100mm, 2mm);
-	\end{tikzpicture}
 }
 
 
@@ -1060,7 +508,7 @@
 
 %================================================
 %TODO: Widen space between images
-\subsection{Filter Response On Synthetic Data}
+\subsection{Filter Response on Synthetic and Acquired Data}
 
 %------------------------------------------------
 \frame{\frametitle{Bisected-Square Tessellations}
@@ -1310,10 +758,6 @@
 	\end{columns}
 }
 
-
-%================================================
-\subsection{Filter Response On Acquired Data}
-
 %------------------------------------------------
 %TODO:callout errors
 \frame{\frametitle{The University of Heidelberg Seal}
@@ -1416,10 +860,8 @@
 }
 
 
-
-
 %================================================
-\subsection{Convolving with a \gls{GPGPU}}
+\subsection{Performance utilizing \glspl{GPGPU}}
 
 %------------------------------------------------
 \frame{\frametitle{Compute Times per Experiment for increasing Iteration Counts}
@@ -1456,6 +898,8 @@
 	\centering
 	\includegraphics[width=.9\textwidth]{figures/efficiency.png}
 }
+
+
 
 
 %================================================
