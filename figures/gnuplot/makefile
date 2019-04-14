@@ -1,5 +1,7 @@
-PLOTS =  ../computeTimesLinespoints.png \
+PLOTS = ../computeTimesLinespoints.png \
+		../computeTimesLinespoints_presentation.png \
 		../computeTimesScatter.png \
+		../computeTimesScatter_presentation.png \
 		../speedup.png \
 		../efficiency.png \
 		../numFacesByVerticesGoTo2.png
