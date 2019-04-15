@@ -82,6 +82,8 @@
 \setlength{\intextsep}{0pt}
 \def\hilite<#1>{\temporal<#1>{\color{black}}{\color{unirot}}{\color{gray}}}
 
+\iffalse
+\fi
 %------------------------------------------------
 \frame[plain]{
 	\titlepage
@@ -118,24 +120,6 @@
 %================================================
 %================================================
 \section{Motivation \& Introduction}
-
-%------------------------------------------------
-\frame{\frametitle{Increasing demand for high-definition, 3D~surface scans}
-	\begin{columns}[T]
-		\begin{column}{.45\textwidth}
-			\begin{itemize}
-				%\item Danger to physical archives
-				\item Modernization of archeology
-				\item High quality 3D-scanners are becoming less expensive
-			\end{itemize}
-		\end{column}
-		\begin{column}{.55\textwidth}
-			\centering
-			\includegraphics[width=1.0\linewidth]{figures/visualizeFunctionValues2.png}
-			3D Surface Scan as a discrete 2D manifold \break colored by function value
-		\end{column}
-	\end{columns}
-}
 
 %------------------------------------------------
 \frame{\frametitle{Raw \tdd{} is not suitable for analysis}
@@ -193,6 +177,24 @@
 			\centering
 			\includegraphics[width=.9\textwidth]{figures/afterFilter.png}
 			After smoothing
+		\end{column}
+	\end{columns}
+}
+
+%------------------------------------------------
+\frame{\frametitle{Increasing demand for high-definition, 3D~surface scans}
+	\begin{columns}[T]
+		\begin{column}{.45\textwidth}
+			\begin{itemize}
+				%\item Danger to physical archives
+				\item Modernization of archeology
+				\item High quality 3D-scanners are becoming less expensive
+			\end{itemize}
+		\end{column}
+		\begin{column}{.55\textwidth}
+			\centering
+			\includegraphics[width=1.0\linewidth]{figures/visualizeFunctionValues2.png}
+			3D Surface Scan as a discrete 2D manifold \break colored by function value
 		\end{column}
 	\end{columns}
 }
@@ -296,7 +298,7 @@
 		\includegraphics[width=0.95\linewidth]{figures/interpolatedFunctionValues_presentation2.png}
 	}\only<3>{
 		\vspace*{-4mm}
-		\begin{flushright}Interpolate $f'_1$ and $f'_2$ to bisecting line\end{flushright}
+		\begin{flushright}Interpolate $f$'$_1$ and $f$'$_2$ to bisecting line\end{flushright}
 		\vspace*{-6mm}
 		\centering
 		\includegraphics[width=0.95\linewidth]{figures/interpolatedFunctionValues_presentation3.png}
