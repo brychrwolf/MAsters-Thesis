@@ -108,7 +108,7 @@
      inkscape:cx="741.82634"
      inkscape:cy="-151.29909"
      inkscape:document-units="px"
-     inkscape:current-layer="layer24"
+     inkscape:current-layer="layer1"
      showgrid="true"
      units="px"
      inkscape:pagecheckerboard="false"
@@ -140,7 +140,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -625,28 +625,6 @@
          cx="-22.038248"
          cy="260.17642"
          r="66.356834" />
-      <text
-         xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.51910114px;line-height:1.25;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;display:inline;fill:#007f7f;fill-opacity:1;stroke:none;stroke-width:0.68058294"
-         x="39.974003"
-         y="295.71906"
-         id="text851-2-9"><tspan
-           sodipodi:role="line"
-           id="tspan849-5-22"
-           x="39.974003"
-           y="295.71906"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.51910114px;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;fill:#007f7f;fill-opacity:1;stroke-width:0.68058294">Ω</tspan></text>
-      <text
-         xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.51910114px;line-height:1.25;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;display:inline;fill:#007f7f;fill-opacity:1;stroke:none;stroke-width:0.68058294"
-         x="255.08006"
-         y="295.71906"
-         id="text851-2-9-4"><tspan
-           sodipodi:role="line"
-           id="tspan849-5-22-7"
-           x="255.08006"
-           y="295.71906"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.51910114px;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;fill:#007f7f;fill-opacity:1;stroke-width:0.68058294">Ω</tspan></text>
     </g>
     <g
        inkscape:groupmode="layer"

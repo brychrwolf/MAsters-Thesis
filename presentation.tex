@@ -124,7 +124,7 @@
 	\begin{columns}[T]
 		\begin{column}{.45\textwidth}
 			\begin{itemize}
-				\item Danger to physical archives
+				%\item Danger to physical archives
 				\item Modernization of archeology
 				\item High quality 3D-scanners are becoming less expensive
 			\end{itemize}
@@ -296,7 +296,7 @@
 		\includegraphics[width=0.95\linewidth]{figures/interpolatedFunctionValues_presentation2.png}
 	}\only<3>{
 		\vspace*{-4mm}
-		\begin{flushright}Interpolate $f_1$ and $f_2$ to bisecting line\end{flushright}
+		\begin{flushright}Interpolate $f'_1$ and $f'_2$ to bisecting line\end{flushright}
 		\vspace*{-6mm}
 		\centering
 		\includegraphics[width=0.95\linewidth]{figures/interpolatedFunctionValues_presentation3.png}
@@ -331,33 +331,33 @@
 	\resizebox{1.0\textwidth}{!}{
 		\begin{tikzpicture}[node distance=0cm]
 			\node<1->(T)      [givNode, xshift=   0cm] {$\bT$};
-			\node<1->(P)      [givNode, xshift=   0cm, yshift=-1.13cm] {$\bP$};	
-			\node<1->(bn)     [algNode, xshift= 3.0cm] {Build \\ Neighborhoods};	
-			\node<1->(N)      [genNode, xshift= 6.0cm] {$\bN$};	
+			\node<1->(P)      [givNode, xshift=   0cm, yshift=-1.13cm] {$\bP$};
+			\node<1->(bn)     [algNode, xshift= 3.0cm] {Build One-Ring \\ Neighborhoods};
+			\node<1->(N)      [genNode, xshift= 6.0cm] {$\bN$};
 			\node<2->(ce)     [algNode, xshift= 9.0cm, yshift=-2.81cm] {Calculate \\ Edge~Lengths};
-			\node<3->(F)      [givNode, xshift=12.0cm] {$\bF$};	
+			\node<3->(F)      [givNode, xshift=12.0cm] {$\bF$};
 			\node<2->(E)      [genNode, xshift=12.0cm, yshift=-2.25cm] {$\bE$};
 			\node<2->(gelm)   [genNode, xshift=12.0cm, yshift=-3.38cm] {$\gelm$};
 			\node<3->(cf)     [algNode, xshift=15.0cm, yshift=-1.13cm] {Convolve \\ Filter};
 			\node<3->(Fprime) [outNode, xshift=18.0cm, yshift=-1.13cm] {$\bF'$};
-			
+
 			\node<1->(empty)  [minimum width=1cm, xshift=18.0cm] {\null};
 			\node<1->(empty)  [minimum height=1cm, yshift=-3.38cm] {\null};
 
 			\draw<1->[->, givLine] (T) -- (bn);
-			\draw<1->[->, givLine] (P) -- (bn);	
+			\draw<1->[->, givLine] (P) -- (bn);
 			\draw<1->[->, algLine] (bn) -- (N);
 			\draw<2->[->, genLine] (N) -- (ce);
-			\draw<2->[->, givLine] (P) -- (ce);	
+			\draw<2->[->, givLine] (P) -- (ce);
 			\draw<2->[->, algLine] (ce) -- (E);
-			\draw<2->[->, algLine] (ce) -- (gelm);	
+			\draw<2->[->, algLine] (ce) -- (gelm);
 			\draw<3->[->, givLine] (F) -- (cf);
 			\draw<3->[->, genLine] (N) -- (cf);
 			\draw<3->[->, genLine] (E) -- (cf);
 			\draw<3->[->, genLine] (gelm) -- (cf);
-			\draw<3->[->, givLine] (P) .. controls (6cm,-1.25cm) .. (cf.185);	
-			\draw<3->[->, algLine] (cf) -- (Fprime);	
-			\draw<4->[->, outLine] (Fprime.north) .. controls (18cm,0cm) .. (15.0cm,0cm) 
+			\draw<3->[->, givLine] (P) .. controls (6cm,-1.25cm) .. (cf.185);
+			\draw<3->[->, algLine] (cf) -- (Fprime);
+			\draw<4->[->, outLine] (Fprime.north) .. controls (18cm,0cm) .. (15.0cm,0cm)
 				node[tealStyle, rounded corners, yshift=.1cm]{$\tau$ iterations} -- (F);
 		\end{tikzpicture}
 	}
@@ -367,7 +367,7 @@
 \frame{\frametitle{Towards Acceleration}
 	\centering
 	{\Huge Unfortunately, this is very slow!}
-	
+
 	\medskip
 	\scalebox{-1}[1]{\includegraphics[width=0.5\linewidth]{figures/DB_Museum_Nuernberg.jpg}}
 
@@ -387,19 +387,21 @@
 \subsection{Some Basics}
 
 %------------------------------------------------
-\frame{\frametitle{SIMD Architecture}
+\frame{\frametitle{SIMD Architecture (Single Instruction, Multiple Data)}
 	\vspace*{4mm}
 	\includegraphics[width=1.0\linewidth]{figures/tikz/simdArchitecture.pdf}
 
 	\bigskip
 	\begin{flushright}
-		i.e. GPGPUs, Supercomputers, Computer Pools %Name examples like the cray, and pool in this building
+		i.e. Supercomputers, GPGPUs, Computer Pools %Name examples like the cray, and pool in this building
 	\end{flushright}
 }
 
 %------------------------------------------------
 \frame{\frametitle{CPU vs GPU Construction}
-	\vspace*{8mm}
+	\centering
+	ALU (Arithmatic \& Logic Unit) aka. ``compute core'' \par
+	\vspace*{4mm}
 	\includegraphics[width=1.0\linewidth]{figures/cpuvgpu.png}
 }
 
@@ -475,12 +477,12 @@
 \frame[c]{\frametitle{Parallel Algorithm for Fast One-Ring Smoothing}
 	\resizebox{1.0\textwidth}{!}{
 		\begin{tikzpicture}[node distance=0cm]
-			\node<1->(T)      [givNode, xshift= 0cm] {$\bT$};	
+			\node<1->(T)      [givNode, xshift= 0cm] {$\bT$};
 			\node<1->(P)      [givNode, xshift= 0cm, yshift=-1.13cm] {$\bP$};
 			\node<1->(rho)    [givNode, xshift= 0cm, yshift=-2.25cm] {$\rho$};
-			\node<1->(bn)     [algNode, xshift= 3cm] {Build \\ Neighborhoods};	
-			\node<1->(N)      [genNode, xshift= 6cm] {$\bN$};	
-			\node<2->(cn)     [algNode, xshift= 9cm, yshift= 1.13cm] {Census \\ Neighborhoods};	
+			\node<1->(bn)     [algNode, xshift= 3cm] {Build \\ Neighborhoods};
+			\node<1->(N)      [genNode, xshift= 6cm] {$\bN$};
+			\node<2->(cn)     [algNode, xshift= 9cm, yshift= 1.13cm] {Census \\ Neighborhoods};
 			\node<2->(hatn)   [genNode, xshift=12cm, yshift= 1.13cm] {$\hat{n}$};
 			\node<3->(ce)     [algNode, xshift=15cm, yshift=-2.81cm] {Calculate \\ Edge~Lengths};
 			\node<3->(E)      [genNode, xshift=18cm, yshift=-2.25cm] {$\bE$};
@@ -501,7 +503,7 @@
 			\draw<2->[->, algLine] (cn) -- (hatn);
 			\draw<3->[->, givLine] (rho) .. controls (12cm,-2.25cm) and (6cm,-2.81cm) .. (ce);
 			\draw<3->[->, givLine] (P) -- (ce);
-			\draw<3->[->, genLine] (N) -- (ce);	
+			\draw<3->[->, genLine] (N) -- (ce);
 			\draw<3->[->, genLine] (hatn) -- (ce);
 			\draw<3->[->, algLine] (ce) -- (E);
 			\draw<3->[->, algLine] (ce) -- (gelm);
@@ -513,7 +515,7 @@
 			\draw<4->[->, genLine] (gelm) -- (cf);
 			\draw<4->[->, givLine] (F) -- (cf);
 			\draw<4->[->, algLine] (cf) -- (Fprime);
-			\draw<5->[->, outLine] (Fprime.north) .. controls (24cm,1.13cm) .. (21.0cm,1.13cm) 
+			\draw<5->[->, outLine] (Fprime.north) .. controls (24cm,1.13cm) .. (21.0cm,1.13cm)
 				node[tealStyle, rounded corners, yshift=.1cm]{$\tau$ iterations} -- (F);
 		\end{tikzpicture}
 	}
@@ -533,30 +535,30 @@
 
 %------------------------------------------------
 \frame{\frametitle{Bisected-Square Tessellations}
-	\vspace*{-2mm}
+	\vspace*{-3mm}
 	\begin{columns}
 		\begin{column}{0.17\textwidth}~\end{column}
 		\begin{column}{0.22\textwidth}
 			\centering
 			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/square_tesselation_2tri_Dirac_delta_1_v9_f8_wireframe.png}
-			{\footnotesize 
-				\par \vspace{-1mm} $r=1$, 
+			{\footnotesize
+				\par \vspace{-1mm} $r=1$,
 				\par \vspace{-1mm} wireframe
 			}
 		\end{column}
 		\begin{column}{0.22\textwidth}
 			\centering
 			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/square_tesselation_2tri_Dirac_delta_1_v9_f8_funcvals_0iter_crop.png}
-			{\footnotesize 
-				\par \vspace{-1mm} $r=1$, 
+			{\footnotesize
+				\par \vspace{-1mm} $r=1$,
 				\par \vspace{-1mm} $0$~iterations
 			}
 		\end{column}
 		\begin{column}{0.22\textwidth}
 			\centering
 			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/square_tesselation_2tri_Dirac_delta_1_v9_f8_funcvals_1iter_crop.png}
-			{\footnotesize 
-				\par \vspace{-1mm} $r=1$, 
+			{\footnotesize
+				\par \vspace{-1mm} $r=1$,
 				\par \vspace{-1mm} $1$~iteration
 			}
 		\end{column}
@@ -568,24 +570,24 @@
 		\begin{column}{0.22\textwidth}
 			\centering
 			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/square_tesselation_2tri_Dirac_delta_10_v441_f800_wireframe.png}
-			{\footnotesize 
-				\par \vspace{-1mm} $r=10$, 
+			{\footnotesize
+				\par \vspace{-1mm} $r=10$,
 				\par \vspace{-1mm} wireframe
 			}
 		\end{column}
 		\begin{column}{0.22\textwidth}
 			\centering
 			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/square_tesselation_2tri_Dirac_delta_10_v441_f800_funcvals_0iter.png}
-			{\footnotesize 
-				\par \vspace{-1mm} $r=10$, 
+			{\footnotesize
+				\par \vspace{-1mm} $r=10$,
 				\par \vspace{-1mm} $0$~iterations
 			}
 		\end{column}
 		\begin{column}{0.22\textwidth}
 			\centering
 			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/square_tesselation_2tri_Dirac_delta_10_v441_f800_funcvals_100iter.png}
-			{\footnotesize 
-				\par \vspace{-1mm} $r=10$, 
+			{\footnotesize
+				\par \vspace{-1mm} $r=10$,
 				\par \vspace{-1mm} $100$~iterations
 			}
 		\end{column}
@@ -595,30 +597,30 @@
 
 %------------------------------------------------
 \frame{\frametitle{Quadrisected-Square Tessellations}
-	\vspace*{-2mm}
+	\vspace*{-3mm}
 	\begin{columns}
 		\begin{column}{0.17\textwidth}~\end{column}
 		\begin{column}{0.22\textwidth}
 			\centering
 			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/square_tesselation_4tri_Dirac_delta_1_v13_f16_wireframe.png}
-			{\footnotesize 
-				\par \vspace{-1mm} $r=1$, 
+			{\footnotesize
+				\par \vspace{-1mm} $r=1$,
 				\par \vspace{-1mm} wireframe
 			}
 		\end{column}
 		\begin{column}{0.22\textwidth}
 			\centering
 			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/square_tesselation_4tri_Dirac_delta_1_v13_f16_funcvals_0iter.png}
-			{\footnotesize 
-				\par \vspace{-1mm} $r=1$, 
+			{\footnotesize
+				\par \vspace{-1mm} $r=1$,
 				\par \vspace{-1mm} $0$~iterations
 			}
 		\end{column}
 		\begin{column}{0.22\textwidth}
 			\centering
 			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/square_tesselation_4tri_Dirac_delta_1_v13_f16_funcvals_1iter.png}
-			{\footnotesize 
-				\par \vspace{-1mm} $r=1$, 
+			{\footnotesize
+				\par \vspace{-1mm} $r=1$,
 				\par \vspace{-1mm} $1$~iteration
 			}
 		\end{column}
@@ -630,24 +632,24 @@
 		\begin{column}{0.22\textwidth}
 			\centering
 			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/square_tesselation_4tri_Dirac_delta_10_v841_f1600_wireframe_2.png}
-			{\footnotesize 
-				\par \vspace{-1mm} $r=10$, 
+			{\footnotesize
+				\par \vspace{-1mm} $r=10$,
 				\par \vspace{-1mm} wireframe
 			}
 		\end{column}
 		\begin{column}{0.22\textwidth}
 			\centering
 			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/square_tesselation_4tri_Dirac_delta_10_v841_f1600_funcvals_0iter.png}
-			{\footnotesize 
-				\par \vspace{-1mm} $r=10$, 
+			{\footnotesize
+				\par \vspace{-1mm} $r=10$,
 				\par \vspace{-1mm} $0$~iterations
 			}
 		\end{column}
 		\begin{column}{0.22\textwidth}
 			\centering
 			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/square_tesselation_4tri_Dirac_delta_10_v841_f1600_funcvals_100iter.png}
-			{\footnotesize 
-				\par \vspace{-1mm} $r=10$, 
+			{\footnotesize
+				\par \vspace{-1mm} $r=10$,
 				\par \vspace{-1mm} $100$~iterations
 			}
 		\end{column}
@@ -657,30 +659,30 @@
 
 %------------------------------------------------
 \frame{\frametitle{Hexagonal Tessellations}
-	\vspace*{-2mm}
+	\vspace*{-3mm}
 	\begin{columns}
 		\begin{column}{0.17\textwidth}~\end{column}
 		\begin{column}{0.22\textwidth}
 			\centering
 			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/hexagonal_tessellation_Dirac_delta_1_v31_f42_wireframe.png}
-			{\footnotesize 
-				\par \vspace{-1mm} $r=1$, 
+			{\footnotesize
+				\par \vspace{-1mm} $r=1$,
 				\par \vspace{-1mm} wireframe
 			}
 		\end{column}
 		\begin{column}{0.22\textwidth}
 			\centering
 			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/hexagonal_tessellation_Dirac_delta_1_v31_f42_funcvals_0iter_crop.png}
-			{\footnotesize 
-				\par \vspace{-1mm} $r=1$, 
+			{\footnotesize
+				\par \vspace{-1mm} $r=1$,
 				\par \vspace{-1mm} $0$~iterations
 			}
 		\end{column}
 		\begin{column}{0.22\textwidth}
 			\centering
 			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/hexagonal_tessellation_Dirac_delta_1_v31_f42_funcvals_2iter_crop.png}
-			{\footnotesize 
-				\par \vspace{-1mm} $r=1$, 
+			{\footnotesize
+				\par \vspace{-1mm} $r=1$,
 				\par \vspace{-1mm} $2$~iterations
 			}
 		\end{column}
@@ -692,24 +694,24 @@
 		\begin{column}{0.22\textwidth}
 			\centering
 			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/hexagonal_tessellation_Dirac_delta_10_v1057_f1986_wireframe.png}
-			{\footnotesize 
-				\par \vspace{-1mm} $r=10$, 
+			{\footnotesize
+				\par \vspace{-1mm} $r=10$,
 				\par \vspace{-1mm} wireframe
 			}
 		\end{column}
 		\begin{column}{0.22\textwidth}
 			\centering
 			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/hexagonal_tessellation_Dirac_delta_10_v1057_f1986_funcvals_0iter_crop.png}
-			{\footnotesize 
-				\par \vspace{-1mm} $r=10$, 
+			{\footnotesize
+				\par \vspace{-1mm} $r=10$,
 				\par \vspace{-1mm} $0$~iterations
 			}
 		\end{column}
 		\begin{column}{0.22\textwidth}
 			\centering
 			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/hexagonal_tessellation_Dirac_delta_10_v1057_f1986_funcvals_200iter_crop.png}
-			{\footnotesize 
-				\par \vspace{-1mm} $r=10$, 
+			{\footnotesize
+				\par \vspace{-1mm} $r=10$,
 				\par \vspace{-1mm} $200$~iterations
 			}
 		\end{column}
@@ -719,13 +721,13 @@
 
 %------------------------------------------------
 \frame{\frametitle{Random Triangulated Discs}
-	\vspace*{-2mm}
+	\vspace*{-3mm}
 	\begin{columns}
 		\begin{column}{0.17\textwidth}~\end{column}
 		\begin{column}{0.22\textwidth}
 			\centering
 			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/random_circle_tessellation_Dirac_delta_1_v11_f12_wireframe.png}
-			{\footnotesize 
+			{\footnotesize
 				\par \vspace{-1mm} $r=1$, $p=11$,
 				\par \vspace{-1mm} wireframe
 			}
@@ -733,7 +735,7 @@
 		\begin{column}{0.22\textwidth}
 			\centering
 			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/random_circle_tessellation_Dirac_delta_1_v11_f12_funcvals_0iter.png}
-			{\footnotesize 
+			{\footnotesize
 				\par \vspace{-1mm} $r=1$, $p=11$,
 				\par \vspace{-1mm} $0$~iterations
 			}
@@ -741,7 +743,7 @@
 		\begin{column}{0.22\textwidth}
 			\centering
 			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/random_circle_tessellation_Dirac_delta_1_v11_f12_funcvals_2iter.png}
-			{\footnotesize 
+			{\footnotesize
 				\par \vspace{-1mm} $r=1$, $p=11$,
 				\par \vspace{-1mm} $2$~iterations
 			}
@@ -754,7 +756,7 @@
 		\begin{column}{0.22\textwidth}
 			\centering
 			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/random_circle_tessellation_Dirac_delta_10_v641_f1252_wireframe.png}
-			{\footnotesize 
+			{\footnotesize
 				\par \vspace{-1mm} $r=10$, $p=641$,
 				\par \vspace{-1mm} wireframe
 			}
@@ -762,7 +764,7 @@
 		\begin{column}{0.22\textwidth}
 			\centering
 			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/random_circle_tessellation_Dirac_delta_10_v641_f1252_funcvals_0iter.png}
-			{\footnotesize 
+			{\footnotesize
 				\par \vspace{-1mm} $r=10$, $p=641$,
 				\par \vspace{-1mm} $0$~iterations
 			}
@@ -770,7 +772,7 @@
 		\begin{column}{0.22\textwidth}
 			\centering
 			\includegraphics[width=.85\textwidth]{data/synthetic_meshes/random_circle_tessellation_Dirac_delta_10_v641_f1252_funcvals_10000iter.png}
-			{\footnotesize 
+			{\footnotesize
 				\par \vspace{-1mm} $r=10$, $p=641$,
 				\par \vspace{-1mm} $10^4$~iterations
 			}
@@ -790,14 +792,14 @@
 		\begin{column}{0.33\textwidth}
 			\centering
 			\includegraphics[width=\textwidth]{data/acquired_meshes/unisiegel_wireframe.png}
-			{\footnotesize 
+			{\footnotesize
 				\par \vspace{-1mm} wireframe
 			}
 		\end{column}
 		\begin{column}{0.33\textwidth}
 			\centering
 			\includegraphics[width=\textwidth]{data/acquired_meshes/unisiegel_0iter.png}
-			{\footnotesize 
+			{\footnotesize
 				\par \vspace{-1mm} $0$~iterations
 			}
 		\end{column}
@@ -821,14 +823,14 @@
 		\begin{column}{0.5\textwidth}
 			\centering
 			\includegraphics[width=.75\textwidth]{data/acquired_meshes/ILATO_1A_SM2066-HE5-60_070214_merged_GMO_r1_n4_v256_wireframe.png}
-			{\footnotesize 
+			{\footnotesize
 				\par \vspace{-1mm} wireframe
 			}
 		\end{column}
 		\begin{column}{0.5\textwidth}
 			\centering
 			\includegraphics[width=.75\textwidth]{data/acquired_meshes/ILATO_1A_SM2066-HE5-60_070214_merged_GMO_r1_n4_v256_funcvals_0iter.png}
-			{\footnotesize 
+			{\footnotesize
 				\par \vspace{-1mm} $0$~iterations
 			}
 		\end{column}
@@ -838,14 +840,14 @@
 		\begin{column}{0.5\textwidth}
 			\centering
 			\includegraphics[width=.75\textwidth]{data/acquired_meshes/ILATO_1A_SM2066-HE5-60_070214_merged_GMO_r1_n4_v256_funcvals_1000iter.png}
-			{\footnotesize 
+			{\footnotesize
 				\par \vspace{-1mm} $1000$~iterations
 			}
 		\end{column}
 		\begin{column}{0.5\textwidth}
 			\centering
 			\includegraphics[width=.75\textwidth]{data/acquired_meshes/ILATO_1A_SM2066-HE5-60_070214_merged_GMO_r1_n4_v256_funcvals_3000iter.png}
-			{\footnotesize 
+			{\footnotesize
 				\par \vspace{-1mm} $3000$~iterations
 			}
 		\end{column}
@@ -859,14 +861,14 @@
 		\begin{column}{0.33\textwidth}
 			\centering
 			\includegraphics[width=\textwidth]{data/acquired_meshes/bun_zipper_edited_r1_n4_v256_wireframe.png}
-			{\footnotesize 
+			{\footnotesize
 				\par \vspace{-1mm} wireframe
 			}
 		\end{column}
 		\begin{column}{0.33\textwidth}
 			\centering
 			\includegraphics[width=\textwidth]{data/acquired_meshes/bun_zipper_edited_r1_n4_v256_funcvals_0iter.png}
-			{\footnotesize 
+			{\footnotesize
 				\par \vspace{-1mm} $0$~iterations
 			}
 		\end{column}
@@ -936,7 +938,7 @@
 				\begin{itemize}
 					\item Using inner angles vs area for weights
 					\item Define a parameter instead of ${\color{MyTeal}\gelm}$%min edge length, discoverd by typo in original code
-					\item Eliminate square root function %no averaging, interpolation
+					%\item Eliminate square root function %no averaging, interpolation
 					\item Other smoothing methods, i.e. median
 				\end{itemize}
 			}\only<2->{
@@ -951,9 +953,9 @@
 		\begin{column}{.2\textwidth}
 			\only<3>{
 				\par \vspace*{12mm}
-				{\fontfamily{pzc}\selectfont 
+				{\fontfamily{pzc}\selectfont
 					\Huge
-					Thank \par 
+					Thank \par
 					\begin{flushright}You!\end{flushright}
 				}
 			}
