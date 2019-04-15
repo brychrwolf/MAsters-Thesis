@@ -88,10 +88,30 @@
 }
 
 %------------------------------------------------
-%TODO:highlight my contribution
 \frame{\frametitle{Outline}
-	\tableofcontents[hideallsubsections]
+	%\tableofcontents[hideallsubsections]
+	\begin{itemize}
+		\item Motivation \& Introduction \pause
+		\item Fast One-Ring Smoothing Filter
+		\begin{itemize}
+			\item Mathematical Foundation
+			\item Serial Algorithm
+		\end{itemize} \pause
+		\item Exploiting Parallelism
+		\begin{itemize}
+			\item Basics
+			\item Analysis of the Serial Algorithm
+			\item Parallel Algorithm
+		\end{itemize} \pause
+		\item Experiments \& Evaluation
+		\begin{itemize}
+			\item Filter Response on Synthetic and Acquired \tdd{}
+			\item Performance of the Parallel Algorithm
+		\end{itemize} \pause
+		\item Outlook
+	\end{itemize}
 }
+
 
 
 
@@ -104,10 +124,9 @@
 	\begin{columns}[T]
 		\begin{column}{.45\textwidth}
 			\begin{itemize}
-				\item Modernization of archeology
-				\item Industrial quality scanning
 				\item Danger to physical archives
-				\item Lower cost 3D-scanners are now more~accurate
+				\item Modernization of archeology
+				\item High quality 3D-scanners are becoming less expensive
 			\end{itemize}
 		\end{column}
 		\begin{column}{.55\textwidth}
@@ -200,13 +219,15 @@
 \frame{\frametitle{Anatomy of a Mesh}
 	\begin{columns}[T]
 		\begin{column}{.2\textwidth}
+			\vspace*{-2mm}
 			{\fontsize{10}{14}\selectfont
 				\begin{tabular}{ l l }
-					$\bM$ & the triangle mesh; a 2D discrete manifold \\
-					$\bT$ & the set of triangle faces \{$\bt_1$, \ldots, $\bt_m$\} \\
 					$\bP$ & the set of points \{$\bp_1$, \ldots, $\bp_n$\} \\
+					$\bT$ & the set of triangle faces \{$\bt_1$, \ldots, $\bt_m$\} \\
 					$\bF$ & the set of function values \{$f_1$, \ldots, $f_n$\} \\
+					$\bM$ & the triangle mesh; a 2D discrete manifold \\
 					~ & ~ \\
+					$\bE$ & the set of lengths \{$\ell_{1,2}$, \ldots, $\ell_{n-1,n}$\} \\
 					$\bN$ & the set of one-ring neighborhoods \\
 					$\bN_2$ & the neighborhood of $\bp_2$
 				\end{tabular}
@@ -241,7 +262,7 @@
 }
 
 %------------------------------------------------
-\frame{\frametitle{An Enhanced View of a Circle Sector}
+\frame{\frametitle{An Enhanced View of Circle Sector $\bs_1$}
 	\vspace{-4mm}
 	\begin{columns}[T]
 		\begin{column}{.5\textwidth}
@@ -372,7 +393,7 @@
 
 	\bigskip
 	\begin{flushright}
-		i.e. GPUs, Supercomputers, Computer Pools %Name examples like the cray, and pool in this building
+		i.e. GPGPUs, Supercomputers, Computer Pools %Name examples like the cray, and pool in this building
 	\end{flushright}
 }
 
@@ -914,7 +935,7 @@
 				\color{unirot}{Fast One-Ring Smoothing Filter:}
 				\begin{itemize}
 					\item Using inner angles vs area for weights
-					\item User-defined parameter instead of ${\color{MyTeal}\gelm}$%min edge length, discoverd by typo in original code
+					\item Define a parameter instead of ${\color{MyTeal}\gelm}$%min edge length, discoverd by typo in original code
 					\item Eliminate square root function %no averaging, interpolation
 					\item Other smoothing methods, i.e. median
 				\end{itemize}
@@ -939,4 +960,5 @@
 		\end{column}
 	\end{columns}
 }
+%\fi
 \end{document}
